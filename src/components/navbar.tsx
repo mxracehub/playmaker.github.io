@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -11,7 +12,8 @@ import {
   LayoutDashboard,
   Coins,
   LogIn,
-  Landmark
+  Landmark,
+  ShieldAlert
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUser, useAuth } from "@/firebase";
@@ -92,6 +94,13 @@ export function Navbar() {
                         <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
                       </div>
                     </DropdownMenuLabel>
+                    <DropdownMenuSeparator className="bg-white/5" />
+                    <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/10">
+                      <Link href="/admin" className="flex items-center w-full text-destructive">
+                        <ShieldAlert className="mr-2 h-4 w-4" />
+                        <span>Arena Control</span>
+                      </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator className="bg-white/5" />
                     <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/10 md:hidden">
                       <Link href="/" className="flex items-center w-full">

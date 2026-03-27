@@ -1,161 +1,44 @@
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    /**
-     * PLAYMAKERS FIRESTORE SECURITY RULES
-     *
-     * Core Philosophy:
-     * This ruleset enforces a strict user-ownership model for personal data and a collaborative 
-     * shared-access model for contests. It prioritizes Authorization Independence by relying 
-     * on denormalized data (like member maps and creator IDs) directly on documents to avoid 
-     * expensive get() calls.
-     *
-     * Data Structure:
-     * - /users/{userId}: Private user profiles and account-specific data.
-     * - /users/{userId}/wallet & /currency_transactions: Strictly private financial data.
-     * - /sports, /leagues, /events, etc.: Publicly readable reference data, write-protected.
-     * - /contests: Collaborative spaces where access is governed by creatorId and a members map.
-     *
-     * Key Security Decisions:
-     * - Ownership is enforced by matching the request.auth.uid to path variables or internal document fields.
-     * - Shared access for contests and their sub-resources (participants, picks) is handled via 
-     *   denormalized member lists to ensure performant and secure list operations.
-     * - Prototyping Mode: Data types and full schema shapes are not enforced to allow rapid 
-     *   iteration, but critical relational fields (like creatorId) are validated for integrity.
-     */
-
     // --- Helper Functions ---
-
-    /** @description Checks if the requester is authenticated. */
     function isSignedIn() {
       return request.auth != null;
     }
 
-    /** @description Checks if the authenticated user matches the provided userId. */
     function isOwner(userId) {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    /** @description Checks if the user is the owner and the document exists (for updates/deletes). */
-    function isExistingOwner(userId) {
-      return resource != null && isOwner(userId);
-    }
-
-    /** @description Validates shared access for Contests using the denormalized members map or creatorId. */
-    function isContestCollaborator(data) {
-      return isSignedIn() && (data.creatorId == request.auth.uid || (data.members != null && data.members[request.auth.uid] == true));
-    }
-
-    /** @description Validates shared access for sub-contest entities using denormalized context fields. */
-    function isDenormalizedCollaborator(data) {
-      return isSignedIn() && (data.contestCreatorId == request.auth.uid || (data.contestMembers != null && data.contestMembers[request.auth.uid] == true));
-    }
-
     // --- Collection Rules ---
 
-    /**
-     * @description Rules for user profiles. Users can only manage their own profile.
-     * @path /users/{userId}
-     * @allow (get, list, create, update) if request.auth.uid == userId
-     * @deny (update) if request.auth.uid != userId
-     * @principle Ownership: Access restricted to the user's own data tree.
-     */
     match /users/{userId} {
-      allow get, list: if isOwner(userId);
+      allow get, list: if isSignedIn();
       allow create: if isOwner(userId);
-      allow update: if isExistingOwner(userId);
-      allow delete: if false; // Profiles are typically not deleted by users in this app
-    }
-
-    /**
-     * @description Rules for user wallets. Strictly private financial information.
-     * @path /users/{userId}/wallet/{walletId}
-     * @allow (get, create) if request.auth.uid == userId
-     * @deny (list) if request.auth.uid != userId
-     * @principle Ownership: Enforces strict isolation of financial records.
-     */
-    match /users/{userId}/wallet/{walletId} {
-      allow get, list: if isOwner(userId);
-      allow create: if isOwner(userId);
-      allow update: if isExistingOwner(userId);
+      allow update: if isOwner(userId);
       allow delete: if false;
     }
 
-    /**
-     * @description Rules for currency transactions. Read-only records for the user.
-     * @path /users/{userId}/currency_transactions/{transactionId}
-     * @allow (get, list) if request.auth.uid == userId
-     * @deny (update, delete) always (immutable records)
-     * @principle Ownership: Users can view their own history but cannot alter transactions.
-     */
-    match /users/{userId}/currency_transactions/{transactionId} {
+    match /users/{userId}/wallet/{walletId} {
       allow get, list: if isOwner(userId);
       allow create: if isOwner(userId);
-      allow update, delete: if false;
+      allow update: if isOwner(userId);
+      allow delete: if false;
     }
 
-    /**
-     * @description Reference data collections. Publicly readable, write-protected.
-     * @path /sports, /leagues, /teams, /athletes, /events, /legal_documents
-     * @allow (get, list) if true
-     * @deny (create, update, delete) if true
-     * @principle Public Read: Static sports data is accessible to all users.
-     */
-    match /sports/{id} { allow read: if true; allow write: if false; }
-    match /leagues/{id} { allow read: if true; allow write: if false; }
-    match /teams/{id} { allow read: if true; allow write: if false; }
-    match /athletes/{id} { allow read: if true; allow write: if false; }
-    match /legal_documents/{id} { allow read: if true; allow write: if false; }
-    match /events/{eventId} {
-      allow read: if true;
-      allow write: if false;
-
-      match /athlete_statistics/{statId} {
-        allow read: if true;
-        allow write: if false;
-      }
+    match /games/{gameId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update: if isSignedIn(); // In a real app, only admin or creator could update specific fields
+      allow delete: if isSignedIn() && resource.data.creatorId == request.auth.uid;
     }
 
-    /**
-     * @description Rules for Contests. Access governed by creatorId or membership map.
-     * @path /contests/{contestId}
-     * @allow (create) if creatorId matches auth.uid
-     * @allow (get, list) if user is creator or in members map
-     * @principle Shared Access: Uses denormalized maps for get()-free member verification.
-     */
-    match /contests/{contestId} {
-      allow get, list: if isContestCollaborator(resource.data);
-      allow create: if isSignedIn() && request.resource.data.creatorId == request.auth.uid;
-      allow update: if resource != null && isContestCollaborator(resource.data);
-      allow delete: if resource != null && resource.data.creatorId == request.auth.uid;
-    }
-
-    /**
-     * @description Rules for Contest Participants. Accessible by the participant or contest members.
-     * @path /contests/{contestId}/participants/{userId}
-     * @allow (get) if userId matches auth.uid OR user is contest collaborator
-     * @principle Relational Integrity: Uses denormalized contest context to secure sub-resources.
-     */
-    match /contests/{contestId}/participants/{userId} {
-      allow get, list: if isOwner(userId) || isDenormalizedCollaborator(resource.data);
-      allow create: if isOwner(userId);
-      allow update: if resource != null && (isOwner(userId) || isDenormalizedCollaborator(resource.data));
-      allow delete: if resource != null && (isOwner(userId) || request.auth.uid == resource.data.contestCreatorId);
-    }
-
-    /**
-     * @description Rules for Contest Picks. Owned by the participant, viewable by contest members.
-     * @path /contests/{contestId}/participants/{userId}/picks/{pickId}
-     * @allow (create) if path userId matches auth.uid
-     * @deny (update) if attempting to change ownership
-     * @principle Shared Access: Enforces pick ownership while allowing contest-wide visibility.
-     */
-    match /contests/{contestId}/participants/{userId}/picks/{pickId} {
-      allow get, list: if isOwner(userId) || isDenormalizedCollaborator(resource.data);
-      allow create: if isOwner(userId) && request.resource.data.userId == request.auth.uid;
-      allow update: if resource != null && isOwner(userId) && request.resource.data.userId == resource.data.userId;
-      allow delete: if resource != null && isOwner(userId);
-    }
+    // Reference data
+    match /sports/{id} { allow read: if true; }
+    match /leagues/{id} { allow read: if true; }
+    match /teams/{id} { allow read: if true; }
+    match /athletes/{id} { allow read: if true; }
   }
 }

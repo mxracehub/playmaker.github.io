@@ -45,6 +45,11 @@
           "type": "string",
           "description": "Timestamp indicating when the user profile was last updated.",
           "format": "date-time"
+        },
+        "role": {
+          "type": "string",
+          "description": "The user's role, e.g., 'admin' or 'player'.",
+          "enum": ["admin", "player"]
         }
       },
       "required": [
@@ -242,6 +247,15 @@
         "inviteCode": {
           "type": "string",
           "description": "A unique code that friends can use to join."
+        },
+        "winnerId": {
+          "type": "string",
+          "description": "Reference to the UserProfile of the winner."
+        },
+        "finalScores": {
+          "type": "object",
+          "description": "Final scores for each participant.",
+          "additionalProperties": { "type": "number" }
         },
         "createdAt": {
           "type": "string",
