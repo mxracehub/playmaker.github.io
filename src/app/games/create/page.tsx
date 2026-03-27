@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -19,28 +20,28 @@ const sports = [
     name: 'Basketball', 
     icon: <Dribbble className="w-5 h-5" />, 
     color: "text-orange-500",
-    options: ["Lakers", "Celtics", "Warriors", "Mavericks", "Nuggets"]
+    options: ["Lakers", "Celtics", "Warriors", "Mavericks", "Nuggets", "Bucks", "Suns", "Heat", "Knicks", "76ers"]
   },
   { 
     id: 'nfl', 
     name: 'Football', 
     icon: <Trophy className="w-5 h-5" />, 
     color: "text-green-500",
-    options: ["Chiefs", "Eagles", "49ers", "Cowboys", "Ravens"]
+    options: ["Chiefs", "Eagles", "49ers", "Cowboys", "Ravens", "Bills", "Bengals", "Lions", "Dolphins", "Jets"]
   },
   { 
     id: 'golf', 
     name: 'Golf', 
     icon: <Target className="w-5 h-5" />, 
     color: "text-emerald-400",
-    options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Tiger Woods", "Brooks Koepka"]
+    options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Tiger Woods", "Brooks Koepka", "Viktor Hovland", "Xander Schauffele", "Ludvig Aberg"]
   },
   { 
     id: 'nascar', 
     name: 'NASCAR', 
     icon: <Flag className="w-5 h-5" />, 
     color: "text-red-500",
-    options: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "William Byron", "Joey Logano"]
+    options: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "William Byron", "Joey Logano", "Ryan Blaney", "Tyler Reddick", "Martin Truex Jr."]
   },
 ];
 
@@ -59,6 +60,7 @@ export default function CreateGamePage() {
   const [selectedPick, setSelectedPick] = useState<string>("");
   const [selectedFriend, setSelectedFriend] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchPickQuery, setSearchPickQuery] = useState("");
   const [currency, setCurrency] = useState("gold");
   const [fee, setFee] = useState("1000");
 
@@ -70,6 +72,11 @@ export default function CreateGamePage() {
   const filteredFriends = mockFriends.filter(friend => 
     friend.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const currentSport = sports.find(s => s.id === selectedSport);
+  const filteredPicks = currentSport?.options.filter(option =>
+    option.toLowerCase().includes(searchPickQuery.toLowerCase())
+  ) || [];
 
   const handleCreate = () => {
     if (!selectedSport) {
@@ -107,8 +114,6 @@ export default function CreateGamePage() {
     }, 1200);
   };
 
-  const currentSport = sports.find(s => s.id === selectedSport);
-
   return (
     <div className="min-h-screen pb-24 md:pt-20 bg-background relative overflow-hidden">
       <Navbar />
@@ -140,7 +145,8 @@ export default function CreateGamePage() {
                       key={sport.id}
                       onClick={() => {
                         setSelectedSport(sport.id);
-                        setSelectedPick(""); // Reset pick when sport changes
+                        setSelectedPick(""); 
+                        setSearchPickQuery("");
                       }}
                       className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all duration-300 ${
                         selectedSport === sport.id 
@@ -155,27 +161,44 @@ export default function CreateGamePage() {
                 </div>
               </div>
 
-              {/* Step 2: Winner Pick Selection */}
+              {/* Step 2: Winner Pick Selection with Search */}
               {selectedSport ? (
                 <div className="space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
                   <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
                     2. Pick Your Winning {selectedSport === 'golf' || selectedSport === 'nascar' ? 'Athlete' : 'Team'}
                   </Label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {currentSport?.options.map((option) => (
-                      <button
-                        key={option}
-                        onClick={() => setSelectedPick(option)}
-                        className={`flex items-center justify-between p-4 rounded-xl border text-sm font-bold transition-all ${
-                          selectedPick === option
-                            ? 'bg-accent/10 border-accent text-accent'
-                            : 'bg-secondary/20 border-white/5 hover:border-white/20'
-                        }`}
-                      >
-                        {option}
-                        {selectedPick === option && <CheckCircle2 className="h-4 w-4" />}
-                      </button>
-                    ))}
+                  
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input 
+                      placeholder={`Search ${selectedSport === 'golf' || selectedSport === 'nascar' ? 'athletes' : 'teams'}...`} 
+                      className="pl-10 h-12 bg-secondary/30 border-white/5 focus:border-accent/50 transition-colors"
+                      value={searchPickQuery}
+                      onChange={(e) => setSearchPickQuery(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[200px] overflow-y-auto pr-1 no-scrollbar">
+                    {filteredPicks.length > 0 ? (
+                      filteredPicks.map((option) => (
+                        <button
+                          key={option}
+                          onClick={() => setSelectedPick(option)}
+                          className={`flex items-center justify-between p-4 rounded-xl border text-sm font-bold transition-all ${
+                            selectedPick === option
+                              ? 'bg-accent/10 border-accent text-accent'
+                              : 'bg-secondary/20 border-white/5 hover:border-white/20'
+                          }`}
+                        >
+                          {option}
+                          {selectedPick === option && <CheckCircle2 className="h-4 w-4" />}
+                        </button>
+                      ))
+                    ) : (
+                      <div className="col-span-full py-6 text-center bg-secondary/10 rounded-xl border border-dashed">
+                        <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest opacity-50">No matches found for "{searchPickQuery}"</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               ) : (
@@ -198,7 +221,7 @@ export default function CreateGamePage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 gap-3 max-h-[300px] overflow-y-auto no-scrollbar pr-1">
+                <div className="grid grid-cols-1 gap-3 max-h-[250px] overflow-y-auto no-scrollbar pr-1">
                   {filteredFriends.length > 0 ? (
                     filteredFriends.map((friend) => (
                       <button
