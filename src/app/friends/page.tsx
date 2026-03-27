@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -22,8 +21,8 @@ export default function FriendsPage() {
       <main className="mx-auto max-w-5xl px-4 py-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div>
-            <h1 className="font-headline text-3xl font-bold uppercase tracking-tight">Your <span className="text-accent">Squad</span></h1>
-            <p className="text-muted-foreground">Challenge your friends and dominate the leaderboards</p>
+            <h1 className="font-headline text-3xl font-bold uppercase tracking-tight">Your <span className="text-accent">Friends</span></h1>
+            <p className="text-muted-foreground">Challenge your circle and dominate the leaderboards</p>
           </div>
           <div className="flex gap-2">
             <div className="relative">

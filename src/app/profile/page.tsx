@@ -1,12 +1,12 @@
-
 "use client";
 
+import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Settings, Wallet, History, Star, Gamepad2 } from "lucide-react";
+import { Trophy, Settings, Wallet, History, Star, Gamepad2, Landmark } from "lucide-react";
 import { useUser } from "@/firebase";
 
 export default function ProfilePage() {
@@ -65,7 +65,11 @@ export default function ProfilePage() {
                 <p className="text-xs font-bold text-accent uppercase tracking-widest mb-1">Sweeps Coins</p>
                 <p className="text-2xl font-headline font-bold text-accent">542.50 SC</p>
               </div>
-              <Button className="w-full font-bold uppercase tracking-wider">Top Up</Button>
+              <Link href="/shop" className="block w-full">
+                <Button className="w-full font-bold uppercase tracking-wider bg-accent text-accent-foreground hover:bg-accent/90">
+                  <Landmark className="mr-2 h-4 w-4" /> Visit Bank
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -82,7 +86,7 @@ export default function ProfilePage() {
                 {[
                   { action: "Started Game", detail: "NBA Sunday Night Special", value: "-100 GC", time: "2h ago" },
                   { action: "Won Game", detail: "Head-to-Head vs Jaxon", value: "+50 SC", time: "5h ago", positive: true },
-                  { action: "Purchase", detail: "Starter Pack", value: "+10,000 GC", time: "1d ago", positive: true },
+                  { action: "Bank Deposit", detail: "Starter Pack", value: "+10,000 GC", time: "1d ago", positive: true },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-secondary/20 border border-white/5">
                     <div>

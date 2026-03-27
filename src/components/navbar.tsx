@@ -1,11 +1,9 @@
-
 "use client";
 
 import Link from "next/link";
 import { 
   Trophy, 
   Users, 
-  ShoppingBag, 
   UserCircle, 
   LayoutDashboard, 
   Coins, 
@@ -55,8 +53,7 @@ export function Navbar() {
         <div className="flex w-full items-center justify-around md:w-auto md:justify-end md:gap-2">
           <NavButton href="/" icon={<LayoutDashboard />} label="Lobby" />
           <NavButton href="/games" icon={<Gamepad2 />} label="Games" />
-          <NavButton href="/friends" icon={<Users />} label="Squad" />
-          <NavButton href="/shop" icon={<ShoppingBag />} label="Forge" />
+          <NavButton href="/friends" icon={<Users />} label="Friends" />
           
           <div className="hidden h-8 w-px bg-border md:block mx-2" />
           

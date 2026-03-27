@@ -4,7 +4,7 @@ import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Coins, Zap, ShieldCheck, Sparkles } from "lucide-react";
+import { Coins, Zap, ShieldCheck, Sparkles, Landmark } from "lucide-react";
 
 const packages = [
   {
@@ -45,10 +45,10 @@ export default function ShopPage() {
         <header className="mb-12 text-center">
           <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 px-4 py-1.5 rounded-full text-accent font-bold text-sm uppercase mb-6 tracking-widest animate-bounce">
             <Sparkles className="h-4 w-4" />
-            Elite Exchange Ratio: $1 = 100 Coins
+            Arena Exchange Ratio: $1 = 100 Coins
           </div>
           <h1 className="font-headline text-4xl md:text-5xl font-bold mb-4 tracking-tight uppercase">
-            Currency <span className="text-accent">Forge</span>
+            Currency <span className="text-accent">Bank</span>
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             Purchase Gold Coins for recreational gameplay and receive bonus Sweepstakes Coins for real prize showdowns.
@@ -103,11 +103,11 @@ export default function ShopPage() {
           <div className="space-y-6">
             <h2 className="font-headline text-2xl font-bold uppercase flex items-center gap-3">
               <div className="h-8 w-1.5 bg-accent rounded-full" />
-              Currency Economics
+              Bank Economics
             </h2>
             <div className="space-y-4">
               <p className="text-muted-foreground leading-relaxed">
-                Playmakers maintains a strict 100:1 coin-to-dollar ratio for all packages. Gold Coins (GC) are used for training and social play, while Sweepstakes Coins (SC) are bonus credits used for competitive prize games.
+                Playmakers Bank maintains a strict 100:1 coin-to-dollar ratio for all packages. Gold Coins (GC) are used for training and social play, while Sweepstakes Coins (SC) are bonus credits used for competitive prize games.
               </p>
               <ul className="space-y-3">
                 {[
