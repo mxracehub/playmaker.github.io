@@ -57,7 +57,11 @@ const sports = [
       "Matt Fitzpatrick", "Tyrrell Hatton", "Min Woo Lee", "Sahith Theegala", "Tom Kim", 
       "Sungjae Im", "Hideki Matsuyama", "Jason Day", "Adam Scott", "Shane Lowry", 
       "Justin Rose", "Rickie Fowler", "Tony Finau", "Sam Burns", "Cameron Young", 
-      "Corey Conners", "Si Woo Kim", "Nicolai Hojgaard", "Matthieu Pavon", "Nick Dunlap"
+      "Corey Conners", "Si Woo Kim", "Nicolai Hojgaard", "Matthieu Pavon", "Nick Dunlap",
+      "Nelly Korda", "Lilia Vu", "Celine Boutier", "Ruoning Yin", "Minjee Lee", 
+      "Jin Young Ko", "Charley Hull", "Rose Zhang", "Brooke Henderson", "Lydia Ko", 
+      "Atthaya Thitikul", "Allisen Corpuz", "Megan Khang", "Ayaka Furue", "Hyo Joo Kim", 
+      "Linn Grant", "Maja Stark", "Leona Maguire", "Georgia Hall", "Yuka Saso"
     ]
   },
   { 
