@@ -1,7 +1,6 @@
-
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/navbar";
@@ -31,18 +30,23 @@ export default function LoginPage() {
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
   const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
+  // Use a ref to prevent multiple router.push calls which can sometimes contribute to cycles
+  const hasRedirected = useRef(false);
+
   useEffect(() => {
-    // Only proceed with redirect logic if a user is logged in and all profile state is settled
+    if (hasRedirected.current) return;
+
+    // Only proceed if loading states are settled
     if (user && !isUserLoading && !isProfileLoading) {
       if (profile?.twoFactorEnabled) {
         if (passed2FA) {
+          hasRedirected.current = true;
           router.push("/profile");
         } else if (!show2FA) {
-          // Only trigger if not already showing to prevent infinite re-render loop
           setShow2FA(true);
         }
       } else {
-        // No 2FA enabled, safe to enter the arena
+        hasRedirected.current = true;
         router.push("/profile");
       }
     }
@@ -72,7 +76,6 @@ export default function LoginPage() {
     }
   };
 
-  // Dedicated loading overlay for authentication transitions
   const showLoading = user && (isProfileLoading || isUserLoading || isVerifying) && !show2FA && !passed2FA;
 
   if (showLoading) {

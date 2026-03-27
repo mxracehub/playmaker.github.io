@@ -1,7 +1,6 @@
-
 'use client';
     
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import {
   DocumentReference,
   onSnapshot,
@@ -40,23 +39,9 @@ export interface UseDocResult<T> {
 export function useDoc<T = any>(
   memoizedDocRef: (DocumentReference<DocumentData> & {__memo?: boolean}) | null | undefined,
 ): UseDocResult<T> {
-  type StateDataType = WithId<T> | null;
-
-  const [data, setData] = useState<StateDataType>(null);
+  const [data, setData] = useState<WithId<T> | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(!!memoizedDocRef);
   const [error, setError] = useState<FirestoreError | Error | null>(null);
-  
-  // Use a ref to track the path we're currently looking at
-  const currentPath = useRef<string | null>(memoizedDocRef?.path || null);
-
-  // If the reference path changed, reset state immediately in the render cycle
-  // to prevent stale data or incorrect loading states.
-  if (memoizedDocRef?.path !== currentPath.current) {
-    currentPath.current = memoizedDocRef?.path || null;
-    setData(null);
-    setIsLoading(!!memoizedDocRef);
-    setError(null);
-  }
 
   useEffect(() => {
     if (!memoizedDocRef) {
@@ -84,20 +69,20 @@ export function useDoc<T = any>(
         const contextualError = new FirestorePermissionError({
           operation: 'get',
           path: memoizedDocRef.path,
-        })
+        });
 
-        setError(contextualError)
-        setData(null)
-        setIsLoading(false)
+        setError(contextualError);
+        setData(null);
+        setIsLoading(false);
 
         errorEmitter.emit('permission-error', contextualError);
       }
     );
 
     return () => unsubscribe();
-  }, [memoizedDocRef]);
+  }, [memoizedDocRef?.path]); // Only re-run when the path actually changes
 
-  if(memoizedDocRef && !memoizedDocRef.__memo) {
+  if (memoizedDocRef && !memoizedDocRef.__memo) {
     throw new Error(memoizedDocRef + ' was not properly memoized using useMemoFirebase');
   }
 
