@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -54,6 +53,50 @@ const mockAthletes = [
       { label: "Best Trick", value: "9.8" },
       { label: "Medals", value: "15" }
     ]
+  },
+  {
+    id: "5",
+    name: "Scottie Scheffler",
+    team: "PGA Tour",
+    sport: "Golf",
+    avatar: "https://picsum.photos/seed/scottie/400/400",
+    stats: [
+      { label: "Avg Score", value: "68.2" },
+      { label: "Wins", value: "4" }
+    ]
+  },
+  {
+    id: "6",
+    name: "Kyle Larson",
+    team: "Hendrick Motors",
+    sport: "NASCAR",
+    avatar: "https://picsum.photos/seed/larson/400/400",
+    stats: [
+      { label: "Avg Finish", value: "8.4" },
+      { label: "Top 5s", value: "12" }
+    ]
+  },
+  {
+    id: "7",
+    name: "Logan Martin",
+    team: "BMX World",
+    sport: "BMX",
+    avatar: "https://picsum.photos/seed/bmx/400/400",
+    stats: [
+      { label: "Air Time", value: "3.2s" },
+      { label: "Trick Diff", value: "9.5" }
+    ]
+  },
+  {
+    id: "8",
+    name: "Chloe Kim",
+    team: "Team USA",
+    sport: "Snowboarding",
+    avatar: "https://picsum.photos/seed/snow/400/400",
+    stats: [
+      { label: "Rotation", value: "1080" },
+      { label: "Style", value: "9.9" }
+    ]
   }
 ];
 
@@ -69,7 +112,7 @@ export default function Home() {
 
   const filteredAthletes = selectedSport === "all" 
     ? mockAthletes 
-    : mockAthletes.filter(a => a.sport.toLowerCase() === selectedSport);
+    : mockAthletes.filter(a => a.sport.toLowerCase() === selectedSport.toLowerCase());
 
   return (
     <div className="min-h-screen pb-24 md:pt-20">
@@ -117,8 +160,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Lobby Controls */}
-        <div className="mb-8">
+        {/* Arena Navigation */}
+        <div className="mb-12">
           <div className="flex items-center gap-2 mb-6">
             <Trophy className="h-5 w-5 text-accent" />
             <h2 className="font-headline text-xl font-bold uppercase tracking-widest italic">Arena Filter</h2>
@@ -136,6 +179,13 @@ export default function Home() {
               onSelect={() => toggleAthlete(athlete.id)}
             />
           ))}
+          {filteredAthletes.length === 0 && (
+            <div className="col-span-full py-20 text-center bg-card/20 rounded-3xl border border-dashed border-white/5">
+              <Sparkles className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-20" />
+              <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest">No Athletes in this Arena yet</p>
+              <p className="text-xs text-muted-foreground mt-2">Try selecting another sport to see the elite roster.</p>
+            </div>
+          )}
         </div>
       </main>
 
