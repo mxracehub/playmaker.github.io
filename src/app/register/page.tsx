@@ -30,10 +30,16 @@ export default function RegisterPage() {
   const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
   useEffect(() => {
+    // Only proceed with redirect logic if a user is logged in and all profile state is settled
     if (user && !isUserLoading && !isProfileLoading) {
-      if (profile?.twoFactorEnabled && !passed2FA) {
-        setShow2FA(true);
+      if (profile?.twoFactorEnabled) {
+        if (passed2FA) {
+          router.push("/profile");
+        } else {
+          setShow2FA(true);
+        }
       } else {
+        // Safe to proceed to profile
         router.push("/profile");
       }
     }
@@ -63,18 +69,20 @@ export default function RegisterPage() {
     }
   };
 
-  if (user && !passed2FA && (isProfileLoading || isUserLoading || isVerifying)) {
+  if (user && (isProfileLoading || isUserLoading || isVerifying) && !show2FA && !passed2FA) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center space-y-4">
           <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
-          <p className="font-headline font-bold uppercase tracking-widest text-muted-foreground">Initializing Profile...</p>
+          <p className="font-headline font-bold uppercase tracking-widest text-muted-foreground animate-pulse">
+            Setting up Arena Access...
+          </p>
         </div>
       </div>
     );
   }
 
-  if (show2FA) {
+  if (show2FA && !passed2FA) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden px-4">
         <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full" />
@@ -86,7 +94,7 @@ export default function RegisterPage() {
               </div>
               <CardTitle className="text-2xl font-headline font-bold uppercase tracking-tight">Security Verification</CardTitle>
               <CardDescription>
-                A 2FA check is required for this account.
+                Two-factor authentication is required to secure your new account.
               </CardDescription>
             </CardHeader>
             <form onSubmit={handleVerify2FA}>

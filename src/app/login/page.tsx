@@ -31,12 +31,16 @@ export default function LoginPage() {
   const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
   useEffect(() => {
-    // Only proceed if user is logged in and profile has finished loading
+    // Only proceed with redirect logic if a user is logged in and all profile state is settled
     if (user && !isUserLoading && !isProfileLoading) {
-      if (profile?.twoFactorEnabled && !passed2FA) {
-        setShow2FA(true);
+      if (profile?.twoFactorEnabled) {
+        if (passed2FA) {
+          router.push("/profile");
+        } else {
+          setShow2FA(true);
+        }
       } else {
-        // If 2FA is not enabled or already passed, move to profile
+        // No 2FA enabled, safe to enter the arena
         router.push("/profile");
       }
     }
@@ -66,21 +70,21 @@ export default function LoginPage() {
     }
   };
 
-  // Show a specialized loading state when waiting for the 2FA check after successful auth
-  if (user && !passed2FA && (isProfileLoading || isUserLoading || isVerifying)) {
+  // Dedicated loading overlay for authentication transitions
+  if (user && (isProfileLoading || isUserLoading || isVerifying) && !show2FA && !passed2FA) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center space-y-4">
           <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
           <p className="font-headline font-bold uppercase tracking-widest text-muted-foreground animate-pulse">
-            Verifying Security Credentials...
+            Syncing Arena Profile...
           </p>
         </div>
       </div>
     );
   }
 
-  if (show2FA) {
+  if (show2FA && !passed2FA) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden px-4">
         <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full" />
@@ -120,9 +124,8 @@ export default function LoginPage() {
                   size="sm" 
                   onClick={() => {
                     setShow2FA(false);
-                    setPassed2FA(false);
                     setIsVerifying(false);
-                    // This logic would ideally sign out if the user cancels 2FA
+                    // In a production app, we would sign out here if the user cancels 2FA
                   }} 
                   className="text-muted-foreground"
                 >
