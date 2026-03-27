@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, UserPlus } from "lucide-react";
+import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, UserPlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const sports = [
@@ -48,6 +48,8 @@ const mockFriends = [
   { id: 'f1', name: "Jordan 'Swish' Smith", avatar: "https://picsum.photos/seed/jordan/100/100" },
   { id: 'f2', name: "Sarah 'Quarterback' Jones", avatar: "https://picsum.photos/seed/sarah/100/100" },
   { id: 'f3', name: "Mike 'The Putter' Brown", avatar: "https://picsum.photos/seed/mike/100/100" },
+  { id: 'f4', name: "Alex 'Apex' Racer", avatar: "https://picsum.photos/seed/alex/100/100" },
+  { id: 'f5', name: "Emma 'Endzone' Miller", avatar: "https://picsum.photos/seed/emma/100/100" },
 ];
 
 export default function CreateGamePage() {
@@ -56,6 +58,7 @@ export default function CreateGamePage() {
   const [selectedSport, setSelectedSport] = useState<string>("");
   const [selectedPick, setSelectedPick] = useState<string>("");
   const [selectedFriend, setSelectedFriend] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [currency, setCurrency] = useState("gold");
   const [fee, setFee] = useState("1000");
 
@@ -63,6 +66,10 @@ export default function CreateGamePage() {
     gold: 1250000,
     sweeps: 542.50
   };
+
+  const filteredFriends = mockFriends.filter(friend => 
+    friend.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleCreate = () => {
     if (!selectedSport) {
@@ -148,31 +155,49 @@ export default function CreateGamePage() {
                 </div>
               </div>
 
-              {/* Friend Selection */}
+              {/* Friend Search & Selection */}
               <div className="space-y-4">
                 <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">2. Invite a Challenger</Label>
-                <div className="grid grid-cols-1 gap-3">
-                  {mockFriends.map((friend) => (
-                    <button
-                      key={friend.id}
-                      onClick={() => setSelectedFriend(friend.id)}
-                      className={`flex items-center gap-4 p-3 rounded-xl border-2 transition-all ${
-                        selectedFriend === friend.id
-                          ? 'bg-accent/10 border-accent'
-                          : 'bg-secondary/20 border-white/5 hover:border-white/10'
-                      }`}
-                    >
-                      <Avatar className="h-10 w-10 border border-white/10">
-                        <AvatarImage src={friend.avatar} />
-                        <AvatarFallback>{friend.name[0]}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 text-left">
-                        <p className="font-bold text-sm">{friend.name}</p>
-                        <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium">Available for Challenge</p>
-                      </div>
-                      {selectedFriend === friend.id && <CheckCircle2 className="h-5 w-5 text-accent" />}
-                    </button>
-                  ))}
+                
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    placeholder="Search squad members..." 
+                    className="pl-10 h-12 bg-secondary/30 border-white/5 focus:border-accent/50 transition-colors"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 gap-3 max-h-[300px] overflow-y-auto no-scrollbar pr-1">
+                  {filteredFriends.length > 0 ? (
+                    filteredFriends.map((friend) => (
+                      <button
+                        key={friend.id}
+                        onClick={() => setSelectedFriend(friend.id)}
+                        className={`flex items-center gap-4 p-3 rounded-xl border-2 transition-all ${
+                          selectedFriend === friend.id
+                            ? 'bg-accent/10 border-accent'
+                            : 'bg-secondary/20 border-white/5 hover:border-white/10'
+                        }`}
+                      >
+                        <Avatar className="h-10 w-10 border border-white/10">
+                          <AvatarImage src={friend.avatar} />
+                          <AvatarFallback>{friend.name[0]}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 text-left">
+                          <p className="font-bold text-sm">{friend.name}</p>
+                          <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium">Available for Challenge</p>
+                        </div>
+                        {selectedFriend === friend.id && <CheckCircle2 className="h-5 w-5 text-accent" />}
+                      </button>
+                    ))
+                  ) : (
+                    <div className="text-center py-8 bg-secondary/10 rounded-2xl border border-dashed">
+                      <Users className="h-8 w-8 text-muted-foreground mx-auto mb-2 opacity-50" />
+                      <p className="text-xs text-muted-foreground">No squad members found for "{searchQuery}"</p>
+                    </div>
+                  )}
                 </div>
               </div>
 
