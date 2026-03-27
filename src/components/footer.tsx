@@ -39,12 +39,11 @@ export function Footer() {
 
           {/* Navigation */}
           <div>
-            <h4 className="font-headline font-bold uppercase tracking-widest text-xs text-white mb-6">Arena Links</h4>
+            <h4 className="font-headline font-bold uppercase tracking-widest text-xs text-white mb-6">LINKS</h4>
             <ul className="space-y-4 text-sm text-muted-foreground">
               <li><Link href="/" className="hover:text-accent transition-colors">Lobby</Link></li>
               <li><Link href="/games" className="hover:text-accent transition-colors">Your Games</Link></li>
               <li><Link href="/friends" className="hover:text-accent transition-colors">Friends</Link></li>
-              <li><Link href="/shop" className="hover:text-accent transition-colors">Bank</Link></li>
             </ul>
           </div>
 
