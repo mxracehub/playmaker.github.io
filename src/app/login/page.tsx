@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -9,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Trophy, ArrowRight, Mail, Lock, ShieldCheck, ArrowLeft } from "lucide-react";
+import { Trophy, ArrowRight, Mail, Lock, ShieldCheck, ArrowLeft, Loader2 } from "lucide-react";
 import { useAuth, useUser, initiateEmailSignIn, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -20,6 +19,7 @@ export default function LoginPage() {
   const [verificationCode, setVerificationCode] = useState("");
   const [show2FA, setShow2FA] = useState(false);
   const [passed2FA, setPassed2FA] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
 
   const auth = useAuth();
   const db = useFirestore();
@@ -31,10 +31,12 @@ export default function LoginPage() {
   const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
   useEffect(() => {
+    // Only proceed if user is logged in and profile has finished loading
     if (user && !isUserLoading && !isProfileLoading) {
       if (profile?.twoFactorEnabled && !passed2FA) {
         setShow2FA(true);
       } else {
+        // If 2FA is not enabled or already passed, move to profile
         router.push("/profile");
       }
     }
@@ -43,6 +45,7 @@ export default function LoginPage() {
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
+    setIsVerifying(true);
     initiateEmailSignIn(auth, email, password);
   };
 
@@ -62,6 +65,20 @@ export default function LoginPage() {
       });
     }
   };
+
+  // Show a specialized loading state when waiting for the 2FA check after successful auth
+  if (user && !passed2FA && (isProfileLoading || isUserLoading || isVerifying)) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
+          <p className="font-headline font-bold uppercase tracking-widest text-muted-foreground animate-pulse">
+            Verifying Security Credentials...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (show2FA) {
     return (
@@ -101,10 +118,15 @@ export default function LoginPage() {
                   type="button" 
                   variant="ghost" 
                   size="sm" 
-                  onClick={() => setShow2FA(false)} 
+                  onClick={() => {
+                    setShow2FA(false);
+                    setPassed2FA(false);
+                    setIsVerifying(false);
+                    // This logic would ideally sign out if the user cancels 2FA
+                  }} 
                   className="text-muted-foreground"
                 >
-                  <ArrowLeft className="mr-2 h-4 w-4" /> Use different account
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Go back
                 </Button>
               </CardFooter>
             </form>
@@ -174,8 +196,8 @@ export default function LoginPage() {
               </div>
             </CardContent>
             <CardFooter className="flex flex-col gap-4">
-              <Button type="submit" className="w-full h-12 font-bold uppercase tracking-wider text-lg">
-                Enter Arena <ArrowRight className="ml-2 h-5 w-5" />
+              <Button type="submit" disabled={isVerifying} className="w-full h-12 font-bold uppercase tracking-wider text-lg">
+                {isVerifying ? <Loader2 className="animate-spin" /> : <>Enter Arena <ArrowRight className="ml-2 h-5 w-5" /></>}
               </Button>
               <p className="text-center text-sm text-muted-foreground">
                 Don't have an account?{" "}

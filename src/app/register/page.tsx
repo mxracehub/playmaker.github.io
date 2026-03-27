@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -8,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Trophy, Mail, Lock, UserCircle, ShieldCheck, ArrowLeft } from "lucide-react";
+import { Trophy, Mail, Lock, UserCircle, ShieldCheck, ArrowLeft, Loader2 } from "lucide-react";
 import { useAuth, useUser, initiateEmailSignUp, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -19,6 +18,7 @@ export default function RegisterPage() {
   const [verificationCode, setVerificationCode] = useState("");
   const [show2FA, setShow2FA] = useState(false);
   const [passed2FA, setPassed2FA] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
 
   const auth = useAuth();
   const db = useFirestore();
@@ -31,7 +31,6 @@ export default function RegisterPage() {
 
   useEffect(() => {
     if (user && !isUserLoading && !isProfileLoading) {
-      // For registration, 2FA usually isn't enabled yet, but check for consistency
       if (profile?.twoFactorEnabled && !passed2FA) {
         setShow2FA(true);
       } else {
@@ -43,6 +42,7 @@ export default function RegisterPage() {
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
+    setIsVerifying(true);
     initiateEmailSignUp(auth, email, password);
   };
 
@@ -62,6 +62,17 @@ export default function RegisterPage() {
       });
     }
   };
+
+  if (user && !passed2FA && (isProfileLoading || isUserLoading || isVerifying)) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
+          <p className="font-headline font-bold uppercase tracking-widest text-muted-foreground">Initializing Profile...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (show2FA) {
     return (
@@ -101,7 +112,10 @@ export default function RegisterPage() {
                   type="button" 
                   variant="ghost" 
                   size="sm" 
-                  onClick={() => setShow2FA(false)} 
+                  onClick={() => {
+                    setShow2FA(false);
+                    setIsVerifying(false);
+                  }} 
                   className="text-muted-foreground"
                 >
                   <ArrowLeft className="mr-2 h-4 w-4" /> Go back
@@ -174,8 +188,8 @@ export default function RegisterPage() {
               </p>
             </CardContent>
             <CardFooter className="flex flex-col gap-4">
-              <Button type="submit" className="w-full h-12 font-bold uppercase tracking-wider text-lg">
-                Create Account <UserCircle className="ml-2 h-5 w-5" />
+              <Button type="submit" disabled={isVerifying} className="w-full h-12 font-bold uppercase tracking-wider text-lg">
+                {isVerifying ? <Loader2 className="animate-spin" /> : <>Create Account <UserCircle className="ml-2 h-5 w-5" /></>}
               </Button>
               <p className="text-center text-sm text-muted-foreground">
                 Already a Playmaker?{" "}
