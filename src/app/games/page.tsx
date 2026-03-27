@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { Trophy, Clock, Users, ArrowRight, Plus, Zap, Check, X, Bell, Target, Search } from "lucide-react";
+import { Trophy, Clock, Users, ArrowRight, Plus, Zap, Check, X, Bell, Target, Search, Gamepad2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -23,7 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useFirestore, useCollection, useUser, useMemoFirebase, updateDocumentNonBlocking } from "@/firebase";
-import { collection, doc, query, where } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 
 // Sport options for acceptance strategy (matching create page)
 const sportPicks: { [key: string]: string[] } = {
@@ -77,7 +77,6 @@ export default function GamesPage() {
   };
 
   const handleDecline = (id: string) => {
-    // In this prototype, we'll just ignore it or mark as declined if we had that status
     toast({
       variant: "destructive",
       title: "Challenge Ignored",
