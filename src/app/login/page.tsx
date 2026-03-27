@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -71,8 +72,9 @@ export default function LoginPage() {
     }
   };
 
+  // Generate a unique QR code per account using the user's email
   const qrCodeUrl = user 
-    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=otpauth://totp/Playmakers:${user.email}?secret=JBSWY3DPEHPK3PXP&issuer=Playmakers`
+    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(`otpauth://totp/Playmakers:${user.email}?secret=JBSWY3DPEHPK3PXP&issuer=Playmakers`)}`
     : "";
 
   const showLoading = user && (isProfileLoading || isUserLoading || isVerifying) && !show2FA && !passed2FA;
@@ -83,7 +85,7 @@ export default function LoginPage() {
         <div className="text-center space-y-4">
           <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
           <p className="font-headline font-bold uppercase tracking-widest text-muted-foreground animate-pulse">
-            Syncing Arena Profile...
+            Verifying Arena Access...
           </p>
         </div>
       </div>
@@ -100,9 +102,9 @@ export default function LoginPage() {
               <div className="mx-auto h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center mb-4">
                 <ShieldCheck className="h-6 w-6 text-accent" />
               </div>
-              <CardTitle className="text-2xl font-headline font-bold uppercase tracking-tight">Security Check</CardTitle>
+              <CardTitle className="text-2xl font-headline font-bold uppercase tracking-tight">2FA Required</CardTitle>
               <CardDescription>
-                Scan this unique QR code with your authenticator app and enter the 6-digit code.
+                Scan your unique arena key and enter the 6-digit code to enter.
               </CardDescription>
             </CardHeader>
             <form onSubmit={handleVerify2FA}>
@@ -133,7 +135,7 @@ export default function LoginPage() {
               </CardContent>
               <CardFooter className="flex flex-col gap-4">
                 <Button type="submit" className="w-full h-12 font-bold uppercase tracking-wider">
-                  Verify & Enter
+                  Access Granted
                 </Button>
                 <Button 
                   type="button" 

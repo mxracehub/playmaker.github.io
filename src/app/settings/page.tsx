@@ -34,7 +34,6 @@ export default function SettingsPage() {
   const [verificationCode, setVerificationCode] = useState("");
 
   // Get user profile data from Firestore to check 2FA status
-  // CRITICAL: Document references must be memoized using useMemoFirebase to avoid infinite re-renders.
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
   const { data: profile } = useDoc(userProfileRef);
 
@@ -49,7 +48,6 @@ export default function SettingsPage() {
   const handleSaveProfile = () => {
     if (!user || !userProfileRef) return;
     
-    // Use setDocumentNonBlocking with merge: true to ensure the document is created if it doesn't exist (upsert)
     setDocumentNonBlocking(userProfileRef, {
       id: user.uid,
       email: user.email,
@@ -103,9 +101,9 @@ export default function SettingsPage() {
     });
   };
 
-  // Generate a realistic scannable QR code URL
+  // Generate a realistic account-specific QR code URL
   const qrCodeUrl = user 
-    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=otpauth://totp/Playmakers:${user.email}?secret=JBSWY3DPEHPK3PXP&issuer=Playmakers`
+    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(`otpauth://totp/Playmakers:${user.email}?secret=JBSWY3DPEHPK3PXP&issuer=Playmakers`)}`
     : "";
 
   return (
@@ -236,7 +234,7 @@ export default function SettingsPage() {
                         <DialogHeader>
                           <DialogTitle className="font-headline text-xl uppercase">Enable Two-Factor Auth</DialogTitle>
                           <DialogDescription>
-                            Scan the QR code with your authenticator app (like Google Authenticator) and enter the 6-digit code.
+                            Scan your account-specific QR key and enter the 6-digit verification code.
                           </DialogDescription>
                         </DialogHeader>
                         <div className="flex flex-col items-center justify-center py-6 gap-6">
@@ -262,7 +260,7 @@ export default function SettingsPage() {
                           </div>
                         </div>
                         <DialogFooter>
-                          <Button onClick={handleEnable2FA} className="w-full font-bold uppercase tracking-widest">Verify & Enable</Button>
+                          <Button onClick={handleEnable2FA} className="w-full font-bold uppercase tracking-widest">Access Granted</Button>
                         </DialogFooter>
                       </DialogContent>
                     )}

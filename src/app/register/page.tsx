@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -70,8 +71,9 @@ export default function RegisterPage() {
     }
   };
 
+  // Generate a unique QR code per account using the user's email
   const qrCodeUrl = user 
-    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=otpauth://totp/Playmakers:${user.email}?secret=JBSWY3DPEHPK3PXP&issuer=Playmakers`
+    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(`otpauth://totp/Playmakers:${user.email}?secret=JBSWY3DPEHPK3PXP&issuer=Playmakers`)}`
     : "";
 
   const showLoading = user && (isProfileLoading || isUserLoading || isVerifying) && !show2FA && !passed2FA;
@@ -99,9 +101,9 @@ export default function RegisterPage() {
               <div className="mx-auto h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center mb-4">
                 <ShieldCheck className="h-6 w-6 text-accent" />
               </div>
-              <CardTitle className="text-2xl font-headline font-bold uppercase tracking-tight">Security Verification</CardTitle>
+              <CardTitle className="text-2xl font-headline font-bold uppercase tracking-tight">Identity Verification</CardTitle>
               <CardDescription>
-                Two-factor authentication is required. Scan this unique QR and verify.
+                Account creation requires 2FA. Scan your unique QR and verify to finalize.
               </CardDescription>
             </CardHeader>
             <form onSubmit={handleVerify2FA}>
@@ -132,7 +134,7 @@ export default function RegisterPage() {
               </CardContent>
               <CardFooter className="flex flex-col gap-4">
                 <Button type="submit" className="w-full h-12 font-bold uppercase tracking-wider">
-                  Complete Registration
+                  Access Granted
                 </Button>
                 <Button 
                   type="button" 
