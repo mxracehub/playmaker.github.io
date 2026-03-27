@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, UserPlus } from "lucide-react";
+import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const sports = [
@@ -121,17 +121,17 @@ export default function CreateGamePage() {
             <Gamepad2 className="h-8 w-8 text-primary" />
           </div>
           <h1 className="font-headline text-4xl font-bold uppercase tracking-tight mb-2">Create <span className="text-accent">Game</span></h1>
-          <p className="text-muted-foreground">Select your arena, pick a challenger, and lock in your winner</p>
+          <p className="text-muted-foreground">Select your arena, pick your winner, and challenge a squad member</p>
         </header>
 
         <div className="grid gap-8">
           <Card className="bg-card/50 backdrop-blur-sm border-white/5 overflow-hidden">
             <CardHeader className="border-b bg-secondary/20">
               <CardTitle className="font-headline text-xl uppercase tracking-tighter">Arena Configuration</CardTitle>
-              <CardDescription>Challenges require an invited friend to activate</CardDescription>
+              <CardDescription>Challenges require a winner pick and a squad challenger</CardDescription>
             </CardHeader>
             <CardContent className="p-6 space-y-8">
-              {/* Sport Selection */}
+              {/* Step 1: Sport Selection */}
               <div className="space-y-4">
                 <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">1. Select Sport</Label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -155,9 +155,38 @@ export default function CreateGamePage() {
                 </div>
               </div>
 
-              {/* Friend Search & Selection */}
+              {/* Step 2: Winner Pick Selection */}
+              {selectedSport ? (
+                <div className="space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    2. Pick Your Winning {selectedSport === 'golf' || selectedSport === 'nascar' ? 'Athlete' : 'Team'}
+                  </Label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {currentSport?.options.map((option) => (
+                      <button
+                        key={option}
+                        onClick={() => setSelectedPick(option)}
+                        className={`flex items-center justify-between p-4 rounded-xl border text-sm font-bold transition-all ${
+                          selectedPick === option
+                            ? 'bg-accent/10 border-accent text-accent'
+                            : 'bg-secondary/20 border-white/5 hover:border-white/20'
+                        }`}
+                      >
+                        {option}
+                        {selectedPick === option && <CheckCircle2 className="h-4 w-4" />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="p-8 text-center bg-secondary/10 rounded-2xl border border-dashed opacity-50">
+                  <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Select a sport to see winner options</p>
+                </div>
+              )}
+
+              {/* Step 3: Friend Search & Selection */}
               <div className="space-y-4">
-                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">2. Invite a Challenger</Label>
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">3. Invite a Challenger</Label>
                 
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -201,32 +230,7 @@ export default function CreateGamePage() {
                 </div>
               </div>
 
-              {/* Winner Pick Selection */}
-              {selectedSport && (
-                <div className="space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
-                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    3. Pick Your Winning {selectedSport === 'golf' || selectedSport === 'nascar' ? 'Athlete' : 'Team'}
-                  </Label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {currentSport?.options.map((option) => (
-                      <button
-                        key={option}
-                        onClick={() => setSelectedPick(option)}
-                        className={`flex items-center justify-between p-4 rounded-xl border text-sm font-bold transition-all ${
-                          selectedPick === option
-                            ? 'bg-accent/10 border-accent text-accent'
-                            : 'bg-secondary/20 border-white/5 hover:border-white/20'
-                        }`}
-                      >
-                        {option}
-                        {selectedPick === option && <CheckCircle2 className="h-4 w-4" />}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Currency Selection */}
+              {/* Step 4: Currency Selection */}
               <div className="space-y-4">
                 <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">4. Set the Stakes ($1 = 100 Coins)</Label>
                 <RadioGroup defaultValue="gold" className="grid grid-cols-1 md:grid-cols-2 gap-4" onValueChange={setCurrency}>
