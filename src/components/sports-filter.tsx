@@ -18,7 +18,7 @@ import {
 const sports = [
   { 
     id: 'all', 
-    name: 'All Arenas', 
+    name: 'ALL GAMES', 
     img: "https://picsum.photos/seed/all-arenas/400/250",
     icon: <LayoutGrid className="w-5 h-5 text-white" />
   },
