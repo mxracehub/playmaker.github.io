@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, Waves, Bike, Mountain, Landmark } from "lucide-react";
+import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, Waves, Bike, Mountain, Landmark, CalendarDays } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const sports = [
@@ -20,6 +20,11 @@ const sports = [
     name: 'Basketball', 
     icon: <Dribbble className="w-5 h-5" />, 
     color: "text-orange-500",
+    events: [
+      { id: 'e1', name: "Lakers @ Warriors", date: "Tonight 7:30 PM" },
+      { id: 'e2', name: "Celtics @ Bucks", date: "Tomorrow 8:00 PM" },
+      { id: 'e3', name: "Knicks @ Nets", date: "Friday 7:00 PM" }
+    ],
     options: [
       "Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", 
       "Cleveland Cavaliers", "Dallas Mavericks", "Denver Nuggets", "Detroit Pistons", "Golden State Warriors", 
@@ -34,6 +39,11 @@ const sports = [
     name: 'Football', 
     icon: <Trophy className="w-5 h-5" />, 
     color: "text-green-500",
+    events: [
+      { id: 'e4', name: "Chiefs @ Eagles", date: "Sunday 1:00 PM" },
+      { id: 'e5', name: "49ers @ Lions", date: "Sunday 4:25 PM" },
+      { id: 'e6', name: "Cowboys @ Giants", date: "Monday 8:15 PM" }
+    ],
     options: [
       "Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills", "Carolina Panthers", 
       "Chicago Bears", "Cincinnati Bengals", "Cleveland Browns", "Dallas Cowboys", "Denver Broncos", 
@@ -49,6 +59,10 @@ const sports = [
     name: 'Surfing', 
     icon: <Waves className="w-5 h-5" />, 
     color: "text-blue-400",
+    events: [
+      { id: 'e7', name: "Pipe Masters - Day 1", date: "Starting Soon" },
+      { id: 'e8', name: "Gold Coast Pro", date: "Mar 12, 2024" }
+    ],
     options: [
       "John John Florence", "Carissa Moore", "Gabriel Medina", "Italo Ferreira", "Filipe Toledo",
       "Tyler Wright", "Stephanie Gilmore", "Jack Robinson", "Ethan Ewing", "Caroline Marks",
@@ -60,6 +74,10 @@ const sports = [
     name: 'Skate', 
     icon: <Zap className="w-5 h-5" />, 
     color: "text-yellow-400",
+    events: [
+      { id: 'e9', name: "SLS Tokyo Qualifier", date: "Mar 15, 2024" },
+      { id: 'e10', name: "Tampa Pro Finals", date: "Mar 20, 2024" }
+    ],
     options: [
       "Nyjah Huston", "Yuto Horigome", "Rayssa Leal", "Sky Brown", "Zion Wright",
       "Leticia Bufoni", "Tony Hawk", "Bucky Lasek", "Ryan Sheckler", "Torey Pudwill",
@@ -71,6 +89,9 @@ const sports = [
     name: 'BMX', 
     icon: <Bike className="w-5 h-5" />, 
     color: "text-red-400",
+    events: [
+      { id: 'e11', name: "X-Games Dirt Qualifiers", date: "Apr 05, 2024" }
+    ],
     options: [
       "Logan Martin", "Garrett Reynolds", "Hannah Roberts", "Charlotte Worthington", "Jose Torres",
       "Kieran Reilly", "Justin Dowell", "Marcus Christopher", "Kevin Peraza", "Pat Casey",
@@ -82,6 +103,9 @@ const sports = [
     name: 'Snowboard', 
     icon: <Mountain className="w-5 h-5" />, 
     color: "text-cyan-400",
+    events: [
+      { id: 'e12', name: "US Open Halfpipe", date: "Mar 08, 2024" }
+    ],
     options: [
       "Shaun White", "Chloe Kim", "Mark McMorris", "Zoi Sadowski-Synnott", "Ayumu Hirano",
       "Scotty James", "Marcus Kleveland", "Red Gerard", "Anna Gasser", "Su Yiming",
@@ -93,6 +117,10 @@ const sports = [
     name: 'Golf', 
     icon: <Target className="w-5 h-5" />, 
     color: "text-emerald-400",
+    events: [
+      { id: 'e13', name: "The Masters - Round 1", date: "Apr 11, 2024" },
+      { id: 'e14', name: "Arnold Palmer Invite", date: "Mar 07, 2024" }
+    ],
     options: [
       "Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Ludvig Aberg", 
       "Xander Schauffele", "Wyndham Clark", "Brian Harman", "Max Homa", "Patrick Cantlay", 
@@ -113,6 +141,10 @@ const sports = [
     name: 'NASCAR', 
     icon: <Flag className="w-5 h-5" />, 
     color: "text-red-500",
+    events: [
+      { id: 'e15', name: "Daytona 500", date: "Feb 18, 2024" },
+      { id: 'e16', name: "Las Vegas 400", date: "Mar 03, 2024" }
+    ],
     options: [
       "Kyle Larson (Hendrick Motorsports)", 
       "Chase Elliott (Hendrick Motorsports)", 
@@ -166,6 +198,7 @@ export default function CreateGamePage() {
   const { toast } = useToast();
   
   const [selectedSport, setSelectedSport] = useState<string>("");
+  const [selectedEvent, setSelectedEvent] = useState<string>("");
   const [selectedPick, setSelectedPick] = useState<string>("");
   const [selectedFriend, setSelectedFriend] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -178,6 +211,10 @@ export default function CreateGamePage() {
     if (friendId && mockFriends.some(f => f.id === friendId)) {
       setSelectedFriend(friendId);
     }
+    const sportId = searchParams.get('sport');
+    if (sportId && sports.some(s => s.id === sportId)) {
+      setSelectedSport(sportId);
+    }
   }, [searchParams]);
 
   const balances = {
@@ -185,18 +222,23 @@ export default function CreateGamePage() {
     sweeps: 542.50
   };
 
-  const filteredFriends = mockFriends.filter(friend => 
-    friend.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   const currentSport = sports.find(s => s.id === selectedSport);
+
   const filteredPicks = currentSport?.options.filter(option =>
     option.toLowerCase().includes(searchPickQuery.toLowerCase())
   ) || [];
 
+  const filteredFriends = mockFriends.filter(friend => 
+    friend.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const handleCreate = () => {
     if (!selectedSport) {
       toast({ variant: "destructive", title: "Missing Arena", description: "Please select a sport for your game." });
+      return;
+    }
+    if (!selectedEvent) {
+      toast({ variant: "destructive", title: "Select Event", description: "Please pick an upcoming game or event." });
       return;
     }
     if (!selectedPick) {
@@ -204,7 +246,7 @@ export default function CreateGamePage() {
       return;
     }
     if (!selectedFriend) {
-      toast({ variant: "destructive", title: "No Challenger", description: "You must pick a friend to challenge for this game to work." });
+      toast({ variant: "destructive", title: "No Challenger", description: "You must pick a friend to challenge." });
       return;
     }
 
@@ -215,18 +257,19 @@ export default function CreateGamePage() {
       toast({ 
         variant: "destructive", 
         title: "Insufficient Funds", 
-        description: `You need more ${currency === "gold" ? "Gold Coins" : "Sweeps Coins"} to start this game.` 
+        description: `You need more ${currency === "gold" ? "Gold Coins" : "Sweeps Coins"}.` 
       });
       return;
     }
 
     const challenger = mockFriends.find(f => f.id === selectedFriend)?.name || "Challenger";
+    const eventName = currentSport?.events.find(e => e.id === selectedEvent)?.name || "Live Event";
 
-    toast({ title: "Game Initialized", description: `You've challenged ${challenger}. Entering Arena...` });
+    toast({ title: "Game Initialized", description: `Challenging ${challenger} for ${eventName}.` });
     
     setTimeout(() => {
       const gameId = `game-${Math.floor(Math.random() * 9000) + 1000}`;
-      router.push(`/games/${gameId}?sport=${selectedSport}&pick=${encodeURIComponent(selectedPick)}&fee=${fee}&currency=${currency}&challenger=${encodeURIComponent(challenger)}`);
+      router.push(`/games/${gameId}?sport=${selectedSport}&event=${encodeURIComponent(eventName)}&pick=${encodeURIComponent(selectedPick)}&fee=${fee}&currency=${currency}&challenger=${encodeURIComponent(challenger)}`);
     }, 1200);
   };
 
@@ -242,186 +285,193 @@ export default function CreateGamePage() {
             <Gamepad2 className="h-8 w-8 text-primary" />
           </div>
           <h1 className="font-headline text-4xl font-bold uppercase tracking-tight mb-2">Create <span className="text-accent">Game</span></h1>
-          <p className="text-muted-foreground">Select your arena, pick your winner, and challenge a squad member</p>
+          <p className="text-muted-foreground">Select arena, event, and pick your winner</p>
         </header>
 
         <div className="grid gap-8">
           <Card className="bg-card/50 backdrop-blur-sm border-white/5 overflow-hidden">
             <CardHeader className="border-b bg-secondary/20">
               <CardTitle className="font-headline text-xl uppercase tracking-tighter">Arena Configuration</CardTitle>
-              <CardDescription>Challenges require a winner pick and a squad challenger</CardDescription>
+              <CardDescription>All fields are required to launch the showdown</CardDescription>
             </CardHeader>
             <CardContent className="p-6 space-y-8">
+              
               {/* Step 1: Sport Selection */}
               <div className="space-y-4">
-                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">1. Select Sport</Label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">1. Select Arena</Label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {sports.map((sport) => (
                     <button
                       key={sport.id}
                       onClick={() => {
                         setSelectedSport(sport.id);
+                        setSelectedEvent("");
                         setSelectedPick(""); 
                         setSearchPickQuery("");
                       }}
-                      className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all duration-300 ${
+                      className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${
                         selectedSport === sport.id 
-                          ? 'bg-primary/20 border-primary scale-105 shadow-lg shadow-primary/10' 
+                          ? 'bg-primary/20 border-primary scale-105' 
                           : 'bg-secondary/30 border-transparent hover:border-white/10'
                       }`}
                     >
-                      <div className={`mb-3 ${sport.color}`}>{sport.icon}</div>
-                      <span className="text-xs font-bold uppercase tracking-tight">{sport.name}</span>
+                      <div className={`mb-2 ${sport.color}`}>{sport.icon}</div>
+                      <span className="text-[10px] font-bold uppercase tracking-tight">{sport.name}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Step 2: Winner Pick Selection with Search */}
-              {selectedSport ? (
-                <div className="space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
-                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    2. Pick Your Winning {['surfing', 'skateboarding', 'bmx', 'snowboarding', 'golf', 'nascar'].includes(selectedSport) ? 'Athlete' : 'Team'}
-                  </Label>
-                  
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input 
-                      placeholder={`Search ${['surfing', 'skateboarding', 'bmx', 'snowboarding', 'golf', 'nascar'].includes(selectedSport) ? 'athletes' : 'teams'}...`} 
-                      className="pl-10 h-12 bg-secondary/30 border-white/5 focus:border-accent/50 transition-colors"
-                      value={searchPickQuery}
-                      onChange={(e) => setSearchPickQuery(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[250px] overflow-y-auto pr-1 no-scrollbar">
-                    {filteredPicks.length > 0 ? (
-                      filteredPicks.map((option) => (
-                        <button
-                          key={option}
-                          onClick={() => setSelectedPick(option)}
-                          className={`flex items-center justify-between p-4 rounded-xl border text-sm font-bold transition-all ${
-                            selectedPick === option
-                              ? 'bg-accent/10 border-accent text-accent'
-                              : 'bg-secondary/20 border-white/5 hover:border-white/20'
-                          }`}
-                        >
-                          {option}
-                          {selectedPick === option && <CheckCircle2 className="h-4 w-4" />}
-                        </button>
-                      ))
-                    ) : (
-                      <div className="col-span-full py-6 text-center bg-secondary/10 rounded-xl border border-dashed">
-                        <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest opacity-50">No matches found for "{searchPickQuery}"</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <div className="p-8 text-center bg-secondary/10 rounded-2xl border border-dashed opacity-50">
-                  <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Select a sport to see winner options</p>
-                </div>
-              )}
-
-              {/* Step 3: Friend Search & Selection */}
+              {/* Step 2: Event Selection */}
               <div className="space-y-4">
-                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">3. Invite a Challenger</Label>
-                
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input 
-                    placeholder="Search squad members..." 
-                    className="pl-10 h-12 bg-secondary/30 border-white/5 focus:border-accent/50 transition-colors"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 gap-3 max-h-[250px] overflow-y-auto no-scrollbar pr-1">
-                  {filteredFriends.length > 0 ? (
-                    filteredFriends.map((friend) => (
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">2. Select Upcoming Event</Label>
+                {selectedSport ? (
+                  <div className="grid gap-3">
+                    {currentSport?.events.map((event) => (
                       <button
-                        key={friend.id}
-                        onClick={() => setSelectedFriend(friend.id)}
-                        className={`flex items-center gap-4 p-3 rounded-xl border-2 transition-all ${
-                          selectedFriend === friend.id
+                        key={event.id}
+                        onClick={() => setSelectedEvent(event.id)}
+                        className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all text-left ${
+                          selectedEvent === event.id
                             ? 'bg-accent/10 border-accent'
                             : 'bg-secondary/20 border-white/5 hover:border-white/10'
                         }`}
                       >
-                        <Avatar className="h-10 w-10 border border-white/10">
-                          <AvatarImage src={friend.avatar} />
-                          <AvatarFallback>{friend.name[0]}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 text-left">
-                          <p className="font-bold text-sm">{friend.name}</p>
-                          <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium">Available for Challenge</p>
+                        <div className="flex items-center gap-3">
+                          <CalendarDays className={`h-5 w-5 ${selectedEvent === event.id ? 'text-accent' : 'text-muted-foreground'}`} />
+                          <div>
+                            <p className="font-bold text-sm">{event.name}</p>
+                            <p className="text-[10px] text-muted-foreground uppercase font-medium">{event.date}</p>
+                          </div>
                         </div>
-                        {selectedFriend === friend.id && <CheckCircle2 className="h-5 w-5 text-accent" />}
+                        {selectedEvent === event.id && <CheckCircle2 className="h-5 w-5 text-accent" />}
                       </button>
-                    ))
-                  ) : (
-                    <div className="text-center py-8 bg-secondary/10 rounded-2xl border border-dashed">
-                      <Users className="h-8 w-8 text-muted-foreground mx-auto mb-2 opacity-50" />
-                      <p className="text-xs text-muted-foreground">No squad members found for "{searchQuery}"</p>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="p-6 text-center bg-secondary/10 rounded-xl border border-dashed opacity-50">
+                    <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Select an Arena first</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Step 3: Winner Pick Selection */}
+              <div className="space-y-4">
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">3. Pick Your Winner</Label>
+                {selectedSport ? (
+                  <div className="space-y-4">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input 
+                        placeholder="Search teams or athletes..." 
+                        className="pl-10 h-11 bg-secondary/30 border-white/5"
+                        value={searchPickQuery}
+                        onChange={(e) => setSearchPickQuery(e.target.value)}
+                      />
                     </div>
-                  )}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-[200px] overflow-y-auto pr-1 no-scrollbar">
+                      {filteredPicks.map((option) => (
+                        <button
+                          key={option}
+                          onClick={() => setSelectedPick(option)}
+                          className={`flex items-center justify-between p-3 rounded-lg border text-xs font-bold transition-all ${
+                            selectedPick === option
+                              ? 'bg-primary/10 border-primary text-primary'
+                              : 'bg-secondary/20 border-white/5 hover:border-white/10'
+                          }`}
+                        >
+                          {option}
+                          {selectedPick === option && <CheckCircle2 className="h-3 w-3" />}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-6 text-center bg-secondary/10 rounded-xl border border-dashed opacity-50">
+                    <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Choose Arena & Event</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Step 4: Friend Selection */}
+              <div className="space-y-4">
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">4. Challenge a Friend</Label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    placeholder="Find squad members..." 
+                    className="pl-10 h-11 bg-secondary/30 border-white/5"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <div className="grid grid-cols-1 gap-2 max-h-[200px] overflow-y-auto no-scrollbar">
+                  {filteredFriends.map((friend) => (
+                    <button
+                      key={friend.id}
+                      onClick={() => setSelectedFriend(friend.id)}
+                      className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
+                        selectedFriend === friend.id
+                          ? 'bg-accent/10 border-accent'
+                          : 'bg-secondary/20 border-white/5 hover:border-white/10'
+                      }`}
+                    >
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={friend.avatar} />
+                        <AvatarFallback>{friend.name[0]}</AvatarFallback>
+                      </Avatar>
+                      <span className="flex-1 text-left font-bold text-sm">{friend.name}</span>
+                      {selectedFriend === friend.id && <CheckCircle2 className="h-4 w-4 text-accent" />}
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              {/* Step 4: Currency Selection */}
-              <div className="space-y-4">
-                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">4. Set the Stakes ($1 = 100 Coins)</Label>
-                <RadioGroup defaultValue="gold" className="grid grid-cols-1 md:grid-cols-2 gap-4" onValueChange={setCurrency}>
-                  <div className={`relative p-4 rounded-2xl border-2 cursor-pointer transition-all ${currency === 'gold' ? 'border-primary bg-primary/5' : 'border-white/5 bg-secondary/10'}`}>
-                    <RadioGroupItem value="gold" id="gold" className="absolute top-4 right-4" />
-                    <Label htmlFor="gold" className="flex items-center gap-3 cursor-pointer">
-                      <div className="h-10 w-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                        <Coins className="h-5 w-5 text-yellow-500" />
-                      </div>
-                      <div>
-                        <p className="font-bold uppercase text-sm">Gold Coins</p>
-                        <p className="text-[10px] text-muted-foreground italic">100 GC = $1.00 Value</p>
-                      </div>
-                    </Label>
-                  </div>
-                  <div className={`relative p-4 rounded-2xl border-2 cursor-pointer transition-all ${currency === 'sweeps' ? 'border-accent bg-accent/5' : 'border-white/5 bg-secondary/10'}`}>
-                    <RadioGroupItem value="sweeps" id="sweeps" className="absolute top-4 right-4" />
-                    <Label htmlFor="sweeps" className="flex items-center gap-3 cursor-pointer">
-                      <div className="h-10 w-10 rounded-full bg-accent/20 flex items-center justify-center">
-                        <Landmark className="h-5 w-5 text-accent" />
-                      </div>
-                      <div>
-                        <p className="font-bold uppercase text-sm">Sweeps Coins</p>
-                        <p className="text-[10px] text-accent font-bold italic">100 SC = $1.00 Value</p>
-                      </div>
-                    </Label>
-                  </div>
-                </RadioGroup>
+              {/* Step 5: Currency & Stakes */}
+              <div className="space-y-6 pt-4 border-t border-white/5">
+                <div className="space-y-4">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">5. Set the Stakes</Label>
+                  <RadioGroup defaultValue="gold" className="grid grid-cols-2 gap-4" onValueChange={setCurrency}>
+                    <div className={`relative p-4 rounded-xl border-2 cursor-pointer transition-all ${currency === 'gold' ? 'border-primary bg-primary/5' : 'border-white/5 bg-secondary/10'}`}>
+                      <RadioGroupItem value="gold" id="gold" className="absolute top-4 right-4" />
+                      <Label htmlFor="gold" className="flex flex-col gap-1 cursor-pointer">
+                        <span className="font-bold uppercase text-xs">Gold Coins</span>
+                        <span className="text-[10px] text-muted-foreground">Casual Play</span>
+                      </Label>
+                    </div>
+                    <div className={`relative p-4 rounded-xl border-2 cursor-pointer transition-all ${currency === 'sweeps' ? 'border-accent bg-accent/5' : 'border-white/5 bg-secondary/10'}`}>
+                      <RadioGroupItem value="sweeps" id="sweeps" className="absolute top-4 right-4" />
+                      <Label htmlFor="sweeps" className="flex flex-col gap-1 cursor-pointer">
+                        <span className="font-bold uppercase text-xs">Sweeps Coins</span>
+                        <span className="text-[10px] text-accent font-bold">Prize Play</span>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="fee" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Entry Fee</Label>
+                  <Select value={fee} onValueChange={setFee}>
+                    <SelectTrigger id="fee" className="bg-secondary/30 border-white/5 h-12">
+                      <SelectValue placeholder="Select amount" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="100">100 ($1.00)</SelectItem>
+                      <SelectItem value="1000">1,000 ($10.00)</SelectItem>
+                      <SelectItem value="5000">5,000 ($50.00)</SelectItem>
+                      <SelectItem value="10000">10,000 ($100.00)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
-              {/* Fee and Settings */}
-              <div className="space-y-2">
-                <Label htmlFor="fee" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Entry Fee</Label>
-                <Select value={fee} onValueChange={setFee}>
-                  <SelectTrigger id="fee" className="bg-secondary/30 border-white/5 h-12">
-                    <SelectValue placeholder="Select amount" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="100">100 ($1.00)</SelectItem>
-                    <SelectItem value="1000">1,000 ($10.00)</SelectItem>
-                    <SelectItem value="5000">5,000 ($50.00)</SelectItem>
-                    <SelectItem value="10000">10,000 ($100.00)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
             </CardContent>
-            <CardFooter className="bg-secondary/10 border-t p-6 flex flex-col items-center gap-4">
-              <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+            <CardFooter className="bg-secondary/10 border-t p-6 flex flex-col gap-4">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <ShieldCheck className="h-4 w-4 text-green-500" />
-                Your balance: <span className="font-bold text-white">{currency === 'gold' ? balances.gold.toLocaleString() : balances.sweeps.toFixed(2)} {currency.toUpperCase()}</span>
+                Balance: <span className="font-bold text-white">{currency === 'gold' ? balances.gold.toLocaleString() : balances.sweeps.toFixed(2)} {currency.toUpperCase()}</span>
               </div>
-              <Button onClick={handleCreate} className="w-full h-14 font-headline text-xl font-bold uppercase tracking-widest shadow-xl shadow-primary/20">
+              <Button onClick={handleCreate} className="w-full h-14 font-headline text-xl font-bold uppercase tracking-widest shadow-xl">
                 Launch Challenge <ArrowRight className="ml-2 h-6 w-6" />
               </Button>
             </CardFooter>
