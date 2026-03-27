@@ -1,0 +1,35 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "basketball-hero",
+      "description": "Professional basketball game action",
+      "imageUrl": "https://picsum.photos/seed/basketball/1200/600",
+      "imageHint": "basketball stadium"
+    },
+    {
+      "id": "football-hero",
+      "description": "American football stadium lights",
+      "imageUrl": "https://picsum.photos/seed/football/1200/600",
+      "imageHint": "football field"
+    },
+    {
+      "id": "athlete-1",
+      "description": "Professional athlete portrait",
+      "imageUrl": "https://picsum.photos/seed/athlete1/400/400",
+      "imageHint": "athlete portrait"
+    },
+    {
+      "id": "athlete-2",
+      "description": "Professional athlete in action",
+      "imageUrl": "https://picsum.photos/seed/athlete2/400/400",
+      "imageHint": "sports player"
+    },
+    {
+      "id": "athlete-3",
+      "description": "Sports professional",
+      "imageUrl": "https://picsum.photos/seed/athlete3/400/400",
+      "imageHint": "basketball player"
+    }
+  ]
+}
