@@ -6,6 +6,7 @@ import { Navbar } from "@/components/navbar";
 import { SportsFilter } from "@/components/sports-filter";
 import { AthleteCard } from "@/components/athlete-card";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrowRight, Target, Gamepad2, Trophy, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -213,24 +214,26 @@ export default function Home() {
           <SportsFilter selected={selectedSport} onSelect={setSelectedSport} />
         </div>
 
-        {/* Athlete Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {filteredAthletes.map((athlete) => (
-            <AthleteCard 
-              key={athlete.id} 
-              {...athlete} 
-              isSelected={selectedAthletes.includes(athlete.id)}
-              onSelect={() => toggleAthlete(athlete.id)}
-            />
-          ))}
-          {filteredAthletes.length === 0 && (
-            <div className="col-span-full py-20 text-center bg-card/20 rounded-3xl border border-dashed border-white/5">
-              <Sparkles className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-20" />
-              <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest">No Athletes in this Arena yet</p>
-              <p className="text-xs text-muted-foreground mt-2">Try selecting another sport to see the elite roster.</p>
-            </div>
-          )}
-        </div>
+        {/* Athlete Grid with ScrollArea */}
+        <ScrollArea className="h-[650px] rounded-3xl border border-white/5 bg-card/20 p-6 shadow-inner mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pr-4">
+            {filteredAthletes.map((athlete) => (
+              <AthleteCard 
+                key={athlete.id} 
+                {...athlete} 
+                isSelected={selectedAthletes.includes(athlete.id)}
+                onSelect={() => toggleAthlete(athlete.id)}
+              />
+            ))}
+            {filteredAthletes.length === 0 && (
+              <div className="col-span-full py-20 text-center bg-card/20 rounded-3xl border border-dashed border-white/5">
+                <Sparkles className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-20" />
+                <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest">No Athletes in this Arena yet</p>
+                <p className="text-xs text-muted-foreground mt-2">Try selecting another sport to see the elite roster.</p>
+              </div>
+            )}
+          </div>
+        </ScrollArea>
       </main>
 
       {/* Floating Selection Bar */}
