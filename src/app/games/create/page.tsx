@@ -9,7 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2 } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, UserPlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const sports = [
@@ -43,11 +44,18 @@ const sports = [
   },
 ];
 
+const mockFriends = [
+  { id: 'f1', name: "Jordan 'Swish' Smith", avatar: "https://picsum.photos/seed/jordan/100/100" },
+  { id: 'f2', name: "Sarah 'Quarterback' Jones", avatar: "https://picsum.photos/seed/sarah/100/100" },
+  { id: 'f3', name: "Mike 'The Putter' Brown", avatar: "https://picsum.photos/seed/mike/100/100" },
+];
+
 export default function CreateGamePage() {
   const router = useRouter();
   const { toast } = useToast();
   const [selectedSport, setSelectedSport] = useState<string>("");
   const [selectedPick, setSelectedPick] = useState<string>("");
+  const [selectedFriend, setSelectedFriend] = useState<string>("");
   const [currency, setCurrency] = useState("gold");
   const [fee, setFee] = useState("1000");
 
@@ -65,6 +73,10 @@ export default function CreateGamePage() {
       toast({ variant: "destructive", title: "Selection Required", description: "Please pick your winning team or athlete." });
       return;
     }
+    if (!selectedFriend) {
+      toast({ variant: "destructive", title: "No Challenger", description: "You must pick a friend to challenge for this game to work." });
+      return;
+    }
 
     const cost = parseFloat(fee);
     const available = currency === "gold" ? balances.gold : balances.sweeps;
@@ -78,11 +90,13 @@ export default function CreateGamePage() {
       return;
     }
 
-    toast({ title: "Game Initialized", description: `You've locked in ${selectedPick}. Entering Arena...` });
+    const challenger = mockFriends.find(f => f.id === selectedFriend)?.name || "Challenger";
+
+    toast({ title: "Game Initialized", description: `You've challenged ${challenger}. Entering Arena...` });
     
     setTimeout(() => {
       const gameId = `game-${Math.floor(Math.random() * 9000) + 1000}`;
-      router.push(`/games/${gameId}?sport=${selectedSport}&pick=${encodeURIComponent(selectedPick)}&fee=${fee}&currency=${currency}`);
+      router.push(`/games/${gameId}?sport=${selectedSport}&pick=${encodeURIComponent(selectedPick)}&fee=${fee}&currency=${currency}&challenger=${encodeURIComponent(challenger)}`);
     }, 1200);
   };
 
@@ -100,19 +114,19 @@ export default function CreateGamePage() {
             <Gamepad2 className="h-8 w-8 text-primary" />
           </div>
           <h1 className="font-headline text-4xl font-bold uppercase tracking-tight mb-2">Create <span className="text-accent">Game</span></h1>
-          <p className="text-muted-foreground">Select your arena, set the stakes, and pick your winner</p>
+          <p className="text-muted-foreground">Select your arena, pick a challenger, and lock in your winner</p>
         </header>
 
         <div className="grid gap-8">
           <Card className="bg-card/50 backdrop-blur-sm border-white/5 overflow-hidden">
             <CardHeader className="border-b bg-secondary/20">
               <CardTitle className="font-headline text-xl uppercase tracking-tighter">Arena Configuration</CardTitle>
-              <CardDescription>Lock in your choice for the victory podium</CardDescription>
+              <CardDescription>Challenges require an invited friend to activate</CardDescription>
             </CardHeader>
             <CardContent className="p-6 space-y-8">
               {/* Sport Selection */}
               <div className="space-y-4">
-                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Select Sport</Label>
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">1. Select Sport</Label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {sports.map((sport) => (
                     <button
@@ -134,11 +148,39 @@ export default function CreateGamePage() {
                 </div>
               </div>
 
+              {/* Friend Selection */}
+              <div className="space-y-4">
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">2. Invite a Challenger</Label>
+                <div className="grid grid-cols-1 gap-3">
+                  {mockFriends.map((friend) => (
+                    <button
+                      key={friend.id}
+                      onClick={() => setSelectedFriend(friend.id)}
+                      className={`flex items-center gap-4 p-3 rounded-xl border-2 transition-all ${
+                        selectedFriend === friend.id
+                          ? 'bg-accent/10 border-accent'
+                          : 'bg-secondary/20 border-white/5 hover:border-white/10'
+                      }`}
+                    >
+                      <Avatar className="h-10 w-10 border border-white/10">
+                        <AvatarImage src={friend.avatar} />
+                        <AvatarFallback>{friend.name[0]}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 text-left">
+                        <p className="font-bold text-sm">{friend.name}</p>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium">Available for Challenge</p>
+                      </div>
+                      {selectedFriend === friend.id && <CheckCircle2 className="h-5 w-5 text-accent" />}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Winner Pick Selection */}
               {selectedSport && (
                 <div className="space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
                   <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    Pick Your Winning {selectedSport === 'golf' || selectedSport === 'nascar' ? 'Athlete' : 'Team'}
+                    3. Pick Your Winning {selectedSport === 'golf' || selectedSport === 'nascar' ? 'Athlete' : 'Team'}
                   </Label>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                     {currentSport?.options.map((option) => (
@@ -161,7 +203,7 @@ export default function CreateGamePage() {
 
               {/* Currency Selection */}
               <div className="space-y-4">
-                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Currency Stakes ($1 = 100 Coins)</Label>
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">4. Set the Stakes ($1 = 100 Coins)</Label>
                 <RadioGroup defaultValue="gold" className="grid grid-cols-1 md:grid-cols-2 gap-4" onValueChange={setCurrency}>
                   <div className={`relative p-4 rounded-2xl border-2 cursor-pointer transition-all ${currency === 'gold' ? 'border-primary bg-primary/5' : 'border-white/5 bg-secondary/10'}`}>
                     <RadioGroupItem value="gold" id="gold" className="absolute top-4 right-4" />
@@ -208,7 +250,7 @@ export default function CreateGamePage() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="players" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Max Players</Label>
-                  <Input type="number" id="players" defaultValue="2" className="bg-secondary/30 border-white/5 h-12" />
+                  <Input type="number" id="players" defaultValue="2" disabled className="bg-secondary/30 border-white/5 h-12 opacity-50 cursor-not-allowed" />
                 </div>
               </div>
             </CardContent>
@@ -218,25 +260,9 @@ export default function CreateGamePage() {
                 Your balance: <span className="font-bold text-white">{currency === 'gold' ? balances.gold.toLocaleString() : balances.sweeps.toFixed(2)} {currency.toUpperCase()}</span>
               </div>
               <Button onClick={handleCreate} className="w-full h-14 font-headline text-xl font-bold uppercase tracking-widest shadow-xl shadow-primary/20">
-                Forge Game Arena <ArrowRight className="ml-2 h-6 w-6" />
+                Launch Challenge <ArrowRight className="ml-2 h-6 w-6" />
               </Button>
             </CardFooter>
-          </Card>
-
-          <Card className="bg-primary/5 border-primary/20 border-dashed">
-            <CardContent className="p-6">
-              <div className="flex items-start gap-4">
-                <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-                  <Users className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <h4 className="font-headline font-bold text-lg uppercase leading-tight mb-1">Challenge a Friend</h4>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Once you've locked in your winner, invite your squad to see if they can beat your pick. Prizes are distributed automatically based on live performance results.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
           </Card>
         </div>
       </main>

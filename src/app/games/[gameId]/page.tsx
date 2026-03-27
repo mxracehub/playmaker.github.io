@@ -14,6 +14,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
   const myPick = searchParams.get('pick') || 'Elite Selection';
   const fee = searchParams.get('fee') || '1000';
   const currency = searchParams.get('currency') || 'gold';
+  const challenger = searchParams.get('challenger') || 'Challenger Alpha';
 
   const themes = {
     nba: {
@@ -75,7 +76,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
                   </div>
                 </div>
                 <div className="flex items-center gap-6 text-sm text-muted-foreground font-medium">
-                  <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" /> GAME LIVE</span>
+                  <span className="flex items-center gap-1.5 font-bold text-accent animate-pulse"><Clock className="h-4 w-4" /> LIVE SHOWDOWN</span>
                   <span className="flex items-center gap-1.5"><Users className="h-4 w-4" /> 2/2 PLAYMAKERS</span>
                   <span className={`flex items-center gap-1.5 font-bold ${theme.accent}`}>
                     <Zap className="h-4 w-4" /> {parseInt(fee) * 2} {currency.toUpperCase()} PRIZE POOL
@@ -95,7 +96,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
                       <Trophy className="h-8 w-8 text-accent" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-accent uppercase tracking-widest">My Selection</p>
+                      <p className="text-xs font-bold text-accent uppercase tracking-widest">Your Prediction</p>
                       <h2 className="font-headline text-2xl font-bold text-white uppercase">{myPick}</h2>
                     </div>
                   </div>
@@ -136,11 +137,11 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
                     <div className="flex items-center gap-4">
                       <span className="font-headline font-bold text-2xl text-muted-foreground">#02</span>
                       <Avatar className="h-12 w-12 border-2 border-primary/20">
-                        <AvatarImage src={`https://picsum.photos/seed/p2/100/100`} />
-                        <AvatarFallback>OP</AvatarFallback>
+                        <AvatarImage src={`https://picsum.photos/seed/${challenger}/100/100`} />
+                        <AvatarFallback>CH</AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-bold text-lg leading-none mb-1">Challenger_Alpha</p>
+                        <p className="font-bold text-lg leading-none mb-1">{challenger}</p>
                         <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">Pick: Underdog Squad</p>
                       </div>
                     </div>
@@ -162,7 +163,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
               <div className="space-y-3">
                 {[
                   `${myPick} just made a game-changing play! +12.5 pts`,
-                  "Challenger_Alpha is trailing by 26.2 points.",
+                  `${challenger} is trailing by 26.2 points.`,
                   "Game is entering the final quarter. Hold the line!"
                 ].map((msg, i) => (
                   <div key={i} className="flex items-center gap-3 p-4 rounded-2xl bg-secondary/20 border border-white/5 text-sm">
@@ -190,7 +191,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
                   <span className="font-headline font-bold">{parseInt(fee) * 0.2} {currency.toUpperCase()}</span>
                 </div>
                 <p className="text-[10px] text-center text-muted-foreground italic font-medium">
-                  Valuation: $1 = 100 {currency.toUpperCase()}
+                  Forge Ratio: $1.00 = 100 {currency.toUpperCase()}
                 </p>
               </CardContent>
             </Card>
