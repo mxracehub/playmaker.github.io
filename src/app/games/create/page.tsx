@@ -49,7 +49,16 @@ const sports = [
     name: 'Golf', 
     icon: <Target className="w-5 h-5" />, 
     color: "text-emerald-400",
-    options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Tiger Woods", "Brooks Koepka", "Viktor Hovland", "Xander Schauffele", "Ludvig Aberg"]
+    options: [
+      "Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Ludvig Aberg", 
+      "Xander Schauffele", "Wyndham Clark", "Brian Harman", "Max Homa", "Patrick Cantlay", 
+      "Collin Morikawa", "Keegan Bradley", "Jordan Spieth", "Justin Thomas", "Brooks Koepka", 
+      "Bryson DeChambeau", "Cameron Smith", "Dustin Johnson", "Phil Mickelson", "Tommy Fleetwood", 
+      "Matt Fitzpatrick", "Tyrrell Hatton", "Min Woo Lee", "Sahith Theegala", "Tom Kim", 
+      "Sungjae Im", "Hideki Matsuyama", "Jason Day", "Adam Scott", "Shane Lowry", 
+      "Justin Rose", "Rickie Fowler", "Tony Finau", "Sam Burns", "Cameron Young", 
+      "Corey Conners", "Si Woo Kim", "Nicolai Hojgaard", "Matthieu Pavon", "Nick Dunlap"
+    ]
   },
   { 
     id: 'nascar', 
