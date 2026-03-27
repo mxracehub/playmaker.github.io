@@ -1,5 +1,7 @@
+
 "use client";
 
+import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,15 +11,21 @@ import { UserPlus, Search, Trophy } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const friends = [
-  { id: 1, name: "Jordan 'Swish' Smith", status: "Online", wins: 42, avatar: "https://picsum.photos/seed/jordan/100/100" },
-  { id: 2, name: "Sarah 'Quarterback' Jones", status: "In Contest", wins: 28, avatar: "https://picsum.photos/seed/sarah/100/100" },
-  { id: 3, name: "Mike 'The Putter' Brown", status: "Offline", wins: 15, avatar: "https://picsum.photos/seed/mike/100/100" },
-  { id: 4, name: "Alex 'Apex' Racer", status: "Online", wins: 31, avatar: "https://picsum.photos/seed/alex/100/100" },
-  { id: 5, name: "Emma 'Endzone' Miller", status: "Offline", wins: 19, avatar: "https://picsum.photos/seed/emma/100/100" },
-  { id: 6, name: "Chris 'The Wall' Davis", status: "In Contest", wins: 55, avatar: "https://picsum.photos/seed/chris/100/100" },
+  { id: 'f1', name: "Jordan 'Swish' Smith", status: "Online", wins: 42, avatar: "https://picsum.photos/seed/jordan/100/100" },
+  { id: 'f2', name: "Sarah 'Quarterback' Jones", status: "In Contest", wins: 28, avatar: "https://picsum.photos/seed/sarah/100/100" },
+  { id: 'f3', name: "Mike 'The Putter' Brown", status: "Offline", wins: 15, avatar: "https://picsum.photos/seed/mike/100/100" },
+  { id: 'f4', name: "Alex 'Apex' Racer", status: "Online", wins: 31, avatar: "https://picsum.photos/seed/alex/100/100" },
+  { id: 'f5', name: "Emma 'Endzone' Miller", status: "Offline", wins: 19, avatar: "https://picsum.photos/seed/emma/100/100" },
+  { id: 'f6', name: "Chris 'The Wall' Davis", status: "In Contest", wins: 55, avatar: "https://picsum.photos/seed/chris/100/100" },
 ];
 
 export default function FriendsPage() {
+  const router = useRouter();
+
+  const handleChallenge = (friendId: string) => {
+    router.push(`/games/create?friendId=${friendId}`);
+  };
+
   return (
     <div className="min-h-screen pb-24 md:pt-20">
       <Navbar />
@@ -66,7 +74,11 @@ export default function FriendsPage() {
                     <span className="font-headline font-bold text-accent">{friend.wins}</span>
                   </div>
 
-                  <Button variant="secondary" className="w-full font-bold uppercase text-[10px] tracking-widest h-10">
+                  <Button 
+                    variant="secondary" 
+                    className="w-full font-bold uppercase text-[10px] tracking-widest h-10"
+                    onClick={() => handleChallenge(friend.id)}
+                  >
                     Challenge
                   </Button>
                 </CardContent>

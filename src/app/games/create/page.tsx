@@ -1,8 +1,8 @@
 
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, Waves, Bike, Mountain } from "lucide-react";
+import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, Waves, Bike, Mountain, Landmark } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const sports = [
@@ -157,11 +157,14 @@ const mockFriends = [
   { id: 'f3', name: "Mike 'The Putter' Brown", avatar: "https://picsum.photos/seed/mike/100/100" },
   { id: 'f4', name: "Alex 'Apex' Racer", avatar: "https://picsum.photos/seed/alex/100/100" },
   { id: 'f5', name: "Emma 'Endzone' Miller", avatar: "https://picsum.photos/seed/emma/100/100" },
+  { id: 'f6', name: "Chris 'The Wall' Davis", avatar: "https://picsum.photos/seed/chris/100/100" },
 ];
 
 export default function CreateGamePage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { toast } = useToast();
+  
   const [selectedSport, setSelectedSport] = useState<string>("");
   const [selectedPick, setSelectedPick] = useState<string>("");
   const [selectedFriend, setSelectedFriend] = useState<string>("");
@@ -169,6 +172,13 @@ export default function CreateGamePage() {
   const [searchPickQuery, setSearchPickQuery] = useState("");
   const [currency, setCurrency] = useState("gold");
   const [fee, setFee] = useState("1000");
+
+  useEffect(() => {
+    const friendId = searchParams.get('friendId');
+    if (friendId && mockFriends.some(f => f.id === friendId)) {
+      setSelectedFriend(friendId);
+    }
+  }, [searchParams]);
 
   const balances = {
     gold: 1250000,
@@ -379,7 +389,7 @@ export default function CreateGamePage() {
                     <RadioGroupItem value="sweeps" id="sweeps" className="absolute top-4 right-4" />
                     <Label htmlFor="sweeps" className="flex items-center gap-3 cursor-pointer">
                       <div className="h-10 w-10 rounded-full bg-accent/20 flex items-center justify-center">
-                        <Zap className="h-5 w-5 text-accent" />
+                        <Landmark className="h-5 w-5 text-accent" />
                       </div>
                       <div>
                         <p className="font-bold uppercase text-sm">Sweeps Coins</p>
