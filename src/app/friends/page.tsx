@@ -1,11 +1,11 @@
 "use client";
 
 import { Navbar } from "@/components/navbar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UserPlus, Search, MessageSquare, Trophy } from "lucide-react";
+import { UserPlus, Search, Trophy } from "lucide-react";
 
 const friends = [
   { id: 1, name: "Jordan 'Swish' Smith", status: "Online", wins: 42, avatar: "https://picsum.photos/seed/jordan/100/100" },
@@ -61,14 +61,9 @@ export default function FriendsPage() {
                   <span className="font-headline font-bold text-accent">{friend.wins}</span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
-                  <Button variant="outline" size="sm" className="font-bold uppercase text-[10px] tracking-widest">
-                    <MessageSquare className="mr-2 h-3 w-3" /> Chat
-                  </Button>
-                  <Button variant="secondary" size="sm" className="font-bold uppercase text-[10px] tracking-widest">
-                    Challenge
-                  </Button>
-                </div>
+                <Button variant="secondary" className="w-full font-bold uppercase text-[10px] tracking-widest h-10">
+                  Challenge
+                </Button>
               </CardContent>
             </Card>
           ))}
