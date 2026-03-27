@@ -14,22 +14,34 @@
       "imageHint": "football field"
     },
     {
-      "id": "athlete-1",
-      "description": "Professional athlete portrait",
-      "imageUrl": "https://picsum.photos/seed/athlete1/400/400",
-      "imageHint": "athlete portrait"
-    },
-    {
-      "id": "athlete-2",
-      "description": "Professional athlete in action",
-      "imageUrl": "https://picsum.photos/seed/athlete2/400/400",
-      "imageHint": "sports player"
-    },
-    {
-      "id": "athlete-3",
-      "description": "Sports professional",
-      "imageUrl": "https://picsum.photos/seed/athlete3/400/400",
+      "id": "athlete-luka",
+      "description": "Luka Doncic style athlete",
+      "imageUrl": "https://picsum.photos/seed/luka/400/400",
       "imageHint": "basketball player"
+    },
+    {
+      "id": "athlete-mahomes",
+      "description": "Patrick Mahomes style athlete",
+      "imageUrl": "https://picsum.photos/seed/mahomes/400/400",
+      "imageHint": "football player"
+    },
+    {
+      "id": "athlete-larson",
+      "description": "Kyle Larson style athlete",
+      "imageUrl": "https://picsum.photos/seed/larson/400/400",
+      "imageHint": "race driver"
+    },
+    {
+      "id": "athlete-scottie",
+      "description": "Scottie Scheffler style athlete",
+      "imageUrl": "https://picsum.photos/seed/scottie/400/400",
+      "imageHint": "golf player"
+    },
+    {
+      "id": "profile-avatar",
+      "description": "Generic user avatar",
+      "imageUrl": "https://picsum.photos/seed/avatar1/200/200",
+      "imageHint": "person portrait"
     }
   ]
 }
