@@ -6,11 +6,12 @@ import {
   Dribbble, 
   Flag, 
   Target, 
-  CircleDot, 
   Trophy,
   LayoutGrid,
   Waves,
-  Zap
+  Zap,
+  Bike,
+  Mountain
 } from "lucide-react";
 
 const sports = [
@@ -18,10 +19,11 @@ const sports = [
   { id: 'nba', name: 'NBA', icon: <Dribbble className="w-5 h-5" /> },
   { id: 'nfl', name: 'NFL', icon: <Trophy className="w-5 h-5" /> },
   { id: 'surfing', name: 'Surfing', icon: <Waves className="w-5 h-5" /> },
-  { id: 'extreme', name: 'X-Games', icon: <Zap className="w-5 h-5" /> },
+  { id: 'skateboarding', name: 'Skate', icon: <Zap className="w-5 h-5" /> },
+  { id: 'bmx', name: 'BMX', icon: <Bike className="w-5 h-5" /> },
+  { id: 'snowboarding', name: 'Snowboard', icon: <Mountain className="w-5 h-5" /> },
   { id: 'nascar', name: 'NASCAR', icon: <Flag className="w-5 h-5" /> },
   { id: 'golf', name: 'Golf', icon: <Target className="w-5 h-5" /> },
-  { id: 'nhl', name: 'NHL', icon: <CircleDot className="w-5 h-5" /> },
 ];
 
 interface SportsFilterProps {

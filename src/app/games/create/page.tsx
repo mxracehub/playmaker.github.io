@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, Waves } from "lucide-react";
+import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, Waves, Bike, Mountain } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const sports = [
@@ -56,14 +56,36 @@ const sports = [
     ]
   },
   { 
-    id: 'extreme', 
-    name: 'X-Games', 
+    id: 'skateboarding', 
+    name: 'Skate', 
     icon: <Zap className="w-5 h-5" />, 
     color: "text-yellow-400",
     options: [
-      "Nyjah Huston", "Tony Hawk", "Rayssa Leal", "Yuto Horigome", "Sky Brown",
-      "Chloe Kim", "Shaun White", "Leticia Bufoni", "Zion Wright", "Bucky Lasek",
-      "Ryan Sheckler", "Torey Pudwill", "Shane O'Neill", "Tyshawn Jones", "Dashawn Jordan"
+      "Nyjah Huston", "Yuto Horigome", "Rayssa Leal", "Sky Brown", "Zion Wright",
+      "Leticia Bufoni", "Tony Hawk", "Bucky Lasek", "Ryan Sheckler", "Torey Pudwill",
+      "Shane O'Neill", "Tyshawn Jones", "Dashawn Jordan", "Ginwoo Onodera", "Aurelien Giraud"
+    ]
+  },
+  { 
+    id: 'bmx', 
+    name: 'BMX', 
+    icon: <Bike className="w-5 h-5" />, 
+    color: "text-red-400",
+    options: [
+      "Logan Martin", "Garrett Reynolds", "Hannah Roberts", "Charlotte Worthington", "Jose Torres",
+      "Kieran Reilly", "Justin Dowell", "Marcus Christopher", "Kevin Peraza", "Pat Casey",
+      "Dennis Enarson", "Chad Kerley", "Kriss Kyle", "Dakota Roche", "Ryan Nyquist"
+    ]
+  },
+  { 
+    id: 'snowboarding', 
+    name: 'Snowboard', 
+    icon: <Mountain className="w-5 h-5" />, 
+    color: "text-cyan-400",
+    options: [
+      "Shaun White", "Chloe Kim", "Mark McMorris", "Zoi Sadowski-Synnott", "Ayumu Hirano",
+      "Scotty James", "Marcus Kleveland", "Red Gerard", "Anna Gasser", "Su Yiming",
+      "Dustin Craven", "Travis Rice", "Jamie Anderson", "Danny Davis", "Ben Ferguson"
     ]
   },
   { 
@@ -249,13 +271,13 @@ export default function CreateGamePage() {
               {selectedSport ? (
                 <div className="space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
                   <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    2. Pick Your Winning {['surfing', 'extreme', 'golf', 'nascar'].includes(selectedSport) ? 'Athlete' : 'Team'}
+                    2. Pick Your Winning {['surfing', 'skateboarding', 'bmx', 'snowboarding', 'golf', 'nascar'].includes(selectedSport) ? 'Athlete' : 'Team'}
                   </Label>
                   
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input 
-                      placeholder={`Search ${['surfing', 'extreme', 'golf', 'nascar'].includes(selectedSport) ? 'athletes' : 'teams'}...`} 
+                      placeholder={`Search ${['surfing', 'skateboarding', 'bmx', 'snowboarding', 'golf', 'nascar'].includes(selectedSport) ? 'athletes' : 'teams'}...`} 
                       className="pl-10 h-12 bg-secondary/30 border-white/5 focus:border-accent/50 transition-colors"
                       value={searchPickQuery}
                       onChange={(e) => setSearchPickQuery(e.target.value)}

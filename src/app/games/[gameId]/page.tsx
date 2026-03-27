@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Users, Zap, Clock, Share2, Target, Dribbble, Flag, CheckCircle2, Waves } from "lucide-react";
+import { Trophy, Users, Zap, Clock, Share2, Target, Dribbble, Flag, CheckCircle2, Waves, Bike, Mountain } from "lucide-react";
 
 export default function GameArenaPage({ params }: { params: { gameId: string } }) {
   const searchParams = useSearchParams();
@@ -58,13 +58,29 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       label: "Pipe Masters",
       statLabel: "SCORE / WAVE"
     },
-    extreme: {
+    skateboarding: {
       color: "from-yellow-600/20 to-yellow-900/40",
       accent: "text-yellow-400",
       bg: "bg-yellow-400/10",
       icon: <Zap className="h-10 w-10" />,
-      label: "X-Games Arena",
-      statLabel: "TRICK / AIR"
+      label: "Skate Park",
+      statLabel: "TRICK / STYLE"
+    },
+    bmx: {
+      color: "from-red-600/20 to-red-900/40",
+      accent: "text-red-400",
+      bg: "bg-red-400/10",
+      icon: <Bike className="h-10 w-10" />,
+      label: "BMX Dirt",
+      statLabel: "AIR / FLOW"
+    },
+    snowboarding: {
+      color: "from-cyan-600/20 to-cyan-900/40",
+      accent: "text-cyan-400",
+      bg: "bg-cyan-400/10",
+      icon: <Mountain className="h-10 w-10" />,
+      label: "Halfpipe",
+      statLabel: "ROTATION / LAND"
     }
   };
 
