@@ -2,12 +2,43 @@
 "use client";
 
 import Link from "next/link";
-import { Trophy, Users, ShoppingBag, UserCircle, LayoutDashboard, Coins, LogIn } from "lucide-react";
+import { 
+  Trophy, 
+  Users, 
+  ShoppingBag, 
+  UserCircle, 
+  LayoutDashboard, 
+  Coins, 
+  LogIn,
+  LogOut,
+  User,
+  Settings,
+  ChevronDown
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/firebase";
+import { useUser, useAuth } from "@/firebase";
+import { signOut } from "firebase/auth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function Navbar() {
   const { user, isUserLoading } = useUser();
+  const auth = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-card/80 backdrop-blur-md md:top-0 md:bottom-auto md:border-t-0 md:border-b">
@@ -32,26 +63,65 @@ export function Navbar() {
           <div className="flex items-center gap-3 ml-2">
             {!isUserLoading && user ? (
               <>
-                <div className="hidden items-center gap-1.5 rounded-full bg-secondary/50 px-3 py-1 md:flex">
+                <div className="hidden items-center gap-1.5 rounded-full bg-secondary/50 px-3 py-1 md:flex border border-white/5">
                   <Coins className="h-4 w-4 text-accent" />
-                  <span className="text-sm font-bold text-accent">1,250 SC</span>
+                  <span className="text-sm font-bold text-accent tracking-tight">1,250 SC</span>
                 </div>
-                <Link href="/profile">
-                  <Button variant="ghost" size="icon" className="rounded-full hover:bg-secondary">
-                    <UserCircle className="h-6 w-6" />
-                  </Button>
-                </Link>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0 hover:bg-transparent focus-visible:ring-0">
+                      <Avatar className="h-10 w-10 border-2 border-primary/20 transition-all hover:border-primary">
+                        <AvatarImage src={`https://picsum.photos/seed/${user.uid}/100/100`} alt={user.displayName || "User"} />
+                        <AvatarFallback className="bg-secondary text-primary font-bold">
+                          {user.email?.[0].toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56 bg-card/95 backdrop-blur-xl border-white/10" align="end" forceMount>
+                    <DropdownMenuLabel className="font-normal">
+                      <div className="flex flex-col space-y-1">
+                        <p className="text-sm font-headline font-bold leading-none">{user.displayName || 'Player Arena'}</p>
+                        <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator className="bg-white/5" />
+                    <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/10">
+                      <Link href="/profile" className="flex items-center w-full">
+                        <User className="mr-2 h-4 w-4" />
+                        <span>Profile</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer focus:bg-primary/10">
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Settings</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator className="bg-white/5" />
+                    <DropdownMenuItem 
+                      onClick={handleLogout}
+                      className="cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive"
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Log out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </>
             ) : (
               <div className="flex items-center gap-2">
-                <Link href="/login" className="hidden md:block">
-                  <Button variant="default" className="font-bold uppercase tracking-wider h-9">
-                    <LogIn className="mr-2 h-4 w-4" /> Sign In
-                  </Button>
-                </Link>
-                <div className="md:hidden">
-                   <NavButton href="/login" icon={<LogIn />} label="Sign In" />
-                </div>
+                {!isUserLoading && (
+                  <>
+                    <Link href="/login" className="hidden md:block">
+                      <Button variant="default" className="font-bold uppercase tracking-wider h-10 px-6 shadow-lg shadow-primary/20">
+                        <LogIn className="mr-2 h-4 w-4" /> Sign In
+                      </Button>
+                    </Link>
+                    <div className="md:hidden">
+                       <NavButton href="/login" icon={<LogIn />} label="Sign In" />
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>
