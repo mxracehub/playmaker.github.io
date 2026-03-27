@@ -13,6 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, Waves, Bike, Mountain, Landmark, CalendarDays } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useFirestore, useUser, addDocumentNonBlocking } from "@/firebase";
+import { collection } from "firebase/firestore";
 
 const sports = [
   { 
@@ -196,6 +198,8 @@ export default function CreateGamePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
+  const { user } = useUser();
+  const db = useFirestore();
   
   const [selectedSport, setSelectedSport] = useState<string>("");
   const [selectedEvent, setSelectedEvent] = useState<string>("");
@@ -233,6 +237,10 @@ export default function CreateGamePage() {
   );
 
   const handleCreate = () => {
+    if (!user) {
+      toast({ variant: "destructive", title: "Sign In Required", description: "You must be logged in to create a game." });
+      return;
+    }
     if (!selectedSport) {
       toast({ variant: "destructive", title: "Missing Arena", description: "Please select a sport for your game." });
       return;
@@ -243,10 +251,6 @@ export default function CreateGamePage() {
     }
     if (!selectedPick) {
       toast({ variant: "destructive", title: "Selection Required", description: "Please pick your winning team or athlete." });
-      return;
-    }
-    if (!selectedFriend) {
-      toast({ variant: "destructive", title: "No Challenger", description: "You must pick a friend to challenge." });
       return;
     }
 
@@ -262,15 +266,28 @@ export default function CreateGamePage() {
       return;
     }
 
-    const challenger = mockFriends.find(f => f.id === selectedFriend)?.name || "Challenger";
     const eventName = currentSport?.events.find(e => e.id === selectedEvent)?.name || "Live Event";
+    const inviteCode = Math.random().toString(36).substring(2, 8).toUpperCase();
 
-    toast({ title: "Game Initialized", description: `Challenging ${challenger} for ${eventName}.` });
-    
-    setTimeout(() => {
-      const gameId = `game-${Math.floor(Math.random() * 9000) + 1000}`;
-      router.push(`/games/${gameId}?sport=${selectedSport}&event=${encodeURIComponent(eventName)}&pick=${encodeURIComponent(selectedPick)}&fee=${fee}&currency=${currency}&challenger=${encodeURIComponent(challenger)}`);
-    }, 1200);
+    // Persist to Firestore
+    const gameData = {
+      name: eventName,
+      creatorId: user.uid,
+      creatorPick: selectedPick,
+      sportId: selectedSport,
+      currencyType: currency,
+      entryFee: cost,
+      prizePool: cost * 2,
+      status: "Open",
+      inviteCode: inviteCode,
+      createdAt: new Date().toISOString(),
+    };
+
+    addDocumentNonBlocking(collection(db, "games"), gameData)
+      .then((docRef) => {
+        toast({ title: "Game Initialized", description: `Arena challenge created successfully!` });
+        router.push(`/games/${docRef?.id}?sport=${selectedSport}&fee=${fee}&currency=${currency}`);
+      });
   };
 
   return (
@@ -393,44 +410,10 @@ export default function CreateGamePage() {
                 )}
               </div>
 
-              {/* Step 4: Friend Selection */}
-              <div className="space-y-4">
-                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">4. Challenge a Friend</Label>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input 
-                    placeholder="Find squad members..." 
-                    className="pl-10 h-11 bg-secondary/30 border-white/5"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-                <div className="grid grid-cols-1 gap-2 max-h-[200px] overflow-y-auto no-scrollbar">
-                  {filteredFriends.map((friend) => (
-                    <button
-                      key={friend.id}
-                      onClick={() => setSelectedFriend(friend.id)}
-                      className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
-                        selectedFriend === friend.id
-                          ? 'bg-accent/10 border-accent'
-                          : 'bg-secondary/20 border-white/5 hover:border-white/10'
-                      }`}
-                    >
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage src={friend.avatar} />
-                        <AvatarFallback>{friend.name[0]}</AvatarFallback>
-                      </Avatar>
-                      <span className="flex-1 text-left font-bold text-sm">{friend.name}</span>
-                      {selectedFriend === friend.id && <CheckCircle2 className="h-4 w-4 text-accent" />}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Step 5: Currency & Stakes */}
+              {/* Step 4: Currency & Stakes */}
               <div className="space-y-6 pt-4 border-t border-white/5">
                 <div className="space-y-4">
-                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">5. Set the Stakes</Label>
+                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">4. Set the Stakes</Label>
                   <RadioGroup defaultValue="gold" className="grid grid-cols-2 gap-4" onValueChange={setCurrency}>
                     <div className={`relative p-4 rounded-xl border-2 cursor-pointer transition-all ${currency === 'gold' ? 'border-primary bg-primary/5' : 'border-white/5 bg-secondary/10'}`}>
                       <RadioGroupItem value="gold" id="gold" className="absolute top-4 right-4" />

@@ -22,68 +22,34 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useFirestore, useCollection, useUser, useMemoFirebase, updateDocumentNonBlocking } from "@/firebase";
+import { collection, doc, query, where } from "firebase/firestore";
 
-const initialActiveGames = [
-  { 
-    id: "game-1", 
-    title: "Sunday Night Showdown", 
-    sport: "NFL", 
-    players: 12, 
-    entries: 8, 
-    pool: "5,000 SC", 
-    time: "Starts in 2h 45m",
-    status: "open",
-    accent: "text-green-500",
-    bg: "bg-green-500/10"
-  },
-  { 
-    id: "game-2", 
-    title: "Mavericks vs Lakers Pick-em", 
-    sport: "NBA", 
-    players: 2, 
-    entries: 2, 
-    pool: "200 SC", 
-    time: "Live Now",
-    status: "live",
-    accent: "text-orange-500",
-    bg: "bg-orange-500/10"
-  }
-];
-
-const initialInvites = [
-  {
-    id: "inv-1",
-    challenger: "Jordan 'Swish' Smith",
-    challengerPick: "Lakers",
-    title: "3pt Contest Shootout",
-    sport: "NBA",
-    fee: "500 GC",
-    expires: "22m left",
-    options: ["Warriors", "Celtics", "Bucks", "Suns", "Nets"]
-  },
-  {
-    id: "inv-2",
-    challenger: "Sarah 'Quarterback' Jones",
-    challengerPick: "KC Chiefs",
-    title: "Super Bowl Prediction",
-    sport: "NFL",
-    fee: "1,000 SC",
-    expires: "1h left",
-    options: ["SF 49ers", "Detroit Lions", "Philly Eagles", "Dallas Cowboys"]
-  }
-];
-
-const historyGames = [
-  { id: "game-h1", title: "Global Skate Jam", sport: "Skate", pool: "500 GC", result: "Won", date: "Oct 24, 2023" },
-];
+// Sport options for acceptance strategy (matching create page)
+const sportPicks: { [key: string]: string[] } = {
+  NBA: ["Lakers", "Warriors", "Celtics", "Bucks", "Suns", "Nets", "Knicks", "Spurs"],
+  NFL: ["Chiefs", "Eagles", "49ers", "Lions", "Cowboys", "Giants", "Bills", "Ravens"],
+  Golf: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Tiger Woods"],
+  NASCAR: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney", "Kyle Busch"],
+};
 
 export default function GamesPage() {
   const { toast } = useToast();
-  const [activeGames, setActiveGames] = useState(initialActiveGames);
-  const [invites, setInvites] = useState(initialInvites);
-  const [acceptingInvite, setAcceptingInvite] = useState<typeof initialInvites[0] | null>(null);
+  const { user } = useUser();
+  const db = useFirestore();
+
+  // Fetch real games from Firestore
+  const gamesQuery = useMemoFirebase(() => collection(db, "games"), [db]);
+  const { data: allGames, isLoading } = useCollection(gamesQuery);
+
+  const [acceptingInvite, setAcceptingInvite] = useState<any | null>(null);
   const [selectedPick, setSelectedPick] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Derived states from Firestore data
+  const activeGames = allGames?.filter(g => g.status === "Open" || g.status === "Live") || [];
+  const invites = allGames?.filter(g => g.status === "Open" && g.creatorId !== user?.uid) || [];
+  const historyGames = allGames?.filter(g => g.status === "Completed") || [];
 
   const handleFinalAccept = () => {
     if (!selectedPick || !acceptingInvite) {
@@ -91,44 +57,49 @@ export default function GamesPage() {
       return;
     }
 
-    toast({
-      title: "Challenge Accepted",
-      description: `You've entered ${acceptingInvite.title} with ${selectedPick}!`,
+    const gameRef = doc(db, "games", acceptingInvite.id);
+    
+    // Save the acceptance to Firestore
+    updateDocumentNonBlocking(gameRef, {
+      status: "Live",
+      opponentId: user?.uid,
+      opponentPick: selectedPick,
+      updatedAt: new Date().toISOString(),
     });
 
-    setInvites(invites.filter(i => i.id !== acceptingInvite.id));
-    setActiveGames([
-      {
-        id: acceptingInvite.id,
-        title: acceptingInvite.title,
-        sport: acceptingInvite.sport,
-        players: 2,
-        entries: 2,
-        pool: acceptingInvite.fee,
-        time: "Starting Soon",
-        status: "open",
-        accent: acceptingInvite.sport === 'NBA' ? "text-orange-500" : "text-green-500",
-        bg: acceptingInvite.sport === 'NBA' ? "bg-orange-500/10" : "bg-green-500/10"
-      },
-      ...activeGames
-    ]);
-    
+    toast({
+      title: "Challenge Accepted",
+      description: `You've entered the arena with ${selectedPick}!`,
+    });
+
     setAcceptingInvite(null);
     setSelectedPick("");
   };
 
   const handleDecline = (id: string) => {
+    // In this prototype, we'll just ignore it or mark as declined if we had that status
     toast({
       variant: "destructive",
-      title: "Challenge Declined",
-      description: "The arena invitation has been removed.",
+      title: "Challenge Ignored",
+      description: "Invitation removed from your view.",
     });
-    setInvites(invites.filter(i => i.id !== id));
   };
 
-  const filteredOptions = acceptingInvite?.options.filter(opt => 
+  const options = sportPicks[acceptingInvite?.sportId?.toUpperCase()] || sportPicks.NBA;
+  const filteredOptions = options.filter(opt => 
     opt.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+  );
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <Zap className="h-12 w-12 text-primary animate-pulse mx-auto" />
+          <p className="font-headline font-bold uppercase tracking-widest text-muted-foreground">Loading Arenas...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pb-24 pt-20 bg-background relative overflow-hidden">
@@ -173,42 +144,42 @@ export default function GamesPage() {
           </TabsList>
           
           <TabsContent value="active" className="space-y-6">
-            {activeGames.map((game) => (
-              <Link key={game.id} href={`/games/${game.id}`}>
+            {activeGames.length > 0 ? activeGames.map((game) => (
+              <Link key={game.id} href={`/games/${game.id}?sport=${game.sportId}&fee=${game.entryFee}&currency=${game.currencyType}`}>
                 <Card className="overflow-hidden bg-card/30 backdrop-blur-sm border-white/5 hover:border-accent/40 transition-all group relative">
-                  <div className={cn("absolute left-0 top-0 bottom-0 w-1.5", game.status === 'live' ? 'bg-accent animate-pulse' : 'bg-primary')} />
+                  <div className={cn("absolute left-0 top-0 bottom-0 w-1.5", game.status === 'Live' ? 'bg-accent animate-pulse' : 'bg-primary')} />
                   <CardContent className="p-0">
                     <div className="flex flex-col md:flex-row md:items-center">
                       <div className="flex-1 p-8">
                         <div className="flex flex-wrap items-center gap-4 mb-4">
-                          <Badge className={cn("font-bold uppercase tracking-widest px-3 py-1", game.bg, game.accent, "border-none")}>
-                            {game.sport}
+                          <Badge className={cn("font-bold uppercase tracking-widest px-3 py-1 bg-secondary/50 text-white border-none")}>
+                            {game.sportId.toUpperCase()}
                           </Badge>
-                          {game.status === 'live' ? (
+                          {game.status === 'Live' ? (
                             <span className="flex items-center gap-2 text-xs font-bold text-accent uppercase tracking-widest animate-pulse">
                               <Zap className="h-3 w-3 fill-current" /> Live Showdown
                             </span>
                           ) : (
                             <span className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                              <Clock className="h-3 w-3" /> {game.time}
+                              <Clock className="h-3 w-3" /> Waiting for Opponent
                             </span>
                           )}
                         </div>
                         
-                        <h3 className="font-headline text-2xl font-bold mb-6 group-hover:text-accent transition-colors">{game.title}</h3>
+                        <h3 className="font-headline text-2xl font-bold mb-6 group-hover:text-accent transition-colors">{game.name}</h3>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
                           <div className="space-y-3">
                             <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                              <span>Players Joined</span>
-                              <span className="text-white">{game.entries} / {game.players}</span>
+                              <span>Arena Status</span>
+                              <span className="text-white">{game.status === 'Live' ? '2 / 2' : '1 / 2'} Players</span>
                             </div>
-                            <Progress value={(game.entries / game.players) * 100} className="h-2 bg-secondary/50" />
+                            <Progress value={game.status === 'Live' ? 100 : 50} className="h-2 bg-secondary/50" />
                           </div>
                           <div className="flex items-center gap-6 justify-start md:justify-end">
                             <div className="text-right">
                               <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Total Prize Pool</p>
-                              <p className="font-headline text-2xl font-bold text-accent">{game.pool}</p>
+                              <p className="font-headline text-2xl font-bold text-accent">{game.prizePool || (game.entryFee * 2)} {game.currencyType.toUpperCase()}</p>
                             </div>
                             <div className="h-14 w-14 rounded-full bg-secondary/30 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-inner">
                               <ArrowRight className="h-6 w-6" />
@@ -220,7 +191,15 @@ export default function GamesPage() {
                   </CardContent>
                 </Card>
               </Link>
-            ))}
+            )) : (
+              <div className="text-center py-24 bg-card/10 rounded-3xl border border-dashed border-white/5">
+                <Gamepad2 className="h-16 w-16 text-muted-foreground mx-auto mb-6 opacity-20" />
+                <h3 className="font-headline text-xl font-bold uppercase tracking-widest text-muted-foreground">No active games</h3>
+                <Link href="/games/create">
+                  <Button variant="link" className="text-accent mt-2 uppercase font-bold tracking-widest">Create one now</Button>
+                </Link>
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="invites" className="space-y-4">
@@ -235,23 +214,22 @@ export default function GamesPage() {
                         </div>
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <Badge className="bg-primary/20 text-primary-foreground text-[10px] font-bold uppercase">{invite.sport}</Badge>
+                            <Badge className="bg-primary/20 text-primary-foreground text-[10px] font-bold uppercase">{invite.sportId.toUpperCase()}</Badge>
                             <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1">
-                              <Clock className="h-3 w-3" /> {invite.expires}
+                              <Clock className="h-3 w-3" /> CHALLENGE ACTIVE
                             </span>
                           </div>
-                          <h4 className="font-headline text-xl font-bold uppercase tracking-tight leading-none mb-2">{invite.title}</h4>
-                          <p className="text-xs text-muted-foreground font-medium">Challenged by <span className="text-white font-bold">{invite.challenger}</span></p>
+                          <h4 className="font-headline text-xl font-bold uppercase tracking-tight leading-none mb-2">{invite.name}</h4>
+                          <p className="text-xs text-muted-foreground font-medium">Created by <span className="text-white font-bold">{invite.creatorId.slice(0, 8)}...</span></p>
                         </div>
                       </div>
                       
-                      {/* Opponent Selection Card */}
                       <div className="p-4 rounded-xl bg-secondary/40 border border-white/5 flex-1 w-full lg:max-w-[280px]">
                         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2 flex items-center gap-2">
                           <Target className="h-3 w-3 text-accent" /> Opponent's Selection
                         </p>
                         <div className="flex items-center justify-between">
-                          <span className="font-headline font-bold text-lg text-white uppercase">{invite.challengerPick}</span>
+                          <span className="font-headline font-bold text-lg text-white uppercase">{invite.creatorPick || "ELITE PICK"}</span>
                           <Badge variant="outline" className="border-accent text-accent text-[10px] px-2">LOCKED</Badge>
                         </div>
                       </div>
@@ -287,7 +265,7 @@ export default function GamesPage() {
           </TabsContent>
           
           <TabsContent value="history" className="space-y-4">
-            {historyGames.map((game) => (
+            {historyGames.length > 0 ? historyGames.map((game) => (
               <Card key={game.id} className="bg-card/20 border-white/5 hover:bg-card/30 transition-all opacity-80 hover:opacity-100">
                 <CardContent className="p-6 flex items-center justify-between">
                   <div className="flex items-center gap-6">
@@ -295,21 +273,26 @@ export default function GamesPage() {
                       <Trophy className={cn("h-6 w-6 text-yellow-500")} />
                     </div>
                     <div>
-                      <h4 className="font-bold text-lg leading-tight">{game.title}</h4>
+                      <h4 className="font-bold text-lg leading-tight">{game.name}</h4>
                       <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest mt-1">
-                        {game.sport} • {game.date}
+                        {game.sportId.toUpperCase()} • COMPLETED
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
                     <p className={cn("font-headline text-xl font-bold text-green-400")}>
-                      +{game.pool}
+                      {game.prizePool} {game.currencyType.toUpperCase()}
                     </p>
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">Result</p>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">Winner: {game.winnerId?.slice(0, 5)}...</p>
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            )) : (
+              <div className="text-center py-24 bg-card/10 rounded-3xl border border-dashed border-white/5">
+                <Trophy className="h-16 w-16 text-muted-foreground mx-auto mb-6 opacity-20" />
+                <p className="text-xs font-bold uppercase text-muted-foreground">No completed contests found.</p>
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </main>
@@ -320,7 +303,7 @@ export default function GamesPage() {
           <DialogHeader>
             <DialogTitle className="font-headline text-2xl uppercase tracking-tight">Arena Entry Strategy</DialogTitle>
             <DialogDescription>
-              Your opponent has locked in <span className="text-white font-bold">{acceptingInvite?.challengerPick}</span>. Select your counter-play to enter the arena.
+              Your opponent has locked in <span className="text-white font-bold">{acceptingInvite?.creatorPick || "Elite Selection"}</span>. Select your counter-play to enter the arena.
             </DialogDescription>
           </DialogHeader>
           
@@ -352,7 +335,7 @@ export default function GamesPage() {
                       {option}
                     </span>
                     {selectedPick === option && <Check className="h-5 w-5 text-accent" />}
-                    {acceptingInvite?.challengerPick === option && (
+                    {acceptingInvite?.creatorPick === option && (
                       <Badge variant="ghost" className="text-[8px] text-muted-foreground">SAME AS OPPONENT</Badge>
                     )}
                   </button>

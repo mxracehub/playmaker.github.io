@@ -60,148 +60,6 @@
         "updatedAt"
       ]
     },
-    "Sport": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Sport",
-      "type": "object",
-      "description": "Represents a distinct professional sport available in the Playmakers app (e.g., Basketball, Football, Golf, NASCAR).",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the Sport entity."
-        },
-        "name": {
-          "type": "string",
-          "description": "The common name of the sport (e.g., 'Basketball')."
-        },
-        "description": {
-          "type": "string",
-          "description": "A brief description of the sport."
-        },
-        "iconUrl": {
-          "type": "string",
-          "description": "URL to an icon representing the sport.",
-          "format": "uri"
-        }
-      },
-      "required": [
-        "id",
-        "name",
-        "description"
-      ]
-    },
-    "League": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "League",
-      "type": "object",
-      "description": "Represents a professional league within a specific sport (e.g., NBA, NFL, PGA Tour).",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the League entity."
-        },
-        "name": {
-          "type": "string",
-          "description": "The full name of the league (e.g., 'National Basketball Association')."
-        },
-        "description": {
-          "type": "string",
-          "description": "A brief description of the league."
-        },
-        "sportId": {
-          "type": "string",
-          "description": "Reference to the Sport entity this league belongs to."
-        },
-        "logoUrl": {
-          "type": "string",
-          "description": "URL to the official logo of the league.",
-          "format": "uri"
-        }
-      },
-      "required": [
-        "id",
-        "name",
-        "description",
-        "sportId"
-      ]
-    },
-    "Team": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Team",
-      "type": "object",
-      "description": "Represents a professional sports team participating in events.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the Team entity."
-        },
-        "name": {
-          "type": "string",
-          "description": "The full name of the team."
-        },
-        "sportId": {
-          "type": "string",
-          "description": "Reference to the Sport entity this team belongs to."
-        },
-        "leagueId": {
-          "type": "string",
-          "description": "Reference to the League entity this team primarily plays in."
-        },
-        "city": {
-          "type": "string",
-          "description": "The city or region the team represents."
-        },
-        "logoUrl": {
-          "type": "string",
-          "description": "URL to the official logo of the team.",
-          "format": "uri"
-        }
-      },
-      "required": [
-        "id",
-        "name",
-        "sportId"
-      ]
-    },
-    "Athlete": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Athlete",
-      "type": "object",
-      "description": "Represents a professional athlete from various sports, whose performance can be picked in games.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the Athlete entity."
-        },
-        "firstName": {
-          "type": "string",
-          "description": "The first name of the athlete."
-        },
-        "lastName": {
-          "type": "string",
-          "description": "The last name of the athlete."
-        },
-        "sportId": {
-          "type": "string",
-          "description": "Reference to the Sport entity the athlete competes in."
-        },
-        "teamId": {
-          "type": "string",
-          "description": "Reference to the Team entity the athlete is currently on, if applicable."
-        },
-        "profilePictureUrl": {
-          "type": "string",
-          "description": "URL to the athlete's profile picture.",
-          "format": "uri"
-        }
-      },
-      "required": [
-        "id",
-        "firstName",
-        "lastName",
-        "sportId"
-      ]
-    },
     "Game": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Game",
@@ -216,13 +74,21 @@
           "type": "string",
           "description": "The name of the game."
         },
-        "description": {
-          "type": "string",
-          "description": "A description outlining the rules or theme of the game."
-        },
         "creatorId": {
           "type": "string",
           "description": "Reference to the UserProfile entity of the user who created this game."
+        },
+        "creatorPick": {
+          "type": "string",
+          "description": "The team or athlete selected by the creator."
+        },
+        "opponentId": {
+          "type": "string",
+          "description": "Reference to the UserProfile entity of the user who accepted the challenge."
+        },
+        "opponentPick": {
+          "type": "string",
+          "description": "The team or athlete selected by the opponent."
         },
         "sportId": {
           "type": "string",
@@ -264,14 +130,12 @@
         }
       },
       "required": [
-        "id",
         "name",
         "creatorId",
         "sportId",
         "currencyType",
         "entryFee",
         "status",
-        "inviteCode",
         "createdAt"
       ]
     },
