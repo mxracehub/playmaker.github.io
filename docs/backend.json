@@ -1,0 +1,853 @@
+{
+  "entities": {
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents a user's profile in the Playmakers app, storing personal details, friend connections, and general account information.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the UserProfile entity."
+        },
+        "username": {
+          "type": "string",
+          "description": "The user's chosen unique username for display within the app."
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's email address, used for communication and account recovery.",
+          "format": "email"
+        },
+        "profilePictureUrl": {
+          "type": "string",
+          "description": "URL to the user's profile picture, if set.",
+          "format": "uri"
+        },
+        "bio": {
+          "type": "string",
+          "description": "A short biographical description provided by the user for their profile."
+        },
+        "friendIds": {
+          "type": "array",
+          "description": "References to other UserProfile entities that this user has added as friends. (Relationship: UserProfile N:N UserProfile)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the user profile was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the user profile was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "username",
+        "email",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Sport": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Sport",
+      "type": "object",
+      "description": "Represents a distinct professional sport available in the Playmakers app (e.g., Basketball, Football, Golf, NASCAR).",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Sport entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The common name of the sport (e.g., 'Basketball')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the sport."
+        },
+        "iconUrl": {
+          "type": "string",
+          "description": "URL to an icon representing the sport.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description"
+      ]
+    },
+    "League": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "League",
+      "type": "object",
+      "description": "Represents a professional league within a specific sport (e.g., NBA, NFL, PGA Tour).",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the League entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The full name of the league (e.g., 'National Basketball Association')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the league."
+        },
+        "sportId": {
+          "type": "string",
+          "description": "Reference to the Sport entity this league belongs to. (Relationship: Sport 1:N League)"
+        },
+        "logoUrl": {
+          "type": "string",
+          "description": "URL to the official logo of the league.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "sportId"
+      ]
+    },
+    "Team": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Team",
+      "type": "object",
+      "description": "Represents a professional sports team participating in events (relevant for team-based sports like Basketball or Football).",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Team entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The full name of the team (e.g., 'Los Angeles Lakers')."
+        },
+        "sportId": {
+          "type": "string",
+          "description": "Reference to the Sport entity this team belongs to. (Relationship: Sport 1:N Team)"
+        },
+        "leagueId": {
+          "type": "string",
+          "description": "Reference to the League entity this team primarily plays in. (Relationship: League 1:N Team)"
+        },
+        "city": {
+          "type": "string",
+          "description": "The city or region the team represents."
+        },
+        "logoUrl": {
+          "type": "string",
+          "description": "URL to the official logo of the team.",
+          "format": "uri"
+        },
+        "externalId": {
+          "type": "string",
+          "description": "An identifier from an external sports data provider, if applicable."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "sportId"
+      ]
+    },
+    "Athlete": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Athlete",
+      "type": "object",
+      "description": "Represents a professional athlete from various sports, whose performance can be picked in contests.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Athlete entity."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The first name of the athlete."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The last name of the athlete."
+        },
+        "sportId": {
+          "type": "string",
+          "description": "Reference to the Sport entity the athlete competes in. (Relationship: Sport 1:N Athlete)"
+        },
+        "teamId": {
+          "type": "string",
+          "description": "Reference to the Team entity the athlete is currently on, if applicable. (Relationship: Team 1:N Athlete)"
+        },
+        "nationality": {
+          "type": "string",
+          "description": "The nationality of the athlete."
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "description": "The athlete's date of birth.",
+          "format": "date"
+        },
+        "profilePictureUrl": {
+          "type": "string",
+          "description": "URL to the athlete's profile picture.",
+          "format": "uri"
+        },
+        "externalId": {
+          "type": "string",
+          "description": "An identifier from an external sports data provider, if applicable."
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "sportId"
+      ]
+    },
+    "Event": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Event",
+      "type": "object",
+      "description": "Represents a specific professional sporting event (e.g., a basketball game, a golf tournament, a NASCAR race).",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Event entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the event (e.g., 'Lakers vs. Celtics', 'The Masters', 'Daytona 500')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description or summary of the event."
+        },
+        "sportId": {
+          "type": "string",
+          "description": "Reference to the Sport entity this event belongs to. (Relationship: Sport 1:N Event)"
+        },
+        "leagueId": {
+          "type": "string",
+          "description": "Reference to the League entity this event is part of. (Relationship: League 1:N Event)"
+        },
+        "startTime": {
+          "type": "string",
+          "description": "The scheduled start time of the event.",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "description": "The scheduled or actual end time of the event.",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the event (e.g., 'Upcoming', 'Live', 'Final', 'Postponed')."
+        },
+        "venue": {
+          "type": "string",
+          "description": "The name of the venue where the event is taking place."
+        },
+        "externalId": {
+          "type": "string",
+          "description": "An identifier from an external sports data provider, if applicable."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "sportId",
+        "leagueId",
+        "startTime",
+        "status"
+      ]
+    },
+    "AthleteStatistic": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AthleteStatistic",
+      "type": "object",
+      "description": "Stores key performance statistics for an athlete within a specific event, used for contest scoring.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the AthleteStatistic entity."
+        },
+        "athleteId": {
+          "type": "string",
+          "description": "Reference to the Athlete entity this statistic belongs to. (Relationship: Athlete 1:N AthleteStatistic)"
+        },
+        "eventId": {
+          "type": "string",
+          "description": "Reference to the Event entity this statistic is recorded for. (Relationship: Event 1:N AthleteStatistic)"
+        },
+        "statName": {
+          "type": "string",
+          "description": "The name of the statistic (e.g., 'Points', 'Yards', 'Finishing Position', 'Aces')."
+        },
+        "statValue": {
+          "type": "number",
+          "description": "The numerical value of the statistic."
+        },
+        "recordedAt": {
+          "type": "string",
+          "description": "Timestamp when the statistic was recorded or last updated.",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string",
+          "description": "An optional detailed description or context for the statistic."
+        }
+      },
+      "required": [
+        "id",
+        "athleteId",
+        "eventId",
+        "statName",
+        "statValue",
+        "recordedAt"
+      ]
+    },
+    "Contest": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Contest",
+      "type": "object",
+      "description": "Represents a friend-to-friend sweepstakes or pick-em contest created by a user for a specific sports event.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Contest entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the contest."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description outlining the rules or theme of the contest."
+        },
+        "creatorId": {
+          "type": "string",
+          "description": "Reference to the UserProfile entity of the user who created this contest. (Relationship: UserProfile 1:N Contest)"
+        },
+        "eventId": {
+          "type": "string",
+          "description": "Reference to the Event entity this contest is based on. (Relationship: Event 1:N Contest)"
+        },
+        "entryFeeGoldCoins": {
+          "type": "number",
+          "description": "The number of Gold Coins required to enter this contest."
+        },
+        "prizePoolSweepstakesCoins": {
+          "type": "number",
+          "description": "The total potential Sweepstakes Coins awarded to winners of this contest."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the contest (e.g., 'Open', 'InProgress', 'Completed', 'Cancelled')."
+        },
+        "inviteCode": {
+          "type": "string",
+          "description": "A unique code that friends can use to join this private contest."
+        },
+        "startTime": {
+          "type": "string",
+          "description": "The official start time of the contest, typically aligned with the event start.",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "description": "The official end time of the contest, typically aligned with the event end.",
+          "format": "date-time"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the contest was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "creatorId",
+        "eventId",
+        "entryFeeGoldCoins",
+        "prizePoolSweepstakesCoins",
+        "status",
+        "inviteCode",
+        "startTime",
+        "endTime",
+        "createdAt"
+      ]
+    },
+    "ContestParticipant": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ContestParticipant",
+      "type": "object",
+      "description": "Represents a user's participation in a specific contest, tracking their score and status.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ContestParticipant entity."
+        },
+        "contestId": {
+          "type": "string",
+          "description": "Reference to the Contest entity this participation record belongs to. (Relationship: Contest 1:N ContestParticipant)"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the UserProfile entity of the participant. (Relationship: UserProfile 1:N ContestParticipant)"
+        },
+        "joinedAt": {
+          "type": "string",
+          "description": "Timestamp when the user joined the contest.",
+          "format": "date-time"
+        },
+        "currentScore": {
+          "type": "number",
+          "description": "The participant's current score in the contest."
+        },
+        "rank": {
+          "type": "number",
+          "description": "The participant's final rank in the contest, if completed."
+        },
+        "isWinner": {
+          "type": "boolean",
+          "description": "Indicates if the participant is a winner of the contest."
+        },
+        "winningsSweepstakesCoins": {
+          "type": "number",
+          "description": "The amount of Sweepstakes Coins won by this participant, if any."
+        }
+      },
+      "required": [
+        "id",
+        "contestId",
+        "userId",
+        "joinedAt",
+        "currentScore"
+      ]
+    },
+    "ContestPick": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ContestPick",
+      "type": "object",
+      "description": "Records a specific athlete selection made by a user for a contest.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ContestPick entity."
+        },
+        "contestId": {
+          "type": "string",
+          "description": "Reference to the Contest entity this pick belongs to. (Relationship: Contest 1:N ContestPick)"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the UserProfile entity who made this pick. (Relationship: UserProfile 1:N ContestPick)"
+        },
+        "athleteId": {
+          "type": "string",
+          "description": "Reference to the Athlete entity that was picked by the user. (Relationship: Athlete 1:N ContestPick)"
+        },
+        "pickOrder": {
+          "type": "number",
+          "description": "The order of this pick if a user can make multiple selections in a contest."
+        },
+        "scorePoints": {
+          "type": "number",
+          "description": "Points awarded for this specific pick within the contest, based on athlete performance."
+        },
+        "submittedAt": {
+          "type": "string",
+          "description": "Timestamp when the pick was submitted by the user.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "contestId",
+        "userId",
+        "athleteId",
+        "submittedAt"
+      ]
+    },
+    "UserWallet": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserWallet",
+      "type": "object",
+      "description": "Manages the in-app currency balances (Gold Coins and Sweepstakes Coins) for each user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the UserWallet entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the UserProfile entity this wallet belongs to. (Relationship: UserProfile 1:N UserWallet)"
+        },
+        "goldCoins": {
+          "type": "number",
+          "description": "The current balance of Gold Coins in the user's wallet, used for gameplay."
+        },
+        "sweepstakesCoins": {
+          "type": "number",
+          "description": "The current balance of Sweepstakes Coins in the user's wallet, redeemable for prizes."
+        },
+        "lastUpdated": {
+          "type": "string",
+          "description": "Timestamp indicating when the wallet balances were last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "goldCoins",
+        "sweepstakesCoins",
+        "lastUpdated"
+      ]
+    },
+    "CurrencyTransaction": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CurrencyTransaction",
+      "type": "object",
+      "description": "Records all financial transactions related to in-app currencies (purchases, winnings, redemptions, entry fees).",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CurrencyTransaction entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the UserProfile entity associated with this transaction. (Relationship: UserProfile 1:N CurrencyTransaction)"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of currency transaction (e.g., 'PurchaseGold', 'WinSweepstakes', 'RedeemSweepstakes', 'EntryFeeGold', 'GiftSweepstakes')."
+        },
+        "goldCoinsChange": {
+          "type": "number",
+          "description": "The change in Gold Coins balance due to this transaction (positive for gain, negative for spend)."
+        },
+        "sweepstakesCoinsChange": {
+          "type": "number",
+          "description": "The change in Sweepstakes Coins balance due to this transaction (positive for gain, negative for spend)."
+        },
+        "transactionTime": {
+          "type": "string",
+          "description": "Timestamp when the transaction occurred.",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the transaction (e.g., 'Purchased 100 Gold Coins', 'Won 500 SC in Super Bowl Challenge')."
+        },
+        "referenceId": {
+          "type": "string",
+          "description": "Optional reference ID linking to another entity, such as a Contest ID or an external purchase receipt ID."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "type",
+        "goldCoinsChange",
+        "sweepstakesCoinsChange",
+        "transactionTime",
+        "description"
+      ]
+    },
+    "LegalDocument": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "LegalDocument",
+      "type": "object",
+      "description": "Stores various legal and policy documents for the app, such as Terms of Service or Sweeps Rules.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the LegalDocument entity."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the legal document (e.g., 'Terms of Service', 'Privacy Policy', 'Sweeps Rules')."
+        },
+        "content": {
+          "type": "string",
+          "description": "The full content of the legal document, potentially in Markdown or HTML format."
+        },
+        "version": {
+          "type": "string",
+          "description": "The version number or identifier of the document (e.g., '1.0', '2023-01-15')."
+        },
+        "publishDate": {
+          "type": "string",
+          "description": "The date when this version of the document was officially published.",
+          "format": "date"
+        },
+        "lastUpdated": {
+          "type": "string",
+          "description": "Timestamp indicating when the document content was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "content",
+        "version",
+        "publishDate",
+        "lastUpdated"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores user profile information. This collection is private to the user, with authorization based on `request.auth.uid` matching the `{userId}` wildcard. Users can manage their own profiles. Includes denormalized 'friendIds' for efficient lookup.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique ID of the user, matching `request.auth.uid`."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/wallet",
+        "definition": {
+          "entityName": "UserWallet",
+          "schema": {
+            "$ref": "#/backend/entities/UserWallet"
+          },
+          "description": "Manages in-app currency balances for each user. This is strictly private, with authorization based on `request.auth.uid` matching the `{userId}` wildcard in the path.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique ID of the user, matching `request.auth.uid`."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/currency_transactions/{transactionId}",
+        "definition": {
+          "entityName": "CurrencyTransaction",
+          "schema": {
+            "$ref": "#/backend/entities/CurrencyTransaction"
+          },
+          "description": "Records all currency transactions for a specific user. This is strictly private, with authorization based on `request.auth.uid` matching the `{userId}` wildcard in the path.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique ID of the user, matching `request.auth.uid`."
+            },
+            {
+              "name": "transactionId",
+              "description": "The unique ID of the currency transaction."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/sports/{sportId}",
+        "definition": {
+          "entityName": "Sport",
+          "schema": {
+            "$ref": "#/backend/entities/Sport"
+          },
+          "description": "Contains static data for different sports. This collection is public and read-only for all users. Write access is restricted to administrative functions.",
+          "params": [
+            {
+              "name": "sportId",
+              "description": "The unique ID of the sport."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/leagues/{leagueId}",
+        "definition": {
+          "entityName": "League",
+          "schema": {
+            "$ref": "#/backend/entities/League"
+          },
+          "description": "Contains static data for professional leagues. This collection is public and read-only for all users. Write access is restricted to administrative functions.",
+          "params": [
+            {
+              "name": "leagueId",
+              "description": "The unique ID of the league."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/teams/{teamId}",
+        "definition": {
+          "entityName": "Team",
+          "schema": {
+            "$ref": "#/backend/entities/Team"
+          },
+          "description": "Contains static data for professional sports teams. This collection is public and read-only for all users. Write access is restricted to administrative functions.",
+          "params": [
+            {
+              "name": "teamId",
+              "description": "The unique ID of the team."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/athletes/{athleteId}",
+        "definition": {
+          "entityName": "Athlete",
+          "schema": {
+            "$ref": "#/backend/entities/Athlete"
+          },
+          "description": "Contains static data for professional athletes. This collection is public and read-only for all users. Write access is restricted to administrative functions.",
+          "params": [
+            {
+              "name": "athleteId",
+              "description": "The unique ID of the athlete."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/events/{eventId}",
+        "definition": {
+          "entityName": "Event",
+          "schema": {
+            "$ref": "#/backend/entities/Event"
+          },
+          "description": "Contains static/dynamic data for sporting events. This collection is public and read-only for all users. Write access for status updates and data population is restricted to administrative functions.",
+          "params": [
+            {
+              "name": "eventId",
+              "description": "The unique ID of the event."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/events/{eventId}/athlete_statistics/{statisticId}",
+        "definition": {
+          "entityName": "AthleteStatistic",
+          "schema": {
+            "$ref": "#/backend/entities/AthleteStatistic"
+          },
+          "description": "Stores key performance statistics for an athlete within a specific event. This collection is public and read-only. Includes denormalized 'eventId' for contextual querying within an event.",
+          "params": [
+            {
+              "name": "eventId",
+              "description": "The unique ID of the parent event."
+            },
+            {
+              "name": "statisticId",
+              "description": "The unique ID of the athlete statistic."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/legal_documents/{documentId}",
+        "definition": {
+          "entityName": "LegalDocument",
+          "schema": {
+            "$ref": "#/backend/entities/LegalDocument"
+          },
+          "description": "Stores various legal and policy documents. This collection is public and read-only for all users. Write access is restricted to administrative functions.",
+          "params": [
+            {
+              "name": "documentId",
+              "description": "The unique ID of the legal document (e.g., 'terms_of_service', 'privacy_policy')."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/contests/{contestId}",
+        "definition": {
+          "entityName": "Contest",
+          "schema": {
+            "$ref": "#/backend/entities/Contest"
+          },
+          "description": "Represents a friend-to-friend contest. Includes `creatorId` and a denormalized `members` map (`{ [userId]: boolean }`) for authorization independence, allowing direct checks in security rules to determine read/write access for the creator and participants. This supports QAPs for listing accessible contests.",
+          "params": [
+            {
+              "name": "contestId",
+              "description": "The unique ID of the contest."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/contests/{contestId}/participants/{userId}",
+        "definition": {
+          "entityName": "ContestParticipant",
+          "schema": {
+            "$ref": "#/backend/entities/ContestParticipant"
+          },
+          "description": "Tracks a user's participation in a specific contest. The `{userId}` wildcard identifies the participant. Includes denormalized `contestCreatorId` and `contestMembers` map from the parent Contest for authorization independence, enabling `get()`-free security rules for read/write access by the participant or contest creator/members.",
+          "params": [
+            {
+              "name": "contestId",
+              "description": "The unique ID of the parent contest."
+            },
+            {
+              "name": "userId",
+              "description": "The unique ID of the participant."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/contests/{contestId}/participants/{userId}/picks/{pickId}",
+        "definition": {
+          "entityName": "ContestPick",
+          "schema": {
+            "$ref": "#/backend/entities/ContestPick"
+          },
+          "description": "Records a specific athlete selection made by a user for a contest. The `{pickId}` identifies the pick. Includes denormalized `contestCreatorId` and `contestMembers` map from the ancestor Contest for authorization independence, ensuring `get()`-free security rules for read/write access by the pick owner, contest creator, or other contest members.",
+          "params": [
+            {
+              "name": "contestId",
+              "description": "The unique ID of the ancestor contest."
+            },
+            {
+              "name": "userId",
+              "description": "The unique ID of the participant who made the pick."
+            },
+            {
+              "name": "pickId",
+              "description": "The unique ID of the contest pick."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure for Playmakers is designed with paramount focus on Authorization Independence, ensuring robust and easily debuggable security rules. This is achieved primarily through strategic denormalization and structural segregation, aligning with the core design principles.\n\n**Authorization Independence (CRITICAL):**\nTo eliminate hierarchical authorization dependencies (`get()` calls in rules), all documents that require access control based on a 'parent' entity's attributes (e.g., a Contest's creator or participants) will explicitly include those attributes. For collaborative entities like `Contest`, `ContestParticipant`, and `ContestPick`:\n\n*   **Contest (`/contests/{contestId}`):** The `Contest` document itself will store its `creatorId` and a `members` map (`{ [userId]: boolean }`) indicating all participating user IDs. This allows direct rule evaluation like `request.auth.uid == resource.data.creatorId || request.auth.uid in resource.data.members` without needing to fetch other documents.\n*   **ContestParticipant (`/contests/{contestId}/participants/{userId}`):** Each `ContestParticipant` document will denormalize the `contestCreatorId` and the `contestMembers` map from its parent `Contest` document. This means a rule for a `ContestParticipant` can check `request.auth.uid == resource.data.userId || request.auth.uid == resource.data.contestCreatorId || request.auth.uid in resource.data.contestMembers` entirely within its own document context.\n*   **ContestPick (`/contests/{contestId}/participants/{userId}/picks/{pickId}`):** Similarly, each `ContestPick` document will denormalize `contestCreatorId` and the `contestMembers` map. This ensures that a user's ability to read or modify a pick can be verified against the pick document itself, its direct parent's ID (`userId`), and the contest's broader authorization context (`contestCreatorId`, `contestMembers`).\n\nThis extensive denormalization means that any security rule for these documents can operate on `resource.data` and `request.auth.uid` alone, avoiding costly and complex `get()` operations, especially crucial for atomic operations and transaction integrity.\n\n**QAPs (Rules are not Filters) and Structural Segregation:**\n\n1.  **Public/Reference Data:** Entities like `Sport`, `League`, `Team`, `Athlete`, `Event`, `AthleteStatistic`, and `LegalDocument` are stored in top-level, publicly readable collections (e.g., `/sports`, `/events`). Their security posture is homogeneous (`allow read: true;`), enabling efficient `list` operations (QAPs) without additional query filtering in rules.\n2.  **Private User Data:** Entities such as `UserProfile`, `UserWallet`, and `CurrencyTransaction` are segregated into user-specific paths (e.g., `/users/{userId}/wallet`). The `userId` in the path naturally acts as a filter for `list` operations (`allow read: if request.auth.uid == userId;`), ensuring QAPs by making authorization implicit in the query path.\n3.  **Collaborative Data (`Contest` and its sub-entities):** The denormalization of `creatorId` and `members` into `Contest`, `ContestParticipant`, and `ContestPick` documents directly supports QAPs. When querying a list of contests (e.g., `/contests`), a client can filter by `creatorId` or by a member's UID (e.g., `db.collection('contests').where('members.' + auth.uid, '==', true)`). The rules then validate this filter using only the `resource.data` of the documents being listed, without needing to `get()` parent documents, thus ensuring secure and performant `list` operations.\n\nThis design prioritizes clarity, consistency, and debuggability, making security rules straightforward to write and reason about while maximizing scalability and query efficiency."
+  }
+}
