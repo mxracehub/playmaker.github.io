@@ -1,13 +1,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UserPlus, Search, Trophy } from "lucide-react";
+import { UserPlus, Search, Trophy, Lock, Loader2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useUser } from "@/firebase";
 
 const friends = [
   { id: 'f1', name: "Jordan 'Swish' Smith", status: "Online", wins: 42, avatar: "https://picsum.photos/seed/jordan/100/100" },
@@ -20,10 +22,40 @@ const friends = [
 
 export default function FriendsPage() {
   const router = useRouter();
+  const { user, isUserLoading } = useUser();
 
   const handleChallenge = (friendId: string) => {
     router.push(`/games/create?friendId=${friendId}`);
   };
+
+  if (isUserLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
+          <p className="font-headline font-bold uppercase tracking-widest text-muted-foreground animate-pulse">
+            Loading Playmakers...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen pt-20 flex flex-col items-center justify-center p-4">
+        <Navbar />
+        <Card className="max-w-md w-full text-center p-8 space-y-6 bg-card/50 backdrop-blur-xl border-white/5">
+          <Lock className="h-16 w-16 text-muted-foreground mx-auto opacity-20" />
+          <h2 className="font-headline text-2xl font-bold uppercase tracking-tight">Locked Circle</h2>
+          <p className="text-muted-foreground">You must be signed in to view your friends and start challenges.</p>
+          <Link href="/login" className="block w-full">
+            <Button className="w-full h-12 font-bold uppercase tracking-wider shadow-lg shadow-primary/20">Sign In to Connect</Button>
+          </Link>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-20 pb-24">
