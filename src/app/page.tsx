@@ -6,9 +6,8 @@ import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { SportsFilter } from "@/components/sports-filter";
 import { AthleteCard } from "@/components/athlete-card";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trophy, ArrowRight, Zap, Target, Users, Gamepad2, Waves } from "lucide-react";
+import { ArrowRight, Trophy, Target, Users, Gamepad2 } from "lucide-react";
 
 const mockAthletes = [
   {
@@ -142,56 +141,6 @@ export default function Home() {
               onSelect={() => toggleAthlete(athlete.id)}
             />
           ))}
-        </div>
-
-        {/* Quick Stats / Rankings */}
-        <div className="grid md:grid-cols-3 gap-8">
-          <Card className="bg-card/30 border-dashed border-2">
-            <CardHeader>
-              <CardTitle className="text-lg font-headline flex items-center gap-2">
-                <Trophy className="h-5 w-5 text-accent" />
-                GLOBAL TOP PLAYMAKERS
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-card border border-border/50">
-                    <div className="flex items-center gap-3">
-                      <span className="font-headline font-bold text-muted-foreground">#0{i}</span>
-                      <div className="h-8 w-8 rounded-full bg-secondary" />
-                      <span className="font-medium">User_{i}99</span>
-                    </div>
-                    <span className="font-headline font-bold text-accent">9.2k SC</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-card/30 border-dashed border-2 md:col-span-2">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-lg font-headline flex items-center gap-2">
-                <Zap className="h-5 w-5 text-accent" />
-                LIVE GAME UPDATES
-              </CardTitle>
-              <Button variant="link" className="text-accent text-xs">View All</Button>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {[
-                  "Dallas Mavs vs Denver Nuggets game started!",
-                  "User_Jaxon just won 500 SC in a Head-to-Head challenge!",
-                  "NFL Playmaker Sunday series is now open for entries."
-                ].map((msg, i) => (
-                  <div key={i} className="flex items-center gap-3 text-sm text-muted-foreground p-3 rounded-xl bg-card/50">
-                    <div className="h-2 w-2 rounded-full bg-accent animate-pulse" />
-                    {msg}
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </main>
 
