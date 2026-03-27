@@ -18,47 +18,56 @@ const sports = [
   { 
     id: 'all', 
     name: 'All', 
+    img: "https://picsum.photos/seed/all/100/100",
     icon: <LayoutGrid className="w-4 h-4" />
   },
   { 
     id: 'nba', 
     name: 'NBA', 
-    icon: <Dribbble className="w-4 h-4" />
+    img: "https://picsum.photos/seed/basketball/100/100",
+    icon: <Dribbble className="w-4 h-4 text-orange-500" />
   },
   { 
     id: 'nfl', 
     name: 'NFL', 
-    icon: <Trophy className="w-4 h-4" />
+    img: "https://picsum.photos/seed/football/100/100",
+    icon: <Trophy className="w-4 h-4 text-green-500" />
   },
   { 
     id: 'surfing', 
     name: 'Surfing', 
-    icon: <Waves className="w-4 h-4" />
+    img: "https://picsum.photos/seed/surfing/100/100",
+    icon: <Waves className="w-4 h-4 text-blue-400" />
   },
   { 
     id: 'skateboarding', 
     name: 'Skate', 
-    icon: <Zap className="w-4 h-4" />
+    img: "https://picsum.photos/seed/skate/100/100",
+    icon: <Zap className="w-4 h-4 text-yellow-400" />
   },
   { 
     id: 'bmx', 
     name: 'BMX', 
-    icon: <Bike className="w-4 h-4" />
+    img: "https://picsum.photos/seed/bmx/100/100",
+    icon: <Bike className="w-4 h-4 text-red-400" />
   },
   { 
     id: 'snowboarding', 
     name: 'Snowboard', 
-    icon: <Mountain className="w-4 h-4" />
+    img: "https://picsum.photos/seed/snow/100/100",
+    icon: <Mountain className="w-4 h-4 text-cyan-400" />
   },
   { 
     id: 'nascar', 
     name: 'NASCAR', 
-    icon: <Flag className="w-4 h-4" />
+    img: "https://picsum.photos/seed/nascar/100/100",
+    icon: <Flag className="w-4 h-4 text-red-500" />
   },
   { 
     id: 'golf', 
     name: 'Golf', 
-    icon: <Target className="w-4 h-4" />
+    img: "https://picsum.photos/seed/golf/100/100",
+    icon: <Target className="h-4 w-4 text-emerald-400" />
   },
 ];
 
@@ -75,19 +84,23 @@ export function SportsFilter({ selected, onSelect }: SportsFilterProps) {
           key={sport.id}
           onClick={() => onSelect(sport.id)}
           className={cn(
-            "flex min-w-fit items-center gap-3 rounded-full px-4 py-2 text-sm font-bold transition-all duration-300 border-2",
+            "flex min-w-fit items-center gap-3 rounded-2xl pl-1.5 pr-5 py-1.5 text-sm font-bold transition-all duration-300 border-2",
             selected === sport.id
               ? "bg-primary border-primary text-white shadow-lg shadow-primary/20 scale-105"
               : "bg-card/50 border-white/5 text-muted-foreground hover:bg-secondary hover:border-accent/30"
           )}
         >
-          <div className={cn(
-            "flex h-6 w-6 items-center justify-center rounded-full",
-            selected === sport.id ? "bg-white/20" : "bg-white/10"
-          )}>
-            {sport.icon}
+          <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-white/10 shrink-0">
+            <img 
+              src={sport.img} 
+              alt={sport.name} 
+              className={cn("h-full w-full object-cover transition-all", selected !== sport.id && "grayscale opacity-50")}
+            />
+            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+              {sport.icon}
+            </div>
           </div>
-          <span className="uppercase tracking-tight">{sport.name}</span>
+          <span className="uppercase tracking-tight whitespace-nowrap">{sport.name}</span>
         </button>
       ))}
     </div>

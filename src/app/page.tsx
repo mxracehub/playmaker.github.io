@@ -7,7 +7,8 @@ import { Navbar } from "@/components/navbar";
 import { SportsFilter } from "@/components/sports-filter";
 import { AthleteCard } from "@/components/athlete-card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Target, Gamepad2, Sparkles } from "lucide-react";
+import { ArrowRight, Target, Gamepad2, Sparkles, Trophy, Clock, Users, Zap, Dribbble, Flag, Waves, Bike, Mountain } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const mockAthletes = [
   {
@@ -54,6 +55,15 @@ const mockAthletes = [
       { label: "Medals", value: "15" }
     ]
   }
+];
+
+const arenaCategories = [
+  { id: 'nba', name: 'Basketball', img: "https://picsum.photos/seed/basketball/600/400", icon: <Dribbble className="h-6 w-6 text-orange-500" />, label: "NBA Arena" },
+  { id: 'nfl', name: 'Football', img: "https://picsum.photos/seed/football/600/400", icon: <Trophy className="h-6 w-6 text-green-500" />, label: "NFL Gridiron" },
+  { id: 'surfing', name: 'Surfing', img: "https://picsum.photos/seed/surfing/600/400", icon: <Waves className="h-6 w-6 text-blue-400" />, label: "Pipe Masters" },
+  { id: 'skateboarding', name: 'Skate', img: "https://picsum.photos/seed/skate/600/400", icon: <Zap className="h-6 w-6 text-yellow-400" />, label: "X-Arena" },
+  { id: 'golf', name: 'Golf', img: "https://picsum.photos/seed/golf/600/400", icon: <Target className="h-6 w-6 text-emerald-400" />, label: "Masters Green" },
+  { id: 'nascar', name: 'NASCAR', img: "https://picsum.photos/seed/nascar/600/400", icon: <Flag className="h-6 w-6 text-red-500" />, label: "Victory Lane" },
 ];
 
 export default function Home() {
@@ -116,11 +126,47 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Explore Arenas Section */}
+        <section className="mb-12">
+          <div className="flex items-center gap-2 mb-6">
+            <Sparkles className="h-5 w-5 text-accent" />
+            <h2 className="font-headline text-xl font-bold uppercase tracking-widest italic">Explore Arenas</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {arenaCategories.map((arena) => (
+              <button 
+                key={arena.id} 
+                onClick={() => setSelectedSport(arena.id)}
+                className={cn(
+                  "group relative h-48 rounded-3xl overflow-hidden border-2 transition-all duration-500",
+                  selectedSport === arena.id ? "border-accent scale-[1.02] shadow-2xl shadow-accent/20" : "border-white/5 grayscale hover:grayscale-0"
+                )}
+              >
+                <img 
+                  src={arena.img} 
+                  alt={arena.name} 
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+                <div className="absolute bottom-4 left-4 flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-xl bg-background/80 backdrop-blur-md border border-white/10 flex items-center justify-center">
+                    {arena.icon}
+                  </div>
+                  <div className="text-left">
+                    <p className="text-xs font-bold uppercase tracking-widest text-accent">{arena.label}</p>
+                    <p className="font-headline text-lg font-bold uppercase">{arena.name}</p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+
         {/* Lobby Controls */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-6">
-            <Sparkles className="h-5 w-5 text-accent" />
-            <h2 className="font-headline text-xl font-bold uppercase tracking-widest italic">Select Arena</h2>
+            <Trophy className="h-5 w-5 text-accent" />
+            <h2 className="font-headline text-xl font-bold uppercase tracking-widest italic">Arena Filter</h2>
           </div>
           <SportsFilter selected={selectedSport} onSelect={setSelectedSport} />
         </div>
