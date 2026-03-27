@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useSearchParams } from "next/navigation";
@@ -7,11 +6,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Users, Zap, Clock, Share2, Target, Dribbble, Flag } from "lucide-react";
+import { Trophy, Users, Zap, Clock, Share2, Target, Dribbble, Flag, CheckCircle2 } from "lucide-react";
 
 export default function GameArenaPage({ params }: { params: { gameId: string } }) {
   const searchParams = useSearchParams();
   const sportId = searchParams.get('sport') || 'nba';
+  const myPick = searchParams.get('pick') || 'Elite Selection';
+  const fee = searchParams.get('fee') || '1000';
+  const currency = searchParams.get('currency') || 'gold';
 
   const themes = {
     nba: {
@@ -19,28 +21,32 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       accent: "text-orange-500",
       bg: "bg-orange-500/10",
       icon: <Dribbble className="h-10 w-10" />,
-      label: "NBA Arena"
+      label: "NBA Arena",
+      statLabel: "PPG / REB"
     },
     nfl: {
       color: "from-green-600/20 to-green-900/40",
       accent: "text-green-500",
       bg: "bg-green-500/10",
       icon: <Trophy className="h-10 w-10" />,
-      label: "NFL Gridiron"
+      label: "NFL Gridiron",
+      statLabel: "TD / YDS"
     },
     golf: {
       color: "from-emerald-600/20 to-emerald-900/40",
       accent: "text-emerald-400",
       bg: "bg-emerald-400/10",
       icon: <Target className="h-10 w-10" />,
-      label: "Masters Green"
+      label: "Masters Green",
+      statLabel: "STROKES / BIRDIE"
     },
     nascar: {
       color: "from-red-600/20 to-red-900/40",
       accent: "text-red-500",
       bg: "bg-red-500/10",
       icon: <Flag className="h-10 w-10" />,
-      label: "Victory Lane"
+      label: "Victory Lane",
+      statLabel: "POS / LAP"
     }
   };
 
@@ -65,49 +71,84 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
                   </div>
                   <div>
                     <Badge className="bg-white/10 text-white font-bold uppercase mb-1">{theme.label}</Badge>
-                    <h1 className="font-headline text-4xl font-bold uppercase tracking-tight">Game #{params.gameId.split('-')[1]}</h1>
+                    <h1 className="font-headline text-4xl font-bold uppercase tracking-tight">{params.gameId}</h1>
                   </div>
                 </div>
                 <div className="flex items-center gap-6 text-sm text-muted-foreground font-medium">
-                  <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" /> LIVE IN 14M</span>
-                  <span className="flex items-center gap-1.5"><Users className="h-4 w-4" /> 2/2 PLAYERS</span>
-                  <span className={`flex items-center gap-1.5 font-bold ${theme.accent}`}><Zap className="h-4 w-4" /> 500 SC POOL</span>
+                  <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" /> GAME LIVE</span>
+                  <span className="flex items-center gap-1.5"><Users className="h-4 w-4" /> 2/2 PLAYMAKERS</span>
+                  <span className={`flex items-center gap-1.5 font-bold ${theme.accent}`}>
+                    <Zap className="h-4 w-4" /> {parseInt(fee) * 2} {currency.toUpperCase()} PRIZE POOL
+                  </span>
                 </div>
               </div>
               <Button className="font-bold uppercase tracking-wider bg-white/10 hover:bg-white/20 border border-white/10">
-                <Share2 className="mr-2 h-4 w-4" /> Invite Link
+                <Share2 className="mr-2 h-4 w-4" /> Share Game
               </Button>
             </header>
+
+            {/* My Locked Selection */}
+            <Card className="bg-accent/5 border-accent/20 border-2 overflow-hidden animate-in zoom-in-95 duration-700">
+               <CardContent className="p-6 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="h-14 w-14 rounded-full bg-accent/20 flex items-center justify-center">
+                      <Trophy className="h-8 w-8 text-accent" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-accent uppercase tracking-widest">My Selection</p>
+                      <h2 className="font-headline text-2xl font-bold text-white uppercase">{myPick}</h2>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <Badge variant="outline" className="border-accent text-accent font-bold">LOCKED IN</Badge>
+                  </div>
+               </CardContent>
+            </Card>
 
             {/* Scoreboard / Roster */}
             <Card className="bg-card/40 backdrop-blur-xl border-white/5 shadow-2xl overflow-hidden">
               <CardHeader className="bg-secondary/30 border-b">
                 <CardTitle className="font-headline text-lg uppercase flex items-center gap-2">
-                  <Trophy className={`h-5 w-5 ${theme.accent}`} />
-                  Live Standings
+                  <Target className={`h-5 w-5 ${theme.accent}`} />
+                  Live Showdown Standings
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-0">
                 <div className="divide-y divide-white/5">
-                  {[1, 2].map((i) => (
-                    <div key={i} className="p-6 flex items-center justify-between hover:bg-white/5 transition-colors">
-                      <div className="flex items-center gap-4">
-                        <span className="font-headline font-bold text-2xl text-muted-foreground">#0{i}</span>
-                        <Avatar className="h-12 w-12 border-2 border-primary/20">
-                          <AvatarImage src={`https://picsum.photos/seed/p${i}/100/100`} />
-                          <AvatarFallback>P{i}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="font-bold text-lg leading-none mb-1">Elite_Player_{i}</p>
-                          <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">3 Active Picks</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className={`font-headline text-3xl font-bold ${i === 1 ? theme.accent : 'text-white/60'}`}>{i === 1 ? '142.5' : '118.0'}</p>
-                        <p className="text-[10px] font-bold text-muted-foreground uppercase">FANTASY POINTS</p>
+                  <div className="p-6 flex items-center justify-between bg-accent/5">
+                    <div className="flex items-center gap-4">
+                      <span className="font-headline font-bold text-2xl text-accent">#01</span>
+                      <Avatar className="h-12 w-12 border-2 border-accent">
+                        <AvatarImage src={`https://picsum.photos/seed/you/100/100`} />
+                        <AvatarFallback>YOU</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-bold text-lg leading-none mb-1">You (Elite_Playmaker)</p>
+                        <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">Pick: {myPick}</p>
                       </div>
                     </div>
-                  ))}
+                    <div className="text-right">
+                      <p className={`font-headline text-3xl font-bold ${theme.accent}`}>154.2</p>
+                      <p className="text-[10px] font-bold text-muted-foreground uppercase">{theme.statLabel}</p>
+                    </div>
+                  </div>
+                  <div className="p-6 flex items-center justify-between hover:bg-white/5 transition-colors">
+                    <div className="flex items-center gap-4">
+                      <span className="font-headline font-bold text-2xl text-muted-foreground">#02</span>
+                      <Avatar className="h-12 w-12 border-2 border-primary/20">
+                        <AvatarImage src={`https://picsum.photos/seed/p2/100/100`} />
+                        <AvatarFallback>OP</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-bold text-lg leading-none mb-1">Challenger_Alpha</p>
+                        <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">Pick: Underdog Squad</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-headline text-3xl font-bold text-white/60">128.0</p>
+                      <p className="text-[10px] font-bold text-muted-foreground uppercase">{theme.statLabel}</p>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -120,9 +161,9 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
               </h3>
               <div className="space-y-3">
                 {[
-                  "Luka Doncic scores a 3-pointer! +3.5 pts",
-                  "Game started. May the best playmaker win.",
-                  "Entry fees collected and secured in the prize pool."
+                  `${myPick} just made a game-changing play! +12.5 pts`,
+                  "Challenger_Alpha is trailing by 26.2 points.",
+                  "Game is entering the final quarter. Hold the line!"
                 ].map((msg, i) => (
                   <div key={i} className="flex items-center gap-3 p-4 rounded-2xl bg-secondary/20 border border-white/5 text-sm">
                     <div className={`h-2 w-2 rounded-full ${theme.bg} animate-pulse`} />
@@ -141,22 +182,25 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="p-4 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase">1st Place</span>
-                  <span className="font-headline font-bold text-accent">450 SC</span>
+                  <span className="text-xs font-bold uppercase">1st Place (90%)</span>
+                  <span className="font-headline font-bold text-accent">{parseInt(fee) * 1.8} {currency.toUpperCase()}</span>
                 </div>
                 <div className="p-4 rounded-xl bg-secondary/30 border border-white/5 flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase">2nd Place</span>
-                  <span className="font-headline font-bold">50 SC</span>
+                  <span className="text-xs font-bold uppercase">2nd Place (10%)</span>
+                  <span className="font-headline font-bold">{parseInt(fee) * 0.2} {currency.toUpperCase()}</span>
                 </div>
+                <p className="text-[10px] text-center text-muted-foreground italic font-medium">
+                  Valuation: $1 = 100 {currency.toUpperCase()}
+                </p>
               </CardContent>
             </Card>
             
             <Card className="bg-secondary/10 border-dashed border-2 p-6">
-              <h4 className="font-headline font-bold uppercase text-center mb-4">Arena Rules</h4>
+              <h4 className="font-headline font-bold uppercase text-center mb-4">Showdown Rules</h4>
               <ul className="space-y-3 text-xs text-muted-foreground font-medium">
-                <li className="flex items-start gap-2">• Points based on live athlete performance</li>
-                <li className="flex items-start gap-2">• Highest score at final whistle wins</li>
-                <li className="flex items-start gap-2">• Tiebreakers decided by top performer pts</li>
+                <li className="flex items-start gap-2">• Winner takes 90% of the total prize pool</li>
+                <li className="flex items-start gap-2">• Score updates in real-time from official feeds</li>
+                <li className="flex items-start gap-2">• Tie-breakers split the pool evenly</li>
               </ul>
             </Card>
           </div>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -10,20 +9,45 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CircleDot } from "lucide-react";
+import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const sports = [
-  { id: 'nba', name: 'Basketball', icon: <Dribbble className="w-5 h-5" />, color: "text-orange-500" },
-  { id: 'nfl', name: 'Football', icon: <Trophy className="w-5 h-5" />, color: "text-green-500" },
-  { id: 'golf', name: 'Golf', icon: <Target className="w-5 h-5" />, color: "text-emerald-400" },
-  { id: 'nascar', name: 'NASCAR', icon: <Flag className="w-5 h-5" />, color: "text-red-500" },
+  { 
+    id: 'nba', 
+    name: 'Basketball', 
+    icon: <Dribbble className="w-5 h-5" />, 
+    color: "text-orange-500",
+    options: ["Lakers", "Celtics", "Warriors", "Mavericks", "Nuggets"]
+  },
+  { 
+    id: 'nfl', 
+    name: 'Football', 
+    icon: <Trophy className="w-5 h-5" />, 
+    color: "text-green-500",
+    options: ["Chiefs", "Eagles", "49ers", "Cowboys", "Ravens"]
+  },
+  { 
+    id: 'golf', 
+    name: 'Golf', 
+    icon: <Target className="w-5 h-5" />, 
+    color: "text-emerald-400",
+    options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Tiger Woods", "Brooks Koepka"]
+  },
+  { 
+    id: 'nascar', 
+    name: 'NASCAR', 
+    icon: <Flag className="w-5 h-5" />, 
+    color: "text-red-500",
+    options: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "William Byron", "Joey Logano"]
+  },
 ];
 
 export default function CreateGamePage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [selectedSport, setSelectedSport] = useState("");
+  const [selectedSport, setSelectedSport] = useState<string>("");
+  const [selectedPick, setSelectedPick] = useState<string>("");
   const [currency, setCurrency] = useState("gold");
   const [fee, setFee] = useState("1000");
 
@@ -35,6 +59,10 @@ export default function CreateGamePage() {
   const handleCreate = () => {
     if (!selectedSport) {
       toast({ variant: "destructive", title: "Missing Arena", description: "Please select a sport for your game." });
+      return;
+    }
+    if (!selectedPick) {
+      toast({ variant: "destructive", title: "Selection Required", description: "Please pick your winning team or athlete." });
       return;
     }
 
@@ -50,18 +78,20 @@ export default function CreateGamePage() {
       return;
     }
 
-    toast({ title: "Game Initialized", description: "Setting up your arena... Good luck!" });
-    // Simulate creation and redirect to a unique game page
+    toast({ title: "Game Initialized", description: `You've locked in ${selectedPick}. Entering Arena...` });
+    
     setTimeout(() => {
-      router.push(`/games/game-${Math.floor(Math.random() * 1000)}?sport=${selectedSport}`);
-    }, 1500);
+      const gameId = `game-${Math.floor(Math.random() * 9000) + 1000}`;
+      router.push(`/games/${gameId}?sport=${selectedSport}&pick=${encodeURIComponent(selectedPick)}&fee=${fee}&currency=${currency}`);
+    }, 1200);
   };
+
+  const currentSport = sports.find(s => s.id === selectedSport);
 
   return (
     <div className="min-h-screen pb-24 md:pt-20 bg-background relative overflow-hidden">
       <Navbar />
       
-      {/* Background Decor */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-primary/5 blur-[120px] rounded-full -z-10" />
 
       <main className="mx-auto max-w-3xl px-4 py-12">
@@ -70,14 +100,14 @@ export default function CreateGamePage() {
             <Gamepad2 className="h-8 w-8 text-primary" />
           </div>
           <h1 className="font-headline text-4xl font-bold uppercase tracking-tight mb-2">Create <span className="text-accent">Game</span></h1>
-          <p className="text-muted-foreground">Challenge your squad and dominate the highlights</p>
+          <p className="text-muted-foreground">Select your arena, set the stakes, and pick your winner</p>
         </header>
 
         <div className="grid gap-8">
           <Card className="bg-card/50 backdrop-blur-sm border-white/5 overflow-hidden">
             <CardHeader className="border-b bg-secondary/20">
               <CardTitle className="font-headline text-xl uppercase tracking-tighter">Arena Configuration</CardTitle>
-              <CardDescription>Select your sport and set the stakes</CardDescription>
+              <CardDescription>Lock in your choice for the victory podium</CardDescription>
             </CardHeader>
             <CardContent className="p-6 space-y-8">
               {/* Sport Selection */}
@@ -87,7 +117,10 @@ export default function CreateGamePage() {
                   {sports.map((sport) => (
                     <button
                       key={sport.id}
-                      onClick={() => setSelectedSport(sport.id)}
+                      onClick={() => {
+                        setSelectedSport(sport.id);
+                        setSelectedPick(""); // Reset pick when sport changes
+                      }}
                       className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all duration-300 ${
                         selectedSport === sport.id 
                           ? 'bg-primary/20 border-primary scale-105 shadow-lg shadow-primary/10' 
@@ -101,9 +134,34 @@ export default function CreateGamePage() {
                 </div>
               </div>
 
+              {/* Winner Pick Selection */}
+              {selectedSport && (
+                <div className="space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    Pick Your Winning {selectedSport === 'golf' || selectedSport === 'nascar' ? 'Athlete' : 'Team'}
+                  </Label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {currentSport?.options.map((option) => (
+                      <button
+                        key={option}
+                        onClick={() => setSelectedPick(option)}
+                        className={`flex items-center justify-between p-4 rounded-xl border text-sm font-bold transition-all ${
+                          selectedPick === option
+                            ? 'bg-accent/10 border-accent text-accent'
+                            : 'bg-secondary/20 border-white/5 hover:border-white/20'
+                        }`}
+                      >
+                        {option}
+                        {selectedPick === option && <CheckCircle2 className="h-4 w-4" />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Currency Selection */}
               <div className="space-y-4">
-                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Currency Stakes</Label>
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Currency Stakes ($1 = 100 Coins)</Label>
                 <RadioGroup defaultValue="gold" className="grid grid-cols-1 md:grid-cols-2 gap-4" onValueChange={setCurrency}>
                   <div className={`relative p-4 rounded-2xl border-2 cursor-pointer transition-all ${currency === 'gold' ? 'border-primary bg-primary/5' : 'border-white/5 bg-secondary/10'}`}>
                     <RadioGroupItem value="gold" id="gold" className="absolute top-4 right-4" />
@@ -113,7 +171,7 @@ export default function CreateGamePage() {
                       </div>
                       <div>
                         <p className="font-bold uppercase text-sm">Gold Coins</p>
-                        <p className="text-[10px] text-muted-foreground">RECREATIONAL PLAY</p>
+                        <p className="text-[10px] text-muted-foreground italic">100 GC = $1.00 Value</p>
                       </div>
                     </Label>
                   </div>
@@ -125,7 +183,7 @@ export default function CreateGamePage() {
                       </div>
                       <div>
                         <p className="font-bold uppercase text-sm">Sweeps Coins</p>
-                        <p className="text-[10px] text-accent font-bold">BONUS PRIZE PLAY</p>
+                        <p className="text-[10px] text-accent font-bold italic">100 SC = $1.00 Value</p>
                       </div>
                     </Label>
                   </div>
@@ -141,10 +199,10 @@ export default function CreateGamePage() {
                       <SelectValue placeholder="Select amount" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="100">100 {currency === 'gold' ? 'GC' : 'SC'}</SelectItem>
-                      <SelectItem value="1000">1,000 {currency === 'gold' ? 'GC' : 'SC'}</SelectItem>
-                      <SelectItem value="5000">5,000 {currency === 'gold' ? 'GC' : 'SC'}</SelectItem>
-                      <SelectItem value="10000">10,000 {currency === 'gold' ? 'GC' : 'SC'}</SelectItem>
+                      <SelectItem value="100">100 ($1.00)</SelectItem>
+                      <SelectItem value="1000">1,000 ($10.00)</SelectItem>
+                      <SelectItem value="5000">5,000 ($50.00)</SelectItem>
+                      <SelectItem value="10000">10,000 ($100.00)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -174,7 +232,7 @@ export default function CreateGamePage() {
                 <div>
                   <h4 className="font-headline font-bold text-lg uppercase leading-tight mb-1">Challenge a Friend</h4>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Starting a game will generate a unique Invite Code. Share it with your squad to fill the arena and start the showdown.
+                    Once you've locked in your winner, invite your squad to see if they can beat your pick. Prizes are distributed automatically based on live performance results.
                   </p>
                 </div>
               </div>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -10,27 +9,27 @@ import { Coins, Zap, ShieldCheck, Sparkles } from "lucide-react";
 const packages = [
   {
     id: "pkg1",
-    goldCoins: "10,000",
+    goldCoins: "1,000",
     sweepsCoins: "10",
-    price: "$9.99",
+    price: "$10.00",
     tag: "Starter",
     popular: false,
     color: "from-blue-500/20 to-blue-600/20"
   },
   {
     id: "pkg2",
-    goldCoins: "50,000",
-    sweepsCoins: "52",
-    price: "$49.99",
+    goldCoins: "5,000",
+    sweepsCoins: "50",
+    price: "$50.00",
     tag: "Best Value",
     popular: true,
     color: "from-primary/20 to-accent/20"
   },
   {
     id: "pkg3",
-    goldCoins: "250,000",
-    sweepsCoins: "265",
-    price: "$249.99",
+    goldCoins: "10,000",
+    sweepsCoins: "100",
+    price: "$100.00",
     tag: "High Roller",
     popular: false,
     color: "from-purple-500/20 to-pink-500/20"
@@ -46,13 +45,13 @@ export default function ShopPage() {
         <header className="mb-12 text-center">
           <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 px-4 py-1.5 rounded-full text-accent font-bold text-sm uppercase mb-6 tracking-widest animate-bounce">
             <Sparkles className="h-4 w-4" />
-            Limited Time Offer
+            Elite Exchange Ratio: $1 = 100 Coins
           </div>
           <h1 className="font-headline text-4xl md:text-5xl font-bold mb-4 tracking-tight uppercase">
             Currency <span className="text-accent">Forge</span>
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            Purchase Gold Coins for recreational gameplay and receive free Sweepstakes Coins as a bonus for cash prize entries.
+            Purchase Gold Coins for recreational gameplay and receive bonus Sweepstakes Coins for real prize showdowns.
           </p>
         </header>
 
@@ -100,23 +99,22 @@ export default function ShopPage() {
           ))}
         </div>
 
-        {/* Info Grid */}
         <section className="mt-20 grid md:grid-cols-2 gap-12">
           <div className="space-y-6">
             <h2 className="font-headline text-2xl font-bold uppercase flex items-center gap-3">
               <div className="h-8 w-1.5 bg-accent rounded-full" />
-              How it Works
+              Currency Economics
             </h2>
             <div className="space-y-4">
               <p className="text-muted-foreground leading-relaxed">
-                Playmakers operates as a social sports sweepstakes. Gold Coins are for entertainment and have no monetary value. Sweepstakes Coins (SC) can be used to enter contests with real prizes.
+                Playmakers maintains a strict 100:1 coin-to-dollar ratio for all packages. Gold Coins (GC) are used for training and social play, while Sweepstakes Coins (SC) are bonus credits used for competitive prize games.
               </p>
               <ul className="space-y-3">
                 {[
-                  "No Purchase Necessary to play or win.",
-                  "Daily login bonuses grant free SC every 24 hours.",
-                  "Mail-in entries accepted for free SC credits.",
-                  "Prizes can be redeemed for cash or gift cards."
+                  "GC and SC packages always follow the $1 = 100 ratio.",
+                  "Daily login streaks reward free SC for consistent play.",
+                  "Participate in community games to earn additional GC.",
+                  "Prizes are redeemable at the same 100:1 ratio for gift cards."
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-white/80">
                     <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accent" />
@@ -130,13 +128,12 @@ export default function ShopPage() {
           <div className="bg-card/30 rounded-3xl p-8 border border-white/5 flex flex-col justify-center text-center">
             <h3 className="font-headline text-xl font-bold mb-4 uppercase text-accent">Safe & Secure</h3>
             <p className="text-muted-foreground text-sm mb-8">
-              We use bank-grade encryption and partner with industry leaders to ensure your transactions and data are protected 24/7.
+              Every transaction is encrypted and verified to ensure your playmaker legacy is protected.
             </p>
             <div className="flex justify-center gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-               {/* Replace with real provider logos if needed */}
                <div className="font-bold text-xl tracking-tighter">VISA</div>
                <div className="font-bold text-xl tracking-tighter">AMEX</div>
-               <div className="font-bold text-xl tracking-tighter">APPLE PAY</div>
+               <div className="font-bold text-xl tracking-tighter">PAYPAL</div>
             </div>
           </div>
         </section>
