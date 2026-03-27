@@ -97,6 +97,50 @@ const mockAthletes = [
       { label: "Rotation", value: "1080" },
       { label: "Style", value: "9.9" }
     ]
+  },
+  {
+    id: "9",
+    name: "Victor Wembanyama",
+    team: "SA Spurs",
+    sport: "NBA",
+    avatar: "https://picsum.photos/seed/wemby/400/400",
+    stats: [
+      { label: "Blocks/G", value: "3.6" },
+      { label: "Points/G", value: "21.4" }
+    ]
+  },
+  {
+    id: "10",
+    name: "Christian McCaffrey",
+    team: "SF 49ers",
+    sport: "NFL",
+    avatar: "https://picsum.photos/seed/cmc/400/400",
+    stats: [
+      { label: "Total TDs", value: "21" },
+      { label: "Rush Yds", value: "1,459" }
+    ]
+  },
+  {
+    id: "11",
+    name: "Yuto Horigome",
+    team: "Elite Skate",
+    sport: "Skateboarding",
+    avatar: "https://picsum.photos/seed/yuto/400/400",
+    stats: [
+      { label: "Technical", value: "9.9" },
+      { label: "Gold", value: "2" }
+    ]
+  },
+  {
+    id: "12",
+    name: "Brooks Koepka",
+    team: "LIV Golf",
+    sport: "Golf",
+    avatar: "https://picsum.photos/seed/brooks/400/400",
+    stats: [
+      { label: "Majors", value: "5" },
+      { label: "Drive", value: "318y" }
+    ]
   }
 ];
 
@@ -164,7 +208,7 @@ export default function Home() {
         <div className="mb-12">
           <div className="flex items-center gap-2 mb-6">
             <Trophy className="h-5 w-5 text-accent" />
-            <h2 className="font-headline text-xl font-bold uppercase tracking-widest italic">Arena Filter</h2>
+            <h2 className="font-headline text-xl font-bold uppercase tracking-widest italic">Sports Games</h2>
           </div>
           <SportsFilter selected={selectedSport} onSelect={setSelectedSport} />
         </div>
