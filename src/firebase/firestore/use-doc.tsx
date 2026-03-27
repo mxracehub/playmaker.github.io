@@ -1,6 +1,6 @@
 'use client';
     
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   DocumentReference,
   onSnapshot,
@@ -45,14 +45,16 @@ export function useDoc<T = any>(
   const [isLoading, setIsLoading] = useState<boolean>(!!memoizedDocRef);
   const [error, setError] = useState<FirestoreError | Error | null>(null);
   
-  // Track the previous path to detect reference changes in the render phase
-  const [prevPath, setPrevPath] = useState<string | null>(memoizedDocRef?.path || null);
+  // Use a ref to track the path we're currently looking at to detect changes during render
+  const currentPath = useRef<string | null>(memoizedDocRef?.path || null);
 
-  // If the reference changed, immediately set loading to true in the render cycle
-  if (memoizedDocRef?.path !== prevPath) {
-    setPrevPath(memoizedDocRef?.path || null);
-    setIsLoading(!!memoizedDocRef);
+  // If the reference path changed, reset state immediately in the render cycle
+  // to prevent stale data or incorrect loading states in the next frame.
+  if (memoizedDocRef?.path !== currentPath.current) {
+    currentPath.current = memoizedDocRef?.path || null;
     setData(null);
+    setIsLoading(!!memoizedDocRef);
+    setError(null);
   }
 
   useEffect(() => {
