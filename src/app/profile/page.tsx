@@ -7,10 +7,20 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Trophy, Settings, Wallet, History, Star, Gamepad2, Landmark, Zap } from "lucide-react";
-import { useUser } from "@/firebase";
+import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
+import { doc } from "firebase/firestore";
 
 export default function ProfilePage() {
   const { user } = useUser();
+  const db = useFirestore();
+
+  // Fetch real-time profile data from Firestore
+  const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
+  const { data: profile } = useDoc(userProfileRef);
+
+  // Use Firestore username or fallback to Auth display name or generic title
+  const displayName = profile?.username || user?.displayName || 'Elite Playmaker';
+  const bio = profile?.bio || "Always playing for the next highlight reel.";
 
   return (
     <div className="min-h-screen pb-24 md:pt-20">
@@ -26,10 +36,10 @@ export default function ProfilePage() {
             </Avatar>
             <div className="flex-1 text-center md:text-left">
               <div className="flex flex-col md:flex-row md:items-center gap-4 mb-2">
-                <h1 className="font-headline text-4xl font-bold uppercase tracking-tighter">{user?.displayName || 'Elite Playmaker'}</h1>
+                <h1 className="font-headline text-4xl font-bold uppercase tracking-tighter">{displayName}</h1>
                 <Badge className="bg-accent text-accent-foreground font-bold px-3 py-1">PRO LEVEL 24</Badge>
               </div>
-              <p className="text-muted-foreground mb-6 font-medium italic">"Always playing for the next highlight reel."</p>
+              <p className="text-muted-foreground mb-6 font-medium italic">"{bio}"</p>
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
                 <div className="flex items-center gap-2 bg-secondary/50 px-4 py-2 rounded-full border">
                   <Star className="h-4 w-4 text-accent fill-accent" />
@@ -42,7 +52,7 @@ export default function ProfilePage() {
               </div>
             </div>
             <Link href="/settings">
-              <Button variant="outline" size="icon" className="h-12 w-12 rounded-full border-white/10 hover:bg-white/5">
+              <Button variant="outline" size="icon" className="h-12 w-12 rounded-full border-white/10 hover:bg-white/5 shadow-lg">
                 <Settings className="h-6 w-6" />
               </Button>
             </Link>
