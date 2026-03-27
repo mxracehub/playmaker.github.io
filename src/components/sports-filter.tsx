@@ -1,64 +1,64 @@
 
 "use client";
 
-import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { LayoutGrid } from "lucide-react";
+import { 
+  LayoutGrid, 
+  Dribbble, 
+  Trophy, 
+  Waves, 
+  Zap, 
+  Bike, 
+  Mountain, 
+  Flag, 
+  Target 
+} from "lucide-react";
 
 const sports = [
   { 
     id: 'all', 
     name: 'All', 
-    icon: <LayoutGrid className="w-4 h-4" />,
-    image: null 
+    icon: <LayoutGrid className="w-4 h-4" />
   },
   { 
     id: 'nba', 
     name: 'NBA', 
-    image: 'https://picsum.photos/seed/basketball/100/100',
-    hint: 'basketball'
+    icon: <Dribbble className="w-4 h-4" />
   },
   { 
     id: 'nfl', 
     name: 'NFL', 
-    image: 'https://picsum.photos/seed/football/100/100',
-    hint: 'football'
+    icon: <Trophy className="w-4 h-4" />
   },
   { 
     id: 'surfing', 
     name: 'Surfing', 
-    image: 'https://picsum.photos/seed/surfing/100/100',
-    hint: 'surfing'
+    icon: <Waves className="w-4 h-4" />
   },
   { 
     id: 'skateboarding', 
     name: 'Skate', 
-    image: 'https://picsum.photos/seed/skate/100/100',
-    hint: 'skateboarding'
+    icon: <Zap className="w-4 h-4" />
   },
   { 
     id: 'bmx', 
     name: 'BMX', 
-    image: 'https://picsum.photos/seed/bmx/100/100',
-    hint: 'bmx'
+    icon: <Bike className="w-4 h-4" />
   },
   { 
     id: 'snowboarding', 
     name: 'Snowboard', 
-    image: 'https://picsum.photos/seed/snow/100/100',
-    hint: 'snowboarding'
+    icon: <Mountain className="w-4 h-4" />
   },
   { 
     id: 'nascar', 
     name: 'NASCAR', 
-    image: 'https://picsum.photos/seed/nascar/100/100',
-    hint: 'nascar'
+    icon: <Flag className="w-4 h-4" />
   },
   { 
     id: 'golf', 
     name: 'Golf', 
-    image: 'https://picsum.photos/seed/golf/100/100',
-    hint: 'golf'
+    icon: <Target className="w-4 h-4" />
   },
 ];
 
@@ -81,21 +81,12 @@ export function SportsFilter({ selected, onSelect }: SportsFilterProps) {
               : "bg-card/50 border-white/5 text-muted-foreground hover:bg-secondary hover:border-accent/30"
           )}
         >
-          {sport.image ? (
-            <div className="relative h-6 w-6 overflow-hidden rounded-full border border-white/20">
-              <Image 
-                src={sport.image} 
-                alt={sport.name} 
-                fill 
-                className="object-cover"
-                data-ai-hint={sport.hint}
-              />
-            </div>
-          ) : (
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10">
-              {sport.icon}
-            </div>
-          )}
+          <div className={cn(
+            "flex h-6 w-6 items-center justify-center rounded-full",
+            selected === sport.id ? "bg-white/20" : "bg-white/10"
+          )}>
+            {sport.icon}
+          </div>
           <span className="uppercase tracking-tight">{sport.name}</span>
         </button>
       ))}

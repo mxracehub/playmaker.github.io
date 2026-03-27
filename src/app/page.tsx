@@ -3,14 +3,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Navbar } from "@/components/navbar";
 import { SportsFilter } from "@/components/sports-filter";
 import { AthleteCard } from "@/components/athlete-card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Trophy, Target, Users, Gamepad2, Sparkles } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ArrowRight, Target, Gamepad2, Sparkles } from "lucide-react";
 
 const mockAthletes = [
   {
@@ -57,17 +54,6 @@ const mockAthletes = [
       { label: "Medals", value: "15" }
     ]
   }
-];
-
-const featuredArenas = [
-  { id: 'nba', name: 'Basketball', image: 'https://picsum.photos/seed/basketball/600/400', hint: 'basketball stadium' },
-  { id: 'nfl', name: 'Football', image: 'https://picsum.photos/seed/football/600/400', hint: 'football field' },
-  { id: 'surfing', name: 'Surfing', image: 'https://picsum.photos/seed/surfing/600/400', hint: 'surfing wave' },
-  { id: 'skateboarding', name: 'Skateboarding', image: 'https://picsum.photos/seed/skate/600/400', hint: 'skateboarding trick' },
-  { id: 'bmx', name: 'BMX', image: 'https://picsum.photos/seed/bmx/600/400', hint: 'bmx jump' },
-  { id: 'snowboarding', name: 'Snowboarding', image: 'https://picsum.photos/seed/snow/600/400', hint: 'snowboarding mountain' },
-  { id: 'nascar', name: 'NASCAR', image: 'https://picsum.photos/seed/nascar/600/400', hint: 'race track' },
-  { id: 'golf', name: 'Golf', image: 'https://picsum.photos/seed/golf/600/400', hint: 'golf course' },
 ];
 
 export default function Home() {
@@ -130,43 +116,12 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Featured Arenas Section */}
-        <section className="mb-12">
-          <div className="flex items-center gap-2 mb-6">
-            <Sparkles className="h-5 w-5 text-accent" />
-            <h2 className="font-headline text-xl font-bold uppercase tracking-widest italic">Explore Arenas</h2>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-            {featuredArenas.map((arena) => (
-              <div 
-                key={arena.id} 
-                className={cn(
-                  "group relative aspect-[3/4] overflow-hidden rounded-2xl cursor-pointer border-2 transition-all duration-300",
-                  selectedSport === arena.id ? "border-primary scale-105 shadow-xl shadow-primary/20 ring-4 ring-primary/10" : "border-white/5 hover:border-white/20"
-                )}
-                onClick={() => setSelectedSport(arena.id)}
-              >
-                <Image 
-                  src={arena.image} 
-                  alt={arena.name} 
-                  fill 
-                  className={cn(
-                    "object-cover transition-transform duration-500 group-hover:scale-110",
-                    selectedSport === arena.id ? "opacity-100" : "opacity-60 group-hover:opacity-80"
-                  )}
-                  data-ai-hint={arena.hint}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                <div className="absolute bottom-3 left-0 right-0 text-center">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-white">{arena.name}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
         {/* Lobby Controls */}
         <div className="mb-8">
+          <div className="flex items-center gap-2 mb-6">
+            <Sparkles className="h-5 w-5 text-accent" />
+            <h2 className="font-headline text-xl font-bold uppercase tracking-widest italic">Select Arena</h2>
+          </div>
           <SportsFilter selected={selectedSport} onSelect={setSelectedSport} />
         </div>
 
