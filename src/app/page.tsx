@@ -10,6 +10,7 @@ import { AthleteCard } from "@/components/athlete-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Trophy, Target, Users, Gamepad2, Sparkles } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const mockAthletes = [
   {
@@ -89,7 +90,7 @@ export default function Home() {
       
       <main className="mx-auto max-w-7xl px-4 py-6">
         {/* Hero Section */}
-        <section className="mb-12 overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-accent/20 p-8 text-white relative shadow-2xl">
+        <section className="mb-12 overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-accent/20 p-8 text-white relative shadow-2xl border-2 border-white/10">
           <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,rgba(255,255,255,0.1),rgba(255,255,255,0.5))]" />
           <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="max-w-xl">
@@ -111,17 +112,17 @@ export default function Home() {
               </div>
             </div>
             <div className="hidden md:flex flex-col gap-4">
-              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/20">
+              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/20 shadow-xl">
                 <Gamepad2 className="h-6 w-6 text-accent" />
                 <div>
-                  <p className="text-xs text-white/60 font-bold uppercase">Active Games</p>
+                  <p className="text-xs text-white/60 font-bold uppercase tracking-widest">Active Games</p>
                   <p className="text-xl font-headline font-bold">142,509</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/20">
+              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/20 shadow-xl">
                 <Target className="h-6 w-6 text-accent" />
                 <div>
-                  <p className="text-xs text-white/60 font-bold uppercase">Winners Today</p>
+                  <p className="text-xs text-white/60 font-bold uppercase tracking-widest">Winners Today</p>
                   <p className="text-xl font-headline font-bold">4,120</p>
                 </div>
               </div>
@@ -139,14 +140,20 @@ export default function Home() {
             {featuredArenas.map((arena) => (
               <div 
                 key={arena.id} 
-                className="group relative aspect-[3/4] overflow-hidden rounded-2xl cursor-pointer border border-white/5"
+                className={cn(
+                  "group relative aspect-[3/4] overflow-hidden rounded-2xl cursor-pointer border-2 transition-all duration-300",
+                  selectedSport === arena.id ? "border-primary scale-105 shadow-xl shadow-primary/20 ring-4 ring-primary/10" : "border-white/5 hover:border-white/20"
+                )}
                 onClick={() => setSelectedSport(arena.id)}
               >
                 <Image 
                   src={arena.image} 
                   alt={arena.name} 
                   fill 
-                  className="object-cover transition-transform duration-500 group-hover:scale-110 opacity-60 group-hover:opacity-100"
+                  className={cn(
+                    "object-cover transition-transform duration-500 group-hover:scale-110",
+                    selectedSport === arena.id ? "opacity-100" : "opacity-60 group-hover:opacity-80"
+                  )}
                   data-ai-hint={arena.hint}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
