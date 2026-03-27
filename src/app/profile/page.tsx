@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Trophy, Settings, Wallet, History, Star, Gamepad2, Landmark, Coins } from "lucide-react";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
@@ -22,8 +23,17 @@ export default function ProfilePage() {
   const displayName = profile?.username || user?.displayName || 'Elite Playmaker';
   const bio = profile?.bio || "Always playing for the next highlight reel.";
 
+  const recentActivity = [
+    { action: "Started Game", detail: "NBA Sunday Night Special", value: "-100 GC", time: "2h ago" },
+    { action: "Won Game", detail: "Head-to-Head vs Jaxon", value: "+50 SC", time: "5h ago", positive: true },
+    { action: "Bank Deposit", detail: "Starter Pack", value: "+10,000 GC", time: "1d ago", positive: true },
+    { action: "Joined Contest", detail: "NFL Blitz Weekly", value: "-500 GC", time: "2d ago" },
+    { action: "Won Game", detail: "Golf Masters Pick-em", value: "+20 SC", time: "3d ago", positive: true },
+    { action: "Profile Updated", detail: "Nickname Changed", value: "0 GC", time: "4d ago" },
+  ];
+
   return (
-    <div className="min-h-screen pb-24 md:pt-20">
+    <div className="min-h-screen pb-24 pt-20">
       <Navbar />
       
       <main className="mx-auto max-w-5xl px-4 py-8">
@@ -98,32 +108,35 @@ export default function ProfilePage() {
             </CardContent>
           </Card>
 
-          <Card className="md:col-span-2 bg-card/50 border">
-            <CardHeader className="flex flex-row items-center justify-between">
+          <Card className="md:col-span-2 bg-card/50 border flex flex-col h-[500px]">
+            <CardHeader className="flex flex-row items-center justify-between shrink-0">
               <CardTitle className="text-lg font-headline flex items-center gap-2">
                 <History className="h-5 w-5 text-primary" />
                 RECENT ACTIVITY
               </CardTitle>
               <Button variant="link" className="text-accent font-bold uppercase text-xs">Full History</Button>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[
-                  { action: "Started Game", detail: "NBA Sunday Night Special", value: "-100 GC", time: "2h ago" },
-                  { action: "Won Game", detail: "Head-to-Head vs Jaxon", value: "+50 SC", time: "5h ago", positive: true },
-                  { action: "Bank Deposit", detail: "Starter Pack", value: "+10,000 GC", time: "1d ago", positive: true },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-secondary/20 border border-white/5">
-                    <div>
-                      <p className="font-bold text-sm leading-none mb-1">{item.action}</p>
-                      <p className="text-xs text-muted-foreground">{item.detail} • {item.time}</p>
+            <CardContent className="flex-1 min-h-0">
+              <ScrollArea className="h-full pr-4">
+                <div className="space-y-4">
+                  {recentActivity.map((item, i) => (
+                    <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-secondary/20 border border-white/5">
+                      <div>
+                        <p className="font-bold text-sm leading-none mb-1">{item.action}</p>
+                        <p className="text-xs text-muted-foreground">{item.detail} • {item.time}</p>
+                      </div>
+                      <span className={`font-headline font-bold ${item.positive ? 'text-green-400' : 'text-muted-foreground'}`}>
+                        {item.value}
+                      </span>
                     </div>
-                    <span className={`font-headline font-bold ${item.positive ? 'text-green-400' : 'text-muted-foreground'}`}>
-                      {item.value}
-                    </span>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                  {recentActivity.length === 0 && (
+                    <div className="py-20 text-center opacity-50">
+                      <p className="text-sm text-muted-foreground">No recent activity found.</p>
+                    </div>
+                  )}
+                </div>
+              </ScrollArea>
             </CardContent>
           </Card>
         </div>
