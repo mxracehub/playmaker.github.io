@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { User, Bell, Shield, Wallet, Save, CheckCircle2 } from "lucide-react";
-import { useUser, useFirestore, setDocumentNonBlocking, useDoc } from "@/firebase";
+import { useUser, useFirestore, setDocumentNonBlocking, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -34,7 +34,8 @@ export default function SettingsPage() {
   const [verificationCode, setVerificationCode] = useState("");
 
   // Get user profile data from Firestore to check 2FA status
-  const userProfileRef = user ? doc(db, "users", user.uid) : null;
+  // CRITICAL: Document references must be memoized using useMemoFirebase to avoid infinite re-renders.
+  const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
   const { data: profile } = useDoc(userProfileRef);
 
   useEffect(() => {
@@ -49,7 +50,6 @@ export default function SettingsPage() {
     if (!user || !userProfileRef) return;
     
     // Use setDocumentNonBlocking with merge: true to ensure the document is created if it doesn't exist (upsert)
-    // This avoids "Missing or insufficient permissions" when trying to update a non-existent document
     setDocumentNonBlocking(userProfileRef, {
       id: user.uid,
       email: user.email,
