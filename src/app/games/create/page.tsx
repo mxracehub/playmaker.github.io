@@ -401,25 +401,19 @@ export default function CreateGamePage() {
               </div>
 
               {/* Fee and Settings */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="fee" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Entry Fee</Label>
-                  <Select value={fee} onValueChange={setFee}>
-                    <SelectTrigger id="fee" className="bg-secondary/30 border-white/5 h-12">
-                      <SelectValue placeholder="Select amount" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="100">100 ($1.00)</SelectItem>
-                      <SelectItem value="1000">1,000 ($10.00)</SelectItem>
-                      <SelectItem value="5000">5,000 ($50.00)</SelectItem>
-                      <SelectItem value="10000">10,000 ($100.00)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="players" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Max Players</Label>
-                  <Input type="number" id="players" defaultValue="2" disabled className="bg-secondary/30 border-white/5 h-12 opacity-50 cursor-not-allowed" />
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="fee" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Entry Fee</Label>
+                <Select value={fee} onValueChange={setFee}>
+                  <SelectTrigger id="fee" className="bg-secondary/30 border-white/5 h-12">
+                    <SelectValue placeholder="Select amount" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="100">100 ($1.00)</SelectItem>
+                    <SelectItem value="1000">1,000 ($10.00)</SelectItem>
+                    <SelectItem value="5000">5,000 ($50.00)</SelectItem>
+                    <SelectItem value="10000">10,000 ($100.00)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </CardContent>
             <CardFooter className="bg-secondary/10 border-t p-6 flex flex-col items-center gap-4">
