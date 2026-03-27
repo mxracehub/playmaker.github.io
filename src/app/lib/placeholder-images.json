@@ -14,6 +14,42 @@
       "imageHint": "football field"
     },
     {
+      "id": "surfing-hero",
+      "description": "Huge wave surfing action",
+      "imageUrl": "https://picsum.photos/seed/surfing/600/400",
+      "imageHint": "surfing wave"
+    },
+    {
+      "id": "skateboarding-hero",
+      "description": "Skateboarder performing a trick",
+      "imageUrl": "https://picsum.photos/seed/skate/600/400",
+      "imageHint": "skateboarding trick"
+    },
+    {
+      "id": "bmx-hero",
+      "description": "BMX rider in the air",
+      "imageUrl": "https://picsum.photos/seed/bmx/600/400",
+      "imageHint": "bmx jump"
+    },
+    {
+      "id": "snowboarding-hero",
+      "description": "Snowboarder in deep powder",
+      "imageUrl": "https://picsum.photos/seed/snow/600/400",
+      "imageHint": "snowboarding mountain"
+    },
+    {
+      "id": "nascar-hero",
+      "description": "Race cars on a track",
+      "imageUrl": "https://picsum.photos/seed/nascar/600/400",
+      "imageHint": "race track"
+    },
+    {
+      "id": "golf-hero",
+      "description": "Pristine golf course green",
+      "imageUrl": "https://picsum.photos/seed/golf/600/400",
+      "imageHint": "golf course"
+    },
+    {
       "id": "athlete-luka",
       "description": "Luka Doncic style athlete",
       "imageUrl": "https://picsum.photos/seed/luka/400/400",
