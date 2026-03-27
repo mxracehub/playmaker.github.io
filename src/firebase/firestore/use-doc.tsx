@@ -45,11 +45,11 @@ export function useDoc<T = any>(
   const [isLoading, setIsLoading] = useState<boolean>(!!memoizedDocRef);
   const [error, setError] = useState<FirestoreError | Error | null>(null);
   
-  // Use a ref to track the path we're currently looking at to detect changes during render
+  // Use a ref to track the path we're currently looking at
   const currentPath = useRef<string | null>(memoizedDocRef?.path || null);
 
   // If the reference path changed, reset state immediately in the render cycle
-  // to prevent stale data or incorrect loading states in the next frame.
+  // to prevent stale data or incorrect loading states.
   if (memoizedDocRef?.path !== currentPath.current) {
     currentPath.current = memoizedDocRef?.path || null;
     setData(null);

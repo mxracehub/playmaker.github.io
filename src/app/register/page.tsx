@@ -69,7 +69,9 @@ export default function RegisterPage() {
     }
   };
 
-  if (user && (isProfileLoading || isUserLoading || isVerifying) && !show2FA && !passed2FA) {
+  const showLoading = user && (isProfileLoading || isUserLoading || isVerifying) && !show2FA && !passed2FA;
+
+  if (showLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center space-y-4">

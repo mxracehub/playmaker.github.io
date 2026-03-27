@@ -113,7 +113,6 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
 
 /**
  * Hook to access core Firebase services and user authentication state.
- * Returns the stable context object to avoid re-render loops.
  */
 export const useFirebase = (): FirebaseServicesAndUser => {
   const context = useContext(FirebaseContext);
@@ -126,7 +125,6 @@ export const useFirebase = (): FirebaseServicesAndUser => {
     throw new Error('Firebase core services not available. Check FirebaseProvider props.');
   }
 
-  // Return a stable object derived from the context
   return context as FirebaseServicesAndUser;
 };
 
@@ -165,15 +163,16 @@ export function useMemoFirebase<T>(factory: () => T, deps: DependencyList): T | 
 
 /**
  * Hook specifically for accessing the authenticated user's state.
+ * Memoized to prevent unstable object references causing re-render loops.
  */
 export const useUser = (): UserHookResult => {
   const context = useContext(FirebaseContext);
   if (context === undefined) {
     throw new Error('useUser must be used within a FirebaseProvider.');
   }
-  return { 
+  return useMemo(() => ({ 
     user: context.user, 
     isUserLoading: context.isUserLoading, 
     userError: context.userError 
-  };
+  }), [context.user, context.isUserLoading, context.userError]);
 };

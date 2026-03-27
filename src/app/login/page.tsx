@@ -32,6 +32,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     // Only proceed with redirect logic if a user is logged in and all profile state is settled
+    // We explicitly check !isProfileLoading to ensure we don't bypass 2FA while the doc is fetching
     if (user && !isUserLoading && !isProfileLoading) {
       if (profile?.twoFactorEnabled) {
         if (passed2FA) {
@@ -40,7 +41,7 @@ export default function LoginPage() {
           setShow2FA(true);
         }
       } else {
-        // No 2FA enabled, safe to enter the arena
+        // No 2FA enabled (or profile not yet created), safe to enter the arena
         router.push("/profile");
       }
     }
@@ -71,7 +72,9 @@ export default function LoginPage() {
   };
 
   // Dedicated loading overlay for authentication transitions
-  if (user && (isProfileLoading || isUserLoading || isVerifying) && !show2FA && !passed2FA) {
+  const showLoading = user && (isProfileLoading || isUserLoading || isVerifying) && !show2FA && !passed2FA;
+
+  if (showLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center space-y-4">
@@ -125,7 +128,6 @@ export default function LoginPage() {
                   onClick={() => {
                     setShow2FA(false);
                     setIsVerifying(false);
-                    // In a production app, we would sign out here if the user cancels 2FA
                   }} 
                   className="text-muted-foreground"
                 >
