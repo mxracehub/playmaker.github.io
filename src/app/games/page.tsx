@@ -1,17 +1,19 @@
 
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { Trophy, Clock, Users, ArrowRight, Plus, Zap, CheckCircle2 } from "lucide-react";
+import { Trophy, Clock, Users, ArrowRight, Plus, Zap, Check, X, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
-const activeGames = [
+const initialActiveGames = [
   { 
     id: "game-1", 
     title: "Sunday Night Showdown", 
@@ -50,17 +52,71 @@ const activeGames = [
   },
 ];
 
+const initialInvites = [
+  {
+    id: "inv-1",
+    challenger: "Jordan 'Swish' Smith",
+    title: "3pt Contest Shootout",
+    sport: "NBA",
+    fee: "500 GC",
+    expires: "22m left"
+  },
+  {
+    id: "inv-2",
+    challenger: "Sarah 'Quarterback' Jones",
+    title: "Super Bowl Prediction",
+    sport: "NFL",
+    fee: "1,000 SC",
+    expires: "1h left"
+  }
+];
+
 const historyGames = [
   { id: "game-h1", title: "Global Skate Jam", sport: "Skate", pool: "500 GC", result: "Won", date: "Oct 24, 2023" },
   { id: "game-h2", title: "Pipe Masters Final", sport: "Surf", pool: "1,000 SC", result: "Lost", date: "Oct 20, 2023" },
 ];
 
 export default function GamesPage() {
+  const { toast } = useToast();
+  const [activeGames, setActiveGames] = useState(initialActiveGames);
+  const [invites, setInvites] = useState(initialInvites);
+
+  const handleAccept = (invite: typeof initialInvites[0]) => {
+    toast({
+      title: "Challenge Accepted",
+      description: `You've entered ${invite.title} arena!`,
+    });
+    setInvites(invites.filter(i => i.id !== invite.id));
+    setActiveGames([
+      {
+        id: invite.id,
+        title: invite.title,
+        sport: invite.sport,
+        players: 2,
+        entries: 2,
+        pool: invite.fee,
+        time: "Starting Soon",
+        status: "open",
+        accent: invite.sport === 'NBA' ? "text-orange-500" : "text-green-500",
+        bg: invite.sport === 'NBA' ? "bg-orange-500/10" : "bg-green-500/10"
+      },
+      ...activeGames
+    ]);
+  };
+
+  const handleDecline = (id: string) => {
+    toast({
+      variant: "destructive",
+      title: "Challenge Declined",
+      description: "The arena invitation has been removed.",
+    });
+    setInvites(invites.filter(i => i.id !== id));
+  };
+
   return (
     <div className="min-h-screen pb-24 pt-20 bg-background relative overflow-hidden">
       <Navbar />
       
-      {/* Background Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-primary/5 blur-[120px] rounded-full -z-10" />
 
       <main className="mx-auto max-w-5xl px-4 py-8">
@@ -77,16 +133,23 @@ export default function GamesPage() {
         </header>
 
         <Tabs defaultValue="active" className="w-full">
-          <TabsList className="w-full h-16 bg-card/40 backdrop-blur-md border grid grid-cols-2 p-1.5 mb-10 rounded-2xl">
+          <TabsList className="w-full h-16 bg-card/40 backdrop-blur-md border grid grid-cols-3 p-1.5 mb-10 rounded-2xl">
             <TabsTrigger 
               value="active" 
-              className="font-headline font-bold text-lg uppercase tracking-wider rounded-xl data-[state=active]:bg-primary data-[state=active]:text-white transition-all"
+              className="font-headline font-bold text-base md:text-lg uppercase tracking-wider rounded-xl data-[state=active]:bg-primary data-[state=active]:text-white transition-all"
             >
               Active ({activeGames.length})
             </TabsTrigger>
             <TabsTrigger 
+              value="invites" 
+              className="font-headline font-bold text-base md:text-lg uppercase tracking-wider rounded-xl data-[state=active]:bg-primary data-[state=active]:text-white transition-all relative"
+            >
+              Invites ({invites.length})
+              {invites.length > 0 && <span className="absolute -top-1 -right-1 flex h-4 w-4 rounded-full bg-accent animate-pulse" />}
+            </TabsTrigger>
+            <TabsTrigger 
               value="history" 
-              className="font-headline font-bold text-lg uppercase tracking-wider rounded-xl data-[state=active]:bg-primary data-[state=active]:text-white transition-all"
+              className="font-headline font-bold text-base md:text-lg uppercase tracking-wider rounded-xl data-[state=active]:bg-primary data-[state=active]:text-white transition-all"
             >
               History
             </TabsTrigger>
@@ -141,6 +204,57 @@ export default function GamesPage() {
                 </Card>
               </Link>
             ))}
+          </TabsContent>
+
+          <TabsContent value="invites" className="space-y-4">
+            {invites.length > 0 ? (
+              invites.map((invite) => (
+                <Card key={invite.id} className="bg-card/40 backdrop-blur-xl border-accent/20 border overflow-hidden">
+                  <CardContent className="p-6">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                      <div className="flex items-center gap-4">
+                        <div className="h-14 w-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center">
+                          <Bell className="h-6 w-6 text-accent" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <Badge className="bg-primary/20 text-primary-foreground text-[10px] font-bold uppercase">{invite.sport}</Badge>
+                            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1">
+                              <Clock className="h-3 w-3" /> {invite.expires}
+                            </span>
+                          </div>
+                          <h4 className="font-headline text-xl font-bold uppercase tracking-tight leading-none mb-1">{invite.title}</h4>
+                          <p className="text-xs text-muted-foreground font-medium">Challenged by <span className="text-white">{invite.challenger}</span> • Stake: <span className="text-accent">{invite.fee}</span></p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 w-full md:w-auto">
+                        <Button 
+                          onClick={() => handleDecline(invite.id)}
+                          variant="ghost" 
+                          className="flex-1 md:flex-none h-12 px-6 font-bold uppercase tracking-wider text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                        >
+                          <X className="mr-2 h-4 w-4" /> Decline
+                        </Button>
+                        <Button 
+                          onClick={() => handleAccept(invite)}
+                          className="flex-1 md:flex-none h-12 px-8 font-bold uppercase tracking-wider bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20"
+                        >
+                          <Check className="mr-2 h-5 w-5" /> Accept Arena
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <div className="text-center py-24 bg-card/10 rounded-3xl border border-dashed border-white/5">
+                <Bell className="h-16 w-16 text-muted-foreground mx-auto mb-6 opacity-20" />
+                <h3 className="font-headline text-xl font-bold uppercase tracking-widest text-muted-foreground">No pending invites</h3>
+                <p className="text-sm text-muted-foreground max-w-xs mx-auto mt-2 italic font-medium">
+                  Challenge your circle to start the showdown.
+                </p>
+              </div>
+            )}
           </TabsContent>
           
           <TabsContent value="history" className="space-y-4">
