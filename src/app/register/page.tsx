@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -35,7 +36,8 @@ export default function RegisterPage() {
       if (profile?.twoFactorEnabled) {
         if (passed2FA) {
           router.push("/profile");
-        } else {
+        } else if (!show2FA) {
+          // Only trigger if not already showing to prevent infinite re-render loop
           setShow2FA(true);
         }
       } else {
@@ -43,7 +45,7 @@ export default function RegisterPage() {
         router.push("/profile");
       }
     }
-  }, [user, isUserLoading, isProfileLoading, profile, passed2FA, router]);
+  }, [user, isUserLoading, isProfileLoading, profile, passed2FA, show2FA, router]);
 
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();

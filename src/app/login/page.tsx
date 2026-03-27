@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -32,20 +33,20 @@ export default function LoginPage() {
 
   useEffect(() => {
     // Only proceed with redirect logic if a user is logged in and all profile state is settled
-    // We explicitly check !isProfileLoading to ensure we don't bypass 2FA while the doc is fetching
     if (user && !isUserLoading && !isProfileLoading) {
       if (profile?.twoFactorEnabled) {
         if (passed2FA) {
           router.push("/profile");
-        } else {
+        } else if (!show2FA) {
+          // Only trigger if not already showing to prevent infinite re-render loop
           setShow2FA(true);
         }
       } else {
-        // No 2FA enabled (or profile not yet created), safe to enter the arena
+        // No 2FA enabled, safe to enter the arena
         router.push("/profile");
       }
     }
-  }, [user, isUserLoading, isProfileLoading, profile, passed2FA, router]);
+  }, [user, isUserLoading, isProfileLoading, profile, passed2FA, show2FA, router]);
 
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
