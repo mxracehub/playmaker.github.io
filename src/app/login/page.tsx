@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -30,27 +31,21 @@ export default function LoginPage() {
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
   const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
-  // Use a ref to prevent multiple router.push calls which can sometimes contribute to cycles
   const hasRedirected = useRef(false);
 
   useEffect(() => {
     if (hasRedirected.current) return;
 
-    // Only proceed if loading states are settled
+    // Force 2FA popup at sign in every time
     if (user && !isUserLoading && !isProfileLoading) {
-      if (profile?.twoFactorEnabled) {
-        if (passed2FA) {
-          hasRedirected.current = true;
-          router.push("/profile");
-        } else if (!show2FA) {
-          setShow2FA(true);
-        }
-      } else {
+      if (passed2FA) {
         hasRedirected.current = true;
         router.push("/profile");
+      } else if (!show2FA) {
+        setShow2FA(true);
       }
     }
-  }, [user, isUserLoading, isProfileLoading, profile, passed2FA, show2FA, router]);
+  }, [user, isUserLoading, isProfileLoading, passed2FA, show2FA, router]);
 
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,7 +60,7 @@ export default function LoginPage() {
       setPassed2FA(true);
       toast({
         title: "Access Granted",
-        description: "Two-factor authentication successful.",
+        description: "Identity verified successfully.",
       });
     } else {
       toast({
@@ -75,6 +70,10 @@ export default function LoginPage() {
       });
     }
   };
+
+  const qrCodeUrl = user 
+    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=otpauth://totp/Playmakers:${user.email}?secret=JBSWY3DPEHPK3PXP&issuer=Playmakers`
+    : "";
 
   const showLoading = user && (isProfileLoading || isUserLoading || isVerifying) && !show2FA && !passed2FA;
 
@@ -103,13 +102,24 @@ export default function LoginPage() {
               </div>
               <CardTitle className="text-2xl font-headline font-bold uppercase tracking-tight">Security Check</CardTitle>
               <CardDescription>
-                Enter the 6-digit code from your authenticator app to verify your identity.
+                Scan this unique QR code with your authenticator app and enter the 6-digit code.
               </CardDescription>
             </CardHeader>
             <form onSubmit={handleVerify2FA}>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="code" className="text-xs font-bold uppercase tracking-widest text-muted-foreground text-center block">Verification Code</Label>
+              <CardContent className="space-y-6 flex flex-col items-center">
+                <div className="p-2 bg-white rounded-lg shadow-inner">
+                  {qrCodeUrl && (
+                    <Image 
+                      src={qrCodeUrl} 
+                      alt="2FA QR Code" 
+                      width={160} 
+                      height={160} 
+                      className="rounded-sm"
+                    />
+                  )}
+                </div>
+                <div className="space-y-2 w-full text-center">
+                  <Label htmlFor="code" className="text-xs font-bold uppercase tracking-widest text-muted-foreground block">Verification Code</Label>
                   <Input 
                     id="code"
                     type="text"
