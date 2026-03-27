@@ -13,7 +13,7 @@ import {
   LogOut,
   User,
   Settings,
-  ChevronDown
+  Gamepad2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUser, useAuth } from "@/firebase";
@@ -54,9 +54,9 @@ export function Navbar() {
 
         <div className="flex w-full items-center justify-around md:w-auto md:justify-end md:gap-2">
           <NavButton href="/" icon={<LayoutDashboard />} label="Lobby" />
-          <NavButton href="/contests" icon={<Trophy />} label="Contests" />
-          <NavButton href="/friends" icon={<Users />} label="Friends" />
-          <NavButton href="/shop" icon={<ShoppingBag />} label="Shop" />
+          <NavButton href="/games" icon={<Gamepad2 />} label="Games" />
+          <NavButton href="/friends" icon={<Users />} label="Squad" />
+          <NavButton href="/shop" icon={<ShoppingBag />} label="Forge" />
           
           <div className="hidden h-8 w-px bg-border md:block mx-2" />
           

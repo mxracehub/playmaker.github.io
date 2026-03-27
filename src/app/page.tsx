@@ -2,13 +2,13 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { SportsFilter } from "@/components/sports-filter";
 import { AthleteCard } from "@/components/athlete-card";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trophy, ArrowRight, Zap, Target, Users } from "lucide-react";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { Trophy, ArrowRight, Zap, Target, Users, Gamepad2 } from "lucide-react";
 
 const mockAthletes = [
   {
@@ -85,12 +85,14 @@ export default function Home() {
                 The Ultimate <br/><span className="text-accent">Playmaker</span> Arena
               </h1>
               <p className="text-lg text-white/80 mb-6 font-medium leading-relaxed">
-                Challenge your friends in the next generation of sports sweepstakes. Pick your elite roster, track live scores, and win big.
+                Challenge your friends in the next generation of sports games. Pick your elite roster, track live scores, and win big.
               </p>
               <div className="flex flex-wrap gap-3">
-                <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-bold uppercase tracking-wider">
-                  Create Contest <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
+                <Link href="/games/create">
+                  <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-bold uppercase tracking-wider">
+                    Start a Game <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
                 <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 font-bold uppercase tracking-wider backdrop-blur-sm">
                   How it Works
                 </Button>
@@ -98,9 +100,9 @@ export default function Home() {
             </div>
             <div className="hidden md:flex flex-col gap-4">
               <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/20">
-                <Zap className="h-6 w-6 text-accent" />
+                <Gamepad2 className="h-6 w-6 text-accent" />
                 <div>
-                  <p className="text-xs text-white/60 font-bold uppercase">Active Contests</p>
+                  <p className="text-xs text-white/60 font-bold uppercase">Active Games</p>
                   <p className="text-xl font-headline font-bold">142,509</p>
                 </div>
               </div>
@@ -171,14 +173,14 @@ export default function Home() {
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-lg font-headline flex items-center gap-2">
                 <Zap className="h-5 w-5 text-accent" />
-                LIVE CONTEST UPDATES
+                LIVE GAME UPDATES
               </CardTitle>
               <Button variant="link" className="text-accent text-xs">View All</Button>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {[
-                  "Dallas Mavs vs Denver Nuggets contest started!",
+                  "Dallas Mavs vs Denver Nuggets game started!",
                   "User_Jaxon just won 500 SC in a Head-to-Head challenge!",
                   "NFL Playmaker Sunday series is now open for entries."
                 ].map((msg, i) => (
@@ -213,12 +215,14 @@ export default function Home() {
                 <p className="font-headline font-bold text-white text-lg leading-none">
                   {selectedAthletes.length} Selected
                 </p>
-                <p className="text-white/60 text-xs mt-1 uppercase font-bold tracking-widest">Contest Lineup</p>
+                <p className="text-white/60 text-xs mt-1 uppercase font-bold tracking-widest">Game Lineup</p>
               </div>
             </div>
-            <Button size="lg" className="bg-accent text-accent-foreground font-bold uppercase tracking-wider px-8 hover:bg-white shadow-xl">
-              ENTER CONTEST
-            </Button>
+            <Link href="/games/create">
+              <Button size="lg" className="bg-accent text-accent-foreground font-bold uppercase tracking-wider px-8 hover:bg-white shadow-xl">
+                START GAME
+              </Button>
+            </Link>
           </div>
         </div>
       )}
