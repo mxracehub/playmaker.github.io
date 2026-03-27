@@ -8,7 +8,7 @@ import { SportsFilter } from "@/components/sports-filter";
 import { AthleteCard } from "@/components/athlete-card";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trophy, ArrowRight, Zap, Target, Users, Gamepad2 } from "lucide-react";
+import { Trophy, ArrowRight, Zap, Target, Users, Gamepad2, Waves } from "lucide-react";
 
 const mockAthletes = [
   {
@@ -35,24 +35,24 @@ const mockAthletes = [
   },
   {
     id: "3",
-    name: "Kyle Larson",
-    team: "Hendrick Motors",
-    sport: "NASCAR",
-    avatar: "https://picsum.photos/seed/larson/400/400",
+    name: "John John Florence",
+    team: "WSL Elite",
+    sport: "Surfing",
+    avatar: "https://picsum.photos/seed/jjf/400/400",
     stats: [
-      { label: "Top 5s", value: "15" },
-      { label: "Wins", value: "4" }
+      { label: "Avg Heat", value: "16.4" },
+      { label: "Wins", value: "2" }
     ]
   },
   {
     id: "4",
-    name: "Scottie Scheffler",
-    team: "PGA Tour",
-    sport: "Golf",
-    avatar: "https://picsum.photos/seed/scottie/400/400",
+    name: "Nyjah Huston",
+    team: "X-Games",
+    sport: "Extreme",
+    avatar: "https://picsum.photos/seed/nyjah/400/400",
     stats: [
-      { label: "Avg Score", value: "68.2" },
-      { label: "Top 10s", value: "12" }
+      { label: "Best Trick", value: "9.8" },
+      { label: "Medals", value: "15" }
     ]
   }
 ];

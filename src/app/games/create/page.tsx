@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search } from "lucide-react";
+import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, Waves } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const sports = [
@@ -42,6 +42,28 @@ const sports = [
       "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants", "New York Jets", 
       "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Buccaneers", 
       "Tennessee Titans", "Washington Commanders"
+    ]
+  },
+  { 
+    id: 'surfing', 
+    name: 'Surfing', 
+    icon: <Waves className="w-5 h-5" />, 
+    color: "text-blue-400",
+    options: [
+      "John John Florence", "Carissa Moore", "Gabriel Medina", "Italo Ferreira", "Filipe Toledo",
+      "Tyler Wright", "Stephanie Gilmore", "Jack Robinson", "Ethan Ewing", "Caroline Marks",
+      "Caity Simmers", "Griffin Colapinto", "Kelly Slater", "Molly Picklum", "Johanne Defay"
+    ]
+  },
+  { 
+    id: 'extreme', 
+    name: 'X-Games', 
+    icon: <Zap className="w-5 h-5" />, 
+    color: "text-yellow-400",
+    options: [
+      "Nyjah Huston", "Tony Hawk", "Rayssa Leal", "Yuto Horigome", "Sky Brown",
+      "Chloe Kim", "Shaun White", "Leticia Bufoni", "Zion Wright", "Bucky Lasek",
+      "Ryan Sheckler", "Torey Pudwill", "Shane O'Neill", "Tyshawn Jones", "Dashawn Jordan"
     ]
   },
   { 
@@ -201,7 +223,7 @@ export default function CreateGamePage() {
               {/* Step 1: Sport Selection */}
               <div className="space-y-4">
                 <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">1. Select Sport</Label>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {sports.map((sport) => (
                     <button
                       key={sport.id}
@@ -227,13 +249,13 @@ export default function CreateGamePage() {
               {selectedSport ? (
                 <div className="space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
                   <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    2. Pick Your Winning {selectedSport === 'golf' || selectedSport === 'nascar' ? 'Athlete' : 'Team'}
+                    2. Pick Your Winning {['surfing', 'extreme', 'golf', 'nascar'].includes(selectedSport) ? 'Athlete' : 'Team'}
                   </Label>
                   
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input 
-                      placeholder={`Search ${selectedSport === 'golf' || selectedSport === 'nascar' ? 'athletes' : 'teams'}...`} 
+                      placeholder={`Search ${['surfing', 'extreme', 'golf', 'nascar'].includes(selectedSport) ? 'athletes' : 'teams'}...`} 
                       className="pl-10 h-12 bg-secondary/30 border-white/5 focus:border-accent/50 transition-colors"
                       value={searchPickQuery}
                       onChange={(e) => setSearchPickQuery(e.target.value)}

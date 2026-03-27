@@ -8,13 +8,17 @@ import {
   Target, 
   CircleDot, 
   Trophy,
-  LayoutGrid
+  LayoutGrid,
+  Waves,
+  Zap
 } from "lucide-react";
 
 const sports = [
   { id: 'all', name: 'All', icon: <LayoutGrid className="w-5 h-5" /> },
   { id: 'nba', name: 'NBA', icon: <Dribbble className="w-5 h-5" /> },
   { id: 'nfl', name: 'NFL', icon: <Trophy className="w-5 h-5" /> },
+  { id: 'surfing', name: 'Surfing', icon: <Waves className="w-5 h-5" /> },
+  { id: 'extreme', name: 'X-Games', icon: <Zap className="w-5 h-5" /> },
   { id: 'nascar', name: 'NASCAR', icon: <Flag className="w-5 h-5" /> },
   { id: 'golf', name: 'Golf', icon: <Target className="w-5 h-5" /> },
   { id: 'nhl', name: 'NHL', icon: <CircleDot className="w-5 h-5" /> },

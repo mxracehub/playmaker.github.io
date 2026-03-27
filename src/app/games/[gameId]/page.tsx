@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useSearchParams } from "next/navigation";
@@ -6,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Users, Zap, Clock, Share2, Target, Dribbble, Flag, CheckCircle2 } from "lucide-react";
+import { Trophy, Users, Zap, Clock, Share2, Target, Dribbble, Flag, CheckCircle2, Waves } from "lucide-react";
 
 export default function GameArenaPage({ params }: { params: { gameId: string } }) {
   const searchParams = useSearchParams();
@@ -48,6 +49,22 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       icon: <Flag className="h-10 w-10" />,
       label: "Victory Lane",
       statLabel: "POS / LAP"
+    },
+    surfing: {
+      color: "from-blue-600/20 to-blue-900/40",
+      accent: "text-blue-400",
+      bg: "bg-blue-400/10",
+      icon: <Waves className="h-10 w-10" />,
+      label: "Pipe Masters",
+      statLabel: "SCORE / WAVE"
+    },
+    extreme: {
+      color: "from-yellow-600/20 to-yellow-900/40",
+      accent: "text-yellow-400",
+      bg: "bg-yellow-400/10",
+      icon: <Zap className="h-10 w-10" />,
+      label: "X-Games Arena",
+      statLabel: "TRICK / AIR"
     }
   };
 
