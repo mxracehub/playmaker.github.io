@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -14,6 +13,7 @@ import { User, Bell, Shield, Wallet, Save, CheckCircle2 } from "lucide-react";
 import { useUser, useFirestore, setDocumentNonBlocking, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
+import { validateTOTP, getOTPAuthUri } from "@/lib/2fa";
 import {
   Dialog,
   DialogContent,
@@ -33,7 +33,6 @@ export default function SettingsPage() {
   const [is2FADialogOpen, setIs2FADialogOpen] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
 
-  // Get user profile data from Firestore to check 2FA status
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
   const { data: profile } = useDoc(userProfileRef);
 
@@ -64,7 +63,10 @@ export default function SettingsPage() {
 
   const handleEnable2FA = () => {
     if (!user || !userProfileRef) return;
-    if (verificationCode.length !== 6) {
+
+    const isValid = validateTOTP(user.uid, user.email || '', verificationCode);
+
+    if (!isValid) {
       toast({
         variant: "destructive",
         title: "Invalid Code",
@@ -101,9 +103,8 @@ export default function SettingsPage() {
     });
   };
 
-  // Generate a realistic account-specific QR code URL
   const qrCodeUrl = user 
-    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(`otpauth://totp/Playmakers:${user.email}?secret=JBSWY3DPEHPK3PXP&issuer=Playmakers`)}`
+    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(getOTPAuthUri(user.uid, user.email || ''))}`
     : "";
 
   return (

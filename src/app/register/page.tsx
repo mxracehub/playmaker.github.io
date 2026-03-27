@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -13,6 +12,7 @@ import { Trophy, Mail, Lock, UserCircle, ShieldCheck, ArrowLeft, Loader2 } from 
 import { useAuth, useUser, initiateEmailSignUp, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
+import { validateTOTP, getOTPAuthUri } from "@/lib/2fa";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -36,7 +36,6 @@ export default function RegisterPage() {
   useEffect(() => {
     if (hasRedirected.current) return;
 
-    // Force 2FA popup at account creation every time
     if (user && !isUserLoading && !isProfileLoading) {
       if (passed2FA) {
         hasRedirected.current = true;
@@ -56,7 +55,11 @@ export default function RegisterPage() {
 
   const handleVerify2FA = (e: React.FormEvent) => {
     e.preventDefault();
-    if (verificationCode.length === 6) {
+    if (!user) return;
+
+    const isValid = validateTOTP(user.uid, user.email || '', verificationCode);
+
+    if (isValid) {
       setPassed2FA(true);
       toast({
         title: "Registration Complete",
@@ -66,14 +69,13 @@ export default function RegisterPage() {
       toast({
         variant: "destructive",
         title: "Verification Failed",
-        description: "Please enter a valid 6-digit code.",
+        description: "Invalid security code. Please check your authenticator app.",
       });
     }
   };
 
-  // Generate a unique QR code per account using the user's email
   const qrCodeUrl = user 
-    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(`otpauth://totp/Playmakers:${user.email}?secret=JBSWY3DPEHPK3PXP&issuer=Playmakers`)}`
+    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(getOTPAuthUri(user.uid, user.email || ''))}`
     : "";
 
   const showLoading = user && (isProfileLoading || isUserLoading || isVerifying) && !show2FA && !passed2FA;
