@@ -43,14 +43,16 @@ export function Navbar() {
                 </Link>
               </>
             ) : (
-              <Link href="/login">
-                <Button variant="default" className="font-bold uppercase tracking-wider hidden md:flex h-9">
-                  <LogIn className="mr-2 h-4 w-4" /> Sign In
-                </Button>
+              <div className="flex items-center gap-2">
+                <Link href="/login" className="hidden md:block">
+                  <Button variant="default" className="font-bold uppercase tracking-wider h-9">
+                    <LogIn className="mr-2 h-4 w-4" /> Sign In
+                  </Button>
+                </Link>
                 <div className="md:hidden">
                    <NavButton href="/login" icon={<LogIn />} label="Sign In" />
                 </div>
-              </Link>
+              </div>
             )}
           </div>
         </div>
