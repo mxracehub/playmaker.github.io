@@ -8,7 +8,6 @@ import { AthleteCard } from "@/components/athlete-card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrowRight, Target, Gamepad2, Trophy, Sparkles } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const mockAthletes = [
   {
@@ -160,7 +159,7 @@ export default function Home() {
     : mockAthletes.filter(a => a.sport.toLowerCase() === selectedSport.toLowerCase());
 
   return (
-    <div className="min-h-screen pb-24 md:pt-20">
+    <div className="min-h-screen pt-20 pb-24">
       <Navbar />
       
       <main className="mx-auto max-w-7xl px-4 py-6">
@@ -238,7 +237,7 @@ export default function Home() {
 
       {/* Floating Selection Bar */}
       {selectedAthletes.length > 0 && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-2xl md:bottom-6 animate-in slide-in-from-bottom-10">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-2xl animate-in slide-in-from-bottom-10">
           <div className="bg-primary/95 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl p-4 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="flex -space-x-3">

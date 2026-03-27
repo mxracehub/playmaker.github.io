@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -27,7 +26,7 @@ export default function FriendsPage() {
   };
 
   return (
-    <div className="min-h-screen pb-24 md:pt-20">
+    <div className="min-h-screen pt-20 pb-24">
       <Navbar />
       
       <main className="mx-auto max-w-5xl px-4 py-8">

@@ -39,9 +39,9 @@ export function Navbar() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-card/80 backdrop-blur-md md:top-0 md:bottom-auto md:border-t-0 md:border-b">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b bg-card/80 backdrop-blur-md shadow-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
-        <Link href="/" className="hidden items-center gap-2 md:flex">
+        <Link href="/" className="flex items-center gap-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/20">
             <Trophy className="h-6 w-6 text-white" />
           </div>
@@ -50,24 +50,24 @@ export function Navbar() {
           </span>
         </Link>
 
-        <div className="flex w-full items-center justify-around md:w-auto md:justify-end md:gap-2">
-          <NavButton href="/" icon={<LayoutDashboard />} label="Lobby" />
-          <NavButton href="/games" icon={<Gamepad2 />} label="Games" />
-          <NavButton href="/friends" icon={<Users />} label="Friends" />
+        <div className="flex items-center gap-1 md:gap-4">
+          <div className="hidden items-center gap-1 md:flex">
+            <NavButton href="/" icon={<LayoutDashboard />} label="Lobby" />
+            <NavButton href="/games" icon={<Gamepad2 />} label="Games" />
+            <NavButton href="/friends" icon={<Users />} label="Friends" />
+          </div>
           
-          <div className="hidden h-8 w-px bg-border md:block mx-2" />
+          <div className="hidden h-8 w-px bg-border md:block mx-1" />
           
-          <div className="flex items-center gap-3 ml-2">
+          <div className="flex items-center gap-3">
             {!isUserLoading && user ? (
               <>
-                <div className="hidden items-center gap-3 md:flex">
-                  {/* Gold Coins Display */}
+                <div className="hidden items-center gap-3 lg:flex">
                   <div className="flex items-center gap-1.5 rounded-full bg-secondary/30 px-3 py-1 border border-white/5">
                     <Coins className="h-3.5 w-3.5 text-yellow-500" />
                     <span className="text-xs font-bold text-white tracking-tight">1.25M</span>
                   </div>
                   
-                  {/* Sweeps Coins Display */}
                   <div className="flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 border border-accent/20">
                     <Landmark className="h-3.5 w-3.5 text-accent" />
                     <span className="text-xs font-bold text-accent tracking-tight">542.50</span>
@@ -93,6 +93,25 @@ export function Navbar() {
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator className="bg-white/5" />
+                    <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/10 md:hidden">
+                      <Link href="/" className="flex items-center w-full">
+                        <LayoutDashboard className="mr-2 h-4 w-4" />
+                        <span>Lobby</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/10 md:hidden">
+                      <Link href="/games" className="flex items-center w-full">
+                        <Gamepad2 className="mr-2 h-4 w-4" />
+                        <span>Games</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/10 md:hidden">
+                      <Link href="/friends" className="flex items-center w-full">
+                        <Users className="mr-2 h-4 w-4" />
+                        <span>Friends</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator className="bg-white/5 md:hidden" />
                     <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/10">
                       <Link href="/profile" className="flex items-center w-full">
                         <User className="mr-2 h-4 w-4" />
@@ -117,20 +136,11 @@ export function Navbar() {
                 </DropdownMenu>
               </>
             ) : (
-              <div className="flex items-center gap-2">
-                {!isUserLoading && (
-                  <>
-                    <Link href="/login" className="hidden md:block">
-                      <Button variant="default" className="font-bold uppercase tracking-wider h-10 px-6 shadow-lg shadow-primary/20">
-                        <LogIn className="mr-2 h-4 w-4" /> Sign In
-                      </Button>
-                    </Link>
-                    <div className="md:hidden">
-                       <NavButton href="/login" icon={<LogIn />} label="Sign In" />
-                    </div>
-                  </>
-                )}
-              </div>
+              <Link href="/login">
+                <Button variant="default" className="font-bold uppercase tracking-wider h-10 px-6 shadow-lg shadow-primary/20">
+                  <LogIn className="mr-2 h-4 w-4" /> Sign In
+                </Button>
+              </Link>
             )}
           </div>
         </div>
@@ -141,9 +151,9 @@ export function Navbar() {
 
 function NavButton({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {
   return (
-    <Link href={href} className="flex flex-col items-center gap-1 px-4 py-1 text-muted-foreground transition-colors hover:text-accent md:flex-row md:gap-2 md:rounded-lg md:hover:bg-secondary">
-      <span className="md:[&_svg]:h-5 md:[&_svg]:w-5 [&_svg]:h-6 [&_svg]:w-6">{icon}</span>
-      <span className="text-[10px] font-medium md:text-sm">{label}</span>
+    <Link href={href} className="flex items-center gap-2 px-3 py-2 rounded-lg text-muted-foreground transition-colors hover:text-accent hover:bg-secondary">
+      <span className="[&_svg]:h-4 [&_svg]:w-4">{icon}</span>
+      <span className="text-sm font-bold uppercase tracking-wide">{label}</span>
     </Link>
   );
 }

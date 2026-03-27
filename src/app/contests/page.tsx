@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -15,7 +14,7 @@ const activeContests = [
 
 export default function ContestsPage() {
   return (
-    <div className="min-h-screen pb-24 md:pt-20">
+    <div className="min-h-screen pt-20 pb-24">
       <Navbar />
       
       <main className="mx-auto max-w-5xl px-4 py-8">
