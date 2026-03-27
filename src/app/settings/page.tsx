@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,8 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
-import { User, Bell, Shield, Wallet, Save, ChevronRight, CheckCircle2, QrCode } from "lucide-react";
-import { useUser, useFirestore, updateDocumentNonBlocking, useDoc } from "@/firebase";
+import { User, Bell, Shield, Wallet, Save, CheckCircle2 } from "lucide-react";
+import { useUser, useFirestore, setDocumentNonBlocking, useDoc } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -39,16 +40,23 @@ export default function SettingsPage() {
   useEffect(() => {
     if (user?.displayName) {
       setDisplayName(user.displayName);
+    } else if (profile?.username) {
+      setDisplayName(profile.username);
     }
-  }, [user]);
+  }, [user, profile]);
 
   const handleSaveProfile = () => {
     if (!user || !userProfileRef) return;
     
-    updateDocumentNonBlocking(userProfileRef, {
+    // Use setDocumentNonBlocking with merge: true to ensure the document is created if it doesn't exist (upsert)
+    // This avoids "Missing or insufficient permissions" when trying to update a non-existent document
+    setDocumentNonBlocking(userProfileRef, {
+      id: user.uid,
+      email: user.email,
       username: displayName,
       updatedAt: new Date().toISOString(),
-    });
+      createdAt: profile?.createdAt || new Date().toISOString(),
+    }, { merge: true });
 
     toast({
       title: "Profile Updated",
@@ -67,10 +75,10 @@ export default function SettingsPage() {
       return;
     }
 
-    updateDocumentNonBlocking(userProfileRef, {
+    setDocumentNonBlocking(userProfileRef, {
       twoFactorEnabled: true,
       updatedAt: new Date().toISOString(),
-    });
+    }, { merge: true });
 
     setIs2FADialogOpen(false);
     setVerificationCode("");
@@ -84,16 +92,21 @@ export default function SettingsPage() {
   const handleDisable2FA = () => {
     if (!user || !userProfileRef) return;
 
-    updateDocumentNonBlocking(userProfileRef, {
+    setDocumentNonBlocking(userProfileRef, {
       twoFactorEnabled: false,
       updatedAt: new Date().toISOString(),
-    });
+    }, { merge: true });
 
     toast({
       title: "2FA Disabled",
       description: "Two-factor authentication has been turned off.",
     });
   };
+
+  // Generate a realistic scannable QR code URL
+  const qrCodeUrl = user 
+    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=otpauth://totp/Playmakers:${user.email}?secret=JBSWY3DPEHPK3PXP&issuer=Playmakers`
+    : "";
 
   return (
     <div className="min-h-screen pb-24 md:pt-20">
@@ -227,8 +240,16 @@ export default function SettingsPage() {
                           </DialogDescription>
                         </DialogHeader>
                         <div className="flex flex-col items-center justify-center py-6 gap-6">
-                          <div className="p-4 bg-white rounded-2xl">
-                             <QrCode className="h-40 w-40 text-black" />
+                          <div className="p-2 bg-white rounded-lg">
+                            {qrCodeUrl && (
+                              <Image 
+                                src={qrCodeUrl} 
+                                alt="2FA QR Code" 
+                                width={200} 
+                                height={200} 
+                                className="rounded-sm"
+                              />
+                            )}
                           </div>
                           <div className="w-full space-y-2">
                             <Label className="text-xs font-bold uppercase tracking-widest">Verification Code</Label>
