@@ -2,10 +2,13 @@
 "use client";
 
 import Link from "next/link";
-import { Trophy, Users, ShoppingBag, UserCircle, LayoutDashboard, Coins } from "lucide-react";
+import { Trophy, Users, ShoppingBag, UserCircle, LayoutDashboard, Coins, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@/firebase";
 
 export function Navbar() {
+  const { user, isUserLoading } = useUser();
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-card/80 backdrop-blur-md md:top-0 md:bottom-auto md:border-t-0 md:border-b">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
@@ -13,7 +16,7 @@ export function Navbar() {
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/20">
             <Trophy className="h-6 w-6 text-white" />
           </div>
-          <span className="font-headline text-xl font-bold tracking-tight text-white uppercase">
+          <span className="font-headline text-xl font-bold tracking-tight text-white uppercase italic">
             Playmakers
           </span>
         </Link>
@@ -23,17 +26,32 @@ export function Navbar() {
           <NavButton href="/contests" icon={<Trophy />} label="Contests" />
           <NavButton href="/friends" icon={<Users />} label="Friends" />
           <NavButton href="/shop" icon={<ShoppingBag />} label="Shop" />
+          
           <div className="hidden h-8 w-px bg-border md:block mx-2" />
+          
           <div className="flex items-center gap-3 ml-2">
-            <div className="hidden items-center gap-1.5 rounded-full bg-secondary/50 px-3 py-1 md:flex">
-              <Coins className="h-4 w-4 text-accent" />
-              <span className="text-sm font-bold text-accent">1,250 SC</span>
-            </div>
-            <Link href="/profile">
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-secondary">
-                <UserCircle className="h-6 w-6" />
-              </Button>
-            </Link>
+            {!isUserLoading && user ? (
+              <>
+                <div className="hidden items-center gap-1.5 rounded-full bg-secondary/50 px-3 py-1 md:flex">
+                  <Coins className="h-4 w-4 text-accent" />
+                  <span className="text-sm font-bold text-accent">1,250 SC</span>
+                </div>
+                <Link href="/profile">
+                  <Button variant="ghost" size="icon" className="rounded-full hover:bg-secondary">
+                    <UserCircle className="h-6 w-6" />
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <Link href="/login">
+                <Button variant="default" className="font-bold uppercase tracking-wider hidden md:flex h-9">
+                  <LogIn className="mr-2 h-4 w-4" /> Sign In
+                </Button>
+                <div className="md:hidden">
+                   <NavButton href="/login" icon={<LogIn />} label="Sign In" />
+                </div>
+              </Link>
+            )}
           </div>
         </div>
       </div>
