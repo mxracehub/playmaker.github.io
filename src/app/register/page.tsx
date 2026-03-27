@@ -1,29 +1,44 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Trophy, ArrowRight, Mail, Lock, UserCircle } from "lucide-react";
-import { useAuth, useUser, initiateEmailSignUp } from "@/firebase";
-import { useEffect } from "react";
+import { Trophy, Mail, Lock, UserCircle, ShieldCheck, ArrowLeft } from "lucide-react";
+import { useAuth, useUser, initiateEmailSignUp, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
+import { doc } from "firebase/firestore";
+import { useToast } from "@/hooks/use-toast";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [show2FA, setShow2FA] = useState(false);
+  const [passed2FA, setPassed2FA] = useState(false);
+
   const auth = useAuth();
+  const db = useFirestore();
   const { user, isUserLoading } = useUser();
   const router = useRouter();
+  const { toast } = useToast();
+
+  const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
+  const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
   useEffect(() => {
-    if (user && !isUserLoading) {
-      router.push("/profile");
+    if (user && !isUserLoading && !isProfileLoading) {
+      // For registration, 2FA usually isn't enabled yet, but check for consistency
+      if (profile?.twoFactorEnabled && !passed2FA) {
+        setShow2FA(true);
+      } else {
+        router.push("/profile");
+      }
     }
-  }, [user, isUserLoading, router]);
+  }, [user, isUserLoading, isProfileLoading, profile, passed2FA, router]);
 
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,9 +46,76 @@ export default function RegisterPage() {
     initiateEmailSignUp(auth, email, password);
   };
 
+  const handleVerify2FA = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (verificationCode.length === 6) {
+      setPassed2FA(true);
+      toast({
+        title: "Registration Complete",
+        description: "Welcome to the arena.",
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Verification Failed",
+        description: "Please enter a valid 6-digit code.",
+      });
+    }
+  };
+
+  if (show2FA) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden px-4">
+        <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full" />
+        <div className="w-full max-w-md z-10">
+          <Card className="bg-card/50 backdrop-blur-xl border-white/5 shadow-2xl">
+            <CardHeader className="space-y-1 text-center">
+              <div className="mx-auto h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center mb-4">
+                <ShieldCheck className="h-6 w-6 text-accent" />
+              </div>
+              <CardTitle className="text-2xl font-headline font-bold uppercase tracking-tight">Security Verification</CardTitle>
+              <CardDescription>
+                A 2FA check is required for this account.
+              </CardDescription>
+            </CardHeader>
+            <form onSubmit={handleVerify2FA}>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="code" className="text-xs font-bold uppercase tracking-widest text-muted-foreground text-center block">Verification Code</Label>
+                  <Input 
+                    id="code"
+                    type="text"
+                    value={verificationCode}
+                    onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                    placeholder="000000" 
+                    className="text-center text-3xl tracking-[0.5em] font-headline h-16 bg-secondary/30 border-white/5"
+                    autoFocus
+                  />
+                </div>
+              </CardContent>
+              <CardFooter className="flex flex-col gap-4">
+                <Button type="submit" className="w-full h-12 font-bold uppercase tracking-wider">
+                  Complete Registration
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setShow2FA(false)} 
+                  className="text-muted-foreground"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Go back
+                </Button>
+              </CardFooter>
+            </form>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden px-4">
-      {/* Background decoration */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent/10 blur-[120px] rounded-full" />
       
