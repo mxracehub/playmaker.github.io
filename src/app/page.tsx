@@ -118,16 +118,6 @@ export default function Home() {
 
         {/* Lobby Controls */}
         <div className="mb-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-            <h2 className="font-headline text-2xl font-bold text-white flex items-center gap-2">
-              <div className="h-2 w-8 bg-accent rounded-full" />
-              PLAYER POOL
-            </h2>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground bg-card/50 px-4 py-2 rounded-full border border-border">
-              <span className="flex items-center gap-1.5"><Users className="h-4 w-4" /> 12k Active</span>
-              <span className="flex items-center gap-1.5"><Trophy className="h-4 w-4" /> $1.2M Pool</span>
-            </div>
-          </div>
           <SportsFilter selected={selectedSport} onSelect={setSelectedSport} />
         </div>
 
