@@ -10,7 +10,6 @@ import {
   Gamepad2,
   LayoutDashboard,
   Coins,
-  Zap,
   LogIn,
   Landmark
 } from "lucide-react";
@@ -64,13 +63,13 @@ export function Navbar() {
                 <div className="hidden items-center gap-3 md:flex">
                   {/* Gold Coins Display */}
                   <div className="flex items-center gap-1.5 rounded-full bg-secondary/30 px-3 py-1 border border-white/5">
-                    <Landmark className="h-3.5 w-3.5 text-yellow-500" />
+                    <Coins className="h-3.5 w-3.5 text-yellow-500" />
                     <span className="text-xs font-bold text-white tracking-tight">1.25M</span>
                   </div>
                   
                   {/* Sweeps Coins Display */}
                   <div className="flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 border border-accent/20">
-                    <Zap className="h-3.5 w-3.5 text-accent" />
+                    <Landmark className="h-3.5 w-3.5 text-accent" />
                     <span className="text-xs font-bold text-accent tracking-tight">542.50</span>
                   </div>
                 </div>

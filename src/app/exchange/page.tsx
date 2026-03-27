@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Zap, ShieldCheck, ArrowRight, ArrowLeft, Landmark, CreditCard, Gift, Info } from "lucide-react";
+import { Landmark, ShieldCheck, ArrowRight, ArrowLeft, CreditCard, Gift, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function ExchangePage() {
@@ -48,7 +48,7 @@ export default function ExchangePage() {
             <ArrowLeft className="h-3 w-3" /> Back to Profile
           </Link>
           <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-accent/10 border border-accent/20 mb-6">
-            <Zap className="h-8 w-8 text-accent" />
+            <Landmark className="h-8 w-8 text-accent" />
           </div>
           <h1 className="font-headline text-4xl font-bold uppercase tracking-tight mb-2">SC <span className="text-accent">Exchange</span></h1>
           <p className="text-muted-foreground">Redeem your bonus winnings for real prizes at the 100:1 arena ratio</p>

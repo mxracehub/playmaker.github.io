@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Settings, Wallet, History, Star, Gamepad2, Landmark, Zap } from "lucide-react";
+import { Trophy, Settings, Wallet, History, Star, Gamepad2, Landmark, Coins } from "lucide-react";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 
@@ -72,14 +72,14 @@ export default function ProfilePage() {
               <div className="p-4 rounded-2xl bg-secondary/30 border border-white/5">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Gold Coins</p>
-                  <Landmark className="h-3 w-3 text-muted-foreground" />
+                  <Coins className="h-3.5 w-3.5 text-yellow-500" />
                 </div>
                 <p className="text-2xl font-headline font-bold">1,250,000</p>
               </div>
               <div className="p-4 rounded-2xl bg-accent/10 border border-accent/20">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-xs font-bold text-accent uppercase tracking-widest">Sweeps Coins</p>
-                  <Zap className="h-3 w-3 text-accent" />
+                  <Landmark className="h-3.5 w-3.5 text-accent" />
                 </div>
                 <p className="text-2xl font-headline font-bold text-accent">542.50 SC</p>
               </div>
@@ -91,7 +91,7 @@ export default function ProfilePage() {
                 </Link>
                 <Link href="/exchange" className="block w-full">
                   <Button variant="outline" className="w-full font-bold uppercase tracking-wider border-accent text-accent hover:bg-accent/10">
-                    <Zap className="mr-2 h-4 w-4" /> Exchange SC
+                    <Landmark className="mr-2 h-4 w-4" /> Exchange SC
                   </Button>
                 </Link>
               </div>

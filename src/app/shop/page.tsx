@@ -4,7 +4,7 @@ import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Coins, Zap, ShieldCheck, Sparkles, Landmark } from "lucide-react";
+import { Coins, Landmark, ShieldCheck, Sparkles } from "lucide-react";
 
 const packages = [
   {
@@ -78,7 +78,7 @@ export default function ShopPage() {
                 <div className="flex flex-col items-center gap-1 p-4 rounded-2xl bg-background/40 backdrop-blur-sm border border-white/5">
                   <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Bonus Reward</span>
                   <div className="flex items-center gap-2">
-                    <Zap className="h-5 w-5 text-accent" />
+                    <Landmark className="h-5 w-5 text-accent" />
                     <span className="text-2xl font-headline font-bold text-accent">{pkg.sweepsCoins} SC</span>
                   </div>
                   <span className="text-[10px] text-muted-foreground uppercase">FREE SWEEPSTAKES COINS</span>
