@@ -35,16 +35,22 @@ const sportPicks: { [key: string]: string[] } = {
 
 export default function GamesPage() {
   const { toast } = useToast();
-  const { user } = useUser();
+  const { user, isUserLoading } = useUser();
   const db = useFirestore();
 
-  // Fetch real games from Firestore
-  const gamesQuery = useMemoFirebase(() => collection(db, "games"), [db]);
-  const { data: allGames, isLoading } = useCollection(gamesQuery);
+  // Fetch real games from Firestore only when user is logged in
+  const gamesQuery = useMemoFirebase(() => {
+    if (!user) return null;
+    return collection(db, "games");
+  }, [db, user]);
+  
+  const { data: allGames, isLoading: isCollectionLoading } = useCollection(gamesQuery);
 
   const [acceptingInvite, setAcceptingInvite] = useState<any | null>(null);
   const [selectedPick, setSelectedPick] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const isLoading = isUserLoading || isCollectionLoading;
 
   // Derived states from Firestore data
   const activeGames = allGames?.filter(g => g.status === "Open" || g.status === "Live") || [];
@@ -96,6 +102,22 @@ export default function GamesPage() {
           <Zap className="h-12 w-12 text-primary animate-pulse mx-auto" />
           <p className="font-headline font-bold uppercase tracking-widest text-muted-foreground">Loading Arenas...</p>
         </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen pt-20 flex flex-col items-center justify-center p-4">
+        <Navbar />
+        <Card className="max-w-md w-full text-center p-8 space-y-6">
+          <Trophy className="h-16 w-16 text-muted-foreground mx-auto opacity-20" />
+          <h2 className="font-headline text-2xl font-bold uppercase">Locked Arena</h2>
+          <p className="text-muted-foreground">You must be signed in to view your games and challenges.</p>
+          <Link href="/login" className="block w-full">
+            <Button className="w-full font-bold uppercase tracking-wider">Sign In to Play</Button>
+          </Link>
+        </Card>
       </div>
     );
   }

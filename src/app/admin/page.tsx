@@ -3,28 +3,36 @@
 
 import { useState } from "react";
 import { Navbar } from "@/components/navbar";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ShieldAlert, CheckCircle2, Play, Trophy, User, Hash } from "lucide-react";
-import { useFirestore, useCollection, useMemoFirebase, updateDocumentNonBlocking } from "@/firebase";
+import { ShieldAlert, CheckCircle2, Play, Trophy, User, Hash, Lock } from "lucide-react";
+import { useFirestore, useCollection, useMemoFirebase, updateDocumentNonBlocking, useUser } from "@/firebase";
 import { collection, doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Link from "next/link";
 
 export default function AdminDashboard() {
   const db = useFirestore();
   const { toast } = useToast();
+  const { user, isUserLoading } = useUser();
   
-  const gamesQuery = useMemoFirebase(() => collection(db, "games"), [db]);
-  const { data: games, isLoading } = useCollection(gamesQuery);
+  const gamesQuery = useMemoFirebase(() => {
+    if (!user) return null;
+    return collection(db, "games");
+  }, [db, user]);
+
+  const { data: games, isLoading: isCollectionLoading } = useCollection(gamesQuery);
 
   const [scoringGame, setScoringGame] = useState<any | null>(null);
   const [winnerId, setWinnerId] = useState("");
   const [scores, setScores] = useState<{ [key: string]: string }>({});
+
+  const isLoading = isUserLoading || isCollectionLoading;
 
   const handleUpdateStatus = (gameId: string, status: string) => {
     const gameRef = doc(db, "games", gameId);
@@ -52,6 +60,22 @@ export default function AdminDashboard() {
   };
 
   if (isLoading) return <div className="p-20 text-center">Loading Arena Controls...</div>;
+
+  if (!user) {
+    return (
+      <div className="min-h-screen pt-20 flex flex-col items-center justify-center p-4">
+        <Navbar />
+        <Card className="max-w-md w-full text-center p-8 space-y-6">
+          <Lock className="h-16 w-16 text-muted-foreground mx-auto opacity-20" />
+          <h2 className="font-headline text-2xl font-bold uppercase">Admin Access Required</h2>
+          <p className="text-muted-foreground">This area is reserved for arena administrators. Please sign in to verify your credentials.</p>
+          <Link href="/login" className="block w-full">
+            <Button className="w-full font-bold uppercase tracking-wider">Sign In</Button>
+          </Link>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pb-24 pt-20 bg-background">
