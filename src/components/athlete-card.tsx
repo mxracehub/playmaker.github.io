@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface AthleteProps {
   id: string;
@@ -64,7 +65,7 @@ export function AthleteCard({ name, team, sport, avatar, stats, isSelected, onSe
             {isSelected ? (
               <><Check className="mr-2 h-4 w-4" /> Selected</>
             ) : (
-              <><Plus className="mr-2 h-4 w-4" /> Pick Athlete</>
+              <><Plus className="mr-2 h-4 w-4" /> Play Game</>
             )}
           </Button>
         </div>
@@ -72,5 +73,3 @@ export function AthleteCard({ name, team, sport, avatar, stats, isSelected, onSe
     </Card>
   );
 }
-
-import { cn } from "@/lib/utils";
