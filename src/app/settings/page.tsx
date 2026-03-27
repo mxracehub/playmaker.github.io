@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,12 +9,91 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
-import { User, Bell, Shield, Wallet, Save, ChevronRight } from "lucide-react";
-import { useUser } from "@/firebase";
+import { User, Bell, Shield, Wallet, Save, ChevronRight, CheckCircle2, QrCode } from "lucide-react";
+import { useUser, useFirestore, updateDocumentNonBlocking, useDoc } from "@/firebase";
+import { doc } from "firebase/firestore";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function SettingsPage() {
   const { user } = useUser();
-  const [displayName, setDisplayName] = useState(user?.displayName || "");
+  const db = useFirestore();
+  const { toast } = useToast();
+  
+  const [displayName, setDisplayName] = useState("");
+  const [is2FADialogOpen, setIs2FADialogOpen] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
+
+  // Get user profile data from Firestore to check 2FA status
+  const userProfileRef = user ? doc(db, "users", user.uid) : null;
+  const { data: profile } = useDoc(userProfileRef);
+
+  useEffect(() => {
+    if (user?.displayName) {
+      setDisplayName(user.displayName);
+    }
+  }, [user]);
+
+  const handleSaveProfile = () => {
+    if (!user || !userProfileRef) return;
+    
+    updateDocumentNonBlocking(userProfileRef, {
+      username: displayName,
+      updatedAt: new Date().toISOString(),
+    });
+
+    toast({
+      title: "Profile Updated",
+      description: "Your arena nickname has been saved successfully.",
+    });
+  };
+
+  const handleEnable2FA = () => {
+    if (!user || !userProfileRef) return;
+    if (verificationCode.length !== 6) {
+      toast({
+        variant: "destructive",
+        title: "Invalid Code",
+        description: "Please enter the 6-digit code from your authenticator app.",
+      });
+      return;
+    }
+
+    updateDocumentNonBlocking(userProfileRef, {
+      twoFactorEnabled: true,
+      updatedAt: new Date().toISOString(),
+    });
+
+    setIs2FADialogOpen(false);
+    setVerificationCode("");
+    
+    toast({
+      title: "2FA Enabled",
+      description: "Your account is now protected with two-factor authentication.",
+    });
+  };
+
+  const handleDisable2FA = () => {
+    if (!user || !userProfileRef) return;
+
+    updateDocumentNonBlocking(userProfileRef, {
+      twoFactorEnabled: false,
+      updatedAt: new Date().toISOString(),
+    });
+
+    toast({
+      title: "2FA Disabled",
+      description: "Two-factor authentication has been turned off.",
+    });
+  };
 
   return (
     <div className="min-h-screen pb-24 md:pt-20">
@@ -70,8 +149,8 @@ export default function SettingsPage() {
                 </div>
               </CardContent>
               <CardFooter className="bg-secondary/10 p-6 border-t flex justify-between items-center">
-                <p className="text-xs text-muted-foreground">Last updated: Just now</p>
-                <Button className="font-bold uppercase tracking-wider px-8 h-12 shadow-lg shadow-primary/20">
+                <p className="text-xs text-muted-foreground">Manage your identity in the arena.</p>
+                <Button onClick={handleSaveProfile} className="font-bold uppercase tracking-wider px-8 h-12 shadow-lg shadow-primary/20">
                   <Save className="mr-2 h-5 w-5" /> Save Changes
                 </Button>
               </CardFooter>
@@ -103,15 +182,6 @@ export default function SettingsPage() {
                   </div>
                   <Switch defaultChecked />
                 </div>
-                <div className="flex items-center justify-between p-4 rounded-2xl bg-secondary/20 border border-white/5">
-                  <div className="space-y-1">
-                    <Label className="text-base font-bold flex items-center gap-2 uppercase tracking-tight">
-                      Arena Promotions
-                    </Label>
-                    <p className="text-sm text-muted-foreground">Exclusive alerts for bonus SC and coin pack discounts</p>
-                  </div>
-                  <Switch />
-                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -123,22 +193,68 @@ export default function SettingsPage() {
                 <CardDescription>Protect your winnings and profile integrity</CardDescription>
               </CardHeader>
               <CardContent className="p-6 space-y-6">
-                <div className="space-y-2">
+                <div className="p-6 rounded-2xl bg-secondary/20 border border-white/5 flex items-center justify-between">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <p className="font-bold uppercase text-sm">Two-Factor Auth</p>
+                      {profile?.twoFactorEnabled && (
+                        <span className="flex items-center gap-1 text-[10px] font-bold text-accent uppercase bg-accent/10 px-2 py-0.5 rounded-full">
+                          <CheckCircle2 className="h-3 w-3" /> Active
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground">Add an extra layer of protection to your account</p>
+                  </div>
+                  
+                  <Dialog open={is2FADialogOpen} onOpenChange={setIs2FADialogOpen}>
+                    <DialogTrigger asChild>
+                      {profile?.twoFactorEnabled ? (
+                        <Button variant="destructive" size="sm" onClick={handleDisable2FA} className="font-bold uppercase text-[10px] tracking-widest">
+                          Disable 2FA
+                        </Button>
+                      ) : (
+                        <Button variant="outline" size="sm" className="font-bold uppercase text-[10px] tracking-widest">
+                          Enable 2FA
+                        </Button>
+                      )}
+                    </DialogTrigger>
+                    {!profile?.twoFactorEnabled && (
+                      <DialogContent className="bg-card border-white/10">
+                        <DialogHeader>
+                          <DialogTitle className="font-headline text-xl uppercase">Enable Two-Factor Auth</DialogTitle>
+                          <DialogDescription>
+                            Scan the QR code with your authenticator app (like Google Authenticator) and enter the 6-digit code.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="flex flex-col items-center justify-center py-6 gap-6">
+                          <div className="p-4 bg-white rounded-2xl">
+                             <QrCode className="h-40 w-40 text-black" />
+                          </div>
+                          <div className="w-full space-y-2">
+                            <Label className="text-xs font-bold uppercase tracking-widest">Verification Code</Label>
+                            <Input 
+                              value={verificationCode}
+                              onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                              placeholder="000000" 
+                              className="text-center text-2xl tracking-[0.5em] font-headline h-14 bg-secondary/50"
+                            />
+                          </div>
+                        </div>
+                        <DialogFooter>
+                          <Button onClick={handleEnable2FA} className="w-full font-bold uppercase tracking-widest">Verify & Enable</Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    )}
+                  </Dialog>
+                </div>
+
+                <div className="space-y-2 pt-6 border-t border-white/5">
                   <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Current Password</Label>
                   <Input type="password" placeholder="••••••••" className="bg-secondary/30 border-white/5 h-12" />
                 </div>
                 <div className="space-y-2">
                   <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">New Password</Label>
                   <Input type="password" placeholder="Min. 8 characters" className="bg-secondary/30 border-white/5 h-12" />
-                </div>
-                <div className="pt-4 border-t border-white/5">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-bold uppercase text-sm">Two-Factor Auth</p>
-                      <p className="text-xs text-muted-foreground">Add an extra layer of protection</p>
-                    </div>
-                    <Button variant="outline" size="sm" className="font-bold uppercase text-[10px] tracking-widest">Enable 2FA</Button>
-                  </div>
                 </div>
               </CardContent>
               <CardFooter className="bg-secondary/10 p-6 border-t">
@@ -166,21 +282,7 @@ export default function SettingsPage() {
                   </div>
                   <span className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-green-500/30">Verified</span>
                 </div>
-                
-                <div className="space-y-4">
-                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Stored Payment Methods</Label>
-                  <div className="group p-4 rounded-xl bg-secondary/30 border border-white/5 flex items-center justify-between hover:bg-secondary/50 transition-all cursor-pointer">
-                    <div className="flex items-center gap-3">
-                      <div className="h-8 w-12 bg-white/10 rounded-md border flex items-center justify-center font-bold text-[10px] tracking-tighter">VISA</div>
-                      <span className="text-sm font-medium">Card ending in 4242</span>
-                    </div>
-                    <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-white transition-colors" />
-                  </div>
-                </div>
               </CardContent>
-              <CardFooter className="bg-secondary/10 p-6 border-t">
-                <Button variant="outline" className="w-full font-bold uppercase tracking-wider h-12">Add New Method</Button>
-              </CardFooter>
             </Card>
           </TabsContent>
         </Tabs>
