@@ -180,9 +180,11 @@ export default function Home() {
                     Start a Game <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 font-bold uppercase tracking-wider backdrop-blur-sm">
-                  How it Works
-                </Button>
+                <Link href="/how-it-works">
+                  <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 font-bold uppercase tracking-wider backdrop-blur-sm">
+                    How it Works
+                  </Button>
+                </Link>
               </div>
             </div>
             <div className="hidden md:flex flex-col gap-4">
