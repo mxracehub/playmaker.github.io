@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Trophy, Github, Twitter, Instagram, ShieldCheck } from "lucide-react";
+import { Trophy, Github, Twitter, Instagram, Youtube, ShieldCheck } from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -30,6 +30,9 @@ export function Footer() {
               </Link>
               <Link href="#" className="hover:text-accent transition-colors">
                 <Instagram className="h-5 w-5" />
+              </Link>
+              <Link href="#" className="hover:text-accent transition-colors">
+                <Youtube className="h-5 w-5" />
               </Link>
               <Link href="#" className="hover:text-accent transition-colors">
                 <Github className="h-5 w-5" />
