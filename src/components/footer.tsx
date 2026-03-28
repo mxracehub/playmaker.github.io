@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -21,7 +20,7 @@ export function Footer() {
                 Playmakers
               </span>
             </Link>
-            <p className="text-muted-foreground max-w-sm text-sm leading-relaxed">
+            <p className="text-muted-foreground max-sm text-sm leading-relaxed">
               The premier destination for friend-to-friend sports showdowns. 
               Compete in elite arenas across Basketball, Football, Golf, and Extreme Sports.
             </p>
@@ -57,7 +56,7 @@ export function Footer() {
             <ul className="space-y-4 text-sm text-muted-foreground">
               <li><Link href="/terms" className="hover:text-accent transition-colors">Terms of Service</Link></li>
               <li><Link href="/privacy" className="hover:text-accent transition-colors">Privacy Policy</Link></li>
-              <li><Link href="#" className="hover:text-accent transition-colors">Sweeps Rules</Link></li>
+              <li><Link href="/sweeps-rules" className="hover:text-accent transition-colors">Sweeps Rules</Link></li>
               <li><Link href="#" className="hover:text-accent transition-colors">Help Center</Link></li>
             </ul>
           </div>
