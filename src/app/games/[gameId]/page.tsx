@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, use } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";
@@ -79,7 +79,8 @@ const HockeyIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-export default function GameArenaPage({ params }: { params: { gameId: string } }) {
+export default function GameArenaPage({ params }: { params: Promise<{ gameId: string }> }) {
+  const { gameId } = use(params);
   const { toast } = useToast();
   const searchParams = useSearchParams();
   const arenaRef = useRef<HTMLDivElement>(null);
@@ -255,7 +256,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       const image = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = image;
-      link.download = `playmakers-showdown-${params.gameId}.png`;
+      link.download = `playmakers-showdown-${gameId}.png`;
       link.click();
 
       toast({
@@ -317,7 +318,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
               </div>
               <div className="space-y-1">
                 <Badge className="bg-white/10 text-white font-bold uppercase text-[10px] tracking-widest py-1 border-none">{theme.label}</Badge>
-                <h1 className="font-headline text-5xl font-bold uppercase tracking-tighter text-white">{params.gameId}</h1>
+                <h1 className="font-headline text-5xl font-bold uppercase tracking-tighter text-white">{gameId}</h1>
                 <div className="flex items-center gap-6 text-[11px] text-muted-foreground font-bold uppercase tracking-widest pt-2">
                   <span className="flex items-center gap-2 text-accent"><Clock className="h-3.5 w-3.5" /> LIVE SHOWDOWN</span>
                   <span className="flex items-center gap-2"><Users className="h-3.5 w-3.5" /> 2/2 PLAYMAKERS</span>
