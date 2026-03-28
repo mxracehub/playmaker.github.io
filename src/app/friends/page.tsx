@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UserPlus, Search, Trophy, Lock, Loader2, Trash2, ShieldAlert, CheckCircle2, Plus } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking } from "@/firebase";
-import { doc, collection, query, where, limit } from "firebase/firestore";
+import { doc, collection } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { HOUSE_ADMIN } from "@/hooks/use-friends-store";
 import {
@@ -38,27 +38,29 @@ export default function FriendsPage() {
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
   const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
-  // Fetch all user profiles to filter for friends
+  // Fetch all user profiles to enable global search
   const allUsersQuery = useMemoFirebase(() => collection(db, "userProfiles"), [db]);
   const { data: allUsers, isLoading: isUsersLoading } = useCollection(allUsersQuery);
 
-  // Global search for "Add Friend"
+  // Global search for "Add Friend" (searching the database)
   const globalSearchResults = useMemo(() => {
     if (!allUsers || !globalSearchQuery) return [];
     return allUsers.filter(u => 
       u.id !== user?.uid && 
-      u.username?.toLowerCase().includes(globalSearchQuery.toLowerCase()) &&
+      (u.username || "").toLowerCase().includes(globalSearchQuery.toLowerCase()) &&
       !(profile?.friendIds || []).includes(u.id)
     ).slice(0, 5);
   }, [allUsers, globalSearchQuery, user?.uid, profile?.friendIds]);
 
-  // Derive friends list from Firestore IDs
+  // Derive the user's current friends list from Firestore IDs
   const friendsList = useMemo(() => {
     if (!allUsers || !profile) return [HOUSE_ADMIN];
     const userFriends = allUsers.filter(u => (profile.friendIds || []).includes(u.id));
+    // Always include the hardcoded Arena Master
     return [HOUSE_ADMIN, ...userFriends];
   }, [allUsers, profile]);
 
+  // Filter the current friends list using the top search bar
   const filteredFriends = friendsList.filter(f => 
     (f.username || f.name || "").toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -144,7 +146,7 @@ export default function FriendsPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input 
                 placeholder="Filter current friends..." 
-                className="pl-10 w-[240px] bg-card/50" 
+                className="pl-10 w-[240px] bg-card/50 border-white/10" 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />

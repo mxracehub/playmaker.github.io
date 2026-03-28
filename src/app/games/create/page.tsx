@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -30,9 +31,9 @@ import {
   Search
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useFirestore, useUser, addDocumentNonBlocking, useDoc, useMemoFirebase } from "@/firebase";
+import { useFirestore, useUser, addDocumentNonBlocking, useDoc, useMemoFirebase, useCollection } from "@/firebase";
 import { collection, doc } from "firebase/firestore";
-import { useFriendsStore, HOUSE_ADMIN } from "@/hooks/use-friends-store";
+import { HOUSE_ADMIN } from "@/hooks/use-friends-store";
 import { sendChallengeEmail } from "@/ai/flows/send-challenge-email-flow";
 
 const BaseballIcon = ({ className }: { className?: string }) => (
@@ -192,7 +193,7 @@ const sports = [
       "Houston Astros", "Kansas City Royals", "Los Angeles Angels", "Los Angeles Dodgers", "Miami Marlins", 
       "Milwaukee Brewers", "Minnesota Twins", "New York Mets", "New York Yankees", "Oakland Athletics", 
       "Philadelphia Phillies", "Pittsburgh Pirates", "San Diego Padres", "San Francisco Giants", "Seattle Mariners", 
-      "St. Louis Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"
+      "St. Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"
     ] 
   },
   { 
@@ -245,112 +246,6 @@ const sports = [
       "Justin Gaethje", "Alexandre Pantoja", "Dricus Du Plessis", "Sean Strickland", "Khamzat Chimaev"
     ] 
   },
-  { 
-    id: 'boxing', 
-    name: 'Boxing', 
-    icon: <BoxingIcon className="w-5 h-5" />, 
-    color: "text-yellow-600", 
-    events: [
-      { id: 'box-1', name: "Fury vs Usyk III", date: "Feb 21, 2026" },
-      { id: 'box-2', name: "Canelo vs Benavidez", date: "May 02, 2026" },
-      { id: 'box-3', name: "Davis vs Garcia II", date: "Jul 11, 2026" },
-    ], 
-    options: [
-      "Tyson Fury", "Oleksandr Usyk", "Canelo Alvarez", "Gervonta Davis", "Terence Crawford", "Naoya Inoue", 
-      "Anthony Joshua", "Ryan Garcia", "Shakur Stevenson", "Devin Haney", "Artur Beterbiev", "Dmitry Bivol", 
-      "Jaron Ennis", "Vergil Ortiz Jr.", "Jesse Rodriguez", "Isaac Cruz"
-    ] 
-  },
-  { 
-    id: 'pickleball', 
-    name: 'Pickleball', 
-    icon: <PickleballIcon className="w-5 h-5" />, 
-    color: "text-yellow-500", 
-    events: [
-      { id: 'pb-1', name: "PPA Florida Open", date: "Feb 12, 2026" },
-      { id: 'pb-2', name: "US Open Pickleball Championship", date: "Apr 18, 2026" },
-      { id: 'pb-4', name: "PPA World Finals", date: "Dec 05, 2026" },
-    ], 
-    options: [
-      "Ben Johns", "Anna Leigh Waters", "Tyson McGuffin", "Lea Jansen", "Catherine Parenteau", "Riley Newman", 
-      "JW Johnson", "Dylan Frazier", "Federico Staksrud", "Mary Brascia", "Christian Alshon", "Lucy Kovalova"
-    ] 
-  },
-  { 
-    id: 'volleyball', 
-    name: 'Volleyball', 
-    icon: <VolleyballIcon className="w-5 h-5" />, 
-    color: "text-indigo-400", 
-    events: [
-      { id: 'vb-1', name: "Nations League Finals", date: "Jul 08, 2026" },
-      { id: 'vb-2', name: "World Beach Tour: Gstaad", date: "Aug 15, 2026" },
-      { id: 'vb-4', name: "Club World Championship", date: "Dec 14, 2026" },
-    ], 
-    options: [
-      "USA", "Poland", "Brazil", "Turkey", "Italy", "Japan", "Serbia", "China", "France", "Slovenia", 
-      "Netherlands", "Dominican Republic", "Germany", "Canada", "Argentina"
-    ] 
-  },
-  { 
-    id: 'surfing', 
-    name: 'Surfing', 
-    icon: <Waves className="w-5 h-5" />, 
-    color: "text-blue-400", 
-    events: [
-      { id: 'surf-1', name: "WSL: Pipeline Pro", date: "Jan 29, 2026" },
-      { id: 'surf-3', name: "WSL: Tahiti Pro", date: "Aug 20, 2026" },
-      { id: 'surf-4', name: "WSL Finals: Lower Trestles", date: "Sep 15, 2026" },
-    ], 
-    options: [
-      "John John Florence", "Gabriel Medina", "Carissa Moore", "Caroline Marks", "Griffin Colapinto", 
-      "Italo Ferreira", "Filipe Toledo", "Jack Robinson", "Ethan Ewing", "Molly Picklum", "Caitlin Simmers", 
-      "Tyler Wright", "Brisa Hennessy", "Tatiana Weston-Webb"
-    ] 
-  },
-  { 
-    id: 'skateboarding', 
-    name: 'Skate', 
-    icon: <Zap className="w-5 h-5" />, 
-    color: "text-yellow-400", 
-    events: [
-      { id: 'skate-1', name: "X Games Japan: Street Finals", date: "May 15, 2026" },
-      { id: 'skate-2', name: "Street League: Chicago", date: "Jul 22, 2026" },
-      { id: 'skate-3', name: "X Games California: Vert", date: "Sep 10, 2026" },
-    ], 
-    options: [
-      "Nyjah Huston", "Yuto Horigome", "Rayssa Leal", "Sky Brown", "Tony Hawk (Legend)", "Leticia Bufoni", 
-      "Jagger Eaton", "Ginwoo Onodera", "Chloe Covell", "Arisa Trew", "Kelvin Hoefler", "Aurélien Giraud"
-    ] 
-  },
-  { 
-    id: 'bmx', 
-    name: 'BMX', 
-    icon: <Bike className="w-5 h-5" />, 
-    color: "text-red-400", 
-    events: [
-      { id: 'bmx-1', name: "UCI Freestyle World Cup", date: "Jun 04, 2026" },
-      { id: 'bmx-2', name: "BMX Dirt Open: Austin", date: "Aug 22, 2026" },
-      { id: 'bmx-3', name: "X Games: BMX Park Finals", date: "Sep 12, 2026" },
-    ], 
-    options: [
-      "Logan Martin", "Marcus Christopher", "Hannah Roberts", "Ryan Williams", "Kieran Reilly", "Jose Torres", 
-      "Anthony Jeanjean", "Marin Rantes", "Natalya Diehm", "Rim Nakamura", "Justin Dowell", "Declan Brooks"
-    ] 
-  },
-  { 
-    id: 'snowboarding', 
-    name: 'Snowboard', 
-    icon: <Mountain className="w-5 h-5" />, 
-    color: "text-cyan-400", 
-    events: [
-      { id: 'snow-1', name: "Burton US Open", date: "Mar 05, 2026" },
-      { id: 'snow-2', name: "X Games Aspen: Slopestyle", date: "Jan 23, 2026" },
-    ], 
-    options: [
-      "Shaun White", "Chloe Kim", "Mark McMorris", "Zoi Sadowski-Synnott", "Marcus Kleveland", "Ayumu Hirano", 
-      "Valentino Guseli", "Red Gerard", "Su Yiming", "Anna Gasser", "Dusty Henricksen", "Mons Roisland"
-    ] 
-  },
 ];
 
 function CreateGameForm() {
@@ -359,10 +254,14 @@ function CreateGameForm() {
   const { toast } = useToast();
   const { user } = useUser();
   const db = useFirestore();
-  const { friends, isLoaded: isFriendsLoaded } = useFriendsStore();
   
+  // Fetch current user's profile for real coin balances
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
-  const { data: profile } = useDoc(userProfileRef);
+  const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
+
+  // Fetch all user profiles to find actual friends for selection
+  const allUsersQuery = useMemoFirebase(() => collection(db, "userProfiles"), [db]);
+  const { data: allUsers, isLoading: isUsersLoading } = useCollection(allUsersQuery);
 
   const [selectedSport, setSelectedSport] = useState<string>("");
   const [selectedEvent, setSelectedEvent] = useState<string>("");
@@ -373,10 +272,15 @@ function CreateGameForm() {
   const [currency, setCurrency] = useState("gold");
   const [fee, setFee] = useState("1000");
 
-  const availableFriends = [HOUSE_ADMIN, ...friends];
+  // Derive available opponents from Firestore profile
+  const availableFriends = useMemo(() => {
+    if (!allUsers || !profile) return [HOUSE_ADMIN];
+    const userFriends = allUsers.filter(u => (profile.friendIds || []).includes(u.id));
+    return [HOUSE_ADMIN, ...userFriends];
+  }, [allUsers, profile]);
 
   useEffect(() => {
-    if (!isFriendsLoaded) return;
+    if (isProfileLoading || isUsersLoading) return;
     
     const friendId = searchParams.get('friendId');
     if (friendId && (availableFriends.some(f => f.id === friendId))) {
@@ -386,11 +290,11 @@ function CreateGameForm() {
     if (sportId && sports.some(s => s.id === sportId)) {
       setSelectedSport(sportId);
     }
-  }, [searchParams, availableFriends.length, isFriendsLoaded]);
+  }, [searchParams, availableFriends.length, isProfileLoading, isUsersLoading]);
 
   const currentSport = sports.find(s => s.id === selectedSport);
   const filteredPicks = currentSport?.options.filter(option => option.toLowerCase().includes(searchPickQuery.toLowerCase())) || [];
-  const filteredFriends = availableFriends.filter(friend => friend.name.toLowerCase().includes(searchFriendQuery.toLowerCase()));
+  const filteredFriends = availableFriends.filter(friend => (friend.username || friend.name || "").toLowerCase().includes(searchFriendQuery.toLowerCase()));
 
   const handleCreate = () => {
     if (!user) {
@@ -446,6 +350,14 @@ function CreateGameForm() {
       });
   };
 
+  if (isProfileLoading || isUsersLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   return (
     <main className="mx-auto max-w-3xl px-4 py-12">
       <header className="mb-12 text-center">
@@ -461,6 +373,7 @@ function CreateGameForm() {
           <CardTitle className="font-headline text-xl uppercase tracking-tighter">Arena Configuration</CardTitle>
         </CardHeader>
         <CardContent className="p-6 space-y-10">
+          {/* Step 1: Select Arena */}
           <div className="space-y-4">
             <Label className="text-xs font-bold uppercase tracking-widest">1. Select Arena</Label>
             <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
@@ -477,6 +390,7 @@ function CreateGameForm() {
             </div>
           </div>
 
+          {/* Step 2: Select Event */}
           <div className="space-y-4">
             <Label className="text-xs font-bold uppercase tracking-widest">2. Select Event</Label>
             {selectedSport ? (
@@ -494,6 +408,7 @@ function CreateGameForm() {
             ) : <div className="p-6 text-center bg-secondary/10 rounded-xl border border-dashed opacity-50"><p className="text-xs uppercase">Select an Arena first</p></div>}
           </div>
 
+          {/* Step 3: Pick Your Winner */}
           <div className="space-y-4">
             <Label className="text-xs font-bold uppercase tracking-widest">3. Pick Your Winner</Label>
             {selectedSport ? (
@@ -516,6 +431,7 @@ function CreateGameForm() {
             ) : <div className="p-6 text-center bg-secondary/10 rounded-xl border border-dashed opacity-50"><p className="text-xs uppercase">Choose Arena & Event</p></div>}
           </div>
 
+          {/* Step 4: Stakes */}
           <div className="space-y-6 pt-4 border-t border-white/5">
             <div className="flex items-center justify-between">
               <Label className="text-xs font-bold uppercase tracking-widest">4. Set the Stakes</Label>
@@ -553,6 +469,7 @@ function CreateGameForm() {
             </div>
           </div>
 
+          {/* Step 5: Opponent */}
           <div className="space-y-4 pt-4 border-t border-white/5">
             <Label className="text-xs font-bold uppercase tracking-widest">5. Select Your Opponent</Label>
             <div className="relative mb-4">
@@ -562,8 +479,8 @@ function CreateGameForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[300px] overflow-y-auto pr-2 no-scrollbar">
               {filteredFriends.map((friend) => (
                 <button key={friend.id} onClick={() => setSelectedFriend(friend.id)} className={`flex items-center justify-3 p-3 rounded-xl border-2 transition-all ${selectedFriend === friend.id ? 'bg-primary/10 border-primary' : 'bg-secondary/20 border-white/5 hover:bg-white/5'}`}>
-                  <Avatar className="h-10 w-10 border border-white/10"><AvatarImage src={friend.avatar} /></Avatar>
-                  <div className="flex-1 text-left ml-3"><p className="font-bold text-xs truncate">{friend.name}</p></div>
+                  <Avatar className="h-10 w-10 border border-white/10"><AvatarImage src={friend.profilePictureUrl || friend.avatar} /></Avatar>
+                  <div className="flex-1 text-left ml-3"><p className="font-bold text-xs truncate">{friend.username || friend.name}</p></div>
                   {selectedFriend === friend.id && <CheckCircle2 className="h-4 w-4 text-primary" />}
                 </button>
               ))}
