@@ -202,8 +202,11 @@ export default function GamesPage() {
                           </div>
                           <div className="flex items-center gap-6 justify-start md:justify-end">
                             <div className="text-right">
-                              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Total Prize Pool</p>
-                              <p className="font-headline text-2xl font-bold text-accent">{game.prizePool || (game.entryFee * 2)} {game.currencyType.toUpperCase()}</p>
+                              <div className="flex items-center gap-1 justify-end text-accent">
+                                <Zap className="h-3 w-3 fill-current" />
+                                <p className="text-[10px] font-bold uppercase tracking-widest">Prize Pool</p>
+                              </div>
+                              <p className="font-headline text-2xl font-bold text-accent">{(game.prizePool || (game.entryFee * 2)).toLocaleString()} {game.currencyType.toUpperCase()} POOL</p>
                             </div>
                             <div className="h-14 w-14 rounded-full bg-secondary/30 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-inner">
                               <ArrowRight className="h-6 w-6" />
@@ -304,8 +307,12 @@ export default function GamesPage() {
                     </div>
                   </div>
                   <div className="text-right">
+                    <div className="flex items-center gap-1 justify-end text-green-400">
+                      <Zap className="h-3 w-3 fill-current" />
+                      <p className="text-[10px] font-bold uppercase tracking-widest">Prize Pool</p>
+                    </div>
                     <p className={cn("font-headline text-xl font-bold text-green-400")}>
-                      {game.prizePool} {game.currencyType.toUpperCase()}
+                      {game.prizePool.toLocaleString()} {game.currencyType.toUpperCase()} POOL
                     </p>
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">Winner: {game.winnerId?.slice(0, 5)}...</p>
                   </div>

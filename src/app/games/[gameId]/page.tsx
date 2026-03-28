@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Trophy, Users, Zap, Clock, Share2, Target, Dribbble, Flag, CheckCircle2, Waves, Bike, Mountain, Swords, Timer, Snowflake } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const BaseballIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -235,8 +236,9 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
                 <div className="flex items-center gap-6 text-[11px] text-muted-foreground font-bold uppercase tracking-widest pt-2">
                   <span className="flex items-center gap-2 text-accent"><Clock className="h-3.5 w-3.5" /> LIVE SHOWDOWN</span>
                   <span className="flex items-center gap-2"><Users className="h-3.5 w-3.5" /> 2/2 PLAYMAKERS</span>
-                  <span className={`flex items-center gap-2 ${theme.accent}`}>
-                    <Zap className="h-3.5 w-3.5 fill-current" /> {parseInt(fee) * 2} {currency.toUpperCase()} PRIZE POOL
+                  <span className={cn("flex items-center gap-2 font-bold", theme.accent)}>
+                    <Zap className="h-4 w-4 fill-current" />
+                    {(parseInt(fee) * 2).toLocaleString()} {currency.toUpperCase()} PRIZE POOL
                   </span>
                 </div>
               </div>
@@ -332,9 +334,12 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
                     <span className="text-white/60">Prize Split</span>
                     <span className="font-bold text-accent">Winner Take All</span>
                   </div>
-                  <div className="flex justify-between items-center text-sm pt-4 border-t border-white/5">
-                    <span className="text-white/60">Expected Payout</span>
-                    <span className="font-headline font-bold text-xl text-accent">{(parseInt(fee) * 2).toLocaleString()} {currency.toUpperCase()}</span>
+                  <div className="flex flex-col gap-2 pt-4 border-t border-white/5">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Total Reward Pool</span>
+                    <div className={cn("flex items-center gap-2 font-bold", theme.accent)}>
+                      <Zap className="h-5 w-5 fill-current" />
+                      <span className="font-headline text-2xl">{(parseInt(fee) * 2).toLocaleString()} {currency.toUpperCase()} POOL</span>
+                    </div>
                   </div>
                 </div>
               </Card>
