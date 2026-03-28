@@ -40,10 +40,10 @@ export default function TermsOfServicePage() {
                 <span className="text-accent">01.</span> Introduction
               </h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed text-sm">
-                <p>Welcome to Mxracehub.com! Before the fun starts, we need to make sure you know how we operate and what it means when you register an account.</p>
+                <p>Welcome to Playmakers.arena! Before the fun starts, we need to make sure you know how we operate and what it means when you register an account.</p>
                 <div className="bg-secondary/20 p-4 rounded-xl border border-white/5">
                   <p className="font-bold text-white mb-1 uppercase text-xs tracking-widest">Who are we</p>
-                  <p>The Platform is provided by MxRaceHub LLC, a company duly incorporated under Colorado law, with the register number 20261266660 and registered office at 807 East Kelly Drive, Loveland, Colorado, 80537. Colorado (hereinafter “MxRaceHub”, “we”, “us” or “our”).</p>
+                  <p>The Platform is provided by Playmaker LLC, a company duly incorporated under Colorado law, with the register number 20261266660 and registered office at 807 East Kelly Drive, Loveland, Colorado, 80537. Colorado (hereinafter “Playmaker”, “we”, “us” or “our”).</p>
                 </div>
                 <p>By registering on the Platform, you accept these Terms and Conditions (“Terms”) and enter into a binding agreement with us which applies to your access to, and use of, our Platform and our Games.</p>
                 <p className="font-bold text-white italic">PLEASE TAKE THE TIME TO READ THESE TERMS CAREFULLY AND IN THEIR ENTIRETY. BY ACCEPTING THESE TERMS, YOU REPRESENT – AND WE ARE RELYING ON YOUR REPRESENTATION – THAT YOU HAVE DONE SO.</p>
@@ -54,7 +54,7 @@ export default function TermsOfServicePage() {
 
             <div>
               <h2 className="text-2xl font-headline font-bold uppercase flex items-center gap-3 mb-4">
-                <span className="text-accent">02.</span> MxRaceHub Statement
+                <span className="text-accent">02.</span> Playmaker Statement
               </h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed text-sm">
                 <p className="font-bold text-white">2.1. The following are "Excluded Territories”:</p>
@@ -134,9 +134,9 @@ export default function TermsOfServicePage() {
               </h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed text-sm">
                 <p className="font-bold text-white italic">PLEASE READ THIS SECTION CAREFULLY AS IT REQUIRES YOU TO ARBITRATE DISPUTES INDIVIDUALLY.</p>
-                <p>By agreeing to these Terms, you and MxRaceHub agree that any and all Disputes shall be referred to and finally resolved by binding arbitration administered by the American Arbitration Association (AAA).</p>
+                <p>By agreeing to these Terms, you and Playmaker LLC agree that any and all Disputes shall be referred to and finally resolved by binding arbitration administered by the American Arbitration Association (AAA).</p>
                 <p className="font-bold text-white">WAIVER OF COLLECTIVE ACTION: BOTH PARTIES AGREE THAT ANY PROCEEDING TO RESOLVE A DISPUTE WILL BE CONDUCTED ONLY ON AN INDIVIDUAL BASIS AND NOT IN A CLASS, CONSOLIDATED OR REPRESENTATIVE ACTION.</p>
-                <p>You have the right to opt-out of this arbitration agreement within 30 days of account creation by sending written notice to: MxRaceHub LLC, 123 Racing Ln, Motocross City, USA 12345.</p>
+                <p>You have the right to opt-out of this arbitration agreement within 30 days of account creation by sending written notice to: Playmaker LLC, 807 E. Kelly Dr., Loveland, USA 80537.</p>
               </div>
             </div>
 
@@ -155,8 +155,8 @@ export default function TermsOfServicePage() {
           <footer className="pt-12 text-center space-y-4">
             <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">Questions or Complaints?</p>
             <div className="flex flex-col items-center gap-2">
-              <a href="mailto:mxracehub@proton.me" className="text-accent font-bold hover:underline">mxracehub@proton.me</a>
-              <p className="text-[10px] text-muted-foreground">MxRaceHub LLC • 807 E. Kelly Dr., Loveland, USA 80537</p>
+              <a href="mailto:support@playmakers.arena" className="text-accent font-bold hover:underline">support@playmakers.arena</a>
+              <p className="text-[10px] text-muted-foreground">Playmaker LLC • 807 E. Kelly Dr., Loveland, USA 80537</p>
             </div>
           </footer>
         </div>

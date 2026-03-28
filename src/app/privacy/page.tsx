@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Navbar } from "@/components/navbar";
@@ -26,17 +25,17 @@ export default function PrivacyPolicyPage() {
           
           <section className="space-y-4">
             <p className="text-muted-foreground leading-relaxed text-sm">
-              This Privacy Policy governs the manner in which MxRaceHub LLC (hereinafter “MxRaceHub”, “We”, “us”, or “our”), collects, use, maintain and disclose information collected from customers of its website mxracehub.com. This Privacy Policy applies to www.mxracehub.com and all products and services offered through www.mxracehub.com.
+              This Privacy Policy governs the manner in which Playmaker LLC (hereinafter “Playmaker”, “We”, “us”, or “our”), collects, use, maintain and disclose information collected from customers of its website playmakers.arena. This Privacy Policy applies to www.playmakers.arena and all products and services offered through www.playmakers.arena.
             </p>
           </section>
 
           <section className="space-y-8">
             <div>
               <h2 className="text-2xl font-headline font-bold uppercase flex items-center gap-3 mb-4">
-                <span className="text-accent">01.</span> MxRaceHub Statement
+                <span className="text-accent">01.</span> Playmaker Statement
               </h2>
               <p className="text-muted-foreground leading-relaxed text-sm">
-                MxRaceHub is committed to protecting and respecting your privacy and maintaining the confidence and trust its customers. This Privacy Policy explains how your personal information is collected, why it is collected and how it is kept secure.
+                Playmaker LLC is committed to protecting and respecting your privacy and maintaining the confidence and trust of its customers. This Privacy Policy explains how your personal information is collected, why it is collected and how it is kept secure.
               </p>
             </div>
 
@@ -47,7 +46,7 @@ export default function PrivacyPolicyPage() {
                 <span className="text-accent">02.</span> Data Controller
               </h2>
               <p className="text-muted-foreground leading-relaxed text-sm">
-                Sweepsteaks Limited is a company incorporated under the laws of Colorado, with the register number 20261266660 and head office at 807 East Kelly Drive, Loveland, Colorado, 80537. MxRaceHub LLC is responsible for processing the data collected from you using the website www.mxracehub.com.
+                Playmaker LLC is a company incorporated under the laws of Colorado, with the register number 20261266660 and head office at 807 East Kelly Drive, Loveland, Colorado, 80537. Playmaker LLC is responsible for processing the data collected from you using the website www.playmakers.arena.
               </p>
             </div>
 
@@ -171,8 +170,8 @@ export default function PrivacyPolicyPage() {
           <footer className="pt-12 text-center space-y-4">
             <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">Questions or Comments?</p>
             <div className="flex flex-col items-center gap-2">
-              <a href="mailto:mxracehub@proton.me" className="text-accent font-bold hover:underline">mxracehub@proton.me</a>
-              <p className="text-[10px] text-muted-foreground">MxRaceHub LLC • 807 E. Kelly Dr., Loveland, USA 80537</p>
+              <a href="mailto:support@playmakers.arena" className="text-accent font-bold hover:underline">support@playmakers.arena</a>
+              <p className="text-[10px] text-muted-foreground">Playmaker LLC • 807 E. Kelly Dr., Loveland, USA 80537</p>
             </div>
           </footer>
         </div>

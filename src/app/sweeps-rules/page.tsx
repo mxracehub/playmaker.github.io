@@ -38,7 +38,7 @@ export default function SweepsRulesPage() {
                 <span className="text-accent">01.</span> Sponsor
               </h2>
               <p className="text-muted-foreground leading-relaxed text-sm">
-                The Playmakers Arena Sweepstakes (the "Sweepstakes") is sponsored by MxRaceHub LLC, 807 East Kelly Drive, Loveland, Colorado, 80537 (the "Sponsor").
+                The Playmakers Arena Sweepstakes (the "Sweepstakes") is sponsored by Playmaker LLC, 807 East Kelly Drive, Loveland, Colorado, 80537 (the "Sponsor").
               </p>
             </div>
 
@@ -138,8 +138,8 @@ export default function SweepsRulesPage() {
           <footer className="pt-12 text-center space-y-4">
             <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">Questions about the Arena Rules?</p>
             <div className="flex flex-col items-center gap-2">
-              <a href="mailto:mxracehub@proton.me" className="text-accent font-bold hover:underline">mxracehub@proton.me</a>
-              <p className="text-[10px] text-muted-foreground">MxRaceHub LLC • 807 E. Kelly Dr., Loveland, USA 80537</p>
+              <a href="mailto:support@playmakers.arena" className="text-accent font-bold hover:underline">support@playmakers.arena</a>
+              <p className="text-[10px] text-muted-foreground">Playmaker LLC • 807 E. Kelly Dr., Loveland, USA 80537</p>
             </div>
           </footer>
         </div>
