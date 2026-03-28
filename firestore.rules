@@ -6,8 +6,7 @@ service cloud.firestore {
      * CORE PHILOSOPHY
      * This ruleset enforces a strict user-ownership and member-participation model. 
      * Access is granted based on verified identity (Firebase Auth) and participation 
-     * metadata denormalized onto documents to ensure high performance and Authorization 
-     * Independence.
+     * metadata denormalized onto documents.
      */
 
     // --- Helper Functions ---
@@ -32,10 +31,11 @@ service cloud.firestore {
 
     /**
      * @description Arena games for the dashboard and stats.
-     * Public read is required for the lobby and live arena metrics.
+     * Public read (get and list) is REQUIRED for the lobby floor metrics.
+     * This rule change explicitly permits unauthenticated 'list' operations on /games.
      */
     match /games/{gameId} {
-      allow read: if true;
+      allow get, list: if true;
       allow create: if isSignedIn();
       allow update: if isSignedIn() && (
         request.auth.uid == resource.data.creatorId || 
@@ -93,7 +93,7 @@ service cloud.firestore {
     }
 
     /**
-     * @description Legacy/Alternative path for users (for profile syncing).
+     * @description Profile syncing and fallback paths.
      */
     match /users/{userId} {
       allow get: if isOwner(userId);
