@@ -7,7 +7,7 @@ import { SportsFilter } from "@/components/sports-filter";
 import { AthleteCard } from "@/components/athlete-card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowRight, Target, Gamepad2, Trophy, Sparkles } from "lucide-react";
+import { ArrowRight, Target, Gamepad2, Trophy, Sparkles, Loader2 } from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection } from "firebase/firestore";
 
@@ -64,7 +64,7 @@ export default function Home() {
 
   const db = useFirestore();
   const gamesQuery = useMemoFirebase(() => collection(db, "games"), [db]);
-  const { data: games } = useCollection(gamesQuery);
+  const { data: games, isLoading: isGamesLoading } = useCollection(gamesQuery);
 
   const activeGamesCount = games?.filter(g => g.status === "Open" || g.status === "Live").length || 0;
   const winnersTodayCount = games?.filter(g => g.status === "Completed" && g.winnerId).length || 0;
@@ -110,26 +110,26 @@ export default function Home() {
             </div>
             
             {/* Tighter Live Stats Cards - Compacted for shorter page */}
-            <div className="flex flex-col gap-2 w-full md:w-auto md:min-w-[200px]">
-              <div className="flex items-center gap-3 bg-white/5 backdrop-blur-2xl px-4 py-3 rounded-2xl border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
-                <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center border border-accent/20">
-                  <Gamepad2 className="h-4 w-4 text-accent" />
+            <div className="flex flex-col gap-3 w-full md:w-auto md:min-w-[220px]">
+              <div className="flex items-center gap-4 bg-white/5 backdrop-blur-2xl px-5 py-4 rounded-2xl border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
+                <div className="h-10 w-10 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
+                  {isGamesLoading ? <Loader2 className="h-5 w-5 text-accent animate-spin" /> : <Gamepad2 className="h-5 w-5 text-accent" />}
                 </div>
                 <div>
-                  <p className="text-[7px] text-white/40 font-black uppercase tracking-[0.25em] mb-0.5">ACTIVE GAMES</p>
-                  <p className="text-2xl font-headline font-bold tracking-tighter italic leading-none">
+                  <p className="text-[8px] text-white/40 font-black uppercase tracking-[0.25em] mb-0.5">ACTIVE GAMES</p>
+                  <p className="text-3xl font-headline font-bold tracking-tighter italic leading-none">
                     {activeGamesCount.toLocaleString()}
                   </p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-3 bg-white/5 backdrop-blur-2xl px-4 py-3 rounded-2xl border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
-                <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center border border-accent/20">
-                  <Target className="h-4 w-4 text-accent" />
+              <div className="flex items-center gap-4 bg-white/5 backdrop-blur-2xl px-5 py-4 rounded-2xl border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
+                <div className="h-10 w-10 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
+                  {isGamesLoading ? <Loader2 className="h-5 w-5 text-accent animate-spin" /> : <Target className="h-5 w-5 text-accent" />}
                 </div>
                 <div>
-                  <p className="text-[7px] text-white/40 font-black uppercase tracking-[0.25em] mb-0.5">WINNERS TODAY</p>
-                  <p className="text-2xl font-headline font-bold tracking-tighter italic leading-none">
+                  <p className="text-[8px] text-white/40 font-black uppercase tracking-[0.25em] mb-0.5">WINNERS TODAY</p>
+                  <p className="text-3xl font-headline font-bold tracking-tighter italic leading-none">
                     {winnersTodayCount.toLocaleString()}
                   </p>
                 </div>
