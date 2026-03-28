@@ -95,8 +95,43 @@ const BoxingIcon = ({ className }: { className?: string }) => (
 
 const sports = [
   { 
+    id: 'nfl', 
+    name: 'NFL Arena', 
+    icon: <Trophy className="w-5 h-5" />, 
+    color: "text-green-500", 
+    events: [
+      { id: 'nfl-w1', name: "Chiefs @ Eagles (W1)", date: "Sep 10, 2026" },
+      { id: 'nfl-w1b', name: "Lions @ 49ers (W1)", date: "Sep 11, 2026" },
+      { id: 'nfl-w2', name: "Cowboys @ Giants (W2)", date: "Sep 17, 2026" },
+      { id: 'nfl-w2b', name: "Bills @ Dolphins (W2)", date: "Sep 18, 2026" },
+      { id: 'nfl-w3', name: "Ravens @ Bengals (W3)", date: "Sep 24, 2026" },
+      { id: 'nfl-w3b', name: "Packers @ Bears (W3)", date: "Sep 25, 2026" },
+      { id: 'nfl-w4', name: "Jets @ Patriots (W4)", date: "Oct 01, 2026" },
+      { id: 'nfl-w4b', name: "Texans @ Jaguars (W4)", date: "Oct 02, 2026" },
+      { id: 'nfl-w5', name: "Browns @ Steelers (W5)", date: "Oct 08, 2026" },
+      { id: 'nfl-w6', name: "Vikions @ Lions (W6)", date: "Oct 15, 2026" },
+      { id: 'nfl-w7', name: "Colts @ Titans (W7)", date: "Oct 22, 2026" },
+      { id: 'nfl-w8', name: "Raiders @ Broncos (W8)", date: "Oct 29, 2026" },
+      { id: 'nfl-w9', name: "Seahawks @ Rams (W9)", date: "Nov 05, 2026" },
+      { id: 'nfl-w10', name: "Falcons @ Saints (W10)", date: "Nov 12, 2026" },
+      { id: 'nfl-w11', name: "Buccaneers @ Panthers (W11)", date: "Nov 19, 2026" },
+      { id: 'nfl-w12', name: "Thanksgiving Classic (W12)", date: "Nov 26, 2026" },
+      { id: 'nfl-w13', name: "Cardinals @ 49ers (W13)", date: "Dec 03, 2026" },
+      { id: 'nfl-w14', name: "Commanders @ Cowboys (W14)", date: "Dec 10, 2026" },
+      { id: 'nfl-w15', name: "Chargers @ Chiefs (W15)", date: "Dec 17, 2026" },
+      { id: 'nfl-w16', name: "Christmas Special (W16)", date: "Dec 25, 2026" },
+      { id: 'nfl-w17', name: "Bills @ Jets (W17)", date: "Jan 01, 2027" },
+      { id: 'nfl-w18', name: "Regular Season Finale", date: "Jan 08, 2027" },
+      { id: 'nfl-wc', name: "Wild Card Weekend", date: "Jan 15-17, 2027" },
+      { id: 'nfl-div', name: "Divisional Playoffs", date: "Jan 22-23, 2027" },
+      { id: 'nfl-conf', name: "Conference Championship", date: "Jan 30, 2027" },
+      { id: 'nfl-sb', name: "Super Bowl LXI", date: "Feb 14, 2027" },
+    ], 
+    options: ["Chiefs", "Eagles", "49ers", "Lions", "Cowboys", "Giants", "Bills", "Jets", "Bengals", "Ravens", "Packers", "Dolphins"] 
+  },
+  { 
     id: 'nba', 
-    name: 'NBA', 
+    name: 'NBA Arena', 
     icon: <Dribbble className="w-5 h-5" />, 
     color: "text-orange-500", 
     events: [
@@ -119,7 +154,6 @@ const sports = [
     ], 
     options: ["Lakers", "Warriors", "Celtics", "Bucks", "Suns", "Nets", "Knicks", "Spurs", "Mavericks", "Nuggets", "76ers", "Heat"] 
   },
-  { id: 'nfl', name: 'NFL', icon: <Trophy className="w-5 h-5" />, color: "text-green-500", events: [{ id: 'nfl-e1', name: "Super Bowl LX", date: "Feb 2026" }], options: ["Chiefs", "Eagles", "49ers", "Lions", "Cowboys", "Giants"] },
   { id: 'hockey', name: 'NHL', icon: <Snowflake className="w-5 h-5" />, color: "text-cyan-400", events: [{ id: 'h-e1', name: "NHL Winter Classic", date: "Jan 2026" }], options: ["Oilers", "Avalanche", "Bruins", "Rangers", "Leafs"] },
   { id: 'soccer', name: 'Soccer', icon: <SoccerIcon className="w-5 h-5" />, color: "text-white", events: [{ id: 'e30', name: "Champions League Final", date: "Jun 2026" }], options: ["Real Madrid", "Barcelona", "Man City", "Liverpool", "PSG"] },
   { id: 'ufc', name: 'UFC', icon: <Swords className="w-5 h-5" />, color: "text-red-600", events: [{ id: 'ufc-e1', name: "UFC 300 Global", date: "Apr 2026" }], options: ["Jon Jones", "Alex Pereira", "Islam Makhachev", "Leon Edwards"] },

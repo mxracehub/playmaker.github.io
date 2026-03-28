@@ -4,7 +4,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * ARENA SECURITY RULES v4.0
+     * ARENA SECURITY RULES v4.1
      * Explicitly allows public listing and getting of games to resolve lobby errors.
      */
 
