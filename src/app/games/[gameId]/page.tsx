@@ -1,14 +1,16 @@
 "use client";
 
+import { useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Users, Zap, Clock, Share2, Target, Dribbble, Flag, CheckCircle2, Waves, Bike, Mountain, Swords, Timer, Snowflake } from "lucide-react";
+import { Trophy, Users, Zap, Clock, Camera, Target, Dribbble, Flag, CheckCircle2, Waves, Bike, Mountain, Swords, Snowflake } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import html2canvas from 'html2canvas';
 
 const BaseballIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -78,6 +80,8 @@ const HockeyIcon = ({ className }: { className?: string }) => (
 export default function GameArenaPage({ params }: { params: { gameId: string } }) {
   const { toast } = useToast();
   const searchParams = useSearchParams();
+  const arenaRef = useRef<HTMLDivElement>(null);
+  
   const sportId = searchParams.get('sport') || 'nba';
   const myPick = searchParams.get('pick') || 'Elite Selection';
   const fee = searchParams.get('fee') || '1000';
@@ -217,13 +221,39 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
 
   const theme = themes[sportId as keyof typeof themes] || themes.nba;
 
-  const handleShare = () => {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url);
+  const handleShare = async () => {
+    if (!arenaRef.current) return;
+    
     toast({
-      title: "Link Archived",
-      description: "Arena coordinates copied to your playmaker clipboard.",
+      title: "Capturing Arena...",
+      description: "Preparing your playmaker highlight highlight.",
     });
+
+    try {
+      const canvas = await html2canvas(arenaRef.current, {
+        useCORS: true,
+        backgroundColor: "#0D1219", // Match arena base color
+        scale: 2, // Higher resolution for social media
+        logging: false,
+      });
+      
+      const image = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = image;
+      link.download = `playmakers-showdown-${params.gameId}.png`;
+      link.click();
+
+      toast({
+        title: "Arena Captured!",
+        description: "Showdown highlight downloaded to your device.",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Capture Failed",
+        description: "Could not generate screenshot for sharing.",
+      });
+    }
   };
 
   return (
@@ -233,7 +263,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       {/* Sport Specific Gradient */}
       <div className={`absolute top-0 inset-x-0 h-[500px] bg-gradient-to-b ${theme.color} to-transparent -z-10 opacity-40`} />
 
-      <main className="mx-auto max-w-6xl px-4 py-12">
+      <main ref={arenaRef} className="mx-auto max-w-6xl px-4 py-12">
         <div className="flex flex-col gap-10">
           {/* Header Section */}
           <header className="flex flex-col md:flex-row md:items-center justify-between gap-8">
@@ -258,7 +288,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
               onClick={handleShare}
               className="font-bold uppercase tracking-widest bg-white/5 hover:bg-white/10 border border-white/10 h-12 px-6"
             >
-              <Share2 className="mr-2 h-4 w-4" /> Share Game
+              <Camera className="mr-2 h-4 w-4" /> Share Game
             </Button>
           </header>
 
