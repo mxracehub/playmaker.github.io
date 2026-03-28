@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -165,6 +164,9 @@ export default function RegisterPage() {
             </CardHeader>
             <form onSubmit={handleVerify2FA}>
               <CardContent className="space-y-6 flex flex-col items-center">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-accent text-center">
+                  Download Google Authenticator App
+                </p>
                 <div className="p-2 bg-white rounded-lg shadow-inner">
                   {qrCodeUrl && (
                     <Image 
