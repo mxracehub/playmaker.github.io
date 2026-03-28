@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
@@ -105,8 +104,8 @@ const sports = [
       { id: 'nba-2', name: "Lakers @ Warriors", date: "Jan 15, 2026" },
       { id: 'nba-3', name: "Bucks @ 76ers", date: "Jan 18, 2026" },
       { id: 'nba-ny', name: "Nets @ Knicks (NY)", date: "Jan 20, 2026" },
-      { id: 'nba-sb', name: "All-Star Game 2026", date: "Feb 15, 2026" },
-      { id: 'nba-10', name: "NBA Finals Game 1", date: "Jun 04, 2026" },
+      { id: 'nba-as', name: "All-Star Game 2026", date: "Feb 15, 2026" },
+      { id: 'nba-f1', name: "NBA Finals Game 1", date: "Jun 04, 2026" },
     ], 
     options: [
       "Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", 
@@ -147,8 +146,8 @@ const sports = [
     events: [
       { id: 'h-1', name: "NHL Winter Classic", date: "Jan 01, 2026" },
       { id: 'h-2', name: "Rangers @ Islanders", date: "Jan 15, 2026" },
-      { id: 'h-8', name: "Stanley Cup Playoffs G1", date: "Apr 18, 2026" },
-      { id: 'h-10', name: "Stanley Cup Finals G1", date: "Jun 08, 2026" },
+      { id: 'h-p', name: "Stanley Cup Playoffs G1", date: "Apr 18, 2026" },
+      { id: 'h-f', name: "Stanley Cup Finals G1", date: "Jun 08, 2026" },
     ], 
     options: [
       "Anaheim Ducks", "Arizona Coyotes", "Boston Bruins", "Buffalo Sabres", "Calgary Flames", 
@@ -362,7 +361,6 @@ function CreateGameForm() {
   const db = useFirestore();
   const { friends, isLoaded: isFriendsLoaded } = useFriendsStore();
   
-  // Real balance from Firestore
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
   const { data: profile } = useDoc(userProfileRef);
 
@@ -463,7 +461,6 @@ function CreateGameForm() {
           <CardTitle className="font-headline text-xl uppercase tracking-tighter">Arena Configuration</CardTitle>
         </CardHeader>
         <CardContent className="p-6 space-y-10">
-          {/* Step 1: Arena */}
           <div className="space-y-4">
             <Label className="text-xs font-bold uppercase tracking-widest">1. Select Arena</Label>
             <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
@@ -480,7 +477,6 @@ function CreateGameForm() {
             </div>
           </div>
 
-          {/* Step 2: Event */}
           <div className="space-y-4">
             <Label className="text-xs font-bold uppercase tracking-widest">2. Select Event</Label>
             {selectedSport ? (
@@ -498,7 +494,6 @@ function CreateGameForm() {
             ) : <div className="p-6 text-center bg-secondary/10 rounded-xl border border-dashed opacity-50"><p className="text-xs uppercase">Select an Arena first</p></div>}
           </div>
 
-          {/* Step 3: Pick */}
           <div className="space-y-4">
             <Label className="text-xs font-bold uppercase tracking-widest">3. Pick Your Winner</Label>
             {selectedSport ? (
@@ -521,7 +516,6 @@ function CreateGameForm() {
             ) : <div className="p-6 text-center bg-secondary/10 rounded-xl border border-dashed opacity-50"><p className="text-xs uppercase">Choose Arena & Event</p></div>}
           </div>
 
-          {/* Step 4: Stakes */}
           <div className="space-y-6 pt-4 border-t border-white/5">
             <div className="flex items-center justify-between">
               <Label className="text-xs font-bold uppercase tracking-widest">4. Set the Stakes</Label>
@@ -559,7 +553,6 @@ function CreateGameForm() {
             </div>
           </div>
 
-          {/* Step 5: Opponent */}
           <div className="space-y-4 pt-4 border-t border-white/5">
             <Label className="text-xs font-bold uppercase tracking-widest">5. Select Your Opponent</Label>
             <div className="relative mb-4">
