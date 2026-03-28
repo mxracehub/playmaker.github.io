@@ -168,57 +168,70 @@ export default function GamesPage() {
           </TabsList>
           
           <TabsContent value="active" className="space-y-6">
-            {activeGames.length > 0 ? activeGames.map((game) => (
-              <Link key={game.id} href={`/games/${game.id}?sport=${game.sportId}&fee=${game.entryFee}&currency=${game.currencyType}`}>
-                <Card className="overflow-hidden bg-card/30 backdrop-blur-sm border-white/5 hover:border-accent/40 transition-all group relative">
-                  <div className={cn("absolute left-0 top-0 bottom-0 w-1.5", game.status === 'Live' ? 'bg-accent animate-pulse' : 'bg-primary')} />
-                  <CardContent className="p-0">
-                    <div className="flex flex-col md:flex-row md:items-center">
-                      <div className="flex-1 p-8">
-                        <div className="flex flex-wrap items-center gap-4 mb-4">
-                          <Badge className={cn("font-bold uppercase tracking-widest px-3 py-1 bg-secondary/50 text-white border-none")}>
-                            {game.sportId.toUpperCase()}
-                          </Badge>
-                          {game.status === 'Live' ? (
-                            <span className="flex items-center gap-2 text-xs font-bold text-accent uppercase tracking-widest animate-pulse">
-                              <Zap className="h-3 w-3 fill-current" /> Live Showdown
-                            </span>
-                          ) : (
-                            <span className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                              <Clock className="h-3 w-3" /> Waiting for Opponent
-                            </span>
-                          )}
-                        </div>
-                        
-                        <h3 className="font-headline text-2xl font-bold mb-6 group-hover:text-accent transition-colors">{game.name}</h3>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
-                          <div className="space-y-3">
-                            <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                              <span>Arena Status</span>
-                              <span className="text-white">{game.status === 'Live' ? '2 / 2' : '1 / 2'} Players</span>
-                            </div>
-                            <Progress value={game.status === 'Live' ? 100 : 50} className="h-2 bg-secondary/50" />
+            {activeGames.length > 0 ? activeGames.map((game) => {
+              const myPick = game.creatorId === user?.uid ? game.creatorPick : game.opponentPick;
+              
+              return (
+                <Link key={game.id} href={`/games/${game.id}?sport=${game.sportId}&fee=${game.entryFee}&currency=${game.currencyType}&pick=${myPick}`}>
+                  <Card className="overflow-hidden bg-card/30 backdrop-blur-sm border-white/5 hover:border-accent/40 transition-all group relative">
+                    <div className={cn("absolute left-0 top-0 bottom-0 w-1.5", game.status === 'Live' ? 'bg-accent animate-pulse' : 'bg-primary')} />
+                    <CardContent className="p-0">
+                      <div className="flex flex-col md:flex-row md:items-center">
+                        <div className="flex-1 p-8">
+                          <div className="flex flex-wrap items-center gap-4 mb-4">
+                            <Badge className={cn("font-bold uppercase tracking-widest px-3 py-1 bg-secondary/50 text-white border-none")}>
+                              {game.sportId.toUpperCase()}
+                            </Badge>
+                            {game.status === 'Live' ? (
+                              <span className="flex items-center gap-2 text-xs font-bold text-accent uppercase tracking-widest animate-pulse">
+                                <Zap className="h-3 w-3 fill-current" /> Live Showdown
+                              </span>
+                            ) : (
+                              <span className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                                <Clock className="h-3 w-3" /> Waiting for Opponent
+                              </span>
+                            )}
                           </div>
-                          <div className="flex items-center gap-6 justify-start md:justify-end">
-                            <div className="text-right">
-                              <div className="flex items-center gap-1 justify-end text-accent">
-                                <Zap className="h-3 w-3 fill-current" />
-                                <p className="text-[10px] font-bold uppercase tracking-widest">Prize Pool</p>
+                          
+                          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
+                            <h3 className="font-headline text-2xl font-bold group-hover:text-accent transition-colors">{game.name}</h3>
+                            <div className="bg-accent/10 border border-accent/20 px-4 py-2 rounded-xl flex items-center gap-3">
+                              <Target className="h-4 w-4 text-accent" />
+                              <div>
+                                <p className="text-[10px] font-bold text-accent/60 uppercase tracking-widest leading-none mb-1">Your Locked Pick</p>
+                                <p className="font-headline font-bold text-white uppercase tracking-tighter leading-none">{myPick || "PENDING"}</p>
                               </div>
-                              <p className="font-headline text-2xl font-bold text-accent">{(game.prizePool || (game.entryFee * 2)).toLocaleString()} {game.currencyType.toUpperCase()} POOL</p>
                             </div>
-                            <div className="h-14 w-14 rounded-full bg-secondary/30 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-inner">
-                              <ArrowRight className="h-6 w-6" />
+                          </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+                            <div className="space-y-3">
+                              <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                                <span>Arena Status</span>
+                                <span className="text-white">{game.status === 'Live' ? '2 / 2' : '1 / 2'} Players</span>
+                              </div>
+                              <Progress value={game.status === 'Live' ? 100 : 50} className="h-2 bg-secondary/50" />
+                            </div>
+                            <div className="flex items-center gap-6 justify-start md:justify-end">
+                              <div className="text-right">
+                                <div className="flex items-center gap-1 justify-end text-accent">
+                                  <Zap className="h-3 w-3 fill-current" />
+                                  <p className="text-[10px] font-bold uppercase tracking-widest">Prize Pool</p>
+                                </div>
+                                <p className="font-headline text-2xl font-bold text-accent">{(game.prizePool || (game.entryFee * 2)).toLocaleString()} {game.currencyType.toUpperCase()} POOL</p>
+                              </div>
+                              <div className="h-14 w-14 rounded-full bg-secondary/30 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-inner">
+                                <ArrowRight className="h-6 w-6" />
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            )) : (
+                    </CardContent>
+                  </Card>
+                </Link>
+              );
+            }) : (
               <div className="text-center py-24 bg-card/10 rounded-3xl border border-dashed border-white/5">
                 <Gamepad2 className="h-16 w-16 text-muted-foreground mx-auto mb-6 opacity-20" />
                 <h3 className="font-headline text-xl font-bold uppercase tracking-widest text-muted-foreground">No active games</h3>
@@ -306,15 +319,23 @@ export default function GamesPage() {
                       </p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="flex items-center gap-1 justify-end text-green-400">
-                      <Zap className="h-3 w-3 fill-current" />
-                      <p className="text-[10px] font-bold uppercase tracking-widest">Prize Pool</p>
+                  <div className="flex items-center gap-12">
+                    <div className="text-right hidden sm:block">
+                      <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Final Win Count</p>
+                      <p className="font-headline text-2xl font-bold text-white tracking-tighter">
+                        {game.finalScores?.[user?.uid || ''] || 0} WINS
+                      </p>
                     </div>
-                    <p className={cn("font-headline text-xl font-bold text-green-400")}>
-                      {game.prizePool.toLocaleString()} {game.currencyType.toUpperCase()} POOL
-                    </p>
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">Winner: {game.winnerId?.slice(0, 5)}...</p>
+                    <div className="text-right">
+                      <div className="flex items-center gap-1 justify-end text-green-400">
+                        <Zap className="h-3 w-3 fill-current" />
+                        <p className="text-[10px] font-bold uppercase tracking-widest">Prize Pool</p>
+                      </div>
+                      <p className={cn("font-headline text-xl font-bold text-green-400")}>
+                        {game.prizePool.toLocaleString()} {game.currencyType.toUpperCase()} POOL
+                      </p>
+                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">Winner: {game.winnerId === user?.uid ? "YOU" : "OPPONENT"}</p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
