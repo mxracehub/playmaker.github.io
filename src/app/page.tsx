@@ -9,6 +9,8 @@ import { AthleteCard } from "@/components/athlete-card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrowRight, Target, Gamepad2, Trophy, Sparkles } from "lucide-react";
+import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
+import { collection } from "firebase/firestore";
 
 const mockAthletes = [
   {
@@ -171,6 +173,14 @@ export default function Home() {
   const [selectedSport, setSelectedSport] = useState("all");
   const [selectedAthletes, setSelectedAthletes] = useState<string[]>([]);
 
+  // Live Stats Logic
+  const db = useFirestore();
+  const gamesQuery = useMemoFirebase(() => collection(db, "games"), [db]);
+  const { data: games } = useCollection(gamesQuery);
+
+  const activeGamesCount = games?.filter(g => g.status === "Open" || g.status === "Live").length || 0;
+  const winnersTodayCount = games?.filter(g => g.status === "Completed" && g.winnerId).length || 0;
+
   const toggleAthlete = (id: string) => {
     setSelectedAthletes(prev => 
       prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id]
@@ -187,42 +197,53 @@ export default function Home() {
       
       <main className="mx-auto max-w-7xl px-4 py-6">
         {/* Hero Section */}
-        <section className="mb-12 overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-accent/20 p-8 text-white relative shadow-2xl border-2 border-white/10">
-          <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,rgba(255,255,255,0.1),rgba(255,255,255,0.5))]" />
-          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="max-w-xl">
-              <h1 className="font-headline text-4xl md:text-5xl font-bold mb-4 tracking-tight leading-tight uppercase italic">
+        <section className="mb-12 overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#1a237e] to-[#0d1219] p-8 md:p-12 text-white relative shadow-2xl border-2 border-white/5">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none" />
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-12">
+            <div className="max-w-2xl">
+              <h1 className="font-headline text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-none uppercase italic">
                 The Ultimate <br/><span className="text-accent">Playmaker</span> Arena
               </h1>
-              <p className="text-lg text-white/80 mb-6 font-medium leading-relaxed">
-                Challenge your friends in the next generation of sports games. Pick your elite roster, track live scores, and win big.
+              <p className="text-xl text-white/70 mb-8 font-medium leading-relaxed max-w-lg">
+                Challenge your circle in the next generation of sports games. Pick your elite roster and dominate.
               </p>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-4">
                 <Link href="/games/create">
-                  <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-bold uppercase tracking-wider">
-                    Start a Game <ArrowRight className="ml-2 h-5 w-5" />
+                  <Button size="lg" className="bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest h-14 px-8 shadow-xl shadow-primary/20">
+                    Start a Game <ArrowRight className="ml-2 h-6 w-6" />
                   </Button>
                 </Link>
                 <Link href="/how-it-works">
-                  <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 font-bold uppercase tracking-wider backdrop-blur-sm">
+                  <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10 font-bold uppercase tracking-widest backdrop-blur-sm h-14 px-8">
                     How it Works
                   </Button>
                 </Link>
               </div>
             </div>
-            <div className="hidden md:flex flex-col gap-4">
-              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/20 shadow-xl">
-                <Gamepad2 className="h-6 w-6 text-accent" />
+            
+            {/* Live Stats Cards - Matching the image */}
+            <div className="flex flex-col gap-6 md:min-w-[280px]">
+              <div className="flex items-center gap-6 bg-white/5 backdrop-blur-2xl px-8 py-6 rounded-[2rem] border border-white/10 shadow-2xl transition-transform hover:scale-105 duration-300">
+                <div className="h-14 w-14 rounded-2xl bg-accent/10 flex items-center justify-center border border-accent/20">
+                  <Gamepad2 className="h-7 w-7 text-accent" />
+                </div>
                 <div>
-                  <p className="text-xs text-white/60 font-bold uppercase tracking-widest">Active Games</p>
-                  <p className="text-xl font-headline font-bold">142,509</p>
+                  <p className="text-[10px] text-white/40 font-black uppercase tracking-[0.25em] mb-1">ACTIVE GAMES</p>
+                  <p className="text-4xl font-headline font-bold tracking-tighter italic">
+                    {activeGamesCount.toLocaleString()}
+                  </p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/20 shadow-xl">
-                <Target className="h-6 w-6 text-accent" />
+              
+              <div className="flex items-center gap-6 bg-white/5 backdrop-blur-2xl px-8 py-6 rounded-[2rem] border border-white/10 shadow-2xl transition-transform hover:scale-105 duration-300">
+                <div className="h-14 w-14 rounded-2xl bg-accent/10 flex items-center justify-center border border-accent/20">
+                  <Target className="h-7 w-7 text-accent" />
+                </div>
                 <div>
-                  <p className="text-xs text-white/60 font-bold uppercase tracking-widest">Winners Today</p>
-                  <p className="text-xl font-headline font-bold">4,120</p>
+                  <p className="text-[10px] text-white/40 font-black uppercase tracking-[0.25em] mb-1">WINNERS TODAY</p>
+                  <p className="text-4xl font-headline font-bold tracking-tighter italic">
+                    {winnersTodayCount.toLocaleString()}
+                  </p>
                 </div>
               </div>
             </div>
@@ -238,7 +259,7 @@ export default function Home() {
           <SportsFilter selected={selectedSport} onSelect={setSelectedSport} />
         </div>
 
-        {/* Athlete Grid with ScrollArea */}
+        {/* Athlete Grid */}
         <ScrollArea className="h-[650px] rounded-3xl border border-white/5 bg-card/20 p-6 shadow-inner mb-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pr-4">
             {filteredAthletes.map((athlete) => (
@@ -266,15 +287,20 @@ export default function Home() {
           <div className="bg-primary/95 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl p-4 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="flex -space-x-3">
-                {selectedAthletes.map((id) => (
+                {selectedAthletes.slice(0, 3).map((id) => (
                   <div key={id} className="h-10 w-10 rounded-full border-2 border-primary bg-secondary overflow-hidden ring-2 ring-background">
                     <img 
-                      src={`https://picsum.photos/seed/${id}/400/400`} 
+                      src={`https://picsum.photos/seed/${id}/100/100`} 
                       alt="athlete"
                       className="object-cover h-full w-full"
                     />
                   </div>
                 ))}
+                {selectedAthletes.length > 3 && (
+                  <div className="h-10 w-10 rounded-full border-2 border-primary bg-secondary flex items-center justify-center ring-2 ring-background text-[10px] font-bold">
+                    +{selectedAthletes.length - 3}
+                  </div>
+                )}
               </div>
               <div>
                 <p className="font-headline font-bold text-white text-lg leading-none">
@@ -284,7 +310,7 @@ export default function Home() {
               </div>
             </div>
             <Link href="/games/create">
-              <Button size="lg" className="bg-accent text-accent-foreground font-bold uppercase tracking-wider px-8 hover:bg-white shadow-xl">
+              <Button size="lg" className="bg-accent text-accent-foreground font-bold uppercase tracking-widest px-8 hover:bg-white shadow-xl">
                 START GAME
               </Button>
             </Link>
