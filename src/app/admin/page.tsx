@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ShieldAlert, CheckCircle2, Play, Trophy, User, Hash, Lock } from "lucide-react";
-import { useFirestore, useCollection, useMemoFirebase, updateDocumentNonBlocking, useUser } from "@/firebase";
+import { ShieldAlert, CheckCircle2, Play, Trophy, User, Hash, Lock, ShieldX, Loader2 } from "lucide-react";
+import { useFirestore, useCollection, useMemoFirebase, updateDocumentNonBlocking, useUser, useDoc } from "@/firebase";
 import { collection, doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
@@ -21,10 +21,15 @@ export default function AdminDashboard() {
   const { toast } = useToast();
   const { user, isUserLoading } = useUser();
   
+  // Fetch the current user's profile to check for admin role
+  const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
+  const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
+
   const gamesQuery = useMemoFirebase(() => {
-    if (!user) return null;
+    // Only allow querying if the user is a verified admin
+    if (!user || profile?.role !== 'admin') return null;
     return collection(db, "games");
-  }, [db, user]);
+  }, [db, user, profile?.role]);
 
   const { data: games, isLoading: isCollectionLoading } = useCollection(gamesQuery);
 
@@ -32,7 +37,7 @@ export default function AdminDashboard() {
   const [winnerId, setWinnerId] = useState("");
   const [scores, setScores] = useState<{ [key: string]: string }>({});
 
-  const isLoading = isUserLoading || isCollectionLoading;
+  const isLoading = isUserLoading || isProfileLoading || (user && profile?.role === 'admin' && isCollectionLoading);
 
   const handleUpdateStatus = (gameId: string, status: string) => {
     const gameRef = doc(db, "games", gameId);
@@ -59,19 +64,47 @@ export default function AdminDashboard() {
     setScoringGame(null);
   };
 
-  if (isLoading) return <div className="p-20 text-center">Loading Arena Controls...</div>;
-
-  if (!user) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen pt-20 flex flex-col items-center justify-center p-4">
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-12 w-12 animate-spin text-destructive mx-auto" />
+          <p className="font-headline font-bold uppercase tracking-widest text-muted-foreground animate-pulse">
+            Verifying Admin Credentials...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // If not logged in or doesn't have admin role
+  if (!user || profile?.role !== 'admin') {
+    return (
+      <div className="min-h-screen pt-20 flex flex-col items-center justify-center p-4 bg-background">
         <Navbar />
-        <Card className="max-w-md w-full text-center p-8 space-y-6">
-          <Lock className="h-16 w-16 text-muted-foreground mx-auto opacity-20" />
-          <h2 className="font-headline text-2xl font-bold uppercase">Admin Access Required</h2>
-          <p className="text-muted-foreground">This area is reserved for arena administrators. Please sign in to verify your credentials.</p>
-          <Link href="/login" className="block w-full">
-            <Button className="w-full font-bold uppercase tracking-wider">Sign In</Button>
-          </Link>
+        <Card className="max-w-md w-full text-center p-8 space-y-6 bg-card/50 backdrop-blur-xl border-destructive/20 shadow-2xl">
+          <div className="h-20 w-20 rounded-full bg-destructive/10 flex items-center justify-center mx-auto border border-destructive/20">
+            <ShieldX className="h-10 w-10 text-destructive" />
+          </div>
+          <div className="space-y-2">
+            <h2 className="font-headline text-2xl font-bold uppercase tracking-tight">Access Denied</h2>
+            <p className="text-muted-foreground text-sm">
+              Your account does not have administrative clearance for the Arena Control.
+            </p>
+          </div>
+          <div className="pt-4 space-y-3">
+            <Link href="/" className="block w-full">
+              <Button variant="outline" className="w-full font-bold uppercase tracking-wider">Return to Lobby</Button>
+            </Link>
+            {!user && (
+              <Link href="/login" className="block w-full">
+                <Button className="w-full font-bold uppercase tracking-wider bg-primary">Sign In</Button>
+              </Link>
+            )}
+          </div>
+          <p className="text-[10px] text-muted-foreground italic uppercase font-bold tracking-widest pt-4 opacity-50">
+            Security Rule v9.0 Enforced
+          </p>
         </Card>
       </div>
     );
@@ -88,7 +121,7 @@ export default function AdminDashboard() {
           </div>
           <div>
             <h1 className="font-headline text-3xl font-bold uppercase tracking-tight">Arena <span className="text-destructive">Control</span></h1>
-            <p className="text-muted-foreground text-sm uppercase font-bold tracking-widest">Administrative Override</p>
+            <p className="text-muted-foreground text-sm uppercase font-bold tracking-widest">Administrative Override • Logged in as {profile.username}</p>
           </div>
         </header>
 
@@ -99,51 +132,63 @@ export default function AdminDashboard() {
           </TabsList>
 
           <TabsContent value="active" className="space-y-4">
-            {games?.filter(g => g.status !== "Completed").map((game) => (
-              <Card key={game.id} className="bg-card/50 border-white/5 overflow-hidden">
-                <CardContent className="p-6">
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <Badge variant={game.status === "Live" ? "destructive" : "secondary"} className="uppercase font-bold">
-                          {game.status}
-                        </Badge>
-                        <span className="text-xs text-muted-foreground font-mono">ID: {game.id}</span>
+            {games && games.filter(g => g.status !== "Completed").length > 0 ? (
+              games.filter(g => g.status !== "Completed").map((game) => (
+                <Card key={game.id} className="bg-card/50 border-white/5 overflow-hidden">
+                  <CardContent className="p-6">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <Badge variant={game.status === "Live" ? "destructive" : "secondary"} className="uppercase font-bold">
+                            {game.status}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground font-mono">ID: {game.id}</span>
+                        </div>
+                        <h3 className="font-headline text-xl font-bold uppercase">{game.name}</h3>
+                        <p className="text-xs text-muted-foreground">{game.sportId.toUpperCase()} • {game.currencyType.toUpperCase()} {game.prizePool} PRIZE</p>
                       </div>
-                      <h3 className="font-headline text-xl font-bold uppercase">{game.name}</h3>
-                      <p className="text-xs text-muted-foreground">{game.sportId.toUpperCase()} • {game.currencyType.toUpperCase()} {game.prizePool} PRIZE</p>
-                    </div>
 
-                    <div className="flex flex-wrap gap-2">
-                      {game.status === "Open" && (
-                        <Button size="sm" onClick={() => handleUpdateStatus(game.id, "Live")} className="bg-primary hover:bg-primary/90">
-                          <Play className="mr-2 h-4 w-4" /> Start Live
-                        </Button>
-                      )}
-                      {game.status === "Live" && (
-                        <Button size="sm" variant="destructive" onClick={() => setScoringGame(game)}>
-                          <CheckCircle2 className="mr-2 h-4 w-4" /> Finalize Results
-                        </Button>
-                      )}
+                      <div className="flex flex-wrap gap-2">
+                        {game.status === "Open" && (
+                          <Button size="sm" onClick={() => handleUpdateStatus(game.id, "Live")} className="bg-primary hover:bg-primary/90">
+                            <Play className="mr-2 h-4 w-4" /> Start Live
+                          </Button>
+                        )}
+                        {game.status === "Live" && (
+                          <Button size="sm" variant="destructive" onClick={() => setScoringGame(game)}>
+                            <CheckCircle2 className="mr-2 h-4 w-4" /> Finalize Results
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <div className="text-center py-20 bg-card/20 rounded-3xl border border-dashed">
+                <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest opacity-50">No active arenas found</p>
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="completed" className="space-y-4">
-            {games?.filter(g => g.status === "Completed").map((game) => (
-              <Card key={game.id} className="bg-card/20 border-white/5 opacity-80">
-                <CardContent className="p-6 flex items-center justify-between">
-                  <div>
-                    <h4 className="font-bold">{game.name}</h4>
-                    <p className="text-xs text-muted-foreground">Winner: {game.winnerId || "None"}</p>
-                  </div>
-                  <Trophy className="h-5 w-5 text-accent" />
-                </CardContent>
-              </Card>
-            ))}
+            {games && games.filter(g => g.status === "Completed").length > 0 ? (
+              games.filter(g => g.status === "Completed").map((game) => (
+                <Card key={game.id} className="bg-card/20 border-white/5 opacity-80">
+                  <CardContent className="p-6 flex items-center justify-between">
+                    <div>
+                      <h4 className="font-bold">{game.name}</h4>
+                      <p className="text-xs text-muted-foreground">Winner: {game.winnerId || "None"}</p>
+                    </div>
+                    <Trophy className="h-5 w-5 text-accent" />
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <div className="text-center py-20 bg-card/20 rounded-3xl border border-dashed">
+                <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest opacity-50">No completed history</p>
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </main>

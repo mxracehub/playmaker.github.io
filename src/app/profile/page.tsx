@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -18,8 +19,8 @@ export default function ProfilePage() {
   const { user, isUserLoading: isAuthLoading } = useUser();
   const db = useFirestore();
 
-  // Fetch real-time profile data from Firestore
-  const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
+  // Unified collection: userProfiles
+  const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
   const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
   // Fetch real games for synchronization
@@ -50,12 +51,6 @@ export default function ProfilePage() {
     g.status === "Completed" && (g.creatorId === user?.uid || g.opponentId === user?.uid)
   ) || [];
 
-  const recentActivity = [
-    { action: "Won Game", detail: "Head-to-Head Showdown", value: "+50 SC", time: "5h ago", positive: true },
-    { action: "Bank Deposit", detail: "Starter Pack", value: "+10,000 GC", time: "1d ago", positive: true },
-    { action: "Joined Contest", detail: "Arena Blitz", value: "-500 GC", time: "2d ago" },
-  ];
-
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -85,6 +80,9 @@ export default function ProfilePage() {
               <div className="flex flex-col md:flex-row md:items-center gap-4 mb-2">
                 <h1 className="font-headline text-4xl font-bold uppercase tracking-tighter">{displayName}</h1>
                 <Badge className="bg-accent text-accent-foreground font-bold px-3 py-1 uppercase tracking-widest text-[10px]">PRO LEVEL 24</Badge>
+                {profile?.role === 'admin' && (
+                  <Badge className="bg-destructive text-white font-bold px-3 py-1 uppercase tracking-widest text-[10px]">ARENA ADMIN</Badge>
+                )}
               </div>
               <p className="text-muted-foreground mb-6 font-medium italic">"{bio}"</p>
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
@@ -165,7 +163,7 @@ export default function ProfilePage() {
                   <TabsContent value="active" className="m-0 space-y-4">
                     {myActiveGames.length > 0 ? (
                       myActiveGames.map((game) => (
-                        <Link key={game.id} href={`/games/${game.id}?sport=${game.sportId}&fee=${game.entryFee}&currency=${game.currencyType}`}>
+                        <Link key={game.id} href={`/games/${game.id}`}>
                           <div className="group flex items-center justify-between p-5 rounded-2xl bg-secondary/20 border border-white/5 hover:border-accent/40 transition-all">
                             <div className="flex items-center gap-4">
                               <div className={cn("h-10 w-10 rounded-xl bg-background flex items-center justify-center border", game.status === 'Live' ? 'border-accent' : 'border-white/10')}>

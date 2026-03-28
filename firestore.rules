@@ -4,41 +4,44 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * ARENA SECURITY RULES v9.0
-     * Explicit public visibility for lobby stats and secure playmaker actions.
+     * ARENA SECURITY RULES v10.0
+     * Explicit public visibility for lobby stats and admin-only controls.
      */
 
     match /games/{gameId} {
-      // Explicitly allow public read (get and list) for the lobby stats
-      // This resolves the "Missing or insufficient permissions" error on the home page.
+      // Explicitly allow public read (get and list) for lobby stats
       allow read: if true;
       
       // Only registered playmakers can issue challenges
       allow create: if request.auth != null;
       
-      // Participants only for game state updates (accepting/playing)
+      // Participants or Admins for updates
       allow update: if request.auth != null && (
         request.auth.uid == resource.data.creatorId || 
-        request.auth.uid == resource.data.opponentId
+        request.auth.uid == resource.data.opponentId ||
+        get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.role == 'admin'
       );
       
-      // Only the initiator can scrap a challenge
+      // Only initiators or Admins can scrap a challenge
       allow delete: if request.auth != null && (
-        request.auth.uid == resource.data.creatorId
+        request.auth.uid == resource.data.creatorId ||
+        get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.role == 'admin'
       );
-    }
-
-    match /users/{userId} {
-      allow get: if request.auth != null && request.auth.uid == userId;
-      allow create: if request.auth != null && request.auth.uid == userId;
-      allow update: if request.auth != null && request.auth.uid == userId;
-      allow delete: if request.auth != null && request.auth.uid == userId;
     }
 
     match /userProfiles/{userId} {
-      // Profiles are publicly readable for social discovery in the arena
+      // Profiles are readable for social discovery
       allow get: if true;
-      allow create, update, delete: if request.auth != null && request.auth.uid == userId;
+      allow list: if request.auth != null;
+      
+      // Users can manage their own profiles; Admins can manage any profile
+      allow create, update: if request.auth != null && (
+        request.auth.uid == userId ||
+        get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.role == 'admin'
+      );
+      
+      // Only Admins can delete profiles
+      allow delete: if request.auth != null && get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.role == 'admin';
     }
 
     match /sports/{sportId} {

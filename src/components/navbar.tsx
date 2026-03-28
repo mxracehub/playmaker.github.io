@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -11,7 +12,8 @@ import {
   LayoutDashboard,
   Coins,
   LogIn,
-  Landmark
+  Landmark,
+  ShieldCheck
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUser, useAuth, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
@@ -32,8 +34,8 @@ export function Navbar() {
   const auth = useAuth();
   const db = useFirestore();
 
-  // Sync with Firestore profile to get the latest username and avatar
-  const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
+  // Sync with userProfiles collection
+  const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
   const { data: profile } = useDoc(userProfileRef);
 
   const handleLogout = async () => {
@@ -44,9 +46,8 @@ export function Navbar() {
     }
   };
 
-  // Identity logic
-  const displayName = profile?.username || user?.displayName || 'BRADY PRICE';
-  const emailDisplay = user?.email || 'mxracehub@proton.me';
+  const displayName = profile?.username || user?.displayName || 'PLAYMAKER';
+  const emailDisplay = user?.email || '';
   const avatarUrl = profile?.profilePictureUrl || user?.photoURL || `https://picsum.photos/seed/guitar/100/100`;
 
   return (
@@ -99,7 +100,10 @@ export function Navbar() {
                   <DropdownMenuContent className="w-56 bg-card/95 backdrop-blur-xl border-white/10" align="end" forceMount>
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-headline font-bold leading-none uppercase">{displayName}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm font-headline font-bold leading-none uppercase">{displayName}</p>
+                          {profile?.role === 'admin' && <ShieldCheck className="h-3 w-3 text-destructive" />}
+                        </div>
                         <p className="text-xs leading-none text-muted-foreground">{emailDisplay}</p>
                       </div>
                     </DropdownMenuLabel>
@@ -123,6 +127,14 @@ export function Navbar() {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator className="bg-white/5 md:hidden" />
+                    {profile?.role === 'admin' && (
+                      <DropdownMenuItem asChild className="cursor-pointer focus:bg-destructive/10 text-destructive font-bold">
+                        <Link href="/admin" className="flex items-center w-full">
+                          <Settings className="mr-2 h-4 w-4" />
+                          <span>Arena Control</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/10">
                       <Link href="/profile" className="flex items-center w-full">
                         <User className="mr-2 h-4 w-4" />

@@ -50,7 +50,8 @@ export default function SettingsPage() {
   const [verificationCode, setVerificationCode] = useState("");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
+  // Unified collection: userProfiles
+  const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
   const { data: profile } = useDoc(userProfileRef);
 
   useEffect(() => {
@@ -70,6 +71,7 @@ export default function SettingsPage() {
       username: displayName,
       bio: bio,
       profilePictureUrl: profilePictureUrl,
+      role: profile?.role || 'player', // Preserve role if exists
       updatedAt: new Date().toISOString(),
       createdAt: profile?.createdAt || new Date().toISOString(),
     }, { merge: true });
@@ -186,7 +188,7 @@ export default function SettingsPage() {
                   <div className="relative group">
                     <Avatar className="h-32 w-32 border-4 border-primary shadow-2xl transition-transform group-hover:scale-105">
                       <AvatarImage src={profilePictureUrl || `https://picsum.photos/seed/guitar/400/400`} />
-                      <AvatarFallback className="text-2xl font-bold">{displayName[0]}</AvatarFallback>
+                      <AvatarFallback className="text-2xl font-bold">{displayName[0] || '?'}</AvatarFallback>
                     </Avatar>
                     <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                       <Camera className="h-8 w-8 text-white" />
