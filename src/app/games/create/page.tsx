@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -10,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, Waves, Bike, Mountain, Landmark, CalendarDays, ShieldAlert } from "lucide-react";
+import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, Waves, Bike, Mountain, Landmark, CalendarDays, ShieldAlert, Swords } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore, useUser, addDocumentNonBlocking } from "@/firebase";
 import { collection } from "firebase/firestore";
@@ -54,6 +55,26 @@ const VolleyballIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const SoccerIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="m12 12 5-3v6l-5 3-5-3v-6z" />
+    <path d="M12 2v5" />
+    <path d="M12 17v5" />
+    <path d="M2 12h5" />
+    <path d="M17 12h5" />
+  </svg>
+);
+
+const BoxingIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M18 11h-2a2 2 0 0 1-2-2v0a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2Z" />
+    <path d="M10 10H8a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v0a2 2 0 0 0-2-2Z" />
+    <path d="M18 11V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v5" />
+    <path d="M6 14v5a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4" />
+  </svg>
+);
+
 const sports = [
   { 
     id: 'nba', 
@@ -92,6 +113,49 @@ const sports = [
       "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants", "New York Jets", 
       "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Buccaneers", 
       "Tennessee Titans", "Washington Commanders"
+    ]
+  },
+  { 
+    id: 'soccer', 
+    name: 'Soccer', 
+    icon: <SoccerIcon className="w-5 h-5" />, 
+    color: "text-white",
+    events: [
+      { id: 'e30', name: "World Cup Final 2026", date: "Jul 19, 2026" },
+      { id: 'e31', name: "Champions League Final", date: "May 30, 2026" },
+      { id: 'e32', name: "El Clásico - Madrid vs Barça", date: "Oct 25, 2026" }
+    ],
+    options: [
+      "Real Madrid", "FC Barcelona", "Manchester City", "Liverpool", "Paris Saint-Germain",
+      "Bayern Munich", "Inter Milan", "Arsenal", "AC Milan", "Juventus", "Argentina", "France", "Brazil", "England"
+    ]
+  },
+  { 
+    id: 'ufc', 
+    name: 'UFC', 
+    icon: <Swords className="w-5 h-5" />, 
+    color: "text-red-600",
+    events: [
+      { id: 'e40', name: "UFC 310: Jones vs Miocic", date: "Jan 12, 2026" },
+      { id: 'e41', name: "UFC 315: International Fight Week", date: "Jul 04, 2026" }
+    ],
+    options: [
+      "Jon Jones", "Israel Adesanya", "Islam Makhachev", "Alex Pereira", "Conor McGregor",
+      "Sean O'Malley", "Ilia Topuria", "Leon Edwards", "Tom Aspinall", "Zhang Weili", "Alexa Grasso"
+    ]
+  },
+  { 
+    id: 'boxing', 
+    name: 'Boxing', 
+    icon: <BoxingIcon className="w-5 h-5" />, 
+    color: "text-yellow-600",
+    events: [
+      { id: 'e50', name: "Heavyweight Title: Fury vs Usyk II", date: "May 10, 2026" },
+      { id: 'e51', name: "Canelo Alvarez vs TBD (Cinco de Mayo)", date: "May 02, 2026" }
+    ],
+    options: [
+      "Tyson Fury", "Oleksandr Usyk", "Canelo Alvarez", "Terence Crawford", "Naoya Inoue",
+      "Gervonta Davis", "Anthony Joshua", "Ryan Garcia", "Shakur Stevenson", "Devin Haney"
     ]
   },
   { 

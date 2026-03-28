@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -12,7 +13,9 @@ import {
   Mountain, 
   Flag, 
   Target,
-  Play
+  Play,
+  Swords,
+  Timer
 } from "lucide-react";
 
 const BaseballIcon = ({ className }: { className?: string }) => (
@@ -53,6 +56,26 @@ const VolleyballIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const SoccerIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="m12 12 5-3v6l-5 3-5-3v-6z" />
+    <path d="M12 2v5" />
+    <path d="M12 17v5" />
+    <path d="M2 12h5" />
+    <path d="M17 12h5" />
+  </svg>
+);
+
+const BoxingIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M18 11h-2a2 2 0 0 1-2-2v0a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2Z" />
+    <path d="M10 10H8a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v0a2 2 0 0 0-2-2Z" />
+    <path d="M18 11V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v5" />
+    <path d="M6 14v5a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4" />
+  </svg>
+);
+
 const sports = [
   { 
     id: 'all', 
@@ -71,6 +94,24 @@ const sports = [
     name: 'NFL Gridiron', 
     img: "https://picsum.photos/seed/football/400/250",
     icon: <Trophy className="w-5 h-5 text-green-500" />
+  },
+  { 
+    id: 'soccer', 
+    name: 'Pitch Battle', 
+    img: "https://picsum.photos/seed/soccer/400/250",
+    icon: <SoccerIcon className="w-5 h-5 text-white" />
+  },
+  { 
+    id: 'ufc', 
+    name: 'The Octagon', 
+    img: "https://picsum.photos/seed/ufc/400/250",
+    icon: <Swords className="w-5 h-5 text-red-600" />
+  },
+  { 
+    id: 'boxing', 
+    name: 'Main Event', 
+    img: "https://picsum.photos/seed/boxing/400/250",
+    icon: <BoxingIcon className="w-5 h-5 text-yellow-600" />
   },
   { 
     id: 'mlb', 

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -30,6 +31,39 @@ const mockAthletes = [
     stats: [
       { label: "Pass Yds", value: "4,183" },
       { label: "TDs", value: "27" }
+    ]
+  },
+  {
+    id: "30",
+    name: "Lionel Messi",
+    team: "Inter Miami",
+    sport: "Soccer",
+    avatar: "https://picsum.photos/seed/messi/400/400",
+    stats: [
+      { label: "Goals", value: "14" },
+      { label: "Assists", value: "11" }
+    ]
+  },
+  {
+    id: "40",
+    name: "Jon Jones",
+    team: "Heavyweight",
+    sport: "UFC",
+    avatar: "https://picsum.photos/seed/jones/400/400",
+    stats: [
+      { label: "Record", value: "27-1-0" },
+      { label: "KOs", value: "10" }
+    ]
+  },
+  {
+    id: "50",
+    name: "Canelo Alvarez",
+    team: "Super Middle",
+    sport: "Boxing",
+    avatar: "https://picsum.photos/seed/canelo/400/400",
+    stats: [
+      { label: "Wins", value: "61" },
+      { label: "KOs", value: "39" }
     ]
   },
   {
@@ -107,39 +141,6 @@ const mockAthletes = [
     stats: [
       { label: "Avg Finish", value: "8.4" },
       { label: "Top 5s", value: "12" }
-    ]
-  },
-  {
-    id: "9",
-    name: "Victor Wembanyama",
-    team: "SA Spurs",
-    sport: "NBA",
-    avatar: "https://picsum.photos/seed/wemby/400/400",
-    stats: [
-      { label: "Blocks/G", value: "3.6" },
-      { label: "Points/G", value: "21.4" }
-    ]
-  },
-  {
-    id: "10",
-    name: "Christian McCaffrey",
-    team: "SF 49ers",
-    sport: "NFL",
-    avatar: "https://picsum.photos/seed/cmc/400/400",
-    stats: [
-      { label: "Total TDs", value: "21" },
-      { label: "Rush Yds", value: "1,459" }
-    ]
-  },
-  {
-    id: "13",
-    name: "Iga Swiatek",
-    team: "WTA Elite",
-    sport: "Tennis",
-    avatar: "https://picsum.photos/seed/swiatek/400/400",
-    stats: [
-      { label: "Rank", value: "#1" },
-      { label: "Slams", value: "4" }
     ]
   }
 ];

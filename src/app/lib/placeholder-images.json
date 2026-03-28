@@ -50,6 +50,24 @@
       "imageHint": "golf course"
     },
     {
+      "id": "soccer-hero",
+      "description": "Soccer stadium at night",
+      "imageUrl": "https://picsum.photos/seed/soccer/600/400",
+      "imageHint": "soccer stadium"
+    },
+    {
+      "id": "ufc-hero",
+      "description": "MMA Octagon lighting",
+      "imageUrl": "https://picsum.photos/seed/ufc/600/400",
+      "imageHint": "mma ring"
+    },
+    {
+      "id": "boxing-hero",
+      "description": "Boxing ring and gloves",
+      "imageUrl": "https://picsum.photos/seed/boxing/600/400",
+      "imageHint": "boxing ring"
+    },
+    {
       "id": "athlete-luka",
       "description": "Luka Doncic style athlete",
       "imageUrl": "https://picsum.photos/seed/luka/400/400",
@@ -62,22 +80,16 @@
       "imageHint": "football player"
     },
     {
-      "id": "athlete-larson",
-      "description": "Kyle Larson style athlete",
-      "imageUrl": "https://picsum.photos/seed/larson/400/400",
-      "imageHint": "race driver"
+      "id": "athlete-messi",
+      "description": "Lionel Messi style athlete",
+      "imageUrl": "https://picsum.photos/seed/messi/400/400",
+      "imageHint": "soccer player"
     },
     {
-      "id": "athlete-scottie",
-      "description": "Scottie Scheffler style athlete",
-      "imageUrl": "https://picsum.photos/seed/scottie/400/400",
-      "imageHint": "golf player"
-    },
-    {
-      "id": "profile-avatar",
-      "description": "Generic user avatar",
-      "imageUrl": "https://picsum.photos/seed/avatar1/200/200",
-      "imageHint": "person portrait"
+      "id": "athlete-jones",
+      "description": "Jon Jones style athlete",
+      "imageUrl": "https://picsum.photos/seed/jjones/400/400",
+      "imageHint": "mma fighter"
     }
   ]
 }

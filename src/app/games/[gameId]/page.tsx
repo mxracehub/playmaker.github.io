@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useSearchParams } from "next/navigation";
@@ -6,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Users, Zap, Clock, Share2, Target, Dribbble, Flag, CheckCircle2, Waves, Bike, Mountain } from "lucide-react";
+import { Trophy, Users, Zap, Clock, Share2, Target, Dribbble, Flag, CheckCircle2, Waves, Bike, Mountain, Swords, Timer } from "lucide-react";
 
 const BaseballIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -46,6 +47,26 @@ const VolleyballIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const SoccerIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="m12 12 5-3v6l-5 3-5-3v-6z" />
+    <path d="M12 2v5" />
+    <path d="M12 17v5" />
+    <path d="M2 12h5" />
+    <path d="M17 12h5" />
+  </svg>
+);
+
+const BoxingIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M18 11h-2a2 2 0 0 1-2-2v0a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2Z" />
+    <path d="M10 10H8a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v0a2 2 0 0 0-2-2Z" />
+    <path d="M18 11V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v5" />
+    <path d="M6 14v5a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4" />
+  </svg>
+);
+
 export default function GameArenaPage({ params }: { params: { gameId: string } }) {
   const searchParams = useSearchParams();
   const sportId = searchParams.get('sport') || 'nba';
@@ -70,6 +91,30 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       icon: <Trophy className="h-10 w-10" />,
       label: "NFL Gridiron",
       statLabel: "TD / YDS"
+    },
+    soccer: {
+      color: "from-slate-600/20 to-slate-900/40",
+      accent: "text-white",
+      bg: "bg-white/10",
+      icon: <SoccerIcon className="h-10 w-10" />,
+      label: "Pitch Battle",
+      statLabel: "GOALS / AST"
+    },
+    ufc: {
+      color: "from-red-600/20 to-red-900/40",
+      accent: "text-red-500",
+      bg: "bg-red-500/10",
+      icon: <Swords className="h-10 w-10" />,
+      label: "The Octagon",
+      statLabel: "STRIKES / SUB"
+    },
+    boxing: {
+      color: "from-yellow-600/20 to-yellow-900/40",
+      accent: "text-yellow-500",
+      bg: "bg-yellow-500/10",
+      icon: <BoxingIcon className="h-10 w-10" />,
+      label: "Main Event",
+      statLabel: "PUNCHES / KO"
     },
     mlb: {
       color: "from-blue-600/20 to-blue-900/40",
