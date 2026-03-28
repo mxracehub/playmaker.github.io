@@ -27,11 +27,12 @@ import {
   Snowflake, 
   Zap,
   ArrowRight,
-  Loader2
+  Loader2,
+  Search
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useFirestore, useUser, addDocumentNonBlocking } from "@/firebase";
-import { collection } from "firebase/firestore";
+import { useFirestore, useUser, addDocumentNonBlocking, useDoc, useMemoFirebase } from "@/firebase";
+import { collection, doc } from "firebase/firestore";
 import { useFriendsStore, HOUSE_ADMIN } from "@/hooks/use-friends-store";
 import { sendChallengeEmail } from "@/ai/flows/send-challenge-email-flow";
 
@@ -361,6 +362,10 @@ function CreateGameForm() {
   const db = useFirestore();
   const { friends, isLoaded: isFriendsLoaded } = useFriendsStore();
   
+  // Real balance from Firestore
+  const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
+  const { data: profile } = useDoc(userProfileRef);
+
   const [selectedSport, setSelectedSport] = useState<string>("");
   const [selectedEvent, setSelectedEvent] = useState<string>("");
   const [selectedPick, setSelectedPick] = useState<string>("");
@@ -385,7 +390,6 @@ function CreateGameForm() {
     }
   }, [searchParams, availableFriends.length, isFriendsLoaded]);
 
-  const balances = { gold: 1250000, sweeps: 542.50 };
   const currentSport = sports.find(s => s.id === selectedSport);
   const filteredPicks = currentSport?.options.filter(option => option.toLowerCase().includes(searchPickQuery.toLowerCase())) || [];
   const filteredFriends = availableFriends.filter(friend => friend.name.toLowerCase().includes(searchFriendQuery.toLowerCase()));
@@ -402,10 +406,10 @@ function CreateGameForm() {
     }
 
     const cost = parseFloat(fee);
-    const available = currency === "gold" ? balances.gold : balances.sweeps;
+    const available = currency === "gold" ? (profile?.goldCoinsBalance ?? 0) : (profile?.sweepstakesCoinsBalance ?? 0);
 
     if (cost > available) {
-      toast({ variant: "destructive", title: "Insufficient Funds", description: "Check your arena bank balance." });
+      toast({ variant: "destructive", title: "Insufficient Funds", description: "Check your arena bank balance. You need more coins to enter." });
       return;
     }
 
@@ -432,7 +436,7 @@ function CreateGameForm() {
         const opponent = availableFriends.find(f => f.id === selectedFriend);
         if (opponent) {
           sendChallengeEmail({
-            challengerName: user.displayName || user.email || 'A Playmaker',
+            challengerName: profile?.username || user.displayName || user.email || 'A Playmaker',
             opponentEmail: opponent.email || `${opponent.id}@playmakers.arena`,
             sport: currentSport?.name || 'Sports',
             eventName: eventName,
@@ -440,7 +444,7 @@ function CreateGameForm() {
             inviteCode: inviteCode,
           });
         }
-        router.push(`/games/${docRef?.id}?sport=${selectedSport}&fee=${fee}&currency=${currency}&pick=${selectedPick}`);
+        router.push(`/games/${docRef?.id}`);
       });
   };
 
@@ -519,7 +523,12 @@ function CreateGameForm() {
 
           {/* Step 4: Stakes */}
           <div className="space-y-6 pt-4 border-t border-white/5">
-            <Label className="text-xs font-bold uppercase tracking-widest">4. Set the Stakes</Label>
+            <div className="flex items-center justify-between">
+              <Label className="text-xs font-bold uppercase tracking-widest">4. Set the Stakes</Label>
+              <div className="text-[10px] font-bold text-muted-foreground uppercase">
+                Available: <span className="text-white">{currency === 'gold' ? (profile?.goldCoinsBalance ?? 0).toLocaleString() : (profile?.sweepstakesCoinsBalance ?? 0).toFixed(2)}</span>
+              </div>
+            </div>
             <RadioGroup value={currency} className="grid grid-cols-2 gap-4" onValueChange={setCurrency}>
               <div className={`p-4 rounded-xl border-2 transition-all cursor-pointer ${currency === 'gold' ? 'border-primary bg-primary/5' : 'border-white/5'}`}>
                 <div className="flex items-center gap-2 mb-2">
@@ -553,7 +562,10 @@ function CreateGameForm() {
           {/* Step 5: Opponent */}
           <div className="space-y-4 pt-4 border-t border-white/5">
             <Label className="text-xs font-bold uppercase tracking-widest">5. Select Your Opponent</Label>
-            <Input placeholder="Search friends..." className="bg-secondary/30 border-white/5 mb-4" value={searchFriendQuery} onChange={(e) => setSearchFriendQuery(e.target.value)} />
+            <div className="relative mb-4">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input placeholder="Search friends..." className="bg-secondary/30 border-white/5 pl-10 h-12" value={searchFriendQuery} onChange={(e) => setSearchFriendQuery(e.target.value)} />
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[300px] overflow-y-auto pr-2 no-scrollbar">
               {filteredFriends.map((friend) => (
                 <button key={friend.id} onClick={() => setSelectedFriend(friend.id)} className={`flex items-center justify-3 p-3 rounded-xl border-2 transition-all ${selectedFriend === friend.id ? 'bg-primary/10 border-primary' : 'bg-secondary/20 border-white/5 hover:bg-white/5'}`}>
