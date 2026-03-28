@@ -94,7 +94,31 @@ const BoxingIcon = ({ className }: { className?: string }) => (
 );
 
 const sports = [
-  { id: 'nba', name: 'NBA', icon: <Dribbble className="w-5 h-5" />, color: "text-orange-500", events: [{ id: 'e1', name: "NBA All-Star 2026", date: "Feb 2026" }, { id: 'e2', name: "Mavericks @ Suns", date: "Mar 2026" }], options: ["Lakers", "Warriors", "Celtics", "Bucks", "Suns", "Nets"] },
+  { 
+    id: 'nba', 
+    name: 'NBA', 
+    icon: <Dribbble className="w-5 h-5" />, 
+    color: "text-orange-500", 
+    events: [
+      { id: 'nba-1', name: "Knicks @ Celtics (MA)", date: "Jan 12, 2026" },
+      { id: 'nba-2', name: "Lakers @ Warriors (CA)", date: "Jan 15, 2026" },
+      { id: 'nba-3', name: "Bucks @ 76ers (PA)", date: "Jan 18, 2026" },
+      { id: 'nba-4', name: "Heat @ Mavericks (TX)", date: "Jan 22, 2026" },
+      { id: 'nba-5', name: "Suns @ Nuggets (CO)", date: "Jan 25, 2026" },
+      { id: 'nba-6', name: "Bulls @ Pistons (MI)", date: "Feb 02, 2026" },
+      { id: 'nba-7', name: "Hawks @ Magic (FL)", date: "Feb 05, 2026" },
+      { id: 'nba-8', name: "NBA All-Star 2026", date: "Feb 15, 2026" },
+      { id: 'nba-9', name: "Grizzlies @ Pelicans (LA)", date: "Mar 10, 2026" },
+      { id: 'nba-10', name: "Rockets @ Spurs (TX)", date: "Mar 14, 2026" },
+      { id: 'nba-11', name: "Clippers @ Kings (CA)", date: "Mar 18, 2026" },
+      { id: 'nba-12', name: "Pacers @ Cavaliers (OH)", date: "Mar 22, 2026" },
+      { id: 'nba-13', name: "Raptors @ Nets (NY)", date: "Apr 02, 2026" },
+      { id: 'nba-14', name: "Wolves @ Thunder (OK)", date: "Apr 05, 2026" },
+      { id: 'nba-15', name: "Blazers @ Jazz (UT)", date: "Apr 08, 2026" },
+      { id: 'nba-16', name: "Wizards @ Hornets (NC)", date: "Apr 12, 2026" },
+    ], 
+    options: ["Lakers", "Warriors", "Celtics", "Bucks", "Suns", "Nets", "Knicks", "Spurs", "Mavericks", "Nuggets", "76ers", "Heat"] 
+  },
   { id: 'nfl', name: 'NFL', icon: <Trophy className="w-5 h-5" />, color: "text-green-500", events: [{ id: 'nfl-e1', name: "Super Bowl LX", date: "Feb 2026" }], options: ["Chiefs", "Eagles", "49ers", "Lions", "Cowboys", "Giants"] },
   { id: 'hockey', name: 'NHL', icon: <Snowflake className="w-5 h-5" />, color: "text-cyan-400", events: [{ id: 'h-e1', name: "NHL Winter Classic", date: "Jan 2026" }], options: ["Oilers", "Avalanche", "Bruins", "Rangers", "Leafs"] },
   { id: 'soccer', name: 'Soccer', icon: <SoccerIcon className="w-5 h-5" />, color: "text-white", events: [{ id: 'e30', name: "Champions League Final", date: "Jun 2026" }], options: ["Real Madrid", "Barcelona", "Man City", "Liverpool", "PSG"] },
@@ -239,12 +263,12 @@ function CreateGameForm() {
           <div className="space-y-4">
             <Label className="text-xs font-bold uppercase tracking-widest">2. Select Event</Label>
             {selectedSport ? (
-              <div className="grid gap-3">
+              <div className="grid gap-3 max-h-[400px] overflow-y-auto pr-2 no-scrollbar">
                 {currentSport?.events.map((event) => (
-                  <button key={event.id} onClick={() => setSelectedEvent(event.id)} className={`flex items-center justify-between p-4 rounded-xl border-2 ${selectedEvent === event.id ? 'bg-accent/10 border-accent' : 'bg-secondary/20 border-white/5'}`}>
+                  <button key={event.id} onClick={() => setSelectedEvent(event.id)} className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all ${selectedEvent === event.id ? 'bg-accent/10 border-accent' : 'bg-secondary/20 border-white/5 hover:border-white/10'}`}>
                     <div className="flex items-center gap-3">
                       <CalendarDays className="h-5 w-5" />
-                      <div><p className="font-bold text-sm">{event.name}</p><p className="text-[10px] uppercase">{event.date}</p></div>
+                      <div><p className="font-bold text-sm">{event.name}</p><p className="text-[10px] uppercase text-muted-foreground">{event.date}</p></div>
                     </div>
                     {selectedEvent === event.id && <CheckCircle2 className="h-5 w-5 text-accent" />}
                   </button>
