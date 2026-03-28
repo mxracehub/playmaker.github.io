@@ -137,11 +137,18 @@ export default function GamesPage() {
             <h1 className="font-headline text-4xl font-bold uppercase tracking-tight">Your <span className="text-accent">Arena</span></h1>
             <p className="text-muted-foreground font-medium">Track your active plays and review your playmaker legacy.</p>
           </div>
-          <Link href="/games/create">
-            <Button className="h-14 px-8 font-headline font-bold uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20">
-              <Plus className="mr-2 h-5 w-5" /> Start New Game
-            </Button>
-          </Link>
+          <div className="flex flex-col gap-3 min-w-[240px]">
+            <Link href="/games/create">
+              <Button className="w-full h-14 px-8 font-headline font-bold uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20">
+                <Plus className="mr-2 h-5 w-5" /> Start New Game
+              </Button>
+            </Link>
+            <Link href="/games/create?mode=house">
+              <Button variant="outline" className="w-full h-12 px-8 font-headline font-bold uppercase tracking-widest border-accent/30 text-accent hover:bg-accent/10">
+                <Users className="mr-2 h-5 w-5" /> Create House Game
+              </Button>
+            </Link>
+          </div>
         </header>
 
         <Tabs defaultValue="active" className="w-full">
