@@ -22,7 +22,7 @@ export default function ProfilePage() {
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
   const { data: profile } = useDoc(userProfileRef);
 
-  const displayName = profile?.username || user?.displayName || 'Elite Playmaker';
+  const displayName = profile?.username || user?.displayName || 'Arena Player';
   const bio = profile?.bio || "Always playing for the next highlight reel.";
 
   const activeGames = [
@@ -56,15 +56,15 @@ export default function ProfilePage() {
             <div className="flex-1 text-center md:text-left">
               <div className="flex flex-col md:flex-row md:items-center gap-4 mb-2">
                 <h1 className="font-headline text-4xl font-bold uppercase tracking-tighter">{displayName}</h1>
-                <Badge className="bg-accent text-accent-foreground font-bold px-3 py-1">PRO LEVEL 24</Badge>
+                <Badge className="bg-accent text-accent-foreground font-bold px-3 py-1 uppercase tracking-widest text-[10px]">PRO LEVEL 24</Badge>
               </div>
               <p className="text-muted-foreground mb-6 font-medium italic">"{bio}"</p>
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
-                <div className="flex items-center gap-2 bg-secondary/50 px-4 py-2 rounded-full border">
+                <div className="flex items-center gap-2 bg-secondary/50 px-4 py-2 rounded-full border border-white/5">
                   <Star className="h-4 w-4 text-accent fill-accent" />
                   <span className="text-sm font-bold">4.8 Rating</span>
                 </div>
-                <div className="flex items-center gap-2 bg-secondary/50 px-4 py-2 rounded-full border">
+                <div className="flex items-center gap-2 bg-secondary/50 px-4 py-2 rounded-full border border-white/5">
                   <Gamepad2 className="h-4 w-4 text-primary" />
                   <span className="text-sm font-bold">128 Games Won</span>
                 </div>
