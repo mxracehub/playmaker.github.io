@@ -96,6 +96,7 @@ export default function RegisterPage() {
 
     if (isValid) {
       // PROTOTYPE INITIALIZATION: Create basic profile document with 0 balances
+      // friendIds starts with only the house admin
       setDocumentNonBlocking(doc(db, "userProfiles", user.uid), {
         id: user.uid,
         email: user.email,
@@ -107,6 +108,7 @@ export default function RegisterPage() {
         bio: "Elite Playmaker locked in.",
         profilePictureUrl: `https://picsum.photos/seed/${user.uid}/400/400`,
         twoFactorEnabled: true,
+        friendIds: ['house-admin'],
       }, { merge: true });
 
       setPassed2FA(true);
