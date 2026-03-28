@@ -143,11 +143,6 @@ export default function GamesPage() {
                 <Plus className="mr-2 h-5 w-5" /> Start New Game
               </Button>
             </Link>
-            <Link href="/games/create?mode=house">
-              <Button variant="outline" className="w-full h-12 px-8 font-headline font-bold uppercase tracking-widest border-accent/30 text-accent hover:bg-accent/10">
-                <Users className="mr-2 h-5 w-5" /> Create House Game
-              </Button>
-            </Link>
           </div>
         </header>
 
