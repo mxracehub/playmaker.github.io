@@ -35,7 +35,7 @@ service cloud.firestore {
      * Public read is required for the lobby and live arena metrics.
      */
     match /games/{gameId} {
-      allow get, list: if true;
+      allow read: if true;
       allow create: if isSignedIn();
       allow update: if isSignedIn() && (
         request.auth.uid == resource.data.creatorId || 
