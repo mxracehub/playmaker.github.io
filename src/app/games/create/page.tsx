@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -15,6 +14,7 @@ import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble,
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore, useUser, addDocumentNonBlocking } from "@/firebase";
 import { collection } from "firebase/firestore";
+import { useFriendsStore, HOUSE_ADMIN } from "@/hooks/use-friends-store";
 
 const sports = [
   { 
@@ -185,22 +185,13 @@ const sports = [
   },
 ];
 
-const mockFriends = [
-  { id: 'house-admin', name: "Arena Master (House Admin)", avatar: "https://picsum.photos/seed/admin/100/100", isHouse: true },
-  { id: 'f1', name: "Jordan 'Swish' Smith", avatar: "https://picsum.photos/seed/jordan/100/100" },
-  { id: 'f2', name: "Sarah 'Quarterback' Jones", avatar: "https://picsum.photos/seed/sarah/100/100" },
-  { id: 'f3', name: "Mike 'The Putter' Brown", avatar: "https://picsum.photos/seed/mike/100/100" },
-  { id: 'f4', name: "Alex 'Apex' Racer", avatar: "https://picsum.photos/seed/alex/100/100" },
-  { id: 'f5', name: "Emma 'Endzone' Miller", avatar: "https://picsum.photos/seed/emma/100/100" },
-  { id: 'f6', name: "Chris 'The Wall' Davis", avatar: "https://picsum.photos/seed/chris/100/100" },
-];
-
 export default function CreateGamePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
   const { user } = useUser();
   const db = useFirestore();
+  const { friends } = useFriendsStore();
   
   const [selectedSport, setSelectedSport] = useState<string>("");
   const [selectedEvent, setSelectedEvent] = useState<string>("");
@@ -211,16 +202,18 @@ export default function CreateGamePage() {
   const [currency, setCurrency] = useState("gold");
   const [fee, setFee] = useState("1000");
 
+  const availableFriends = [HOUSE_ADMIN, ...friends];
+
   useEffect(() => {
     const friendId = searchParams.get('friendId');
-    if (friendId && (mockFriends.some(f => f.id === friendId) || friendId === 'house-admin')) {
+    if (friendId && (availableFriends.some(f => f.id === friendId))) {
       setSelectedFriend(friendId);
     }
     const sportId = searchParams.get('sport');
     if (sportId && sports.some(s => s.id === sportId)) {
       setSelectedSport(sportId);
     }
-  }, [searchParams]);
+  }, [searchParams, availableFriends.length]);
 
   const balances = {
     gold: 1250000,
@@ -233,7 +226,7 @@ export default function CreateGamePage() {
     option.toLowerCase().includes(searchPickQuery.toLowerCase())
   ) || [];
 
-  const filteredFriends = mockFriends.filter(friend => 
+  const filteredFriends = availableFriends.filter(friend => 
     friend.name.toLowerCase().includes(searchFriendQuery.toLowerCase())
   );
 
@@ -274,7 +267,6 @@ export default function CreateGamePage() {
     const eventName = currentSport?.events.find(e => e.id === selectedEvent)?.name || "Live Event";
     const inviteCode = Math.random().toString(36).substring(2, 8).toUpperCase();
 
-    // Persist to Firestore
     const gameData = {
       name: eventName,
       creatorId: user.uid,
@@ -319,7 +311,6 @@ export default function CreateGamePage() {
             </CardHeader>
             <CardContent className="p-6 space-y-10">
               
-              {/* Step 1: Sport Selection */}
               <div className="space-y-4">
                 <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">1. Select Arena</Label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -345,7 +336,6 @@ export default function CreateGamePage() {
                 </div>
               </div>
 
-              {/* Step 2: Event Selection */}
               <div className="space-y-4">
                 <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">2. Select Upcoming Event</Label>
                 {selectedSport ? (
@@ -378,7 +368,6 @@ export default function CreateGamePage() {
                 )}
               </div>
 
-              {/* Step 3: Winner Pick Selection */}
               <div className="space-y-4">
                 <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">3. Pick Your Winner</Label>
                 {selectedSport ? (
@@ -416,7 +405,6 @@ export default function CreateGamePage() {
                 )}
               </div>
 
-              {/* Step 4: Currency & Stakes */}
               <div className="space-y-6 pt-4 border-t border-white/5">
                 <div className="space-y-4">
                   <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">4. Set the Stakes</Label>
@@ -454,7 +442,6 @@ export default function CreateGamePage() {
                 </div>
               </div>
 
-              {/* Step 5: Opponent Selection */}
               <div className="space-y-4 pt-4 border-t border-white/5">
                 <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">5. Select Your Opponent</Label>
                 <div className="space-y-4">

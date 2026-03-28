@@ -12,21 +12,13 @@ import { UserPlus, Search, Trophy, Lock, Loader2, Trash2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useUser } from "@/firebase";
 import { useToast } from "@/hooks/use-toast";
-
-const initialFriends = [
-  { id: 'f1', name: "Jordan 'Swish' Smith", status: "Online", wins: 42, avatar: "https://picsum.photos/seed/jordan/100/100" },
-  { id: 'f2', name: "Sarah 'Quarterback' Jones", status: "In Contest", wins: 28, avatar: "https://picsum.photos/seed/sarah/100/100" },
-  { id: 'f3', name: "Mike 'The Putter' Brown", status: "Offline", wins: 15, avatar: "https://picsum.photos/seed/mike/100/100" },
-  { id: 'f4', name: "Alex 'Apex' Racer", status: "Online", wins: 31, avatar: "https://picsum.photos/seed/alex/100/100" },
-  { id: 'f5', name: "Emma 'Endzone' Miller", status: "Offline", wins: 19, avatar: "https://picsum.photos/seed/emma/100/100" },
-  { id: 'f6', name: "Chris 'The Wall' Davis", status: "In Contest", wins: 55, avatar: "https://picsum.photos/seed/chris/100/100" },
-];
+import { useFriendsStore } from "@/hooks/use-friends-store";
 
 export default function FriendsPage() {
   const router = useRouter();
   const { toast } = useToast();
   const { user, isUserLoading } = useUser();
-  const [friendsList, setFriendsList] = useState(initialFriends);
+  const { friends, removeFriend, isLoaded } = useFriendsStore();
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleChallenge = (friendId: string) => {
@@ -34,18 +26,18 @@ export default function FriendsPage() {
   };
 
   const handleDeleteFriend = (id: string, name: string) => {
-    setFriendsList(prev => prev.filter(f => f.id !== id));
+    removeFriend(id);
     toast({
       title: "Friend Removed",
       description: `${name} has been removed from your circle.`,
     });
   };
 
-  const filteredFriends = friendsList.filter(f => 
+  const filteredFriends = friends.filter(f => 
     f.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  if (isUserLoading) {
+  if (isUserLoading || !isLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center space-y-4">
