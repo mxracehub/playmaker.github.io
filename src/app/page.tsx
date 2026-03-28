@@ -204,7 +204,7 @@ export default function Home() {
                 The Ultimate <br/><span className="text-accent">Playmaker</span> Arcade
               </h1>
               <p className="text-xl text-white/70 mb-8 font-medium leading-relaxed max-w-lg">
-                Challenge your circle in the next generation of sports games. Pick your elite roster and dominate.
+                Challenge your circle in the next generation of sports games. Pick your elite team or athlete and dominate.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link href="/games/create">
@@ -221,26 +221,26 @@ export default function Home() {
             </div>
             
             {/* Live Stats Cards - Positioned on the Right Side */}
-            <div className="flex flex-col gap-6 w-full md:w-auto md:min-w-[320px]">
-              <div className="flex items-center gap-6 bg-white/5 backdrop-blur-2xl px-8 py-8 rounded-[2rem] border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
-                <div className="h-14 w-14 rounded-2xl bg-accent/10 flex items-center justify-center border border-accent/20">
-                  <Gamepad2 className="h-7 w-7 text-accent" />
+            <div className="flex flex-col gap-4 w-full md:w-auto md:min-w-[280px]">
+              <div className="flex items-center gap-5 bg-white/5 backdrop-blur-2xl px-6 py-5 rounded-[1.5rem] border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
+                <div className="h-12 w-12 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
+                  <Gamepad2 className="h-6 w-6 text-accent" />
                 </div>
                 <div>
-                  <p className="text-[10px] text-white/40 font-black uppercase tracking-[0.25em] mb-1">ACTIVE GAMES</p>
-                  <p className="text-5xl font-headline font-bold tracking-tighter italic">
+                  <p className="text-[9px] text-white/40 font-black uppercase tracking-[0.25em] mb-1">ACTIVE GAMES</p>
+                  <p className="text-4xl font-headline font-bold tracking-tighter italic">
                     {activeGamesCount.toLocaleString()}
                   </p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-6 bg-white/5 backdrop-blur-2xl px-8 py-8 rounded-[2rem] border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
-                <div className="h-14 w-14 rounded-2xl bg-accent/10 flex items-center justify-center border border-accent/20">
-                  <Target className="h-7 w-7 text-accent" />
+              <div className="flex items-center gap-5 bg-white/5 backdrop-blur-2xl px-6 py-5 rounded-[1.5rem] border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
+                <div className="h-12 w-12 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
+                  <Target className="h-6 w-6 text-accent" />
                 </div>
                 <div>
-                  <p className="text-[10px] text-white/40 font-black uppercase tracking-[0.25em] mb-1">WINNERS TODAY</p>
-                  <p className="text-5xl font-headline font-bold tracking-tighter italic">
+                  <p className="text-[9px] text-white/40 font-black uppercase tracking-[0.25em] mb-1">WINNERS TODAY</p>
+                  <p className="text-4xl font-headline font-bold tracking-tighter italic">
                     {winnersTodayCount.toLocaleString()}
                   </p>
                 </div>
