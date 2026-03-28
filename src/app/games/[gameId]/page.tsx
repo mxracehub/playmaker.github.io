@@ -2,14 +2,16 @@
 
 import { useRef } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Users, Zap, Clock, Camera, Target, Dribbble, Flag, CheckCircle2, Waves, Bike, Mountain, Swords, Snowflake } from "lucide-react";
+import { Trophy, Users, Zap, Clock, Camera, Target, Dribbble, Flag, CheckCircle2, Waves, Bike, Mountain, Swords, Snowflake, Lock, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { useUser } from "@/firebase";
 import html2canvas from 'html2canvas';
 
 const BaseballIcon = ({ className }: { className?: string }) => (
@@ -81,6 +83,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
   const { toast } = useToast();
   const searchParams = useSearchParams();
   const arenaRef = useRef<HTMLDivElement>(null);
+  const { user, isUserLoading } = useUser();
   
   const sportId = searchParams.get('sport') || 'nba';
   const myPick = searchParams.get('pick') || 'Elite Selection';
@@ -267,6 +270,35 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       });
     }
   };
+
+  if (isUserLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
+          <p className="font-headline font-bold uppercase tracking-widest text-muted-foreground animate-pulse">
+            Accessing Arena Coordinates...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen pt-20 flex flex-col items-center justify-center p-4">
+        <Navbar />
+        <Card className="max-w-md w-full text-center p-8 space-y-6 bg-card/50 backdrop-blur-xl border-white/5">
+          <Lock className="h-16 w-16 text-muted-foreground mx-auto opacity-20" />
+          <h2 className="font-headline text-2xl font-bold uppercase tracking-tight">Locked Arena</h2>
+          <p className="text-muted-foreground">You must be signed in to view live showdowns and standings.</p>
+          <Link href="/login" className="block w-full">
+            <Button className="w-full h-12 font-bold uppercase tracking-wider shadow-lg shadow-primary/20">Sign In to Enter</Button>
+          </Link>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pb-24 md:pt-20 bg-background relative overflow-hidden">
