@@ -2,6 +2,19 @@
 # https://firebase.google.com/docs/app-hosting/configure
 
 runConfig:
+  # The amount of memory to allocate to each instance.
+  memory: 512MiB
   # Increase this value if you'd like to automatically spin up
   # more instances in response to increased traffic.
-  maxInstances: 1
+  maxInstances: 3
+  # Minimum number of instances to keep running.
+  minInstances: 0
+  # The number of concurrent requests an instance can handle.
+  concurrency: 80
+
+# Environment variables can be defined here.
+# For sensitive data (like API keys), use the "Secrets" tab in the Firebase Console.
+# env:
+#   - variable: NEXT_PUBLIC_ARENA_ENV
+#     value: production
+#     availability: [BUILD, RUNTIME]
