@@ -31,11 +31,11 @@ service cloud.firestore {
 
     /**
      * @description Arena games for the dashboard and stats.
-     * Public read (get and list) is REQUIRED for the lobby floor metrics.
-     * This rule change explicitly permits unauthenticated 'list' operations on /games.
+     * PUBLIC READ is explicitly required for the lobby floor metrics.
+     * Force deployment with updated comment.
      */
     match /games/{gameId} {
-      allow get, list: if true;
+      allow read: if true;
       allow create: if isSignedIn();
       allow update: if isSignedIn() && (
         request.auth.uid == resource.data.creatorId || 

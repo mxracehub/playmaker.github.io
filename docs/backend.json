@@ -182,48 +182,29 @@
     ]
   },
   "firestore": {
-    "structure": [
-      {
-        "path": "/games/{gameId}",
-        "definition": {
-          "entityName": "Contest",
-          "schema": {
-            "$ref": "#/backend/entities/Contest"
-          },
-          "description": "Collection of games/contests. Explicitly allowed for public list/get to support lobby statistics."
-        }
+    "/games/{gameId}": {
+      "schema": {
+        "$ref": "#/backend/entities/Contest"
       },
-      {
-        "path": "/userProfiles/{userId}",
-        "definition": {
-          "entityName": "UserProfile",
-          "schema": {
-            "$ref": "#/backend/entities/UserProfile"
-          },
-          "description": "Stores individual user profiles including personal details and balances."
-        }
+      "description": "Collection of games/contests. Allowed for public list/get."
+    },
+    "/userProfiles/{userId}": {
+      "schema": {
+        "$ref": "#/backend/entities/UserProfile"
       },
-      {
-        "path": "/sports/{sportId}",
-        "definition": {
-          "entityName": "Sport",
-          "schema": {
-            "$ref": "#/backend/entities/Sport"
-          },
-          "description": "Public, read-only collection of available sports."
-        }
+      "description": "Stores individual user profiles including balances."
+    },
+    "/sports/{sportId}": {
+      "schema": {
+        "$ref": "#/backend/entities/Sport"
       },
-      {
-        "path": "/events/{eventId}",
-        "definition": {
-          "entityName": "Event",
-          "schema": {
-            "$ref": "#/backend/entities/Event"
-          },
-          "description": "Public, read-only collection of professional sporting events."
-        }
-      }
-    ],
-    "reasoning": "The firestore structure is updated to map 'games' to the 'Contest' entity, matching the active code usage. Permissions for /games are set to public read (get/list) to allow the dashboard to calculate and display arena-wide statistics like 'Active Games' and 'Winners Today' without requiring user authentication."
+      "description": "Public, read-only collection of available sports."
+    },
+    "/events/{eventId}": {
+      "schema": {
+        "$ref": "#/backend/entities/Event"
+      },
+      "description": "Public, read-only collection of professional sporting events."
+    }
   }
 }
