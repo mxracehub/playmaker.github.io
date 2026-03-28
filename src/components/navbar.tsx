@@ -14,8 +14,9 @@ import {
   Landmark
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useUser, useAuth } from "@/firebase";
+import { useUser, useAuth, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { signOut } from "firebase/auth";
+import { doc } from "firebase/firestore";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,6 +30,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 export function Navbar() {
   const { user, isUserLoading } = useUser();
   const auth = useAuth();
+  const db = useFirestore();
+
+  // Sync with Firestore profile to get the latest username
+  const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
+  const { data: profile } = useDoc(userProfileRef);
 
   const handleLogout = async () => {
     try {
@@ -37,6 +43,10 @@ export function Navbar() {
       console.error("Error signing out:", error);
     }
   };
+
+  // Match the identity from the profile arena
+  const displayName = profile?.username || user?.displayName || 'BRADY PRICE';
+  const emailDisplay = user?.email || 'mxracehub@proton.me';
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b bg-card/80 backdrop-blur-md shadow-sm">
@@ -78,9 +88,9 @@ export function Navbar() {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0 hover:bg-transparent focus-visible:ring-0">
                       <Avatar className="h-10 w-10 border-2 border-primary/20 transition-all hover:border-primary">
-                        <AvatarImage src={`https://picsum.photos/seed/guitar/100/100`} alt={user.displayName || "User"} />
+                        <AvatarImage src={`https://picsum.photos/seed/guitar/100/100`} alt={displayName} />
                         <AvatarFallback className="bg-secondary text-primary font-bold">
-                          {user.email?.[0].toUpperCase() || "P"}
+                          {displayName[0]}
                         </AvatarFallback>
                       </Avatar>
                     </Button>
@@ -88,9 +98,8 @@ export function Navbar() {
                   <DropdownMenuContent className="w-56 bg-card/95 backdrop-blur-xl border-white/10" align="end" forceMount>
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
-                        {/* Display Player Arena and mxracehub@proton.me to match image reference */}
-                        <p className="text-sm font-headline font-bold leading-none">{user.displayName || 'Player Arena'}</p>
-                        <p className="text-xs leading-none text-muted-foreground">{user.email || 'mxracehub@proton.me'}</p>
+                        <p className="text-sm font-headline font-bold leading-none uppercase">{displayName}</p>
+                        <p className="text-xs leading-none text-muted-foreground">{emailDisplay}</p>
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator className="bg-white/5" />
