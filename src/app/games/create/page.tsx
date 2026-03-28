@@ -54,6 +54,25 @@ const TennisIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const PickleballIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M8 8l8 8" />
+    <path d="M16 8l-8 8" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+const VolleyballIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2a10 10 0 0 1 0 20" />
+    <path d="M2 12a10 10 0 0 1 20 0" />
+    <path d="M7 7c2 1 3 3 3 5s-1 4-3 5" />
+    <path d="M17 7c-2 1-3 3-3 5s1 4 3 5" />
+  </svg>
+);
+
 const SoccerIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <circle cx="12" cy="12" r="10" />
@@ -75,20 +94,22 @@ const BoxingIcon = ({ className }: { className?: string }) => (
 );
 
 const sports = [
-  { id: 'nba', name: 'NBA', icon: <Dribbble className="w-5 h-5" />, color: "text-orange-500", events: [{ id: 'e1', name: "NBA All-Star Game", date: "Feb 15" }, { id: 'e2', name: "Mavericks @ Suns", date: "Mar 12" }], options: ["Lakers", "Warriors", "Celtics", "Bucks", "Suns", "Nets"] },
-  { id: 'nfl', name: 'NFL', icon: <Trophy className="w-5 h-5" />, color: "text-green-500", events: [{ id: 'nfl-e1', name: "Super Bowl LX", date: "Feb 08" }], options: ["Chiefs", "Eagles", "49ers", "Lions", "Cowboys", "Giants"] },
-  { id: 'hockey', name: 'NHL', icon: <Snowflake className="w-5 h-5" />, color: "text-cyan-400", events: [{ id: 'h-e1', name: "NHL Winter Classic", date: "Jan 01" }], options: ["Oilers", "Avalanche", "Bruins", "Rangers", "Leafs"] },
-  { id: 'soccer', name: 'Soccer', icon: <SoccerIcon className="w-5 h-5" />, color: "text-white", events: [{ id: 'e30', name: "Champions League Final", date: "Jun 10" }], options: ["Real Madrid", "Barcelona", "Man City", "Liverpool", "PSG"] },
-  { id: 'ufc', name: 'UFC', icon: <Swords className="w-5 h-5" />, color: "text-red-600", events: [{ id: 'ufc-e1', name: "UFC 300", date: "Apr 13" }], options: ["Jon Jones", "Alex Pereira", "Islam Makhachev", "Leon Edwards"] },
-  { id: 'boxing', name: 'Boxing', icon: <BoxingIcon className="w-5 h-5" />, color: "text-yellow-600", events: [{ id: 'box-e1', name: "Heavyweight Title", date: "May 18" }], options: ["Tyson Fury", "Oleksandr Usyk", "Anthony Joshua", "Canelo Alvarez"] },
-  { id: 'mlb', name: 'MLB', icon: <BaseballIcon className="w-5 h-5" />, color: "text-blue-500", events: [{ id: 'mlb-e1', name: "World Series Game 1", date: "Oct 25" }], options: ["Dodgers", "Yankees", "Braves", "Astros", "Phillies"] },
-  { id: 'tennis', name: 'Tennis', icon: <TennisIcon className="w-5 h-5" />, color: "text-lime-400", events: [{ id: 'ten-e1', name: "Wimbledon Final", date: "Jul 14" }], options: ["Djokovic", "Alcaraz", "Sinner", "Swiatek", "Gauff"] },
-  { id: 'surfing', name: 'Surfing', icon: <Waves className="w-5 h-5" />, color: "text-blue-400", events: [{ id: 'surf-e1', name: "Pipe Masters", date: "Dec 08" }], options: ["Kelly Slater", "John John Florence", "Gabriel Medina"] },
-  { id: 'skateboarding', name: 'Skate', icon: <Zap className="w-5 h-5" />, color: "text-yellow-400", events: [{ id: 'skate-e1', name: "X Games Vert", date: "Jul 20" }], options: ["Tony Hawk", "Nyjah Huston", "Yuto Horigome"] },
-  { id: 'bmx', name: 'BMX', icon: <Bike className="w-5 h-5" />, color: "text-red-400", events: [{ id: 'bmx-e1', name: "BMX Dirt Open", date: "Aug 15" }], options: ["Logan Martin", "Marcus Christopher", "Ryan Williams"] },
-  { id: 'snowboarding', name: 'Snowboard', icon: <Mountain className="w-5 h-5" />, color: "text-cyan-400", events: [{ id: 'snow-e1', name: "Burton US Open", date: "Mar 05" }], options: ["Shaun White", "Chloe Kim", "Mark McMorris"] },
-  { id: 'nascar', name: 'NASCAR', icon: <Flag className="w-5 h-5" />, color: "text-red-500", events: [{ id: 'nas-e1', name: "Daytona 500", date: "Feb 16" }], options: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney"] },
-  { id: 'golf', name: 'Golf', icon: <Target className="h-5 w-5" />, color: "text-emerald-400", events: [{ id: 'golf-e1', name: "The Masters", date: "Apr 10" }], options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Tiger Woods"] },
+  { id: 'nba', name: 'NBA', icon: <Dribbble className="w-5 h-5" />, color: "text-orange-500", events: [{ id: 'e1', name: "NBA All-Star 2026", date: "Feb 2026" }, { id: 'e2', name: "Mavericks @ Suns", date: "Mar 2026" }], options: ["Lakers", "Warriors", "Celtics", "Bucks", "Suns", "Nets"] },
+  { id: 'nfl', name: 'NFL', icon: <Trophy className="w-5 h-5" />, color: "text-green-500", events: [{ id: 'nfl-e1', name: "Super Bowl LX", date: "Feb 2026" }], options: ["Chiefs", "Eagles", "49ers", "Lions", "Cowboys", "Giants"] },
+  { id: 'hockey', name: 'NHL', icon: <Snowflake className="w-5 h-5" />, color: "text-cyan-400", events: [{ id: 'h-e1', name: "NHL Winter Classic", date: "Jan 2026" }], options: ["Oilers", "Avalanche", "Bruins", "Rangers", "Leafs"] },
+  { id: 'soccer', name: 'Soccer', icon: <SoccerIcon className="w-5 h-5" />, color: "text-white", events: [{ id: 'e30', name: "Champions League Final", date: "Jun 2026" }], options: ["Real Madrid", "Barcelona", "Man City", "Liverpool", "PSG"] },
+  { id: 'ufc', name: 'UFC', icon: <Swords className="w-5 h-5" />, color: "text-red-600", events: [{ id: 'ufc-e1', name: "UFC 300 Global", date: "Apr 2026" }], options: ["Jon Jones", "Alex Pereira", "Islam Makhachev", "Leon Edwards"] },
+  { id: 'boxing', name: 'Boxing', icon: <BoxingIcon className="w-5 h-5" />, color: "text-yellow-600", events: [{ id: 'box-e1', name: "Heavyweight Title", date: "May 2026" }], options: ["Tyson Fury", "Oleksandr Usyk", "Anthony Joshua", "Canelo Alvarez"] },
+  { id: 'mlb', name: 'MLB', icon: <BaseballIcon className="w-5 h-5" />, color: "text-blue-500", events: [{ id: 'mlb-e1', name: "World Series Game 1", date: "Oct 2026" }], options: ["Dodgers", "Yankees", "Braves", "Astros", "Phillies"] },
+  { id: 'tennis', name: 'Tennis', icon: <TennisIcon className="w-5 h-5" />, color: "text-lime-400", events: [{ id: 'ten-e1', name: "Wimbledon Final", date: "Jul 2026" }], options: ["Djokovic", "Alcaraz", "Sinner", "Swiatek", "Gauff"] },
+  { id: 'pickleball', name: 'Pickleball', icon: <PickleballIcon className="w-5 h-5" />, color: "text-yellow-500", events: [{ id: 'pb-e1', name: "US Open Pickleball", date: "Apr 2026" }], options: ["Ben Johns", "Anna Leigh Waters", "Tyson McGuffin", "Lea Jansen"] },
+  { id: 'volleyball', name: 'Volleyball', icon: <VolleyballIcon className="w-5 h-5" />, color: "text-indigo-400", events: [{ id: 'vb-e1', name: "Nations League Final", date: "Jul 2026" }], options: ["USA", "Poland", "Brazil", "Turkey", "Italy", "Japan"] },
+  { id: 'surfing', name: 'Surfing', icon: <Waves className="w-5 h-5" />, color: "text-blue-400", events: [{ id: 'surf-e1', name: "Pipe Masters", date: "Dec 2026" }], options: ["Kelly Slater", "John John Florence", "Gabriel Medina"] },
+  { id: 'skateboarding', name: 'Skate', icon: <Zap className="w-5 h-5" />, color: "text-yellow-400", events: [{ id: 'skate-e1', name: "X Games Vert", date: "Jul 2026" }], options: ["Tony Hawk", "Nyjah Huston", "Yuto Horigome"] },
+  { id: 'bmx', name: 'BMX', icon: <Bike className="w-5 h-5" />, color: "text-red-400", events: [{ id: 'bmx-e1', name: "BMX Dirt Open", date: "Aug 2026" }], options: ["Logan Martin", "Marcus Christopher", "Ryan Williams"] },
+  { id: 'snowboarding', name: 'Snowboard', icon: <Mountain className="w-5 h-5" />, color: "text-cyan-400", events: [{ id: 'snow-e1', name: "Burton US Open", date: "Mar 2026" }], options: ["Shaun White", "Chloe Kim", "Mark McMorris"] },
+  { id: 'nascar', name: 'NASCAR', icon: <Flag className="w-5 h-5" />, color: "text-red-500", events: [{ id: 'nas-e1', name: "Daytona 500", date: "Feb 2026" }], options: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney"] },
+  { id: 'golf', name: 'Golf', icon: <Target className="h-5 w-5" />, color: "text-emerald-400", events: [{ id: 'golf-e1', name: "The Masters 2026", date: "Apr 2026" }], options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Tiger Woods"] },
 ];
 
 function CreateGameForm() {
