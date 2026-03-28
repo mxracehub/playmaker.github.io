@@ -29,7 +29,8 @@ service cloud.firestore {
     }
 
     match /games/{gameId} {
-      // Allow public read so landing page stats (Active Games, Winners) work for everyone
+      // Allow public read access for both single docs and collection queries
+      // This is required for the landing page stats to work for everyone
       allow read: if true;
       allow create: if isSignedIn();
       allow update: if isSignedIn(); 

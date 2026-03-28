@@ -220,27 +220,27 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Live Stats Cards - Positioned on the Right Side */}
-            <div className="flex flex-col gap-4 w-full md:w-auto md:min-w-[280px]">
-              <div className="flex items-center gap-5 bg-white/5 backdrop-blur-2xl px-6 py-5 rounded-[1.5rem] border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
-                <div className="h-12 w-12 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
-                  <Gamepad2 className="h-6 w-6 text-accent" />
+            {/* Compact Live Stats Cards - Right Side Positioned */}
+            <div className="flex flex-col gap-3 w-full md:w-auto md:min-w-[240px]">
+              <div className="flex items-center gap-4 bg-white/5 backdrop-blur-2xl px-5 py-4 rounded-[1.25rem] border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
+                <div className="h-10 w-10 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
+                  <Gamepad2 className="h-5 w-5 text-accent" />
                 </div>
                 <div>
-                  <p className="text-[9px] text-white/40 font-black uppercase tracking-[0.25em] mb-1">ACTIVE GAMES</p>
-                  <p className="text-4xl font-headline font-bold tracking-tighter italic">
+                  <p className="text-[8px] text-white/40 font-black uppercase tracking-[0.25em] mb-0.5">ACTIVE GAMES</p>
+                  <p className="text-3xl font-headline font-bold tracking-tighter italic leading-none">
                     {activeGamesCount.toLocaleString()}
                   </p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-5 bg-white/5 backdrop-blur-2xl px-6 py-5 rounded-[1.5rem] border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
-                <div className="h-12 w-12 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
-                  <Target className="h-6 w-6 text-accent" />
+              <div className="flex items-center gap-4 bg-white/5 backdrop-blur-2xl px-5 py-4 rounded-[1.25rem] border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
+                <div className="h-10 w-10 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
+                  <Target className="h-5 w-5 text-accent" />
                 </div>
                 <div>
-                  <p className="text-[9px] text-white/40 font-black uppercase tracking-[0.25em] mb-1">WINNERS TODAY</p>
-                  <p className="text-4xl font-headline font-bold tracking-tighter italic">
+                  <p className="text-[8px] text-white/40 font-black uppercase tracking-[0.25em] mb-0.5">WINNERS TODAY</p>
+                  <p className="text-3xl font-headline font-bold tracking-tighter italic leading-none">
                     {winnersTodayCount.toLocaleString()}
                   </p>
                 </div>
