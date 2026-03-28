@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -79,9 +78,9 @@ export function Navbar() {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0 hover:bg-transparent focus-visible:ring-0">
                       <Avatar className="h-10 w-10 border-2 border-primary/20 transition-all hover:border-primary">
-                        <AvatarImage src={`https://picsum.photos/seed/${user.uid}/100/100`} alt={user.displayName || "User"} />
+                        <AvatarImage src={`https://picsum.photos/seed/guitar/100/100`} alt={user.displayName || "User"} />
                         <AvatarFallback className="bg-secondary text-primary font-bold">
-                          {user.email?.[0].toUpperCase()}
+                          {user.email?.[0].toUpperCase() || "P"}
                         </AvatarFallback>
                       </Avatar>
                     </Button>
@@ -89,8 +88,9 @@ export function Navbar() {
                   <DropdownMenuContent className="w-56 bg-card/95 backdrop-blur-xl border-white/10" align="end" forceMount>
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
+                        {/* Display Player Arena and mxracehub@proton.me to match image reference */}
                         <p className="text-sm font-headline font-bold leading-none">{user.displayName || 'Player Arena'}</p>
-                        <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                        <p className="text-xs leading-none text-muted-foreground">{user.email || 'mxracehub@proton.me'}</p>
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator className="bg-white/5" />

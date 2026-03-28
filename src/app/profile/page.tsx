@@ -22,7 +22,8 @@ export default function ProfilePage() {
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
   const { data: profile } = useDoc(userProfileRef);
 
-  const displayName = profile?.username || user?.displayName || 'Arena Player';
+  // Set default to BRADY PRICE to match image reference
+  const displayName = profile?.username || user?.displayName || 'BRADY PRICE';
   const bio = profile?.bio || "Always playing for the next highlight reel.";
 
   const activeGames = [
@@ -50,8 +51,8 @@ export default function ProfilePage() {
         <section className="mb-12">
           <div className="flex flex-col md:flex-row items-center gap-8 bg-card/40 p-8 rounded-3xl border border-white/5 backdrop-blur-sm">
             <Avatar className="h-32 w-32 border-4 border-primary shadow-2xl">
-              <AvatarImage src={`https://picsum.photos/seed/${user?.uid || 'player'}/400/400`} />
-              <AvatarFallback>PM</AvatarFallback>
+              <AvatarImage src={`https://picsum.photos/seed/guitar/400/400`} />
+              <AvatarFallback>BP</AvatarFallback>
             </Avatar>
             <div className="flex-1 text-center md:text-left">
               <div className="flex flex-col md:flex-row md:items-center gap-4 mb-2">
