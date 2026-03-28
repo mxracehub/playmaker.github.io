@@ -29,6 +29,9 @@ const sportPicks: { [key: string]: string[] } = {
   NBA: ["Lakers", "Warriors", "Celtics", "Bucks", "Suns", "Nets", "Knicks", "Spurs"],
   NFL: ["Chiefs", "Eagles", "49ers", "Lions", "Cowboys", "Giants", "Bills", "Ravens"],
   MLB: ["Dodgers", "Yankees", "Braves", "Astros", "Phillies", "Cubs", "Red Sox", "Mets"],
+  TENNIS: ["Novak Djokovic", "Carlos Alcaraz", "Jannik Sinner", "Iga Swiatek", "Coco Gauff"],
+  PICKLEBALL: ["Ben Johns", "Anna Leigh Waters", "Tyson McGuffin", "Lea Jansen"],
+  VOLLEYBALL: ["USA", "Poland", "Brazil", "Turkey", "Italy", "Japan"],
   Golf: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Tiger Woods"],
   NASCAR: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney", "Kyle Busch"],
 };

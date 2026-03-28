@@ -25,6 +25,34 @@ const BaseballIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const TennisIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2a10 10 0 0 1 0 20" />
+    <path d="M2 12a10 10 0 0 1 20 0" />
+    <circle cx="12" cy="12" r="2" />
+  </svg>
+);
+
+const PickleballIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M8 8l8 8" />
+    <path d="M16 8l-8 8" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+const VolleyballIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2a10 10 0 0 1 0 20" />
+    <path d="M2 12a10 10 0 0 1 20 0" />
+    <path d="M7 7c2 1 3 3 3 5s-1 4-3 5" />
+    <path d="M17 7c-2 1-3 3-3 5s1 4 3 5" />
+  </svg>
+);
+
 const sports = [
   { 
     id: 'all', 
@@ -49,6 +77,24 @@ const sports = [
     name: 'Baseball', 
     img: "https://picsum.photos/seed/baseball/400/250",
     icon: <BaseballIcon className="w-5 h-5 text-blue-500" />
+  },
+  { 
+    id: 'tennis', 
+    name: 'Tennis Court', 
+    img: "https://picsum.photos/seed/tennis/400/250",
+    icon: <TennisIcon className="w-5 h-5 text-lime-400" />
+  },
+  { 
+    id: 'pickleball', 
+    name: 'Pickleball', 
+    img: "https://picsum.photos/seed/pickle/400/250",
+    icon: <PickleballIcon className="w-5 h-5 text-yellow-500" />
+  },
+  { 
+    id: 'volleyball', 
+    name: 'Volleyball', 
+    img: "https://picsum.photos/seed/volley/400/250",
+    icon: <VolleyballIcon className="w-5 h-5 text-indigo-400" />
   },
   { 
     id: 'surfing', 

@@ -18,6 +18,34 @@ const BaseballIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const TennisIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2a10 10 0 0 1 0 20" />
+    <path d="M2 12a10 10 0 0 1 20 0" />
+    <circle cx="12" cy="12" r="2" />
+  </svg>
+);
+
+const PickleballIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M8 8l8 8" />
+    <path d="M16 8l-8 8" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+const VolleyballIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2a10 10 0 0 1 0 20" />
+    <path d="M2 12a10 10 0 0 1 20 0" />
+    <path d="M7 7c2 1 3 3 3 5s-1 4-3 5" />
+    <path d="M17 7c-2 1-3 3-3 5s1 4 3 5" />
+  </svg>
+);
+
 export default function GameArenaPage({ params }: { params: { gameId: string } }) {
   const searchParams = useSearchParams();
   const sportId = searchParams.get('sport') || 'nba';
@@ -50,6 +78,30 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       icon: <BaseballIcon className="h-10 w-10" />,
       label: "Diamond Duel",
       statLabel: "HR / RBI"
+    },
+    tennis: {
+      color: "from-lime-600/20 to-lime-900/40",
+      accent: "text-lime-400",
+      bg: "bg-lime-400/10",
+      icon: <TennisIcon className="h-10 w-10" />,
+      label: "Grand Slam",
+      statLabel: "ACES / WINNERS"
+    },
+    pickleball: {
+      color: "from-yellow-600/20 to-yellow-900/40",
+      accent: "text-yellow-500",
+      bg: "bg-yellow-500/10",
+      icon: <PickleballIcon className="h-10 w-10" />,
+      label: "Kitchen Combat",
+      statLabel: "DINKS / SCORE"
+    },
+    volleyball: {
+      color: "from-indigo-600/20 to-indigo-900/40",
+      accent: "text-indigo-400",
+      bg: "bg-indigo-400/10",
+      icon: <VolleyballIcon className="h-10 w-10" />,
+      label: "The Net Zone",
+      statLabel: "KILLS / BLOCKS"
     },
     golf: {
       color: "from-emerald-600/20 to-emerald-900/40",

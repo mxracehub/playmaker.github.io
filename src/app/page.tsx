@@ -33,6 +33,39 @@ const mockAthletes = [
     ]
   },
   {
+    id: "20",
+    name: "Carlos Alcaraz",
+    team: "ATP Elite",
+    sport: "Tennis",
+    avatar: "https://picsum.photos/seed/alcaraz/400/400",
+    stats: [
+      { label: "Rank", value: "#3" },
+      { label: "Win Rate", value: "78%" }
+    ]
+  },
+  {
+    id: "21",
+    name: "Ben Johns",
+    team: "PPA Tour",
+    sport: "Pickleball",
+    avatar: "https://picsum.photos/seed/benjohns/400/400",
+    stats: [
+      { label: "Majors", value: "12" },
+      { label: "Win Streak", value: "15" }
+    ]
+  },
+  {
+    id: "22",
+    name: "Annie Drews",
+    team: "Team USA",
+    sport: "Volleyball",
+    avatar: "https://picsum.photos/seed/annie/400/400",
+    stats: [
+      { label: "Kills", value: "452" },
+      { label: "Avg Block", value: "2.1" }
+    ]
+  },
+  {
     id: "3",
     name: "John John Florence",
     team: "WSL Elite",
@@ -77,28 +110,6 @@ const mockAthletes = [
     ]
   },
   {
-    id: "7",
-    name: "Logan Martin",
-    team: "BMX World",
-    sport: "BMX",
-    avatar: "https://picsum.photos/seed/bmx/400/400",
-    stats: [
-      { label: "Air Time", value: "3.2s" },
-      { label: "Trick Diff", value: "9.5" }
-    ]
-  },
-  {
-    id: "8",
-    name: "Chloe Kim",
-    team: "Team USA",
-    sport: "Snowboarding",
-    avatar: "https://picsum.photos/seed/snow/400/400",
-    stats: [
-      { label: "Rotation", value: "1080" },
-      { label: "Style", value: "9.9" }
-    ]
-  },
-  {
     id: "9",
     name: "Victor Wembanyama",
     team: "SA Spurs",
@@ -121,25 +132,14 @@ const mockAthletes = [
     ]
   },
   {
-    id: "11",
-    name: "Yuto Horigome",
-    team: "Elite Skate",
-    sport: "Skateboarding",
-    avatar: "https://picsum.photos/seed/yuto/400/400",
+    id: "13",
+    name: "Iga Swiatek",
+    team: "WTA Elite",
+    sport: "Tennis",
+    avatar: "https://picsum.photos/seed/swiatek/400/400",
     stats: [
-      { label: "Technical", value: "9.9" },
-      { label: "Gold", value: "2" }
-    ]
-  },
-  {
-    id: "12",
-    name: "Brooks Koepka",
-    team: "LIV Golf",
-    sport: "Golf",
-    avatar: "https://picsum.photos/seed/brooks/400/400",
-    stats: [
-      { label: "Majors", value: "5" },
-      { label: "Drive", value: "318y" }
+      { label: "Rank", value: "#1" },
+      { label: "Slams", value: "4" }
     ]
   }
 ];

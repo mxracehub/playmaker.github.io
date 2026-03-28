@@ -26,6 +26,34 @@ const BaseballIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const TennisIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2a10 10 0 0 1 0 20" />
+    <path d="M2 12a10 10 0 0 1 20 0" />
+    <circle cx="12" cy="12" r="2" />
+  </svg>
+);
+
+const PickleballIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M8 8l8 8" />
+    <path d="M16 8l-8 8" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+const VolleyballIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2a10 10 0 0 1 0 20" />
+    <path d="M2 12a10 10 0 0 1 20 0" />
+    <path d="M7 7c2 1 3 3 3 5s-1 4-3 5" />
+    <path d="M17 7c-2 1-3 3-3 5s1 4 3 5" />
+  </svg>
+);
+
 const sports = [
   { 
     id: 'nba', 
@@ -83,6 +111,53 @@ const sports = [
       "Milwaukee Brewers", "Minnesota Twins", "New York Mets", "New York Yankees", "Oakland Athletics",
       "Philadelphia Phillies", "Pittsburgh Pirates", "San Diego Padres", "San Francisco Giants", "Seattle Mariners",
       "St. Louis Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"
+    ]
+  },
+  { 
+    id: 'tennis', 
+    name: 'Tennis', 
+    icon: <TennisIcon className="w-5 h-5" />, 
+    color: "text-lime-400",
+    events: [
+      { id: 'e20', name: "Wimbledon Finals 2026", date: "Jul 12, 2026" },
+      { id: 'e21', name: "US Open Championship", date: "Sep 13, 2026" },
+      { id: 'e22', name: "French Open Final", date: "Jun 07, 2026" }
+    ],
+    options: [
+      "Novak Djokovic", "Carlos Alcaraz", "Jannik Sinner", "Daniil Medvedev", "Iga Swiatek",
+      "Aryna Sabalenka", "Coco Gauff", "Elena Rybakina", "Rafael Nadal", "Stefanos Tsitsipas",
+      "Holger Rune", "Casper Ruud", "Ons Jabeur", "Jessica Pegula", "Zheng Qinwen"
+    ]
+  },
+  { 
+    id: 'pickleball', 
+    name: 'Pickleball', 
+    icon: <PickleballIcon className="w-5 h-5" />, 
+    color: "text-yellow-500",
+    events: [
+      { id: 'e23', name: "PPA Masters - California", date: "Jan 15, 2026" },
+      { id: 'e24', name: "US Pickleball National Champ", date: "Nov 05, 2026" },
+      { id: 'e25', name: "Arizona Open Finals", date: "Feb 22, 2026" }
+    ],
+    options: [
+      "Ben Johns", "Anna Leigh Waters", "Tyson McGuffin", "Catherine Parenteau", "Riley Newman",
+      "JW Johnson", "Lea Jansen", "Federico Staksrud", "Dylan Frazier", "Mary Brascia",
+      "Zane Navratil", "Lucy Kovalova", "Matt Wright", "Callie Smith", "Julian Arnold"
+    ]
+  },
+  { 
+    id: 'volleyball', 
+    name: 'Volleyball', 
+    icon: <VolleyballIcon className="w-5 h-5" />, 
+    color: "text-indigo-400",
+    events: [
+      { id: 'e26', name: "VNL Finals 2026", date: "Jul 26, 2026" },
+      { id: 'e27', name: "World Championship Qualifiers", date: "Aug 15, 2026" }
+    ],
+    options: [
+      "USA Women's National", "Poland Men's National", "Brazil Men's National", "Turkey Women's National",
+      "Italy Men's National", "Serbia Women's National", "France Men's National", "Japan Men's National",
+      "Imoco Conegliano", "Vakifbank Istanbul", "Zaksa Kedzierzyn-Kozle", "Trentino Volley"
     ]
   },
   { 
@@ -349,7 +424,7 @@ export default function CreateGamePage() {
               
               <div className="space-y-4">
                 <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">1. Select Arena</Label>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {sports.map((sport) => (
                     <button
                       key={sport.id}
