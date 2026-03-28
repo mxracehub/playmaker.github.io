@@ -4,13 +4,13 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * ARENA SECURITY RULES v4.5
+     * ARENA SECURITY RULES v5.0
      * Optimized for high-fidelity prototype verification and public lobby transparency.
      */
 
     match /games/{gameId} {
-      // Allow everyone to list and get games for the lobby/dashboard stats
-      allow get, list: if true;
+      // Shorthand for get and list - allows anyone to see the arena floor stats
+      allow read: if true;
       
       // Only registered playmakers can issue challenges
       allow create: if request.auth != null;
