@@ -82,9 +82,18 @@ const sports = [
     icon: <Dribbble className="w-5 h-5" />, 
     color: "text-orange-500",
     events: [
-      { id: 'e1', name: "Lakers @ Warriors (Opening Night)", date: "Oct 24, 2026" },
-      { id: 'e2', name: "Celtics @ Bucks (Christmas Special)", date: "Dec 25, 2026" },
-      { id: 'e3', name: "NBA All-Star Game 2026", date: "Feb 15, 2026" }
+      { id: 'e1', name: "NBA All-Star Game 2026", date: "Feb 15, 2026" },
+      { id: 'e2', name: "Mavericks @ Suns (Western Clash)", date: "Mar 12, 2026" },
+      { id: 'e3', name: "Knicks @ 76ers (Atlantic Duel)", date: "Mar 28, 2026" },
+      { id: 'e4', name: "NBA Play-In: East #7 vs #8", date: "Apr 14, 2026" },
+      { id: 'e5', name: "NBA Playoffs: Round 1 Tip-off", date: "Apr 18, 2026" },
+      { id: 'e6', name: "Conference Finals: Game 1", date: "May 19, 2026" },
+      { id: 'e7', name: "NBA Finals: Game 1", date: "Jun 04, 2026" },
+      { id: 'e8', name: "NBA Draft 2026", date: "Jun 25, 2026" },
+      { id: 'e9', name: "NBA Summer League Finals", date: "Jul 20, 2026" },
+      { id: 'e10', name: "Global Games: Paris Showcase", date: "Oct 05, 2026" },
+      { id: 'e11', name: "Lakers @ Warriors (2026 Season Opener)", date: "Oct 24, 2026" },
+      { id: 'e12', name: "Celtics @ Bucks (Christmas Night)", date: "Dec 25, 2026" }
     ],
     options: [
       "Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", 
@@ -109,7 +118,7 @@ const sports = [
       "Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills", "Carolina Panthers", 
       "Chicago Bears", "Cincinnati Bengals", "Cleveland Browns", "Dallas Cowboys", "Denver Broncos", 
       "Detroit Lions", "Green Bay Packers", "Houston Texans", "Indianapolis Colts", "Jacksonville Jaguars", 
-      "Kansas City Chiefs", "Las Vegas Raiders", "Los Angeles Chargers", "Los Angeles Rams", "Miami Dolphins", 
+      "Kansas City Chiefs", "Las Vegas Raiders", "Los Angeles Chargers", "Los Los Rams", "Miami Dolphins", 
       "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants", "New York Jets", 
       "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Buccaneers", 
       "Tennessee Titans", "Washington Commanders"
