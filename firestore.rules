@@ -11,16 +11,8 @@ service cloud.firestore {
      *
      * DATA STRUCTURE
      * - User-specific data is nested under /userProfiles/{userId} or associated via a `userId` field.
-     * - Shared data (Contests) uses a flat collection structure with participation arrays (`participantIds`).
+     * - Shared data (Games/Contests) uses a flat collection structure with participation IDs.
      * - Public reference data (Sports, Events) is top-level and read-accessible to all.
-     *
-     * KEY SECURITY DECISIONS
-     * - Denormalization: Participation lists (e.g., `participantIds`, `contestParticipantIds`) 
-     *   are required on documents to allow for secure listing without `get()` calls.
-     * - Public Data: Browsing sports and events is allowed for unauthenticated users, 
-     *   but all list operations on private or shared data require authentication.
-     * - Admin Access: Administrative operations (creating sports, managing redemptions) 
-     *   require an entry in the `/adminRoles/` collection.
      */
 
     // --- Helper Functions ---
@@ -53,11 +45,25 @@ service cloud.firestore {
     // --- Rules ---
 
     /**
+     * @description Arena games for the dashboard and stats.
+     * @path /games/{gameId}
+     * @allow (get, list) For any user to see arena stats and active showdowns.
+     * @allow (create) If signed in.
+     */
+    match /games/{gameId} {
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && (
+        request.auth.uid == resource.data.creatorId || 
+        request.auth.uid == resource.data.opponentId || 
+        isAdmin()
+      );
+      allow delete: if isSignedIn() && (request.auth.uid == resource.data.creatorId || isAdmin());
+    }
+
+    /**
      * @description User profiles containing personal details and balances.
      * @path /userProfiles/{userId}
-     * @allow (get) If the user is the owner.
-     * @deny (list) Prevent broad listing of user profiles.
-     * @principle Ownership-based access to private profile data.
      */
     match /userProfiles/{userId} {
       allow get: if isOwner(userId);
@@ -66,24 +72,12 @@ service cloud.firestore {
       allow update: if isExistingOwner(userId);
       allow delete: if isExistingOwner(userId);
 
-      /**
-       * @description Records of user currency transactions.
-       * @path /userProfiles/{userId}/currencyTransactions/{transactionId}
-       * @allow (list) If the user owns the parent profile.
-       * @principle Path-based authorization for user-specific subcollections.
-       */
       match /currencyTransactions/{transactionId} {
         allow get, list: if isOwner(userId);
         allow create: if isOwner(userId) && request.resource.data.userId == userId;
-        allow update, delete: if false; // Transactions are immutable audit logs.
+        allow update, delete: if false;
       }
 
-      /**
-       * @description Redemption requests for prizes.
-       * @path /userProfiles/{userId}/redemptionRequests/{requestId}
-       * @allow (update) If user is owner (cancel) or admin (process).
-       * @principle Dual access: Owner for creation, Admin for management.
-       */
       match /redemptionRequests/{requestId} {
         allow get, list: if isOwner(userId) || isAdmin();
         allow create: if isOwner(userId) && request.resource.data.userId == userId;
@@ -93,88 +87,45 @@ service cloud.firestore {
     }
 
     /**
-     * @description Publicly readable list of available sports.
-     * @path /sports/{sportId}
-     * @allow (get, list) For any user, including unauthenticated.
-     * @deny (write) Only admins can modify the catalog.
-     * @principle Public Read with Admin-Only writes.
+     * @description Legacy/Alternative path for users (for profile syncing).
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId);
+      allow update: if isExistingOwner(userId);
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Publicly readable catalog data.
      */
     match /sports/{sportId} {
       allow get, list: if true;
       allow create, update, delete: if isAdmin();
     }
 
-    /**
-     * @description Publicly readable list of professional sporting events.
-     * @path /events/{eventId}
-     * @allow (get, list) For any user.
-     * @principle Public Read with Admin-Only writes.
-     */
     match /events/{eventId} {
       allow get, list: if true;
       allow create, update, delete: if isAdmin();
     }
 
-    /**
-     * @description Publicly readable list of professional athletes.
-     * @path /athletes/{athleteId}
-     * @allow (get, list) For any user.
-     * @principle Public Read with Admin-Only writes.
-     */
     match /athletes/{athleteId} {
       allow get, list: if true;
       allow create, update, delete: if isAdmin();
     }
 
-    /**
-     * @description Publicly readable athlete performance statistics.
-     * @path /eventPerformances/{perfId}
-     * @allow (get, list) For any user.
-     * @principle Public Read with Admin-Only writes.
-     */
     match /eventPerformances/{perfId} {
       allow get, list: if true;
       allow create, update, delete: if isAdmin();
     }
 
     /**
-     * @description Shared contests for sweepstakes and pick-ems.
-     * @path /contests/{contestId}
-     * @allow (list) If query filters by participation (QAP).
-     * @deny (list) If user is unauthenticated (auth: null).
-     * @principle Shared access via denormalized member lists.
-     */
-    match /contests/{contestId} {
-      allow get: if isSignedIn() && (request.auth.uid == resource.data.creatorId || isParticipant(resource.data.participantIds));
-      allow list: if isSignedIn() && (request.auth.uid == resource.data.creatorId || isParticipant(resource.data.participantIds));
-      allow create: if isSignedIn() && request.resource.data.creatorId == request.auth.uid;
-      allow update: if isSignedIn() && (request.auth.uid == resource.data.creatorId || isParticipant(resource.data.participantIds));
-      allow delete: if isSignedIn() && request.auth.uid == resource.data.creatorId;
-    }
-
-    /**
-     * @description User entries for specific contests.
-     * @path /contestEntries/{entryId}
-     * @allow (list) Allowed for participants of the contest to see the leaderboard.
-     * @principle Relational integrity and shared visibility for participants.
-     */
-    match /contestEntries/{entryId} {
-      allow get: if isOwner(resource.data.userId) || isParticipant(resource.data.contestParticipantIds);
-      allow list: if isSignedIn() && (request.auth.uid == resource.data.userId || isParticipant(resource.data.contestParticipantIds));
-      allow create: if isOwner(request.resource.data.userId);
-      allow update: if isExistingOwner(resource.data.userId);
-      allow delete: if isExistingOwner(resource.data.userId);
-    }
-
-    /**
      * @description Admin Roles collection used for DBAC.
-     * @path /adminRoles/{userId}
-     * @allow (get) Only the user or other admins.
-     * @principle Explicitly secure the role mapping collection itself.
      */
     match /adminRoles/{userId} {
       allow get: if isOwner(userId) || isAdmin();
-      allow list, create, update, delete: if false; // Managed via Firebase Console or Cloud Functions.
+      allow list, create, update, delete: if false;
     }
   }
 }
