@@ -136,14 +136,6 @@ export function Navbar() {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator className="bg-white/5 md:hidden" />
-                    {profile?.role === 'admin' && (
-                      <DropdownMenuItem asChild className="cursor-pointer focus:bg-destructive/10 text-destructive font-bold">
-                        <Link href="/admin" className="flex items-center w-full">
-                          <Settings className="mr-2 h-4 w-4" />
-                          <span>Arena Control</span>
-                        </Link>
-                      </DropdownMenuItem>
-                    )}
                     <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/10">
                       <Link href="/profile" className="flex items-center w-full">
                         <User className="mr-2 h-4 w-4" />
