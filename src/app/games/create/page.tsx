@@ -16,6 +16,16 @@ import { useFirestore, useUser, addDocumentNonBlocking } from "@/firebase";
 import { collection } from "firebase/firestore";
 import { useFriendsStore, HOUSE_ADMIN } from "@/hooks/use-friends-store";
 
+const BaseballIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2a10 10 0 0 1 0 20" />
+    <path d="M2 12a10 10 0 0 1 20 0" />
+    <path d="M7 7c2 1 3 3 3 5s-1 4-3 5" />
+    <path d="M17 7c-2 1-3 3-3 5s1 4 3 5" />
+  </svg>
+);
+
 const sports = [
   { 
     id: 'nba', 
@@ -54,6 +64,25 @@ const sports = [
       "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants", "New York Jets", 
       "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Buccaneers", 
       "Tennessee Titans", "Washington Commanders"
+    ]
+  },
+  { 
+    id: 'mlb', 
+    name: 'Baseball', 
+    icon: <BaseballIcon className="w-5 h-5" />, 
+    color: "text-blue-500",
+    events: [
+      { id: 'e17', name: "MLB Opening Day 2026", date: "Mar 26, 2026" },
+      { id: 'e18', name: "World Series Game 1", date: "Oct 23, 2026" },
+      { id: 'e19', name: "MLB All-Star Game 2026", date: "Jul 14, 2026" }
+    ],
+    options: [
+      "Arizona Diamondbacks", "Atlanta Braves", "Baltimore Orioles", "Boston Red Sox", "Chicago Cubs",
+      "Chicago White Sox", "Cincinnati Reds", "Cleveland Guardians", "Colorado Rockies", "Detroit Tigers",
+      "Houston Astros", "Kansas City Royals", "Los Angeles Angels", "Los Angeles Dodgers", "Miami Marlins",
+      "Milwaukee Brewers", "Minnesota Twins", "New York Mets", "New York Yankees", "Oakland Athletics",
+      "Philadelphia Phillies", "Pittsburgh Pirates", "San Diego Padres", "San Francisco Giants", "Seattle Mariners",
+      "St. Louis Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"
     ]
   },
   { 
@@ -320,7 +349,7 @@ export default function CreateGamePage() {
               
               <div className="space-y-4">
                 <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">1. Select Arena</Label>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                   {sports.map((sport) => (
                     <button
                       key={sport.id}

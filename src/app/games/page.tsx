@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -29,6 +28,7 @@ import { collection, doc } from "firebase/firestore";
 const sportPicks: { [key: string]: string[] } = {
   NBA: ["Lakers", "Warriors", "Celtics", "Bucks", "Suns", "Nets", "Knicks", "Spurs"],
   NFL: ["Chiefs", "Eagles", "49ers", "Lions", "Cowboys", "Giants", "Bills", "Ravens"],
+  MLB: ["Dodgers", "Yankees", "Braves", "Astros", "Phillies", "Cubs", "Red Sox", "Mets"],
   Golf: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Tiger Woods"],
   NASCAR: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney", "Kyle Busch"],
 };
