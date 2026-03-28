@@ -167,184 +167,196 @@ export default function GamesPage() {
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="active" className="space-y-6">
-            {activeGames.length > 0 ? activeGames.map((game) => {
-              const myPick = game.creatorId === user?.uid ? game.creatorPick : game.opponentPick;
-              
-              return (
-                <Link key={game.id} href={`/games/${game.id}?sport=${game.sportId}&fee=${game.entryFee}&currency=${game.currencyType}&pick=${myPick}`}>
-                  <Card className="overflow-hidden bg-card/30 backdrop-blur-sm border-white/5 hover:border-accent/40 transition-all group relative">
-                    <div className={cn("absolute left-0 top-0 bottom-0 w-1.5", game.status === 'Live' ? 'bg-accent animate-pulse' : 'bg-primary')} />
-                    <CardContent className="p-0">
-                      <div className="flex flex-col md:flex-row md:items-center">
-                        <div className="flex-1 p-8">
-                          <div className="flex flex-wrap items-center gap-4 mb-4">
-                            <Badge className={cn("font-bold uppercase tracking-widest px-3 py-1 bg-secondary/50 text-white border-none")}>
-                              {game.sportId.toUpperCase()}
-                            </Badge>
-                            {game.status === 'Live' ? (
-                              <span className="flex items-center gap-2 text-xs font-bold text-accent uppercase tracking-widest animate-pulse">
-                                <Zap className="h-3 w-3 fill-current" /> Live Showdown
-                              </span>
-                            ) : (
-                              <span className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                                <Clock className="h-3 w-3" /> Waiting for Opponent
-                              </span>
-                            )}
-                          </div>
-                          
-                          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
-                            <h3 className="font-headline text-2xl font-bold group-hover:text-accent transition-colors">{game.name}</h3>
-                            <div className="bg-accent/10 border border-accent/20 px-4 py-2 rounded-xl flex items-center gap-3">
-                              <Target className="h-4 w-4 text-accent" />
-                              <div>
-                                <p className="text-[10px] font-bold text-accent/60 uppercase tracking-widest leading-none mb-1">Your Locked Pick</p>
-                                <p className="font-headline font-bold text-white uppercase tracking-tighter leading-none">{myPick || "PENDING"}</p>
+          <TabsContent value="active">
+            <ScrollArea className="h-[600px] w-full rounded-3xl pr-4">
+              <div className="space-y-6 pb-8">
+                {activeGames.length > 0 ? activeGames.map((game) => {
+                  const myPick = game.creatorId === user?.uid ? game.creatorPick : game.opponentPick;
+                  
+                  return (
+                    <Link key={game.id} href={`/games/${game.id}?sport=${game.sportId}&fee=${game.entryFee}&currency=${game.currencyType}&pick=${myPick}`}>
+                      <Card className="overflow-hidden bg-card/30 backdrop-blur-sm border-white/5 hover:border-accent/40 transition-all group relative">
+                        <div className={cn("absolute left-0 top-0 bottom-0 w-1.5", game.status === 'Live' ? 'bg-accent animate-pulse' : 'bg-primary')} />
+                        <CardContent className="p-0">
+                          <div className="flex flex-col md:flex-row md:items-center">
+                            <div className="flex-1 p-8">
+                              <div className="flex flex-wrap items-center gap-4 mb-4">
+                                <Badge className={cn("font-bold uppercase tracking-widest px-3 py-1 bg-secondary/50 text-white border-none")}>
+                                  {game.sportId.toUpperCase()}
+                                </Badge>
+                                {game.status === 'Live' ? (
+                                  <span className="flex items-center gap-2 text-xs font-bold text-accent uppercase tracking-widest animate-pulse">
+                                    <Zap className="h-3 w-3 fill-current" /> Live Showdown
+                                  </span>
+                                ) : (
+                                  <span className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                                    <Clock className="h-3 w-3" /> Waiting for Opponent
+                                  </span>
+                                )}
                               </div>
-                            </div>
-                          </div>
-                          
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
-                            <div className="space-y-3">
-                              <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                                <span>Arena Status</span>
-                                <span className="text-white">{game.status === 'Live' ? '2 / 2' : '1 / 2'} Players</span>
-                              </div>
-                              <Progress value={game.status === 'Live' ? 100 : 50} className="h-2 bg-secondary/50" />
-                            </div>
-                            <div className="flex items-center gap-6 justify-start md:justify-end">
-                              <div className="text-right">
-                                <div className="flex items-center gap-1 justify-end text-accent">
-                                  <Zap className="h-3 w-3 fill-current" />
-                                  <p className="text-[10px] font-bold uppercase tracking-widest">Prize Pool</p>
+                              
+                              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
+                                <h3 className="font-headline text-2xl font-bold group-hover:text-accent transition-colors">{game.name}</h3>
+                                <div className="bg-accent/10 border border-accent/20 px-4 py-2 rounded-xl flex items-center gap-3">
+                                  <Target className="h-4 w-4 text-accent" />
+                                  <div>
+                                    <p className="text-[10px] font-bold text-accent/60 uppercase tracking-widest leading-none mb-1">Your Locked Pick</p>
+                                    <p className="font-headline font-bold text-white uppercase tracking-tighter leading-none">{myPick || "PENDING"}</p>
+                                  </div>
                                 </div>
-                                <p className="font-headline text-2xl font-bold text-accent">{(game.prizePool || (game.entryFee * 2)).toLocaleString()} {game.currencyType.toUpperCase()} POOL</p>
                               </div>
-                              <div className="h-14 w-14 rounded-full bg-secondary/30 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-inner">
-                                <ArrowRight className="h-6 w-6" />
+                              
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+                                <div className="space-y-3">
+                                  <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                                    <span>Arena Status</span>
+                                    <span className="text-white">{game.status === 'Live' ? '2 / 2' : '1 / 2'} Players</span>
+                                  </div>
+                                  <Progress value={game.status === 'Live' ? 100 : 50} className="h-2 bg-secondary/50" />
+                                </div>
+                                <div className="flex items-center gap-6 justify-start md:justify-end">
+                                  <div className="text-right">
+                                    <div className="flex items-center gap-1 justify-end text-accent">
+                                      <Zap className="h-3 w-3 fill-current" />
+                                      <p className="text-[10px] font-bold uppercase tracking-widest">Prize Pool</p>
+                                    </div>
+                                    <p className="font-headline text-2xl font-bold text-accent">{(game.prizePool || (game.entryFee * 2)).toLocaleString()} {game.currencyType.toUpperCase()} POOL</p>
+                                  </div>
+                                  <div className="h-14 w-14 rounded-full bg-secondary/30 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-inner">
+                                    <ArrowRight className="h-6 w-6" />
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  );
+                }) : (
+                  <div className="text-center py-24 bg-card/10 rounded-3xl border border-dashed border-white/5">
+                    <Gamepad2 className="h-16 w-16 text-muted-foreground mx-auto mb-6 opacity-20" />
+                    <h3 className="font-headline text-xl font-bold uppercase tracking-widest text-muted-foreground">No active games</h3>
+                    <Link href="/games/create">
+                      <Button variant="link" className="text-accent mt-2 uppercase font-bold tracking-widest">Create one now</Button>
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+          </TabsContent>
+
+          <TabsContent value="invites">
+            <ScrollArea className="h-[600px] w-full rounded-3xl pr-4">
+              <div className="space-y-4 pb-8">
+                {invites.length > 0 ? (
+                  invites.map((invite) => (
+                    <Card key={invite.id} className="bg-card/40 backdrop-blur-xl border-accent/20 border overflow-hidden">
+                      <CardContent className="p-6">
+                        <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+                          <div className="flex items-center gap-4 flex-1">
+                            <div className="h-14 w-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center">
+                              <Bell className="h-6 w-6 text-accent" />
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2 mb-1">
+                                <Badge className="bg-primary/20 text-primary-foreground text-[10px] font-bold uppercase">{invite.sportId.toUpperCase()}</Badge>
+                                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1">
+                                  <Clock className="h-3 w-3" /> CHALLENGE ACTIVE
+                                </span>
+                              </div>
+                              <h4 className="font-headline text-xl font-bold uppercase tracking-tight leading-none mb-2">{invite.name}</h4>
+                              <p className="text-xs text-muted-foreground font-medium">Created by <span className="text-white font-bold">{invite.creatorId.slice(0, 8)}...</span></p>
+                            </div>
+                          </div>
+                          
+                          <div className="p-4 rounded-xl bg-secondary/40 border border-white/5 flex-1 w-full lg:max-w-[280px]">
+                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2 flex items-center gap-2">
+                              <Target className="h-3 w-3 text-accent" /> Opponent's Selection
+                            </p>
+                            <div className="flex items-center justify-between">
+                              <span className="font-headline font-bold text-lg text-white uppercase">{invite.creatorPick || "ELITE PICK"}</span>
+                              <Badge variant="outline" className="border-accent text-accent text-[10px] px-2">LOCKED</Badge>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-3 w-full lg:w-auto">
+                            <Button 
+                              onClick={() => handleDecline(invite.id)}
+                              variant="ghost" 
+                              className="flex-1 lg:flex-none h-12 px-6 font-bold uppercase tracking-wider text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                            >
+                              <X className="mr-2 h-4 w-4" /> Decline
+                            </Button>
+                            <Button 
+                              onClick={() => setAcceptingInvite(invite)}
+                              className="flex-1 lg:flex-none h-12 px-8 font-bold uppercase tracking-wider bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20"
+                            >
+                              <Check className="mr-2 h-5 w-5" /> Accept Arena
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))
+                ) : (
+                  <div className="text-center py-24 bg-card/10 rounded-3xl border border-dashed border-white/5">
+                    <Bell className="h-16 w-16 text-muted-foreground mx-auto mb-6 opacity-20" />
+                    <h3 className="font-headline text-xl font-bold uppercase tracking-widest text-muted-foreground">No pending invites</h3>
+                    <p className="text-sm text-muted-foreground max-w-xs mx-auto mt-2 italic font-medium">
+                      Challenge your circle to start the showdown.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+          </TabsContent>
+          
+          <TabsContent value="history">
+            <ScrollArea className="h-[600px] w-full rounded-3xl pr-4">
+              <div className="space-y-4 pb-8">
+                {historyGames.length > 0 ? historyGames.map((game) => (
+                  <Card key={game.id} className="bg-card/20 border-white/5 hover:bg-card/30 transition-all opacity-80 hover:opacity-100">
+                    <CardContent className="p-6 flex items-center justify-between">
+                      <div className="flex items-center gap-6">
+                        <div className="h-12 w-12 rounded-xl bg-secondary/50 flex items-center justify-center">
+                          <Trophy className={cn("h-6 w-6 text-yellow-500")} />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-lg leading-tight">{game.name}</h4>
+                          <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest mt-1">
+                            {game.sportId.toUpperCase()} • COMPLETED
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-12">
+                        <div className="text-right hidden sm:block">
+                          <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Final Win Count</p>
+                          <p className="font-headline text-2xl font-bold text-white tracking-tighter">
+                            {game.finalScores?.[user?.uid || ''] || 0} WINS
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <div className="flex items-center gap-1 justify-end text-green-400">
+                            <Zap className="h-3 w-3 fill-current" />
+                            <p className="text-[10px] font-bold uppercase tracking-widest">Prize Pool</p>
+                          </div>
+                          <p className={cn("font-headline text-xl font-bold text-green-400")}>
+                            {game.prizePool.toLocaleString()} {game.currencyType.toUpperCase()} POOL
+                          </p>
+                          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">Winner: {game.winnerId === user?.uid ? "YOU" : "OPPONENT"}</p>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
-                </Link>
-              );
-            }) : (
-              <div className="text-center py-24 bg-card/10 rounded-3xl border border-dashed border-white/5">
-                <Gamepad2 className="h-16 w-16 text-muted-foreground mx-auto mb-6 opacity-20" />
-                <h3 className="font-headline text-xl font-bold uppercase tracking-widest text-muted-foreground">No active games</h3>
-                <Link href="/games/create">
-                  <Button variant="link" className="text-accent mt-2 uppercase font-bold tracking-widest">Create one now</Button>
-                </Link>
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="invites" className="space-y-4">
-            {invites.length > 0 ? (
-              invites.map((invite) => (
-                <Card key={invite.id} className="bg-card/40 backdrop-blur-xl border-accent/20 border overflow-hidden">
-                  <CardContent className="p-6">
-                    <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-                      <div className="flex items-center gap-4 flex-1">
-                        <div className="h-14 w-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center">
-                          <Bell className="h-6 w-6 text-accent" />
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <Badge className="bg-primary/20 text-primary-foreground text-[10px] font-bold uppercase">{invite.sportId.toUpperCase()}</Badge>
-                            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1">
-                              <Clock className="h-3 w-3" /> CHALLENGE ACTIVE
-                            </span>
-                          </div>
-                          <h4 className="font-headline text-xl font-bold uppercase tracking-tight leading-none mb-2">{invite.name}</h4>
-                          <p className="text-xs text-muted-foreground font-medium">Created by <span className="text-white font-bold">{invite.creatorId.slice(0, 8)}...</span></p>
-                        </div>
-                      </div>
-                      
-                      <div className="p-4 rounded-xl bg-secondary/40 border border-white/5 flex-1 w-full lg:max-w-[280px]">
-                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2 flex items-center gap-2">
-                          <Target className="h-3 w-3 text-accent" /> Opponent's Selection
-                        </p>
-                        <div className="flex items-center justify-between">
-                          <span className="font-headline font-bold text-lg text-white uppercase">{invite.creatorPick || "ELITE PICK"}</span>
-                          <Badge variant="outline" className="border-accent text-accent text-[10px] px-2">LOCKED</Badge>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-3 w-full lg:w-auto">
-                        <Button 
-                          onClick={() => handleDecline(invite.id)}
-                          variant="ghost" 
-                          className="flex-1 lg:flex-none h-12 px-6 font-bold uppercase tracking-wider text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                        >
-                          <X className="mr-2 h-4 w-4" /> Decline
-                        </Button>
-                        <Button 
-                          onClick={() => setAcceptingInvite(invite)}
-                          className="flex-1 lg:flex-none h-12 px-8 font-bold uppercase tracking-wider bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20"
-                        >
-                          <Check className="mr-2 h-5 w-5" /> Accept Arena
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))
-            ) : (
-              <div className="text-center py-24 bg-card/10 rounded-3xl border border-dashed border-white/5">
-                <Bell className="h-16 w-16 text-muted-foreground mx-auto mb-6 opacity-20" />
-                <h3 className="font-headline text-xl font-bold uppercase tracking-widest text-muted-foreground">No pending invites</h3>
-                <p className="text-sm text-muted-foreground max-w-xs mx-auto mt-2 italic font-medium">
-                  Challenge your circle to start the showdown.
-                </p>
-              </div>
-            )}
-          </TabsContent>
-          
-          <TabsContent value="history" className="space-y-4">
-            {historyGames.length > 0 ? historyGames.map((game) => (
-              <Card key={game.id} className="bg-card/20 border-white/5 hover:bg-card/30 transition-all opacity-80 hover:opacity-100">
-                <CardContent className="p-6 flex items-center justify-between">
-                  <div className="flex items-center gap-6">
-                    <div className="h-12 w-12 rounded-xl bg-secondary/50 flex items-center justify-center">
-                      <Trophy className={cn("h-6 w-6 text-yellow-500")} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg leading-tight">{game.name}</h4>
-                      <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest mt-1">
-                        {game.sportId.toUpperCase()} • COMPLETED
-                      </p>
-                    </div>
+                )) : (
+                  <div className="text-center py-24 bg-card/10 rounded-3xl border border-dashed border-white/5">
+                    <Trophy className="h-16 w-16 text-muted-foreground mx-auto mb-6 opacity-20" />
+                    <p className="text-xs font-bold uppercase text-muted-foreground">No completed contests found.</p>
                   </div>
-                  <div className="flex items-center gap-12">
-                    <div className="text-right hidden sm:block">
-                      <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Final Win Count</p>
-                      <p className="font-headline text-2xl font-bold text-white tracking-tighter">
-                        {game.finalScores?.[user?.uid || ''] || 0} WINS
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <div className="flex items-center gap-1 justify-end text-green-400">
-                        <Zap className="h-3 w-3 fill-current" />
-                        <p className="text-[10px] font-bold uppercase tracking-widest">Prize Pool</p>
-                      </div>
-                      <p className={cn("font-headline text-xl font-bold text-green-400")}>
-                        {game.prizePool.toLocaleString()} {game.currencyType.toUpperCase()} POOL
-                      </p>
-                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">Winner: {game.winnerId === user?.uid ? "YOU" : "OPPONENT"}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )) : (
-              <div className="text-center py-24 bg-card/10 rounded-3xl border border-dashed border-white/5">
-                <Trophy className="h-16 w-16 text-muted-foreground mx-auto mb-6 opacity-20" />
-                <p className="text-xs font-bold uppercase text-muted-foreground">No completed contests found.</p>
+                )}
               </div>
-            )}
+            </ScrollArea>
           </TabsContent>
         </Tabs>
       </main>
