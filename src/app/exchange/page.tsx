@@ -7,13 +7,21 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Landmark, ShieldCheck, ArrowRight, ArrowLeft, CreditCard, Gift, Info } from "lucide-react";
+import { Landmark, ShieldCheck, ArrowRight, ArrowLeft, CreditCard, Gift, Info, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
+import { doc } from "firebase/firestore";
 
 export default function ExchangePage() {
   const { toast } = useToast();
+  const { user } = useUser();
+  const db = useFirestore();
   const [amount, setAmount] = useState("");
-  const scBalance = 542.50;
+
+  const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
+  const { data: profile, isLoading } = useDoc(userProfileRef);
+
+  const scBalance = profile?.sweepstakesCoinsBalance ?? 0;
   const ratio = 100; // 100 SC = $1.00
 
   const calculatedValue = amount ? (parseFloat(amount) / ratio).toFixed(2) : "0.00";
@@ -35,6 +43,14 @@ export default function ExchangePage() {
 
     toast({ title: "Request Submitted", description: `Your request for $${calculatedValue} is being processed by the arena bank.` });
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pb-24 md:pt-20 bg-background relative overflow-hidden">

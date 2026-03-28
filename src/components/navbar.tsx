@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -50,6 +49,16 @@ export function Navbar() {
   const emailDisplay = user?.email || '';
   const avatarUrl = profile?.profilePictureUrl || user?.photoURL || `https://picsum.photos/seed/guitar/100/100`;
 
+  // Real balances from profile
+  const goldBalance = profile?.goldCoinsBalance ?? 0;
+  const sweepBalance = profile?.sweepstakesCoinsBalance ?? 0;
+
+  const formatBalance = (val: number) => {
+    if (val >= 1000000) return `${(val / 1000000).toFixed(2)}M`;
+    if (val >= 1000) return `${(val / 1000).toFixed(1)}K`;
+    return val.toLocaleString();
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b bg-card/80 backdrop-blur-md shadow-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
@@ -77,12 +86,12 @@ export function Navbar() {
                 <div className="hidden items-center gap-3 lg:flex">
                   <div className="flex items-center gap-1.5 rounded-full bg-secondary/30 px-3 py-1 border border-white/5">
                     <Coins className="h-3.5 w-3.5 text-yellow-500" />
-                    <span className="text-xs font-bold text-white tracking-tight">1.25M</span>
+                    <span className="text-xs font-bold text-white tracking-tight">{formatBalance(goldBalance)}</span>
                   </div>
                   
                   <div className="flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 border border-accent/20">
                     <Landmark className="h-3.5 w-3.5 text-accent" />
-                    <span className="text-xs font-bold text-accent tracking-tight">542.50</span>
+                    <span className="text-xs font-bold text-accent tracking-tight">{sweepBalance.toFixed(2)}</span>
                   </div>
                 </div>
                 

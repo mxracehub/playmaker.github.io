@@ -95,14 +95,14 @@ export default function RegisterPage() {
     const isValid = validateTOTP(user.uid, user.email || '', verificationCode);
 
     if (isValid) {
-      // PROTOTYPE INITIALIZATION: Create basic profile document
+      // PROTOTYPE INITIALIZATION: Create basic profile document with 0 balances
       setDocumentNonBlocking(doc(db, "userProfiles", user.uid), {
         id: user.uid,
         email: user.email,
         username: user.email?.split('@')[0].toUpperCase() || 'PLAYMAKER',
         role: 'player',
         dateJoined: new Date().toISOString(),
-        goldCoinsBalance: 1000000,
+        goldCoinsBalance: 0,
         sweepstakesCoinsBalance: 0,
         bio: "Elite Playmaker locked in.",
         profilePictureUrl: `https://picsum.photos/seed/${user.uid}/400/400`,

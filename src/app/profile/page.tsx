@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -36,6 +35,10 @@ export default function ProfilePage() {
   const displayName = profile?.username || user?.displayName || 'PLAYMAKER';
   const bio = profile?.bio || "Always playing for the next highlight reel.";
   const avatarUrl = profile?.profilePictureUrl || user?.photoURL || `https://picsum.photos/seed/guitar/400/400`;
+
+  // Real balances
+  const goldBalance = profile?.goldCoinsBalance ?? 0;
+  const sweepBalance = profile?.sweepstakesCoinsBalance ?? 0;
 
   // Filter games based on user relationship
   const myInvites = allGames?.filter(g => 
@@ -115,14 +118,14 @@ export default function ProfilePage() {
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Gold Coins</p>
                   <Coins className="h-3.5 w-3.5 text-yellow-500" />
                 </div>
-                <p className="text-2xl font-headline font-bold">1,250,000</p>
+                <p className="text-2xl font-headline font-bold">{goldBalance.toLocaleString()}</p>
               </div>
               <div className="p-4 rounded-2xl bg-accent/10 border border-accent/20">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-xs font-bold text-accent uppercase tracking-widest">Sweeps Coins</p>
                   < Landmark className="h-3.5 w-3.5 text-accent" />
                 </div>
-                <p className="text-2xl font-headline font-bold text-accent">542.50 SC</p>
+                <p className="text-2xl font-headline font-bold text-accent">{sweepBalance.toFixed(2)} SC</p>
               </div>
               <div className="grid grid-cols-1 gap-2 pt-2">
                 <Link href="/shop" className="w-full">
