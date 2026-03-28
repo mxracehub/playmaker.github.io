@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useRef, use, Suspense } from "react";
@@ -72,13 +73,6 @@ const BoxingIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const HockeyIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M17 3l-2 2-7 7-3-1-2 2 4 4 2-2-1-3 7-7 2-2" />
-    <circle cx="19" cy="5" r="2" />
-  </svg>
-);
-
 function ArenaContent({ gameId }: { gameId: string }) {
   const { toast } = useToast();
   const searchParams = useSearchParams();
@@ -96,7 +90,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-orange-600/20 to-orange-900/40",
       accent: "text-orange-500",
       bg: "bg-orange-500/10",
-      icon: <Dribbble className="h-10 w-10" />,
+      icon: <Dribbble className="h-8 w-8 md:h-10 md:w-10" />,
       label: "NBA Arena",
       statLabel: "WINS"
     },
@@ -104,7 +98,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-green-600/20 to-green-900/40",
       accent: "text-green-500",
       bg: "bg-green-500/10",
-      icon: <Trophy className="h-10 w-10" />,
+      icon: <Trophy className="h-8 w-8 md:h-10 md:w-10" />,
       label: "NFL Gridiron",
       statLabel: "WINS"
     },
@@ -112,7 +106,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-cyan-600/20 to-cyan-900/40",
       accent: "text-cyan-400",
       bg: "bg-cyan-400/10",
-      icon: <Snowflake className="h-10 w-10" />,
+      icon: <Snowflake className="h-8 w-8 md:h-10 md:w-10" />,
       label: "Frozen Fortress",
       statLabel: "WINS"
     },
@@ -120,7 +114,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-slate-600/20 to-slate-900/40",
       accent: "text-white",
       bg: "bg-white/10",
-      icon: <SoccerIcon className="h-10 w-10" />,
+      icon: <SoccerIcon className="h-8 w-8 md:h-10 md:w-10" />,
       label: "Pitch Battle",
       statLabel: "WINS"
     },
@@ -128,7 +122,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-red-600/20 to-red-900/40",
       accent: "text-red-500",
       bg: "bg-red-500/10",
-      icon: <Swords className="h-10 w-10" />,
+      icon: <Swords className="h-8 w-8 md:h-10 md:w-10" />,
       label: "The Octagon",
       statLabel: "WINS"
     },
@@ -136,7 +130,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-yellow-600/20 to-yellow-900/40",
       accent: "text-yellow-500",
       bg: "bg-yellow-500/10",
-      icon: <BoxingIcon className="h-10 w-10" />,
+      icon: <BoxingIcon className="h-8 w-8 md:h-10 md:w-10" />,
       label: "Main Event",
       statLabel: "WINS"
     },
@@ -144,7 +138,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-blue-600/20 to-blue-900/40",
       accent: "text-blue-500",
       bg: "bg-blue-500/10",
-      icon: <BaseballIcon className="h-10 w-10" />,
+      icon: <BaseballIcon className="h-8 w-8 md:h-10 md:w-10" />,
       label: "Diamond Duel",
       statLabel: "WINS"
     },
@@ -152,7 +146,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-lime-600/20 to-lime-900/40",
       accent: "text-lime-400",
       bg: "bg-lime-400/10",
-      icon: <TennisIcon className="h-10 w-10" />,
+      icon: <TennisIcon className="h-8 w-8 md:h-10 md:w-10" />,
       label: "Grand Slam",
       statLabel: "WINS"
     },
@@ -160,7 +154,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-yellow-600/20 to-yellow-900/40",
       accent: "text-yellow-500",
       bg: "bg-yellow-500/10",
-      icon: <PickleballIcon className="h-10 w-10" />,
+      icon: <PickleballIcon className="h-8 w-8 md:h-10 md:w-10" />,
       label: "Kitchen Combat",
       statLabel: "WINS"
     },
@@ -168,7 +162,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-indigo-600/20 to-indigo-900/40",
       accent: "text-indigo-400",
       bg: "bg-indigo-400/10",
-      icon: <VolleyballIcon className="h-10 w-10" />,
+      icon: <VolleyballIcon className="h-8 w-8 md:h-10 md:w-10" />,
       label: "The Net Zone",
       statLabel: "WINS"
     },
@@ -176,7 +170,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-emerald-600/20 to-emerald-900/40",
       accent: "text-emerald-400",
       bg: "bg-emerald-400/10",
-      icon: <Target className="h-10 w-10" />,
+      icon: <Target className="h-8 w-8 md:h-10 md:w-10" />,
       label: "Masters Green",
       statLabel: "WINS"
     },
@@ -184,7 +178,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-red-600/20 to-red-900/40",
       accent: "text-red-500",
       bg: "bg-red-500/10",
-      icon: <Flag className="h-10 w-10" />,
+      icon: <Flag className="h-8 w-8 md:h-10 md:w-10" />,
       label: "Victory Lane",
       statLabel: "WINS"
     },
@@ -192,7 +186,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-blue-600/20 to-blue-400/40",
       accent: "text-blue-400",
       bg: "bg-blue-400/10",
-      icon: <Waves className="h-10 w-10" />,
+      icon: <Waves className="h-8 w-8 md:h-10 md:w-10" />,
       label: "Pipe Masters",
       statLabel: "WINS"
     },
@@ -200,7 +194,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-yellow-600/20 to-yellow-400/40",
       accent: "text-yellow-400",
       bg: "bg-yellow-400/10",
-      icon: <Zap className="h-10 w-10" />,
+      icon: <Zap className="h-8 w-8 md:h-10 md:w-10" />,
       label: "Skate Park",
       statLabel: "WINS"
     },
@@ -208,7 +202,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-red-600/20 to-red-400/40",
       accent: "text-red-400",
       bg: "bg-red-400/10",
-      icon: <Bike className="h-10 w-10" />,
+      icon: <Bike className="h-8 w-8 md:h-10 md:w-10" />,
       label: "BMX Dirt",
       statLabel: "WINS"
     },
@@ -216,7 +210,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
       color: "from-cyan-600/20 to-cyan-400/40",
       accent: "text-cyan-400",
       bg: "bg-cyan-400/10",
-      icon: <Mountain className="h-10 w-10" />,
+      icon: <Mountain className="h-8 w-8 md:h-10 md:w-10" />,
       label: "Halfpipe",
       statLabel: "WINS"
     }
@@ -303,108 +297,108 @@ function ArenaContent({ gameId }: { gameId: string }) {
       <Navbar />
       <div className={`absolute top-0 inset-x-0 h-[500px] bg-gradient-to-b ${theme.color} to-transparent -z-10 opacity-40`} />
 
-      <main ref={arenaRef} className="mx-auto max-w-6xl px-4 py-12">
-        <div className="flex flex-col gap-10">
-          <header className="flex flex-col md:flex-row md:items-center justify-between gap-8">
-            <div className="flex items-center gap-6">
-              <div className="h-20 w-20 rounded-2xl bg-card border border-white/10 flex items-center justify-center shadow-2xl">
+      <main ref={arenaRef} className="mx-auto max-w-6xl px-4 py-8 md:py-12">
+        <div className="flex flex-col gap-6 md:gap-10">
+          <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-8">
+            <div className="flex items-start md:items-center gap-4 md:gap-6">
+              <div className="h-14 w-14 md:h-20 md:w-20 rounded-xl md:rounded-2xl bg-card border border-white/10 flex items-center justify-center shadow-2xl shrink-0">
                 <div className={theme.accent}>{theme.icon}</div>
               </div>
-              <div className="space-y-1">
-                <Badge className="bg-white/10 text-white font-bold uppercase text-[10px] tracking-widest py-1 border-none">{theme.label}</Badge>
-                <h1 className="font-headline text-5xl font-bold uppercase tracking-tighter text-white">{gameId}</h1>
-                <div className="flex items-center gap-6 text-[11px] text-muted-foreground font-bold uppercase tracking-widest pt-2">
-                  <span className="flex items-center gap-2 text-accent"><Clock className="h-3.5 w-3.5" /> LIVE SHOWDOWN</span>
-                  <span className="flex items-center gap-2"><Users className="h-3.5 w-3.5" /> 2/2 PLAYMAKERS</span>
-                  <span className={cn("flex items-center gap-2 font-bold", theme.accent)}>
-                    <Zap className="h-4 w-4 fill-current" />
-                    {(parseInt(fee) * 2).toLocaleString()} {currency.toUpperCase()} PRIZE POOL
+              <div className="space-y-1 min-w-0">
+                <Badge className="bg-white/10 text-white font-bold uppercase text-[9px] md:text-[10px] tracking-widest py-0.5 md:py-1 border-none">{theme.label}</Badge>
+                <h1 className="font-headline text-2xl sm:text-3xl md:text-5xl font-bold uppercase tracking-tighter text-white break-all leading-tight">{gameId}</h1>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] md:text-[11px] text-muted-foreground font-bold uppercase tracking-widest pt-1 md:pt-2">
+                  <span className="flex items-center gap-1.5 text-accent"><Clock className="h-3 w-3 md:h-3.5 md:w-3.5" /> LIVE SHOWDOWN</span>
+                  <span className="flex items-center gap-1.5"><Users className="h-3 w-3 md:h-3.5 md:w-3.5" /> 2/2 PLAYMAKERS</span>
+                  <span className={cn("flex items-center gap-1.5 font-bold", theme.accent)}>
+                    <Zap className="h-3.5 w-3.5 md:h-4 md:w-4 fill-current" />
+                    {(parseInt(fee) * 2).toLocaleString()} {currency.toUpperCase()} PRIZE
                   </span>
                 </div>
               </div>
             </div>
             <Button 
               onClick={handleShare}
-              className="font-bold uppercase tracking-widest bg-white/5 hover:bg-white/10 border border-white/10 h-12 px-6"
+              className="w-full md:w-auto font-bold uppercase tracking-widest bg-white/5 hover:bg-white/10 border border-white/10 h-12 px-6 shadow-xl"
             >
               <Camera className="mr-2 h-4 w-4" /> Share Game
             </Button>
           </header>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            <div className="lg:col-span-2 space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 items-start">
+            <div className="lg:col-span-2 space-y-6 md:space-y-8">
               <Card className="bg-[#0D1219] border-[#1F2937] border-2 overflow-hidden rounded-xl">
-                <CardContent className="p-6 flex items-center justify-between">
-                  <div className="flex items-center gap-6">
-                    <div className="h-16 w-16 rounded-full bg-[#1A232E]/40 flex items-center justify-center border border-[#374151]">
-                      <Trophy className="h-7 w-7 text-accent" />
+                <CardContent className="p-4 md:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-4 md:gap-6 w-full sm:w-auto">
+                    <div className="h-12 w-12 md:h-16 md:w-16 rounded-full bg-[#1A232E]/40 flex items-center justify-center border border-[#374151] shrink-0">
+                      <Trophy className="h-5 w-5 md:h-7 md:w-7 text-accent" />
                     </div>
-                    <div>
-                      <p className="text-[11px] font-black text-accent uppercase tracking-[0.25em] mb-1">Your Prediction</p>
-                      <h2 className="font-headline text-4xl font-bold text-white uppercase tracking-tighter">{myPick}</h2>
+                    <div className="min-w-0">
+                      <p className="text-[10px] md:text-[11px] font-black text-accent uppercase tracking-[0.25em] mb-0.5 md:mb-1">Your Prediction</p>
+                      <h2 className="font-headline text-2xl md:text-4xl font-bold text-white uppercase tracking-tighter truncate">{myPick}</h2>
                     </div>
                   </div>
-                  <div className="px-6 py-2 rounded-full border border-accent/40 text-accent font-black uppercase tracking-[0.15em] text-[10px]">
+                  <div className="w-full sm:w-auto text-center px-6 py-2 rounded-full border border-accent/40 text-accent font-black uppercase tracking-[0.15em] text-[9px] md:text-[10px]">
                     LOCKED IN
                   </div>
                 </CardContent>
               </Card>
 
               <Card className="bg-card/40 backdrop-blur-xl border-white/5 shadow-2xl overflow-hidden rounded-2xl">
-                <CardHeader className="bg-secondary/20 border-b border-white/5 px-8 py-6">
-                  <CardTitle className="font-headline text-sm uppercase flex items-center gap-3 tracking-widest text-white/80">
-                    <div className="h-5 w-5 rounded-full border-2 border-accent flex items-center justify-center">
-                      <div className="h-1.5 w-1.5 bg-accent rounded-full animate-ping" />
+                <CardHeader className="bg-secondary/20 border-b border-white/5 px-4 md:px-8 py-4 md:py-6">
+                  <CardTitle className="font-headline text-xs md:text-sm uppercase flex items-center gap-2 md:gap-3 tracking-widest text-white/80">
+                    <div className="h-4 w-4 md:h-5 md:w-5 rounded-full border-2 border-accent flex items-center justify-center">
+                      <div className="h-1 w-1 md:h-1.5 md:w-1.5 bg-accent rounded-full animate-ping" />
                     </div>
                     Live Showdown Standings
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="divide-y divide-white/5">
-                    <div className="px-8 py-8 flex items-center justify-between bg-accent/5">
-                      <div className="flex items-center gap-6">
-                        <span className="font-headline font-bold text-3xl text-accent tracking-tighter italic">#01</span>
-                        <div className="relative">
-                          <Avatar className="h-14 w-14 border-2 border-accent shadow-xl">
+                    <div className="px-4 md:px-8 py-6 md:py-8 flex items-center justify-between bg-accent/5">
+                      <div className="flex items-center gap-3 md:gap-6 min-w-0">
+                        <span className="font-headline font-bold text-2xl md:text-3xl text-accent tracking-tighter italic shrink-0">#01</span>
+                        <div className="relative shrink-0">
+                          <Avatar className="h-10 w-10 md:h-14 md:w-14 border-2 border-accent shadow-xl">
                             <AvatarImage src={`https://picsum.photos/seed/you/100/100`} />
                             <AvatarFallback>YOU</AvatarFallback>
                           </Avatar>
-                          <div className="absolute -bottom-1 -right-1 bg-accent rounded-full p-1 border-2 border-background">
-                            <CheckCircle2 className="h-3 w-3 text-background" />
+                          <div className="absolute -bottom-1 -right-1 bg-accent rounded-full p-0.5 md:p-1 border-2 border-background">
+                            <CheckCircle2 className="h-2.5 w-2.5 md:h-3 md:w-3 text-background" />
                           </div>
                         </div>
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <p className="font-bold text-xl leading-none text-white">You</p>
-                            <Badge className="bg-accent text-accent-foreground text-[8px] font-black h-4 px-1.5 uppercase">PRO LEVEL 24</Badge>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 mb-0.5 md:mb-1">
+                            <p className="font-bold text-base md:text-xl leading-none text-white truncate">You</p>
+                            <Badge className="bg-accent text-accent-foreground text-[7px] md:text-[8px] font-black h-3.5 md:h-4 px-1 md:px-1.5 uppercase shrink-0">PRO LVL 24</Badge>
                           </div>
-                          <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">PICK: {myPick}</p>
+                          <p className="text-[9px] md:text-[10px] text-muted-foreground uppercase font-bold tracking-widest truncate">PICK: {myPick}</p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className={`font-headline text-4xl font-bold ${theme.accent} tracking-tighter`}>15</p>
-                        <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1">{theme.statLabel}</p>
+                      <div className="text-right shrink-0 ml-4">
+                        <p className={`font-headline text-3xl md:text-4xl font-bold ${theme.accent} tracking-tighter`}>15</p>
+                        <p className="text-[8px] md:text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5 md:mt-1">{theme.statLabel}</p>
                       </div>
                     </div>
 
-                    <div className="px-8 py-8 flex items-center justify-between hover:bg-white/5 transition-colors">
-                      <div className="flex items-center gap-6">
-                        <span className="font-headline font-bold text-3xl text-muted-foreground tracking-tighter italic">#02</span>
-                        <Avatar className="h-14 w-14 border-2 border-white/10">
+                    <div className="px-4 md:px-8 py-6 md:py-8 flex items-center justify-between hover:bg-white/5 transition-colors">
+                      <div className="flex items-center gap-3 md:gap-6 min-w-0">
+                        <span className="font-headline font-bold text-2xl md:text-3xl text-muted-foreground tracking-tighter italic shrink-0">#02</span>
+                        <Avatar className="h-10 w-10 md:h-14 md:w-14 border-2 border-white/10 shrink-0">
                           <AvatarImage src={`https://picsum.photos/seed/${challenger}/100/100`} />
                           <AvatarFallback>CH</AvatarFallback>
                         </Avatar>
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <p className="font-bold text-xl leading-none text-white/80">{challenger}</p>
-                            <Badge variant="secondary" className="text-[8px] font-black h-4 px-1.5 uppercase">PRO LEVEL 18</Badge>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 mb-0.5 md:mb-1">
+                            <p className="font-bold text-base md:text-xl leading-none text-white/80 truncate">{challenger}</p>
+                            <Badge variant="secondary" className="text-[7px] md:text-[8px] font-black h-3.5 md:h-4 px-1 md:px-1.5 uppercase shrink-0">PRO LVL 18</Badge>
                           </div>
-                          <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">PICK: Underdog Squad</p>
+                          <p className="text-[9px] md:text-[10px] text-muted-foreground uppercase font-bold tracking-widest truncate">PICK: Underdog Squad</p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-headline text-4xl font-bold text-white/40 tracking-tighter">12</p>
-                        <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1">{theme.statLabel}</p>
+                      <div className="text-right shrink-0 ml-4">
+                        <p className="font-headline text-3xl md:text-4xl font-bold text-white/40 tracking-tighter">12</p>
+                        <p className="text-[8px] md:text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5 md:mt-1">{theme.statLabel}</p>
                       </div>
                     </div>
                   </div>
@@ -413,29 +407,29 @@ function ArenaContent({ gameId }: { gameId: string }) {
             </div>
 
             <aside className="space-y-6">
-              <Card className="bg-[#1A232E]/60 border border-white/5 p-6 rounded-2xl">
-                <h4 className="font-headline font-bold uppercase tracking-widest text-[10px] text-muted-foreground mb-6">Arena Intel</h4>
+              <Card className="bg-[#1A232E]/60 border border-white/5 p-5 md:p-6 rounded-2xl">
+                <h4 className="font-headline font-bold uppercase tracking-widest text-[9px] md:text-[10px] text-muted-foreground mb-4 md:mb-6">Arena Intel</h4>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center text-sm">
                     <span className="text-white/60">Prize Split</span>
                     <span className="font-bold text-accent">Winner Take All</span>
                   </div>
                   <div className="flex flex-col gap-2 pt-4 border-t border-white/5">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Total Reward Pool</span>
+                    <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-white/60">Total Reward Pool</span>
                     <div className={cn("flex items-center gap-2 font-bold", theme.accent)}>
-                      <Zap className="h-5 w-5 fill-current" />
-                      <span className="font-headline text-2xl">{(parseInt(fee) * 2).toLocaleString()} {currency.toUpperCase()} POOL</span>
+                      <Zap className="h-4 w-4 md:h-5 md:w-5 fill-current" />
+                      <span className="font-headline text-xl md:text-2xl">{(parseInt(fee) * 2).toLocaleString()} {currency.toUpperCase()} POOL</span>
                     </div>
                   </div>
                 </div>
               </Card>
 
-              <div className="p-6 rounded-2xl bg-secondary/10 border border-dashed border-white/10 space-y-4">
+              <div className="p-5 md:p-6 rounded-2xl bg-secondary/10 border border-dashed border-white/10 space-y-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Target className={`h-4 w-4 ${theme.accent}`} />
-                  <h5 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white">Showdown Rules</h5>
+                  <h5 className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-white">Showdown Rules</h5>
                 </div>
-                <ul className="space-y-3 text-[11px] text-muted-foreground font-medium leading-relaxed">
+                <ul className="space-y-3 text-[10px] md:text-[11px] text-muted-foreground font-medium leading-relaxed">
                   <li className="flex gap-2"><span>•</span> <span>Winner determined by official provider score at arena close.</span></li>
                   <li className="flex gap-2"><span>•</span> <span>Scoring updates trigger every 30 seconds via global satellite feed.</span></li>
                   <li className="flex gap-2"><span>•</span> <span>In the event of an arena tie, stakes are returned to all playmakers.</span></li>
