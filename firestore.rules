@@ -29,9 +29,10 @@ service cloud.firestore {
     }
 
     match /games/{gameId} {
-      allow read: if isSignedIn();
+      // Allow public read so landing page stats (Active Games, Winners) work for everyone
+      allow read: if true;
       allow create: if isSignedIn();
-      allow update: if isSignedIn(); // In a real app, only admin or creator could update specific fields
+      allow update: if isSignedIn(); 
       allow delete: if isSignedIn() && resource.data.creatorId == request.auth.uid;
     }
 
