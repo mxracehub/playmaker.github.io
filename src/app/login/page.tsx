@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -8,9 +9,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Trophy, ArrowRight, Mail, Lock, ShieldCheck, ArrowLeft, Loader2 } from "lucide-react";
+import { Trophy, ArrowRight, Mail, Lock, ShieldCheck, Loader2, LogOut } from "lucide-react";
 import { useAuth, useUser, initiateEmailSignIn, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
+import { signOut } from "firebase/auth";
 import { useToast } from "@/hooks/use-toast";
 import { validateTOTP, getOTPAuthUri } from "@/lib/2fa";
 import { verifyRecaptchaAction } from "@/app/actions/recaptcha";
@@ -35,7 +37,6 @@ export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
 
-  // Unified collection: userProfiles
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
   const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
@@ -44,28 +45,28 @@ export default function LoginPage() {
   useEffect(() => {
     if (hasRedirected.current) return;
 
-    if (user && !isUserLoading && !isProfileLoading) {
-      if (passed2FA) {
+    // Wait for auth and profile to load
+    if (user && !isUserLoading && !isProfileLoading && profile) {
+      const is2FAEnabled = profile.twoFactorEnabled !== false; // Default to true if not specified
+
+      if (!is2FAEnabled || passed2FA) {
         hasRedirected.current = true;
         router.push("/profile");
-      } else if (!show2FA) {
+      } else {
         setShow2FA(true);
       }
     }
-  }, [user, isUserLoading, isProfileLoading, passed2FA, show2FA, router]);
+  }, [user, isUserLoading, isProfileLoading, profile, passed2FA, router]);
 
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
     setIsVerifying(true);
 
-    // Execute reCAPTCHA Enterprise
     if (typeof window !== 'undefined' && window.grecaptcha?.enterprise) {
       window.grecaptcha.enterprise.ready(async () => {
         try {
           const token = await window.grecaptcha.enterprise.execute('6LfU-ZssAAAAAFcYu-2NemXNroyLyheF3YzMCh9v', { action: 'LOGIN' });
-          
-          // Server-side Assessment Verification
           const assessment = await verifyRecaptchaAction(token, 'LOGIN');
           
           if (assessment.success) {
@@ -80,7 +81,6 @@ export default function LoginPage() {
           }
         } catch (error) {
           console.error('reCAPTCHA execution failed:', error);
-          // Fallback if service is down
           initiateEmailSignIn(auth, email, password);
         }
       });
@@ -108,6 +108,13 @@ export default function LoginPage() {
         description: "Invalid security code. Please check your authenticator app.",
       });
     }
+  };
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    setShow2FA(false);
+    setIsVerifying(false);
+    setVerificationCode("");
   };
 
   const qrCodeUrl = user 
@@ -141,7 +148,7 @@ export default function LoginPage() {
               </div>
               <CardTitle className="text-2xl font-headline font-bold uppercase tracking-tight">2FA Required</CardTitle>
               <CardDescription>
-                Scan your unique arena key and enter the 6-digit code to enter.
+                Your account is secured. Enter your 6-digit arena key to enter.
               </CardDescription>
             </CardHeader>
             <form onSubmit={handleVerify2FA}>
@@ -178,13 +185,10 @@ export default function LoginPage() {
                   type="button" 
                   variant="ghost" 
                   size="sm" 
-                  onClick={() => {
-                    setShow2FA(false);
-                    setIsVerifying(false);
-                  }} 
-                  className="text-muted-foreground"
+                  onClick={handleLogout} 
+                  className="text-muted-foreground hover:text-destructive transition-colors"
                 >
-                  <ArrowLeft className="mr-2 h-4 w-4" /> Go back
+                  <LogOut className="mr-2 h-4 w-4" /> Sign out of current account
                 </Button>
               </CardFooter>
             </form>

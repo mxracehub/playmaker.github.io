@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -8,9 +9,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Trophy, Mail, Lock, ShieldCheck, ArrowLeft, Loader2 } from "lucide-react";
+import { Trophy, Mail, Lock, ShieldCheck, ArrowLeft, Loader2, LogOut } from "lucide-react";
 import { useAuth, useUser, initiateEmailSignUp, useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking } from "@/firebase";
 import { doc } from "firebase/firestore";
+import { signOut } from "firebase/auth";
 import { useToast } from "@/hooks/use-toast";
 import { validateTOTP, getOTPAuthUri } from "@/lib/2fa";
 import { verifyRecaptchaAction } from "@/app/actions/recaptcha";
@@ -35,7 +37,6 @@ export default function RegisterPage() {
   const router = useRouter();
   const { toast } = useToast();
 
-  // Unified collection: userProfiles
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
   const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
@@ -59,13 +60,10 @@ export default function RegisterPage() {
     if (!email || !password) return;
     setIsVerifying(true);
 
-    // Execute reCAPTCHA Enterprise
     if (typeof window !== 'undefined' && window.grecaptcha?.enterprise) {
       window.grecaptcha.enterprise.ready(async () => {
         try {
           const token = await window.grecaptcha.enterprise.execute('6LfU-ZssAAAAAFcYu-2NemXNroyLyheF3YzMCh9v', { action: 'SIGNUP' });
-          
-          // Server-side Assessment Verification
           const assessment = await verifyRecaptchaAction(token, 'SIGNUP');
           
           if (assessment.success) {
@@ -95,8 +93,7 @@ export default function RegisterPage() {
     const isValid = validateTOTP(user.uid, user.email || '', verificationCode);
 
     if (isValid) {
-      // PROTOTYPE INITIALIZATION: Create basic profile document with 0 balances
-      // friendIds starts with only the house admin
+      // Initialize profile with 2FA enabled by default
       setDocumentNonBlocking(doc(db, "userProfiles", user.uid), {
         id: user.uid,
         email: user.email,
@@ -123,6 +120,13 @@ export default function RegisterPage() {
         description: "Invalid security code. Please check your authenticator app.",
       });
     }
+  };
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    setShow2FA(false);
+    setIsVerifying(false);
+    setVerificationCode("");
   };
 
   const qrCodeUrl = user 
@@ -193,13 +197,10 @@ export default function RegisterPage() {
                   type="button" 
                   variant="ghost" 
                   size="sm" 
-                  onClick={() => {
-                    setShow2FA(false);
-                    setIsVerifying(false);
-                  }} 
-                  className="text-muted-foreground"
+                  onClick={handleLogout} 
+                  className="text-muted-foreground hover:text-destructive transition-colors"
                 >
-                  <ArrowLeft className="mr-2 h-4 w-4" /> Go back
+                  <LogOut className="mr-2 h-4 w-4" /> Cancel and sign out
                 </Button>
               </CardFooter>
             </form>
