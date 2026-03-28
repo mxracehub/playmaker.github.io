@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -14,8 +13,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, Waves, Bike, Mountain, Landmark, CalendarDays, ShieldAlert, Swords, Snowflake } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore, useUser, addDocumentNonBlocking } from "@/firebase";
-import { collection } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import { useFriendsStore, HOUSE_ADMIN } from "@/hooks/use-friends-store";
+import { sendChallengeEmail } from "@/ai/flows/send-challenge-email-flow";
 
 const BaseballIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -504,6 +504,25 @@ export default function CreateGamePage() {
     addDocumentNonBlocking(collection(db, "games"), gameData)
       .then((docRef) => {
         toast({ title: "Challenge Launched", description: `You've sent a showdown request!` });
+        
+        // --- TRIGGER EMAIL NOTIFICATION ---
+        // Find the selected friend's details (in a real app, we'd fetch their email from Firestore)
+        const opponent = availableFriends.find(f => f.id === selectedFriend);
+        if (opponent) {
+          sendChallengeEmail({
+            challengerName: user.displayName || user.email || 'A Playmaker',
+            opponentEmail: opponent.email || `${opponent.id}@playmakers.arena`, // Mocking email for the prototype
+            sport: currentSport?.name || 'Sports',
+            eventName: eventName,
+            stakes: `${fee} ${currency.toUpperCase()}`,
+            inviteCode: inviteCode,
+          }).then(result => {
+            if (result.success) {
+              console.log("Notification success:", result.message);
+            }
+          });
+        }
+
         router.push(`/games/${docRef?.id}?sport=${selectedSport}&fee=${fee}&currency=${currency}`);
       });
   };
