@@ -294,7 +294,10 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
                           </div>
                         </div>
                         <div>
-                          <p className="font-bold text-xl leading-none text-white mb-1">You (Elite_Playmaker)</p>
+                          <div className="flex items-center gap-2 mb-1">
+                            <p className="font-bold text-xl leading-none text-white">You</p>
+                            <Badge className="bg-accent text-accent-foreground text-[8px] font-black h-4 px-1.5 uppercase">PRO LEVEL 24</Badge>
+                          </div>
                           <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">PICK: {myPick}</p>
                         </div>
                       </div>
@@ -313,7 +316,10 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
                           <AvatarFallback>CH</AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="font-bold text-xl leading-none text-white/80 mb-1">{challenger}</p>
+                          <div className="flex items-center gap-2 mb-1">
+                            <p className="font-bold text-xl leading-none text-white/80">{challenger}</p>
+                            <Badge variant="secondary" className="text-[8px] font-black h-4 px-1.5 uppercase">PRO LEVEL 18</Badge>
+                          </div>
                           <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">PICK: Underdog Squad</p>
                         </div>
                       </div>
