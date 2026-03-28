@@ -222,11 +222,23 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
   const theme = themes[sportId as keyof typeof themes] || themes.nba;
 
   const handleShare = async () => {
+    // 1. Copy URL to clipboard
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast({
+        title: "Arena Link Archived",
+        description: "Coordinate link saved to clipboard.",
+      });
+    } catch (err) {
+      console.error("Failed to copy link", err);
+    }
+
+    // 2. Capture Screenshot
     if (!arenaRef.current) return;
     
     toast({
       title: "Capturing Arena...",
-      description: "Preparing your playmaker highlight highlight.",
+      description: "Preparing your playmaker highlight.",
     });
 
     try {
