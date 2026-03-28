@@ -88,7 +88,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       bg: "bg-orange-500/10",
       icon: <Dribbble className="h-10 w-10" />,
       label: "NBA Arena",
-      statLabel: "PPG / REB"
+      statLabel: "WINS"
     },
     nfl: {
       color: "from-green-600/20 to-green-900/40",
@@ -96,7 +96,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       bg: "bg-green-500/10",
       icon: <Trophy className="h-10 w-10" />,
       label: "NFL Gridiron",
-      statLabel: "TD / YDS"
+      statLabel: "WINS"
     },
     hockey: {
       color: "from-cyan-600/20 to-cyan-900/40",
@@ -104,7 +104,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       bg: "bg-cyan-400/10",
       icon: <Snowflake className="h-10 w-10" />,
       label: "Frozen Fortress",
-      statLabel: "GOALS / AST"
+      statLabel: "WINS"
     },
     soccer: {
       color: "from-slate-600/20 to-slate-900/40",
@@ -112,7 +112,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       bg: "bg-white/10",
       icon: <SoccerIcon className="h-10 w-10" />,
       label: "Pitch Battle",
-      statLabel: "GOALS / AST"
+      statLabel: "WINS"
     },
     ufc: {
       color: "from-red-600/20 to-red-900/40",
@@ -120,7 +120,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       bg: "bg-red-500/10",
       icon: <Swords className="h-10 w-10" />,
       label: "The Octagon",
-      statLabel: "STRIKES / SUB"
+      statLabel: "WINS"
     },
     boxing: {
       color: "from-yellow-600/20 to-yellow-900/40",
@@ -128,7 +128,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       bg: "bg-yellow-500/10",
       icon: <BoxingIcon className="h-10 w-10" />,
       label: "Main Event",
-      statLabel: "PUNCHES / KO"
+      statLabel: "WINS"
     },
     mlb: {
       color: "from-blue-600/20 to-blue-900/40",
@@ -136,7 +136,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       bg: "bg-blue-500/10",
       icon: <BaseballIcon className="h-10 w-10" />,
       label: "Diamond Duel",
-      statLabel: "HR / RBI"
+      statLabel: "WINS"
     },
     tennis: {
       color: "from-lime-600/20 to-lime-900/40",
@@ -144,7 +144,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       bg: "bg-lime-400/10",
       icon: <TennisIcon className="h-10 w-10" />,
       label: "Grand Slam",
-      statLabel: "ACES / WINNERS"
+      statLabel: "WINS"
     },
     pickleball: {
       color: "from-yellow-600/20 to-yellow-900/40",
@@ -152,7 +152,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       bg: "bg-yellow-500/10",
       icon: <PickleballIcon className="h-10 w-10" />,
       label: "Kitchen Combat",
-      statLabel: "DINKS / SCORE"
+      statLabel: "WINS"
     },
     volleyball: {
       color: "from-indigo-600/20 to-indigo-900/40",
@@ -160,7 +160,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       bg: "bg-indigo-400/10",
       icon: <VolleyballIcon className="h-10 w-10" />,
       label: "The Net Zone",
-      statLabel: "KILLS / BLOCKS"
+      statLabel: "WINS"
     },
     golf: {
       color: "from-emerald-600/20 to-emerald-900/40",
@@ -168,7 +168,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       bg: "bg-emerald-400/10",
       icon: <Target className="h-10 w-10" />,
       label: "Masters Green",
-      statLabel: "STROKES / BIRDIE"
+      statLabel: "WINS"
     },
     nascar: {
       color: "from-red-600/20 to-red-900/40",
@@ -176,39 +176,39 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       bg: "bg-red-500/10",
       icon: <Flag className="h-10 w-10" />,
       label: "Victory Lane",
-      statLabel: "POS / LAP"
+      statLabel: "WINS"
     },
     surfing: {
-      color: "from-blue-600/20 to-blue-900/40",
+      color: "from-blue-600/20 to-blue-400/40",
       accent: "text-blue-400",
       bg: "bg-blue-400/10",
       icon: <Waves className="h-10 w-10" />,
       label: "Pipe Masters",
-      statLabel: "SCORE / WAVE"
+      statLabel: "WINS"
     },
     skateboarding: {
-      color: "from-yellow-600/20 to-yellow-900/40",
+      color: "from-yellow-600/20 to-yellow-400/40",
       accent: "text-yellow-400",
       bg: "bg-yellow-400/10",
       icon: <Zap className="h-10 w-10" />,
       label: "Skate Park",
-      statLabel: "TRICK / STYLE"
+      statLabel: "WINS"
     },
     bmx: {
-      color: "from-red-600/20 to-red-900/40",
+      color: "from-red-600/20 to-red-400/40",
       accent: "text-red-400",
       bg: "bg-red-400/10",
       icon: <Bike className="h-10 w-10" />,
       label: "BMX Dirt",
-      statLabel: "AIR / FLOW"
+      statLabel: "WINS"
     },
     snowboarding: {
-      color: "from-cyan-600/20 to-cyan-900/40",
+      color: "from-cyan-600/20 to-cyan-400/40",
       accent: "text-cyan-400",
       bg: "bg-cyan-400/10",
       icon: <Mountain className="h-10 w-10" />,
       label: "Halfpipe",
-      statLabel: "ROTATION / LAND"
+      statLabel: "WINS"
     }
   };
 
@@ -295,7 +295,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className={`font-headline text-4xl font-bold ${theme.accent} tracking-tighter`}>154.2</p>
+                        <p className={`font-headline text-4xl font-bold ${theme.accent} tracking-tighter`}>15</p>
                         <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1">{theme.statLabel}</p>
                       </div>
                     </div>
@@ -314,7 +314,7 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-headline text-4xl font-bold text-white/40 tracking-tighter">128.0</p>
+                        <p className="font-headline text-4xl font-bold text-white/40 tracking-tighter">12</p>
                         <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1">{theme.statLabel}</p>
                       </div>
                     </div>
