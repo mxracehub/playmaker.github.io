@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Bell, Shield, Wallet, Save, CheckCircle2, Camera, Link as LinkIcon } from "lucide-react";
+import { User, Bell, Shield, Wallet, Save, CheckCircle2, Camera, Link as LinkIcon, Upload } from "lucide-react";
 import { useUser, useFirestore, setDocumentNonBlocking, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -48,6 +49,7 @@ export default function SettingsPage() {
   const [is2FADialogOpen, setIs2FADialogOpen] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
   const { data: profile } = useDoc(userProfileRef);
 
@@ -76,6 +78,29 @@ export default function SettingsPage() {
       title: "Profile Updated",
       description: "Your arena nickname and persona have been saved.",
     });
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 1024 * 1024) {
+        toast({
+          variant: "destructive",
+          title: "File too large",
+          description: "Please select an image smaller than 1MB for optimal performance.",
+        });
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePictureUrl(reader.result as string);
+        toast({
+          title: "Photo Ready",
+          description: "Your custom image is ready to be saved to your profile.",
+        });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleEnable2FA = () => {
@@ -154,7 +179,7 @@ export default function SettingsPage() {
             <Card className="bg-card/50 backdrop-blur-sm border shadow-xl overflow-hidden">
               <CardHeader className="bg-secondary/20 border-b">
                 <CardTitle className="font-headline text-xl uppercase tracking-tighter">Arena Persona</CardTitle>
-                <CardDescription>Choose an elite avatar or upload your own image URL</CardDescription>
+                <CardDescription>Upload a custom photo or choose from our elite library</CardDescription>
               </CardHeader>
               <CardContent className="p-6 space-y-8">
                 <div className="flex flex-col md:flex-row items-center gap-8">
@@ -168,36 +193,60 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  <div className="flex-1 space-y-4">
-                    <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Select Preset Persona</Label>
-                    <div className="grid grid-cols-4 md:grid-cols-8 gap-3">
-                      {PRESET_AVATARS.map((avatar) => {
-                        const url = `https://picsum.photos/seed/${avatar.id}/400/400`;
-                        return (
-                          <button
-                            key={avatar.id}
-                            onClick={() => setProfilePictureUrl(url)}
-                            className={cn(
-                              "relative h-12 w-12 rounded-lg overflow-hidden border-2 transition-all hover:scale-110",
-                              profilePictureUrl === url ? "border-accent ring-2 ring-accent/20" : "border-transparent opacity-60 hover:opacity-100"
-                            )}
-                          >
-                            <img src={url} alt={avatar.label} className="object-cover h-full w-full" />
-                          </button>
-                        );
-                      })}
+                  <div className="flex-1 space-y-6">
+                    <div className="space-y-4">
+                      <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Elite Presets</Label>
+                      <div className="grid grid-cols-4 md:grid-cols-8 gap-3">
+                        {PRESET_AVATARS.map((avatar) => {
+                          const url = `https://picsum.photos/seed/${avatar.id}/400/400`;
+                          return (
+                            <button
+                              key={avatar.id}
+                              onClick={() => setProfilePictureUrl(url)}
+                              className={cn(
+                                "relative h-12 w-12 rounded-lg overflow-hidden border-2 transition-all hover:scale-110",
+                                profilePictureUrl === url ? "border-accent ring-2 ring-accent/20" : "border-transparent opacity-60 hover:opacity-100"
+                              )}
+                            >
+                              <img src={url} alt={avatar.label} className="object-cover h-full w-full" />
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
-                    <div className="space-y-2 pt-2">
-                      <Label htmlFor="avatar-url" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                        <LinkIcon className="h-3 w-3" /> Custom Avatar URL
-                      </Label>
-                      <Input 
-                        id="avatar-url"
-                        value={profilePictureUrl}
-                        onChange={(e) => setProfilePictureUrl(e.target.value)}
-                        placeholder="https://example.com/image.jpg"
-                        className="bg-secondary/30 border-white/5 h-10 text-xs"
-                      />
+
+                    <div className="space-y-4 pt-4 border-t border-white/5">
+                      <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Custom Identity</Label>
+                      <div className="flex flex-col md:flex-row gap-4">
+                        <div className="flex-1">
+                          <input 
+                            type="file" 
+                            ref={fileInputRef} 
+                            onChange={handleFileUpload} 
+                            className="hidden" 
+                            accept="image/*"
+                          />
+                          <Button 
+                            variant="outline" 
+                            onClick={() => fileInputRef.current?.click()}
+                            className="w-full h-11 font-bold uppercase tracking-wider border-dashed border-white/10 hover:border-accent/50 hover:bg-accent/5"
+                          >
+                            <Upload className="mr-2 h-4 w-4" /> Upload Custom Photo
+                          </Button>
+                          <p className="text-[10px] text-muted-foreground mt-2 italic">Maximum size 1MB. Optimized for square aspect ratios.</p>
+                        </div>
+                        <div className="flex-1">
+                          <div className="relative">
+                            <LinkIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                            <Input 
+                              value={profilePictureUrl}
+                              onChange={(e) => setProfilePictureUrl(e.target.value)}
+                              placeholder="Or paste a link here..."
+                              className="pl-10 bg-secondary/30 border-white/5 h-11 text-xs"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -305,7 +354,7 @@ export default function SettingsPage() {
                           Enable 2FA
                         </Button>
                       )}
-                    </DialogTrigger>
+                    </DropdownMenuTrigger>
                     {!profile?.twoFactorEnabled && (
                       <DialogContent className="bg-card border-white/10">
                         <DialogHeader>
