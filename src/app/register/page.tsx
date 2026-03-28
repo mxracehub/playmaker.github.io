@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Trophy, Mail, Lock, ShieldCheck, ArrowLeft, Loader2 } from "lucide-react";
-import { useAuth, useUser, initiateEmailSignUp, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
+import { useAuth, useUser, initiateEmailSignUp, useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { validateTOTP, getOTPAuthUri } from "@/lib/2fa";
@@ -35,7 +35,8 @@ export default function RegisterPage() {
   const router = useRouter();
   const { toast } = useToast();
 
-  const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
+  // Unified collection: userProfiles
+  const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
   const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
   const hasRedirected = useRef(false);
@@ -94,10 +95,24 @@ export default function RegisterPage() {
     const isValid = validateTOTP(user.uid, user.email || '', verificationCode);
 
     if (isValid) {
+      // PROTOTYPE INITIALIZATION: Create basic profile document
+      setDocumentNonBlocking(doc(db, "userProfiles", user.uid), {
+        id: user.uid,
+        email: user.email,
+        username: user.email?.split('@')[0].toUpperCase() || 'PLAYMAKER',
+        role: 'player',
+        dateJoined: new Date().toISOString(),
+        goldCoinsBalance: 1000000,
+        sweepstakesCoinsBalance: 0,
+        bio: "Elite Playmaker locked in.",
+        profilePictureUrl: `https://picsum.photos/seed/${user.uid}/400/400`,
+        twoFactorEnabled: true,
+      }, { merge: true });
+
       setPassed2FA(true);
       toast({
         title: "Registration Complete",
-        description: "Welcome to the arena.",
+        description: "Welcome to the arena. Your profile is established.",
       });
     } else {
       toast({
