@@ -293,7 +293,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
   }
 
   return (
-    <div className="min-h-screen pb-24 pt-20 bg-background relative overflow-hidden">
+    <div className="min-h-screen pb-24 pt-24 md:pt-20 bg-background relative overflow-hidden">
       <Navbar />
       <div className={`absolute top-0 inset-x-0 h-[500px] bg-gradient-to-b ${theme.color} to-transparent -z-10 opacity-40`} />
 
@@ -343,67 +343,12 @@ function ArenaContent({ gameId }: { gameId: string }) {
                   </div>
                 </CardContent>
               </Card>
-
-              <Card className="bg-card/40 backdrop-blur-xl border-white/5 shadow-2xl overflow-hidden rounded-2xl">
-                <CardHeader className="bg-secondary/20 border-b border-white/5 px-4 md:px-8 py-4 md:py-6">
-                  <CardTitle className="font-headline text-xs md:text-sm uppercase flex items-center gap-2 md:gap-3 tracking-widest text-white/80">
-                    <div className="h-4 w-4 md:h-5 md:w-5 rounded-full border-2 border-accent flex items-center justify-center">
-                      <div className="h-1 w-1 md:h-1.5 md:w-1.5 bg-accent rounded-full animate-ping" />
-                    </div>
-                    Live Showdown Standings
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <div className="divide-y divide-white/5">
-                    <div className="px-4 md:px-8 py-6 md:py-8 flex items-center justify-between bg-accent/5">
-                      <div className="flex items-center gap-3 md:gap-6 min-w-0">
-                        <span className="font-headline font-bold text-2xl md:text-3xl text-accent tracking-tighter italic shrink-0">#01</span>
-                        <div className="relative shrink-0">
-                          <Avatar className="h-10 w-10 md:h-14 md:w-14 border-2 border-accent shadow-xl">
-                            <AvatarImage src={`https://picsum.photos/seed/you/100/100`} />
-                            <AvatarFallback>YOU</AvatarFallback>
-                          </Avatar>
-                          <div className="absolute -bottom-1 -right-1 bg-accent rounded-full p-0.5 md:p-1 border-2 border-background">
-                            <CheckCircle2 className="h-2.5 w-2.5 md:h-3 md:w-3 text-background" />
-                          </div>
-                        </div>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2 mb-0.5 md:mb-1">
-                            <p className="font-bold text-base md:text-xl leading-none text-white truncate">You</p>
-                            <Badge className="bg-accent text-accent-foreground text-[7px] md:text-[8px] font-black h-3.5 md:h-4 px-1 md:px-1.5 uppercase shrink-0">PRO LVL 24</Badge>
-                          </div>
-                          <p className="text-[9px] md:text-[10px] text-muted-foreground uppercase font-bold tracking-widest truncate">PICK: {myPick}</p>
-                        </div>
-                      </div>
-                      <div className="text-right shrink-0 ml-4">
-                        <p className={`font-headline text-3xl md:text-4xl font-bold ${theme.accent} tracking-tighter`}>15</p>
-                        <p className="text-[8px] md:text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5 md:mt-1">{theme.statLabel}</p>
-                      </div>
-                    </div>
-
-                    <div className="px-4 md:px-8 py-6 md:py-8 flex items-center justify-between hover:bg-white/5 transition-colors">
-                      <div className="flex items-center gap-3 md:gap-6 min-w-0">
-                        <span className="font-headline font-bold text-2xl md:text-3xl text-muted-foreground tracking-tighter italic shrink-0">#02</span>
-                        <Avatar className="h-10 w-10 md:h-14 md:w-14 border-2 border-white/10 shrink-0">
-                          <AvatarImage src={`https://picsum.photos/seed/${challenger}/100/100`} />
-                          <AvatarFallback>CH</AvatarFallback>
-                        </Avatar>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2 mb-0.5 md:mb-1">
-                            <p className="font-bold text-base md:text-xl leading-none text-white/80 truncate">{challenger}</p>
-                            <Badge variant="secondary" className="text-[7px] md:text-[8px] font-black h-3.5 md:h-4 px-1 md:px-1.5 uppercase shrink-0">PRO LVL 18</Badge>
-                          </div>
-                          <p className="text-[9px] md:text-[10px] text-muted-foreground uppercase font-bold tracking-widest truncate">PICK: Underdog Squad</p>
-                        </div>
-                      </div>
-                      <div className="text-right shrink-0 ml-4">
-                        <p className="font-headline text-3xl md:text-4xl font-bold text-white/40 tracking-tighter">12</p>
-                        <p className="text-[8px] md:text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5 md:mt-1">{theme.statLabel}</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              
+              {/* Main content area expanded for single-card focus */}
+              <div className="p-8 rounded-3xl bg-card/20 border border-dashed border-white/5 flex flex-col items-center justify-center text-center space-y-4">
+                <Zap className="h-12 w-12 text-accent/20" />
+                <p className="font-headline text-xl font-bold uppercase text-muted-foreground/40 tracking-widest italic">Live Arena Feed Active</p>
+              </div>
             </div>
 
             <aside className="space-y-6">
