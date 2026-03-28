@@ -4,53 +4,42 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * ARENA SECURITY CORE v1.5
-     * Public read is allowed for lobby stats.
-     * Write access is strictly tied to authenticated identity.
-     * App Check enforcement is bypassed for debug tokens in development.
+     * ARENA SECURITY RULES v2.0
+     * Optimized for public stats and secure matchmaking.
      */
 
     match /games/{gameId} {
-      // Allow public listing and viewing for the lobby dashboard
+      // Allow everyone to see live arena stats and lobby board
       allow read: if true;
       
-      // Only authenticated users can launch challenges
+      // Only registered playmakers can issue challenges
       allow create: if request.auth != null;
       
-      // Only participants can update game state (like accepting an invite)
+      // Participants only for game state updates (accepting/playing)
       allow update: if request.auth != null && (
         request.auth.uid == resource.data.creatorId || 
         request.auth.uid == resource.data.opponentId
       );
       
-      // Only the creator can scrap a game
+      // Only the initiator can scrap a challenge
       allow delete: if request.auth != null && (
         request.auth.uid == resource.data.creatorId
       );
     }
 
-    match /userProfiles/{userId} {
-      allow get: if request.auth != null && request.auth.uid == userId;
-      allow list: if false;
-      allow create: if request.auth != null && request.auth.uid == userId;
-      allow update: if request.auth != null && request.auth.uid == userId;
-      allow delete: if request.auth != null && request.auth.uid == userId;
-    }
-
     match /users/{userId} {
       allow get: if request.auth != null && request.auth.uid == userId;
-      allow list: if false;
       allow create: if request.auth != null && request.auth.uid == userId;
       allow update: if request.auth != null && request.auth.uid == userId;
       allow delete: if request.auth != null && request.auth.uid == userId;
     }
 
-    match /adminRoles/{userId} {
-      allow get: if request.auth != null && request.auth.uid == userId;
-      allow list, create, update, delete: if false;
+    match /userProfiles/{userId} {
+      allow get: if true;
+      allow create, update, delete: if request.auth != null && request.auth.uid == userId;
     }
 
-    // Default deny for all other collections
+    // Standard fallback
     match /{document=**} {
       allow read, write: if false;
     }
