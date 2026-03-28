@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useSearchParams } from "next/navigation";
@@ -330,16 +329,12 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
                 <h4 className="font-headline font-bold uppercase tracking-widest text-[10px] text-muted-foreground mb-6">Arena Intel</h4>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-white/60">Commission</span>
-                    <span className="font-bold text-white">5%</span>
-                  </div>
-                  <div className="flex justify-between items-center text-sm">
                     <span className="text-white/60">Prize Split</span>
                     <span className="font-bold text-accent">Winner Take All</span>
                   </div>
                   <div className="flex justify-between items-center text-sm pt-4 border-t border-white/5">
                     <span className="text-white/60">Expected Payout</span>
-                    <span className="font-headline font-bold text-xl text-accent">{(parseInt(fee) * 2 * 0.95).toLocaleString()} {currency.toUpperCase()}</span>
+                    <span className="font-headline font-bold text-xl text-accent">{(parseInt(fee) * 2).toLocaleString()} {currency.toUpperCase()}</span>
                   </div>
                 </div>
               </Card>
