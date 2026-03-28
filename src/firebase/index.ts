@@ -3,7 +3,8 @@
 import { firebaseConfig } from '@/firebase/config';
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore'
+import { getFirestore } from 'firebase/firestore';
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 
 // IMPORTANT: DO NOT MODIFY THIS FUNCTION
 export function initializeFirebase() {
@@ -23,6 +24,20 @@ export function initializeFirebase() {
         console.warn('Automatic initialization failed. Falling back to firebase config object.', e);
       }
       firebaseApp = initializeApp(firebaseConfig);
+    }
+
+    // --- APP CHECK INITIALIZATION ---
+    if (typeof window !== 'undefined') {
+      // Enable debug token for non-production environments
+      if (process.env.NODE_ENV !== 'production') {
+        // @ts-ignore
+        self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+      }
+
+      initializeAppCheck(firebaseApp, {
+        provider: new ReCaptchaV3Provider('6Lc-your-actual-site-key-here'), // Replace with your reCAPTCHA v3 site key
+        isTokenAutoRefreshEnabled: true
+      });
     }
 
     return getSdks(firebaseApp);
