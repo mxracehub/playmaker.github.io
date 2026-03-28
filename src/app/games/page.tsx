@@ -55,10 +55,19 @@ export default function GamesPage() {
 
   const isLoading = isUserLoading || isCollectionLoading;
 
-  // Derived states from Firestore data
-  const activeGames = allGames?.filter(g => g.status === "Open" || g.status === "Live") || [];
-  const invites = allGames?.filter(g => g.status === "Open" && g.creatorId !== user?.uid) || [];
-  const historyGames = allGames?.filter(g => g.status === "Completed") || [];
+  // Derived states from Firestore data - Focused on User relevance
+  const activeGames = allGames?.filter(g => 
+    (g.status === "Live" && (g.creatorId === user?.uid || g.opponentId === user?.uid)) ||
+    (g.status === "Open" && g.creatorId === user?.uid)
+  ) || [];
+
+  const invites = allGames?.filter(g => 
+    g.status === "Open" && g.opponentId === user?.uid
+  ) || [];
+
+  const historyGames = allGames?.filter(g => 
+    g.status === "Completed" && (g.creatorId === user?.uid || g.opponentId === user?.uid)
+  ) || [];
 
   const handleFinalAccept = () => {
     if (!selectedPick || !acceptingInvite) {
@@ -71,7 +80,6 @@ export default function GamesPage() {
     // Save the acceptance to Firestore
     updateDocumentNonBlocking(gameRef, {
       status: "Live",
-      opponentId: user?.uid,
       opponentPick: selectedPick,
       updatedAt: new Date().toISOString(),
     });
@@ -268,7 +276,7 @@ export default function GamesPage() {
                                 </span>
                               </div>
                               <h4 className="font-headline text-xl font-bold uppercase tracking-tight leading-none mb-2">{invite.name}</h4>
-                              <p className="text-xs text-muted-foreground font-medium">Created by <span className="text-white font-bold">{invite.creatorId.slice(0, 8)}...</span></p>
+                              <p className="text-xs text-muted-foreground font-medium">Challenge from <span className="text-white font-bold">Arena Playmaker</span></p>
                             </div>
                           </div>
                           
