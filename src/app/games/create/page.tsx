@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, Waves, Bike, Mountain, Landmark, CalendarDays } from "lucide-react";
+import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, Waves, Bike, Mountain, Landmark, CalendarDays, ShieldAlert } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore, useUser, addDocumentNonBlocking } from "@/firebase";
 import { collection } from "firebase/firestore";
@@ -186,6 +186,7 @@ const sports = [
 ];
 
 const mockFriends = [
+  { id: 'house-admin', name: "Arena Master (House Admin)", avatar: "https://picsum.photos/seed/admin/100/100", isHouse: true },
   { id: 'f1', name: "Jordan 'Swish' Smith", avatar: "https://picsum.photos/seed/jordan/100/100" },
   { id: 'f2', name: "Sarah 'Quarterback' Jones", avatar: "https://picsum.photos/seed/sarah/100/100" },
   { id: 'f3', name: "Mike 'The Putter' Brown", avatar: "https://picsum.photos/seed/mike/100/100" },
@@ -205,14 +206,14 @@ export default function CreateGamePage() {
   const [selectedEvent, setSelectedEvent] = useState<string>("");
   const [selectedPick, setSelectedPick] = useState<string>("");
   const [selectedFriend, setSelectedFriend] = useState<string>("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFriendQuery, setSearchFriendQuery] = useState("");
   const [searchPickQuery, setSearchPickQuery] = useState("");
   const [currency, setCurrency] = useState("gold");
   const [fee, setFee] = useState("1000");
 
   useEffect(() => {
     const friendId = searchParams.get('friendId');
-    if (friendId && mockFriends.some(f => f.id === friendId)) {
+    if (friendId && (mockFriends.some(f => f.id === friendId) || friendId === 'house-admin')) {
       setSelectedFriend(friendId);
     }
     const sportId = searchParams.get('sport');
@@ -233,7 +234,7 @@ export default function CreateGamePage() {
   ) || [];
 
   const filteredFriends = mockFriends.filter(friend => 
-    friend.name.toLowerCase().includes(searchQuery.toLowerCase())
+    friend.name.toLowerCase().includes(searchFriendQuery.toLowerCase())
   );
 
   const handleCreate = () => {
@@ -251,6 +252,10 @@ export default function CreateGamePage() {
     }
     if (!selectedPick) {
       toast({ variant: "destructive", title: "Selection Required", description: "Please pick your winning team or athlete." });
+      return;
+    }
+    if (!selectedFriend) {
+      toast({ variant: "destructive", title: "Opponent Required", description: "Please select a friend or the Arena Master to challenge." });
       return;
     }
 
@@ -281,11 +286,12 @@ export default function CreateGamePage() {
       status: "Open",
       inviteCode: inviteCode,
       createdAt: new Date().toISOString(),
+      opponentId: selectedFriend,
     };
 
     addDocumentNonBlocking(collection(db, "games"), gameData)
       .then((docRef) => {
-        toast({ title: "Game Initialized", description: `Arena challenge created successfully!` });
+        toast({ title: "Challenge Launched", description: `You've sent a showdown request!` });
         router.push(`/games/${docRef?.id}?sport=${selectedSport}&fee=${fee}&currency=${currency}`);
       });
   };
@@ -302,16 +308,16 @@ export default function CreateGamePage() {
             <Gamepad2 className="h-8 w-8 text-primary" />
           </div>
           <h1 className="font-headline text-4xl font-bold uppercase tracking-tight mb-2">Create <span className="text-accent">Game</span></h1>
-          <p className="text-muted-foreground">Select arena, event, and pick your winner</p>
+          <p className="text-muted-foreground">Select arena, pick your side, and challenge a playmaker</p>
         </header>
 
         <div className="grid gap-8">
           <Card className="bg-card/50 backdrop-blur-sm border-white/5 overflow-hidden">
             <CardHeader className="border-b bg-secondary/20">
               <CardTitle className="font-headline text-xl uppercase tracking-tighter">Arena Configuration</CardTitle>
-              <CardDescription>All fields are required to launch the showdown</CardDescription>
+              <CardDescription>Follow the steps to launch your official challenge</CardDescription>
             </CardHeader>
-            <CardContent className="p-6 space-y-8">
+            <CardContent className="p-6 space-y-10">
               
               {/* Step 1: Sport Selection */}
               <div className="space-y-4">
@@ -445,6 +451,52 @@ export default function CreateGamePage() {
                       <SelectItem value="10000">10,000 ($100.00)</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+              </div>
+
+              {/* Step 5: Opponent Selection */}
+              <div className="space-y-4 pt-4 border-t border-white/5">
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">5. Select Your Opponent</Label>
+                <div className="space-y-4">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input 
+                      placeholder="Search playmakers..." 
+                      className="pl-10 h-11 bg-secondary/30 border-white/5"
+                      value={searchFriendQuery}
+                      onChange={(e) => setSearchFriendQuery(e.target.value)}
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                    {filteredFriends.map((friend) => (
+                      <button
+                        key={friend.id}
+                        onClick={() => setSelectedFriend(friend.id)}
+                        className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left ${
+                          selectedFriend === friend.id
+                            ? 'bg-primary/10 border-primary'
+                            : 'bg-secondary/20 border-white/5 hover:border-white/10'
+                        }`}
+                      >
+                        <Avatar className={`h-10 w-10 border ${friend.isHouse ? 'border-accent shadow-lg shadow-accent/20' : 'border-white/10'}`}>
+                          <AvatarImage src={friend.avatar} />
+                          <AvatarFallback><Users className="h-4 w-4" /></AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 overflow-hidden">
+                          <p className={`font-bold text-xs truncate ${friend.isHouse ? 'text-accent' : ''}`}>
+                            {friend.name}
+                          </p>
+                          {friend.isHouse && (
+                            <span className="text-[8px] font-bold uppercase tracking-widest text-accent flex items-center gap-1">
+                              <ShieldAlert className="h-2 w-2" /> Arena Master
+                            </span>
+                          )}
+                        </div>
+                        {selectedFriend === friend.id && <CheckCircle2 className="h-4 w-4 text-primary" />}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
