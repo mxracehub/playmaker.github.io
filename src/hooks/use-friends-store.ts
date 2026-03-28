@@ -15,7 +15,9 @@ const INITIAL_FRIENDS = [
 
 export const HOUSE_ADMIN = { 
   id: 'house-admin', 
-  name: "Arena Master (House Admin)", 
+  name: "Arena Master (Master Admin)", 
+  status: "Online",
+  wins: 999,
   avatar: "https://picsum.photos/seed/admin/100/100", 
   isHouse: true 
 };
