@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, use } from "react";
+import { useRef, use, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";
@@ -79,8 +79,7 @@ const HockeyIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-export default function GameArenaPage({ params }: { params: Promise<{ gameId: string }> }) {
-  const { gameId } = use(params);
+function ArenaContent({ gameId }: { gameId: string }) {
   const { toast } = useToast();
   const searchParams = useSearchParams();
   const arenaRef = useRef<HTMLDivElement>(null);
@@ -226,7 +225,6 @@ export default function GameArenaPage({ params }: { params: Promise<{ gameId: st
   const theme = themes[sportId as keyof typeof themes] || themes.nba;
 
   const handleShare = async () => {
-    // 1. Copy URL to clipboard
     try {
       await navigator.clipboard.writeText(window.location.href);
       toast({
@@ -237,7 +235,6 @@ export default function GameArenaPage({ params }: { params: Promise<{ gameId: st
       console.error("Failed to copy link", err);
     }
 
-    // 2. Capture Screenshot
     if (!arenaRef.current) return;
     
     toast({
@@ -248,8 +245,8 @@ export default function GameArenaPage({ params }: { params: Promise<{ gameId: st
     try {
       const canvas = await html2canvas(arenaRef.current, {
         useCORS: true,
-        backgroundColor: "#0D1219", // Match arena base color
-        scale: 2, // Higher resolution for social media
+        backgroundColor: "#0D1219",
+        scale: 2,
         logging: false,
       });
       
@@ -304,13 +301,10 @@ export default function GameArenaPage({ params }: { params: Promise<{ gameId: st
   return (
     <div className="min-h-screen pb-24 md:pt-20 bg-background relative overflow-hidden">
       <Navbar />
-      
-      {/* Sport Specific Gradient */}
       <div className={`absolute top-0 inset-x-0 h-[500px] bg-gradient-to-b ${theme.color} to-transparent -z-10 opacity-40`} />
 
       <main ref={arenaRef} className="mx-auto max-w-6xl px-4 py-12">
         <div className="flex flex-col gap-10">
-          {/* Header Section */}
           <header className="flex flex-col md:flex-row md:items-center justify-between gap-8">
             <div className="flex items-center gap-6">
               <div className="h-20 w-20 rounded-2xl bg-card border border-white/10 flex items-center justify-center shadow-2xl">
@@ -339,7 +333,6 @@ export default function GameArenaPage({ params }: { params: Promise<{ gameId: st
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             <div className="lg:col-span-2 space-y-8">
-              {/* My Prediction Card */}
               <Card className="bg-[#0D1219] border-[#1F2937] border-2 overflow-hidden rounded-xl">
                 <CardContent className="p-6 flex items-center justify-between">
                   <div className="flex items-center gap-6">
@@ -357,7 +350,6 @@ export default function GameArenaPage({ params }: { params: Promise<{ gameId: st
                 </CardContent>
               </Card>
 
-              {/* Standings Card */}
               <Card className="bg-card/40 backdrop-blur-xl border-white/5 shadow-2xl overflow-hidden rounded-2xl">
                 <CardHeader className="bg-secondary/20 border-b border-white/5 px-8 py-6">
                   <CardTitle className="font-headline text-sm uppercase flex items-center gap-3 tracking-widest text-white/80">
@@ -369,7 +361,6 @@ export default function GameArenaPage({ params }: { params: Promise<{ gameId: st
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="divide-y divide-white/5">
-                    {/* Player Row: You */}
                     <div className="px-8 py-8 flex items-center justify-between bg-accent/5">
                       <div className="flex items-center gap-6">
                         <span className="font-headline font-bold text-3xl text-accent tracking-tighter italic">#01</span>
@@ -396,7 +387,6 @@ export default function GameArenaPage({ params }: { params: Promise<{ gameId: st
                       </div>
                     </div>
 
-                    {/* Player Row: Opponent */}
                     <div className="px-8 py-8 flex items-center justify-between hover:bg-white/5 transition-colors">
                       <div className="flex items-center gap-6">
                         <span className="font-headline font-bold text-3xl text-muted-foreground tracking-tighter italic">#02</span>
@@ -422,7 +412,6 @@ export default function GameArenaPage({ params }: { params: Promise<{ gameId: st
               </Card>
             </div>
 
-            {/* Sidebar Details */}
             <aside className="space-y-6">
               <Card className="bg-[#1A232E]/60 border border-white/5 p-6 rounded-2xl">
                 <h4 className="font-headline font-bold uppercase tracking-widest text-[10px] text-muted-foreground mb-6">Arena Intel</h4>
@@ -457,5 +446,14 @@ export default function GameArenaPage({ params }: { params: Promise<{ gameId: st
         </div>
       </main>
     </div>
+  );
+}
+
+export default function GameArenaPage({ params }: { params: Promise<{ gameId: string }> }) {
+  const { gameId } = use(params);
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background"><Loader2 className="animate-spin h-8 w-8 text-primary" /></div>}>
+      <ArenaContent gameId={gameId} />
+    </Suspense>
   );
 }
