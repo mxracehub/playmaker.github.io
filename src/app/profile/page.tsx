@@ -96,14 +96,14 @@ export default function ProfilePage() {
               <div className="p-4 rounded-2xl bg-accent/10 border border-accent/20">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-xs font-bold text-accent uppercase tracking-widest">Sweeps Coins</p>
-                  <Landmark className="h-3.5 w-3.5 text-accent" />
+                  < Landmark className="h-3.5 w-3.5 text-accent" />
                 </div>
                 <p className="text-2xl font-headline font-bold text-accent">542.50 SC</p>
               </div>
               <div className="grid grid-cols-1 gap-2 pt-2">
                 <Link href="/shop" className="w-full">
                   <Button className="w-full font-bold uppercase tracking-wider bg-accent text-accent-foreground">
-                    <Landmark className="mr-2 h-4 w-4" /> Deposit
+                    <Landmark className="mr-2 h-4 w-4" /> Arcade Coins
                   </Button>
                 </Link>
                 <Link href="/exchange" className="w-full">
