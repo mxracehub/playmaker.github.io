@@ -1,10 +1,11 @@
+
 'use client';
 
 import { firebaseConfig } from '@/firebase/config';
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-check';
 
 // IMPORTANT: DO NOT MODIFY THIS FUNCTION
 export function initializeFirebase() {
@@ -19,7 +20,7 @@ export function initializeFirebase() {
       firebaseApp = initializeApp(firebaseConfig);
     }
 
-    // App Check Initialization with Debug Token support
+    // App Check Initialization with reCAPTCHA Enterprise
     if (typeof window !== 'undefined') {
       // Enable debug token for local development. 
       // Look for "AppCheck debug token" in the browser console.
@@ -29,7 +30,7 @@ export function initializeFirebase() {
       }
 
       initializeAppCheck(firebaseApp, {
-        provider: new ReCaptchaV3Provider('6Ldb7-cqAAAAAJ8_Z_v_z_v_z_v_z_v_z_v_z_v_'),
+        provider: new ReCaptchaEnterpriseProvider('6LfU-ZssAAAAAFcYu-2NemXNroyLyheF3YzMCh9v'),
         isTokenAutoRefreshEnabled: true
       });
     }

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -13,6 +14,12 @@ import { useAuth, useUser, initiateEmailSignUp, useFirestore, useDoc, useMemoFir
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { validateTOTP, getOTPAuthUri } from "@/lib/2fa";
+
+declare global {
+  interface Window {
+    grecaptcha: any;
+  }
+}
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -50,7 +57,21 @@ export default function RegisterPage() {
     e.preventDefault();
     if (!email || !password) return;
     setIsVerifying(true);
-    initiateEmailSignUp(auth, email, password);
+
+    // Execute reCAPTCHA Enterprise
+    if (typeof window !== 'undefined' && window.grecaptcha?.enterprise) {
+      window.grecaptcha.enterprise.ready(async () => {
+        try {
+          await window.grecaptcha.enterprise.execute('6LfU-ZssAAAAAFcYu-2NemXNroyLyheF3YzMCh9v', { action: 'SIGNUP' });
+          initiateEmailSignUp(auth, email, password);
+        } catch (error) {
+          console.error('reCAPTCHA execution failed:', error);
+          initiateEmailSignUp(auth, email, password);
+        }
+      });
+    } else {
+      initiateEmailSignUp(auth, email, password);
+    }
   };
 
   const handleVerify2FA = (e: React.FormEvent) => {
@@ -160,8 +181,8 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden px-4">
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent/10 blur-[120px] rounded-full" />
+      <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent/10 blur-[120px] rounded-full" />
       
       <div className="w-full max-w-md z-10">
         <div className="flex justify-center mb-8">

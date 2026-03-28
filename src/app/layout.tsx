@@ -1,8 +1,10 @@
+
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { Footer } from '@/components/footer';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'Playmakers | Elite Sports Sweepstakes',
@@ -20,6 +22,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+        <Script 
+          src="https://www.google.com/recaptcha/enterprise.js?render=6LfU-ZssAAAAAFcYu-2NemXNroyLyheF3YzMCh9v" 
+          strategy="beforeInteractive"
+        />
       </head>
       <body className="font-body antialiased bg-background text-foreground flex flex-col min-h-screen">
         <FirebaseClientProvider>

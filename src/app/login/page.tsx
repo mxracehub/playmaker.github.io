@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -13,6 +14,12 @@ import { useAuth, useUser, initiateEmailSignIn, useFirestore, useDoc, useMemoFir
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { validateTOTP, getOTPAuthUri } from "@/lib/2fa";
+
+declare global {
+  interface Window {
+    grecaptcha: any;
+  }
+}
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -50,7 +57,22 @@ export default function LoginPage() {
     e.preventDefault();
     if (!email || !password) return;
     setIsVerifying(true);
-    initiateEmailSignIn(auth, email, password);
+
+    // Execute reCAPTCHA Enterprise
+    if (typeof window !== 'undefined' && window.grecaptcha?.enterprise) {
+      window.grecaptcha.enterprise.ready(async () => {
+        try {
+          await window.grecaptcha.enterprise.execute('6LfU-ZssAAAAAFcYu-2NemXNroyLyheF3YzMCh9v', { action: 'LOGIN' });
+          initiateEmailSignIn(auth, email, password);
+        } catch (error) {
+          console.error('reCAPTCHA execution failed:', error);
+          // Fallback to regular sign-in if reCAPTCHA fails to load
+          initiateEmailSignIn(auth, email, password);
+        }
+      });
+    } else {
+      initiateEmailSignIn(auth, email, password);
+    }
   };
 
   const handleVerify2FA = (e: React.FormEvent) => {
