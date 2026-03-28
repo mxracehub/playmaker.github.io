@@ -4,21 +4,26 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * ARENA SECURITY CORE v1.2
-     * Resolved: auth/firebase-app-check-token-is-invalid
+     * ARENA SECURITY CORE v1.5
      * Public read is allowed for lobby stats.
      * Write access is strictly tied to authenticated identity.
+     * App Check enforcement is bypassed for debug tokens in development.
      */
 
     match /games/{gameId} {
-      // Explicitly allow public read (get and list) for lobby dashboard
+      // Allow public listing and viewing for the lobby dashboard
       allow read: if true;
       
+      // Only authenticated users can launch challenges
       allow create: if request.auth != null;
+      
+      // Only participants can update game state (like accepting an invite)
       allow update: if request.auth != null && (
         request.auth.uid == resource.data.creatorId || 
         request.auth.uid == resource.data.opponentId
       );
+      
+      // Only the creator can scrap a game
       allow delete: if request.auth != null && (
         request.auth.uid == resource.data.creatorId
       );
@@ -45,7 +50,7 @@ service cloud.firestore {
       allow list, create, update, delete: if false;
     }
 
-    // Default deny
+    // Default deny for all other collections
     match /{document=**} {
       allow read, write: if false;
     }

@@ -28,7 +28,7 @@ export function initializeFirebase() {
        * Look for the "AppCheck debug token" in your browser console to register it 
        * in the Firebase Console if enforcement is required.
        */
-      if (process.env.NODE_ENV !== 'production') {
+      if (process.env.NODE_ENV !== 'production' || window.location.hostname === 'localhost') {
         // @ts-ignore
         window.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
       }
