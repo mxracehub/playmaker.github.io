@@ -9,10 +9,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Users, Zap, Clock, Camera, Target, Dribbble, Flag, CheckCircle2, Waves, Bike, Mountain, Swords, Snowflake, Lock, Loader2 } from "lucide-react";
+import { Trophy, Users, Zap, Clock, Camera, Target, Dribbble, Flag, CheckCircle2, Waves, Bike, Mountain, Swords, Snowflake, Lock, Loader2, Info, UserCheck, Timer } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import { useUser } from "@/firebase";
+import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
+import { doc } from "firebase/firestore";
 import html2canvas from 'html2canvas';
 
 const BaseballIcon = ({ className }: { className?: string }) => (
@@ -75,145 +76,40 @@ const BoxingIcon = ({ className }: { className?: string }) => (
 
 function ArenaContent({ gameId }: { gameId: string }) {
   const { toast } = useToast();
-  const searchParams = useSearchParams();
   const arenaRef = useRef<HTMLDivElement>(null);
   const { user, isUserLoading } = useUser();
-  
-  const sportId = searchParams.get('sport') || 'nba';
-  const myPick = searchParams.get('pick') || 'Elite Selection';
-  const fee = searchParams.get('fee') || '1000';
-  const currency = searchParams.get('currency') || 'gold';
-  const challenger = searchParams.get('challenger') || 'Challenger Alpha';
+  const db = useFirestore();
+
+  // Fetch real-time game data
+  const gameRef = useMemoFirebase(() => doc(db, "games", gameId), [db, gameId]);
+  const { data: game, isLoading: isGameLoading } = useDoc(gameRef);
+
+  const sportId = game?.sportId || 'nba';
+  const fee = game?.entryFee || 0;
+  const currency = game?.currencyType || 'gold';
+  const status = game?.status || 'Open';
+
+  const isCreator = user?.uid === game?.creatorId;
+  const myPick = isCreator ? game?.creatorPick : game?.opponentPick;
+  const opponentPick = isCreator ? game?.opponentPick : game?.creatorPick;
 
   const themes = {
-    nba: {
-      color: "from-orange-600/20 to-orange-900/40",
-      accent: "text-orange-500",
-      bg: "bg-orange-500/10",
-      icon: <Dribbble className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "NBA Arena",
-      statLabel: "WINS"
-    },
-    nfl: {
-      color: "from-green-600/20 to-green-900/40",
-      accent: "text-green-500",
-      bg: "bg-green-500/10",
-      icon: <Trophy className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "NFL Gridiron",
-      statLabel: "WINS"
-    },
-    hockey: {
-      color: "from-cyan-600/20 to-cyan-900/40",
-      accent: "text-cyan-400",
-      bg: "bg-cyan-400/10",
-      icon: <Snowflake className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "Frozen Fortress",
-      statLabel: "WINS"
-    },
-    soccer: {
-      color: "from-slate-600/20 to-slate-900/40",
-      accent: "text-white",
-      bg: "bg-white/10",
-      icon: <SoccerIcon className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "Pitch Battle",
-      statLabel: "WINS"
-    },
-    ufc: {
-      color: "from-red-600/20 to-red-900/40",
-      accent: "text-red-500",
-      bg: "bg-red-500/10",
-      icon: <Swords className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "The Octagon",
-      statLabel: "WINS"
-    },
-    boxing: {
-      color: "from-yellow-600/20 to-yellow-900/40",
-      accent: "text-yellow-500",
-      bg: "bg-yellow-500/10",
-      icon: <BoxingIcon className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "Main Event",
-      statLabel: "WINS"
-    },
-    mlb: {
-      color: "from-blue-600/20 to-blue-900/40",
-      accent: "text-blue-500",
-      bg: "bg-blue-500/10",
-      icon: <BaseballIcon className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "Diamond Duel",
-      statLabel: "WINS"
-    },
-    tennis: {
-      color: "from-lime-600/20 to-lime-900/40",
-      accent: "text-lime-400",
-      bg: "bg-lime-400/10",
-      icon: <TennisIcon className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "Grand Slam",
-      statLabel: "WINS"
-    },
-    pickleball: {
-      color: "from-yellow-600/20 to-yellow-900/40",
-      accent: "text-yellow-500",
-      bg: "bg-yellow-500/10",
-      icon: <PickleballIcon className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "Kitchen Combat",
-      statLabel: "WINS"
-    },
-    volleyball: {
-      color: "from-indigo-600/20 to-indigo-900/40",
-      accent: "text-indigo-400",
-      bg: "bg-indigo-400/10",
-      icon: <VolleyballIcon className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "The Net Zone",
-      statLabel: "WINS"
-    },
-    golf: {
-      color: "from-emerald-600/20 to-emerald-900/40",
-      accent: "text-emerald-400",
-      bg: "bg-emerald-400/10",
-      icon: <Target className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "Masters Green",
-      statLabel: "WINS"
-    },
-    nascar: {
-      color: "from-red-600/20 to-red-900/40",
-      accent: "text-red-500",
-      bg: "bg-red-500/10",
-      icon: <Flag className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "Victory Lane",
-      statLabel: "WINS"
-    },
-    surfing: {
-      color: "from-blue-600/20 to-blue-400/40",
-      accent: "text-blue-400",
-      bg: "bg-blue-400/10",
-      icon: <Waves className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "Pipe Masters",
-      statLabel: "WINS"
-    },
-    skateboarding: {
-      color: "from-yellow-600/20 to-yellow-400/40",
-      accent: "text-yellow-400",
-      bg: "bg-yellow-400/10",
-      icon: <Zap className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "Skate Park",
-      statLabel: "WINS"
-    },
-    bmx: {
-      color: "from-red-600/20 to-red-400/40",
-      accent: "text-red-400",
-      bg: "bg-red-400/10",
-      icon: <Bike className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "BMX Dirt",
-      statLabel: "WINS"
-    },
-    snowboarding: {
-      color: "from-cyan-600/20 to-cyan-400/40",
-      accent: "text-cyan-400",
-      bg: "bg-cyan-400/10",
-      icon: <Mountain className="h-8 w-8 md:h-10 md:w-10" />,
-      label: "Halfpipe",
-      statLabel: "WINS"
-    }
+    nba: { color: "from-orange-600/20 to-orange-900/40", accent: "text-orange-500", bg: "bg-orange-500/10", icon: <Dribbble className="h-8 w-8 md:h-10 md:w-10" />, label: "NBA Arena" },
+    nfl: { color: "from-green-600/20 to-green-900/40", accent: "text-green-500", bg: "bg-green-500/10", icon: <Trophy className="h-8 w-8 md:h-10 md:w-10" />, label: "NFL Gridiron" },
+    hockey: { color: "from-cyan-600/20 to-cyan-900/40", accent: "text-cyan-400", bg: "bg-cyan-400/10", icon: <Snowflake className="h-8 w-8 md:h-10 md:w-10" />, label: "Frozen Fortress" },
+    soccer: { color: "from-slate-600/20 to-slate-900/40", accent: "text-white", bg: "bg-white/10", icon: <SoccerIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "Pitch Battle" },
+    ufc: { color: "from-red-600/20 to-red-900/40", accent: "text-red-500", bg: "bg-red-500/10", icon: <Swords className="h-8 w-8 md:h-10 md:w-10" />, label: "The Octagon" },
+    boxing: { color: "from-yellow-600/20 to-yellow-900/40", accent: "text-yellow-500", bg: "bg-yellow-500/10", icon: <BoxingIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "Main Event" },
+    mlb: { color: "from-blue-600/20 to-blue-900/40", accent: "text-blue-500", bg: "bg-blue-500/10", icon: <BaseballIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "Diamond Duel" },
+    tennis: { color: "from-lime-600/20 to-lime-900/40", accent: "text-lime-400", bg: "bg-lime-400/10", icon: <TennisIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "Grand Slam" },
+    pickleball: { color: "from-yellow-600/20 to-yellow-900/40", accent: "text-yellow-500", bg: "bg-yellow-500/10", icon: <PickleballIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "Kitchen Combat" },
+    volleyball: { color: "from-indigo-600/20 to-indigo-900/40", accent: "text-indigo-400", bg: "bg-indigo-400/10", icon: <VolleyballIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "The Net Zone" },
+    golf: { color: "from-emerald-600/20 to-emerald-900/40", accent: "text-emerald-400", bg: "bg-emerald-400/10", icon: <Target className="h-8 w-8 md:h-10 md:w-10" />, label: "Masters Green" },
+    nascar: { color: "from-red-600/20 to-red-900/40", accent: "text-red-500", bg: "bg-red-500/10", icon: <Flag className="h-8 w-8 md:h-10 md:w-10" />, label: "Victory Lane" },
+    surfing: { color: "from-blue-600/20 to-blue-400/40", accent: "text-blue-400", bg: "bg-blue-400/10", icon: <Waves className="h-8 w-8 md:h-10 md:w-10" />, label: "Pipe Masters" },
+    skateboarding: { color: "from-yellow-600/20 to-yellow-400/40", accent: "text-yellow-400", bg: "bg-yellow-400/10", icon: <Zap className="h-8 w-8 md:h-10 md:w-10" />, label: "Skate Park" },
+    bmx: { color: "from-red-600/20 to-red-400/40", accent: "text-red-400", bg: "bg-red-400/10", icon: <Bike className="h-8 w-8 md:h-10 md:w-10" />, label: "BMX Dirt" },
+    snowboarding: { color: "from-cyan-600/20 to-cyan-400/40", accent: "text-cyan-400", bg: "bg-cyan-400/10", icon: <Mountain className="h-8 w-8 md:h-10 md:w-10" />, label: "Halfpipe" }
   };
 
   const theme = themes[sportId as keyof typeof themes] || themes.nba;
@@ -221,56 +117,31 @@ function ArenaContent({ gameId }: { gameId: string }) {
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      toast({
-        title: "Arena Link Archived",
-        description: "Coordinate link saved to clipboard.",
-      });
-    } catch (err) {
-      console.error("Failed to copy link", err);
-    }
+      toast({ title: "Arena Link Archived", description: "Coordinate link saved to clipboard." });
+    } catch (err) { console.error("Failed to copy link", err); }
 
     if (!arenaRef.current) return;
-    
-    toast({
-      title: "Capturing Arena...",
-      description: "Preparing your playmaker highlight.",
-    });
+    toast({ title: "Capturing Arena...", description: "Preparing your playmaker highlight." });
 
     try {
-      const canvas = await html2canvas(arenaRef.current, {
-        useCORS: true,
-        backgroundColor: "#0D1219",
-        scale: 2,
-        logging: false,
-      });
-      
+      const canvas = await html2canvas(arenaRef.current, { useCORS: true, backgroundColor: "#0D1219", scale: 2, logging: false });
       const image = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = image;
       link.download = `playmakers-showdown-${gameId}.png`;
       link.click();
-
-      toast({
-        title: "Arena Captured!",
-        description: "Showdown highlight downloaded to your device.",
-      });
+      toast({ title: "Arena Captured!", description: "Showdown highlight downloaded to your device." });
     } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Capture Failed",
-        description: "Could not generate screenshot for sharing.",
-      });
+      toast({ variant: "destructive", title: "Capture Failed", description: "Could not generate screenshot for sharing." });
     }
   };
 
-  if (isUserLoading) {
+  if (isUserLoading || isGameLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center space-y-4">
           <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
-          <p className="font-headline font-bold uppercase tracking-widest text-muted-foreground animate-pulse">
-            Accessing Arena Coordinates...
-          </p>
+          <p className="font-headline font-bold uppercase tracking-widest text-muted-foreground animate-pulse">Accessing Arena Coordinates...</p>
         </div>
       </div>
     );
@@ -306,48 +177,71 @@ function ArenaContent({ gameId }: { gameId: string }) {
               </div>
               <div className="space-y-1 min-w-0 flex-1">
                 <Badge className="bg-white/10 text-white font-bold uppercase text-[9px] md:text-[10px] tracking-widest py-0.5 md:py-1 border-none">{theme.label}</Badge>
-                <h1 className="font-headline text-xl sm:text-3xl md:text-5xl font-bold uppercase tracking-tighter text-white break-all leading-tight">{gameId}</h1>
+                <h1 className="font-headline text-xl sm:text-3xl md:text-5xl font-bold uppercase tracking-tighter text-white break-all leading-tight">{game?.name || "LIVE EVENT"}</h1>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] md:text-[11px] text-muted-foreground font-bold uppercase tracking-widest pt-1 md:pt-2">
-                  <span className="flex items-center gap-1.5 text-accent"><Clock className="h-3 w-3 md:h-3.5 md:w-3.5" /> LIVE SHOWDOWN</span>
-                  <span className="flex items-center gap-1.5"><Users className="h-3 w-3 md:h-3.5 md:w-3.5" /> 2/2 PLAYMAKERS</span>
+                  <span className={cn("flex items-center gap-1.5", status === 'Live' ? 'text-accent' : 'text-muted-foreground')}>
+                    <Clock className={cn("h-3 w-3 md:h-3.5 md:w-3.5", status === 'Live' && 'animate-pulse')} /> 
+                    {status === 'Live' ? 'LIVE SHOWDOWN' : 'WAITING FOR OPPONENT'}
+                  </span>
+                  <span className="flex items-center gap-1.5"><Users className="h-3 w-3 md:h-3.5 md:w-3.5" /> {status === 'Live' ? '2/2' : '1/2'} PLAYMAKERS</span>
                   <span className={cn("flex items-center gap-1.5 font-bold", theme.accent)}>
                     <Zap className="h-3.5 w-3.5 md:h-4 md:w-4 fill-current" />
-                    {(parseInt(fee) * 2).toLocaleString()} {currency.toUpperCase()} PRIZE
+                    {(fee * 2).toLocaleString()} {currency.toUpperCase()} PRIZE
                   </span>
                 </div>
               </div>
             </div>
-            <Button 
-              onClick={handleShare}
-              className="w-full md:w-auto font-bold uppercase tracking-widest bg-white/5 hover:bg-white/10 border border-white/10 h-12 px-6 shadow-xl"
-            >
+            <Button onClick={handleShare} className="w-full md:w-auto font-bold uppercase tracking-widest bg-white/5 hover:bg-white/10 border border-white/10 h-12 px-6 shadow-xl">
               <Camera className="mr-2 h-4 w-4" /> Share Game
             </Button>
           </header>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 items-start">
             <div className="lg:col-span-2 space-y-6 md:space-y-8">
-              <Card className="bg-[#0D1219] border-[#1F2937] border-2 overflow-hidden rounded-xl">
-                <CardContent className="p-4 md:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-4 md:gap-6 w-full sm:w-auto">
-                    <div className="h-12 w-12 md:h-16 md:w-16 rounded-full bg-[#1A232E]/40 flex items-center justify-center border border-[#374151] shrink-0">
-                      <Trophy className="h-5 w-5 md:h-7 md:w-7 text-accent" />
+              {/* Participant Status */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* You */}
+                <Card className="bg-[#0D1219] border-[#1F2937] border-2 overflow-hidden rounded-xl">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
+                        <UserCheck className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black text-primary uppercase tracking-widest">You (Challenger)</p>
+                        <h3 className="font-headline text-lg font-bold text-white uppercase">{myPick || "ELITE PICK"}</h3>
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <p className="text-[10px] md:text-[11px] font-black text-accent uppercase tracking-[0.25em] mb-0.5 md:mb-1">Your Prediction</p>
-                      <h2 className="font-headline text-2xl md:text-4xl font-bold text-white uppercase tracking-tighter truncate">{myPick}</h2>
+                    <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary font-bold uppercase text-[8px] tracking-widest w-fit">
+                      LOCKED IN
                     </div>
-                  </div>
-                  <div className="w-full sm:w-auto text-center px-6 py-2 rounded-full border border-accent/40 text-accent font-black uppercase tracking-[0.15em] text-[9px] md:text-[10px]">
-                    LOCKED IN
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+
+                {/* Opponent */}
+                <Card className={cn("border-2 overflow-hidden rounded-xl transition-all", status === 'Live' ? 'bg-[#0D1219] border-[#1F2937]' : 'bg-[#0D1219]/40 border-white/5 opacity-60')}>
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className={cn("h-10 w-10 rounded-full flex items-center justify-center border", status === 'Live' ? 'bg-accent/20 border-accent/30' : 'bg-secondary/40 border-white/10')}>
+                        {status === 'Live' ? <UserCheck className="h-5 w-5 text-accent" /> : <Loader2 className="h-5 w-5 text-muted-foreground animate-spin" />}
+                      </div>
+                      <div>
+                        <p className={cn("text-[10px] font-black uppercase tracking-widest", status === 'Live' ? 'text-accent' : 'text-muted-foreground')}>Opponent</p>
+                        <h3 className="font-headline text-lg font-bold text-white uppercase italic">{status === 'Live' ? (opponentPick || "ELITE PICK") : "Awaiting Entry..."}</h3>
+                      </div>
+                    </div>
+                    <div className={cn("px-3 py-1 rounded-full font-bold uppercase text-[8px] tracking-widest w-fit border", status === 'Live' ? 'bg-accent/10 border-accent/20 text-accent' : 'bg-secondary/20 border-white/10 text-muted-foreground')}>
+                      {status === 'Live' ? 'LOCKED IN' : 'INVITE SENT'}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
               
-              {/* Main content area expanded for single-card focus */}
               <div className="p-8 rounded-3xl bg-card/20 border border-dashed border-white/5 flex flex-col items-center justify-center text-center space-y-4">
-                <Zap className="h-12 w-12 text-accent/20" />
-                <p className="font-headline text-xl font-bold uppercase text-muted-foreground/40 tracking-widest italic">Live Arena Feed Active</p>
+                <Zap className={cn("h-12 w-12", status === 'Live' ? 'text-accent' : 'text-accent/20')} />
+                <p className="font-headline text-xl font-bold uppercase text-muted-foreground/40 tracking-widest italic">
+                  {status === 'Live' ? 'Live Arena Feed Active' : 'Waiting for Showdown Initialization'}
+                </p>
               </div>
             </div>
 
@@ -356,14 +250,22 @@ function ArenaContent({ gameId }: { gameId: string }) {
                 <h4 className="font-headline font-bold uppercase tracking-widest text-[9px] md:text-[10px] text-muted-foreground mb-4 md:mb-6">Arena Intel</h4>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center text-sm">
+                    <span className="text-white/60">Invite Code</span>
+                    <span className="font-mono font-bold text-accent">{game?.inviteCode || "------"}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-white/60">Established</span>
+                    <span className="font-bold text-white flex items-center gap-1.5"><Timer className="h-3 w-3" /> {game?.createdAt ? new Date(game.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "N/A"}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
                     <span className="text-white/60">Prize Split</span>
-                    <span className="font-bold text-accent">Winner Take All</span>
+                    <span className="font-bold text-accent uppercase text-[10px]">Winner Take All</span>
                   </div>
                   <div className="flex flex-col gap-2 pt-4 border-t border-white/5">
                     <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-white/60">Total Reward Pool</span>
                     <div className={cn("flex items-center gap-2 font-bold", theme.accent)}>
                       <Zap className="h-4 w-4 md:h-5 md:w-5 fill-current" />
-                      <span className="font-headline text-xl md:text-2xl">{(parseInt(fee) * 2).toLocaleString()} {currency.toUpperCase()} POOL</span>
+                      <span className="font-headline text-xl md:text-2xl">{(fee * 2).toLocaleString()} {currency.toUpperCase()} POOL</span>
                     </div>
                   </div>
                 </div>
@@ -371,13 +273,13 @@ function ArenaContent({ gameId }: { gameId: string }) {
 
               <div className="p-5 md:p-6 rounded-2xl bg-secondary/10 border border-dashed border-white/10 space-y-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <Target className={`h-4 w-4 ${theme.accent}`} />
-                  <h5 className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-white">Showdown Rules</h5>
+                  <Info className={`h-4 w-4 ${theme.accent}`} />
+                  <h5 className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-white">Showdown Strategy</h5>
                 </div>
                 <ul className="space-y-3 text-[10px] md:text-[11px] text-muted-foreground font-medium leading-relaxed">
-                  <li className="flex gap-2"><span>•</span> <span>Winner determined by official provider score at arena close.</span></li>
-                  <li className="flex gap-2"><span>•</span> <span>Scoring updates trigger every 30 seconds via global satellite feed.</span></li>
-                  <li className="flex gap-2"><span>•</span> <span>In the event of an arena tie, stakes are returned to all playmakers.</span></li>
+                  <li className="flex gap-2"><span>•</span> <span>Counter-picks are permitted until the arena status changes to LIVE.</span></li>
+                  <li className="flex gap-2"><span>•</span> <span>The winner is verified via official provider scores once the event reaches FINAL.</span></li>
+                  <li className="flex gap-2"><span>•</span> <span>Stakes are automatically escrowed in the Arena Bank upon challenge launch.</span></li>
                 </ul>
               </div>
             </aside>
