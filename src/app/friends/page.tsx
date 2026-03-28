@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";
@@ -7,11 +8,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UserPlus, Search, Trophy, Lock, Loader2 } from "lucide-react";
+import { UserPlus, Search, Trophy, Lock, Loader2, Trash2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useUser } from "@/firebase";
+import { useToast } from "@/hooks/use-toast";
 
-const friends = [
+const initialFriends = [
   { id: 'f1', name: "Jordan 'Swish' Smith", status: "Online", wins: 42, avatar: "https://picsum.photos/seed/jordan/100/100" },
   { id: 'f2', name: "Sarah 'Quarterback' Jones", status: "In Contest", wins: 28, avatar: "https://picsum.photos/seed/sarah/100/100" },
   { id: 'f3', name: "Mike 'The Putter' Brown", status: "Offline", wins: 15, avatar: "https://picsum.photos/seed/mike/100/100" },
@@ -22,11 +24,26 @@ const friends = [
 
 export default function FriendsPage() {
   const router = useRouter();
+  const { toast } = useToast();
   const { user, isUserLoading } = useUser();
+  const [friendsList, setFriendsList] = useState(initialFriends);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleChallenge = (friendId: string) => {
     router.push(`/games/create?friendId=${friendId}`);
   };
+
+  const handleDeleteFriend = (id: string, name: string) => {
+    setFriendsList(prev => prev.filter(f => f.id !== id));
+    toast({
+      title: "Friend Removed",
+      description: `${name} has been removed from your circle.`,
+    });
+  };
+
+  const filteredFriends = friendsList.filter(f => 
+    f.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   if (isUserLoading) {
     return (
@@ -70,7 +87,12 @@ export default function FriendsPage() {
           <div className="flex gap-2">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Find friends..." className="pl-10 w-[240px] bg-card/50" />
+              <Input 
+                placeholder="Find friends..." 
+                className="pl-10 w-[240px] bg-card/50" 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
             <Button className="font-bold uppercase tracking-wider">
               <UserPlus className="mr-2 h-4 w-4" /> Add Friend
@@ -80,8 +102,17 @@ export default function FriendsPage() {
 
         <ScrollArea className="h-[650px] rounded-3xl border border-white/5 bg-card/20 p-6 shadow-inner">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pr-4">
-            {friends.map((friend) => (
-              <Card key={friend.id} className="bg-card/50 border hover:border-accent/30 transition-all">
+            {filteredFriends.map((friend) => (
+              <Card key={friend.id} className="bg-card/50 border hover:border-accent/30 transition-all group relative">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="absolute top-2 right-2 h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive/10 hover:text-destructive"
+                  onClick={() => handleDeleteFriend(friend.id, friend.name)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+                
                 <CardContent className="p-6">
                   <div className="flex items-center gap-4 mb-6">
                     <Avatar className="h-16 w-16 border-2 border-primary/20">
@@ -115,6 +146,12 @@ export default function FriendsPage() {
                 </CardContent>
               </Card>
             ))}
+            {filteredFriends.length === 0 && (
+              <div className="col-span-full py-20 text-center opacity-40">
+                <Trophy className="h-12 w-12 mx-auto mb-4" />
+                <p className="font-headline font-bold uppercase">No playmakers found</p>
+              </div>
+            )}
           </div>
         </ScrollArea>
       </main>
