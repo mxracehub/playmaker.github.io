@@ -2,6 +2,12 @@
 {
   "placeholderImages": [
     {
+      "id": "hockey-hero",
+      "description": "NHL hockey game action on ice",
+      "imageUrl": "https://picsum.photos/seed/hockey/1200/600",
+      "imageHint": "hockey rink"
+    },
+    {
       "id": "basketball-hero",
       "description": "Professional basketball game action",
       "imageUrl": "https://picsum.photos/seed/basketball/1200/600",

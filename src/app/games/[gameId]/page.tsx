@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Users, Zap, Clock, Share2, Target, Dribbble, Flag, CheckCircle2, Waves, Bike, Mountain, Swords, Timer } from "lucide-react";
+import { Trophy, Users, Zap, Clock, Share2, Target, Dribbble, Flag, CheckCircle2, Waves, Bike, Mountain, Swords, Timer, Snowflake } from "lucide-react";
 
 const BaseballIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -67,6 +67,13 @@ const BoxingIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const HockeyIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M17 3l-2 2-7 7-3-1-2 2 4 4 2-2-1-3 7-7 2-2" />
+    <circle cx="19" cy="5" r="2" />
+  </svg>
+);
+
 export default function GameArenaPage({ params }: { params: { gameId: string } }) {
   const searchParams = useSearchParams();
   const sportId = searchParams.get('sport') || 'nba';
@@ -91,6 +98,14 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       icon: <Trophy className="h-10 w-10" />,
       label: "NFL Gridiron",
       statLabel: "TD / YDS"
+    },
+    hockey: {
+      color: "from-cyan-600/20 to-cyan-900/40",
+      accent: "text-cyan-400",
+      bg: "bg-cyan-400/10",
+      icon: <Snowflake className="h-10 w-10" />,
+      label: "Frozen Fortress",
+      statLabel: "GOALS / AST"
     },
     soccer: {
       color: "from-slate-600/20 to-slate-900/40",

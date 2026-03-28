@@ -34,6 +34,28 @@ const mockAthletes = [
     ]
   },
   {
+    id: "hockey-1",
+    name: "Connor McDavid",
+    team: "Edmonton Oilers",
+    sport: "Hockey",
+    avatar: "https://picsum.photos/seed/mcdavid/400/400",
+    stats: [
+      { label: "Points", value: "132" },
+      { label: "Goals", value: "32" }
+    ]
+  },
+  {
+    id: "hockey-2",
+    name: "Nathan MacKinnon",
+    team: "Colorado Avalanche",
+    sport: "Hockey",
+    avatar: "https://picsum.photos/seed/mackinnon/400/400",
+    stats: [
+      { label: "Points", value: "140" },
+      { label: "Assists", value: "89" }
+    ]
+  },
+  {
     id: "30",
     name: "Lionel Messi",
     team: "Inter Miami",

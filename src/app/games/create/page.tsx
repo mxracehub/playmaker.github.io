@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, Waves, Bike, Mountain, Landmark, CalendarDays, ShieldAlert, Swords } from "lucide-react";
+import { Trophy, Coins, Zap, ShieldCheck, Gamepad2, Users, ArrowRight, Dribbble, Target, Flag, CheckCircle2, Search, Waves, Bike, Mountain, Landmark, CalendarDays, ShieldAlert, Swords, Snowflake } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore, useUser, addDocumentNonBlocking } from "@/firebase";
 import { collection } from "firebase/firestore";
@@ -130,6 +130,34 @@ const sports = [
       "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants", "New York Jets", 
       "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Buccaneers", 
       "Tennessee Titans", "Washington Commanders"
+    ]
+  },
+  { 
+    id: 'hockey', 
+    name: 'Hockey (NHL)', 
+    icon: <Snowflake className="w-5 h-5" />, 
+    color: "text-cyan-400",
+    events: [
+      { id: 'h-e1', name: "NHL Winter Classic 2026", date: "Jan 01, 2026" },
+      { id: 'h-e2', name: "NHL All-Star Game: Florida", date: "Feb 07, 2026" },
+      { id: 'h-e3', name: "Stadium Series: New York", date: "Feb 21, 2026" },
+      { id: 'h-e4', name: "NHL Trade Deadline Day", date: "Mar 06, 2026" },
+      { id: 'h-e5', name: "Stanley Cup Playoffs: Round 1", date: "Apr 20, 2026" },
+      { id: 'h-e6', name: "Conference Finals: Game 1", date: "May 22, 2026" },
+      { id: 'h-e7', name: "Stanley Cup Finals: Game 1", date: "Jun 08, 2026" },
+      { id: 'h-e8', name: "NHL Draft 2026: Las Vegas", date: "Jun 26, 2026" },
+      { id: 'h-e9', name: "NHL Free Agency: Day 1", date: "Jul 01, 2026" },
+      { id: 'h-e10', name: "Global Series: Stockholm", date: "Oct 12, 2026" },
+      { id: 'h-e11', name: "NHL Season Opener 2026/27", date: "Oct 14, 2026" }
+    ],
+    options: [
+      "Anaheim Ducks", "Arizona Coyotes", "Boston Bruins", "Buffalo Sabres", "Calgary Flames", 
+      "Carolina Hurricanes", "Chicago Blackhawks", "Colorado Avalanche", "Columbus Blue Jackets", "Dallas Stars", 
+      "Detroit Red Wings", "Edmonton Oilers", "Florida Panthers", "Los Angeles Kings", "Minnesota Wild", 
+      "Montreal Canadiens", "Nashville Predators", "New Jersey Devils", "New York Islanders", "New York Rangers", 
+      "Ottawa Senators", "Philadelphia Flyers", "Pittsburgh Penguins", "San Jose Sharks", "Seattle Kraken", 
+      "St. Louis Blues", "Tampa Bay Lightning", "Toronto Maple Leafs", "Vancouver Canucks", "Vegas Golden Knights", 
+      "Washington Capitals", "Winnipeg Jets"
     ]
   },
   { 

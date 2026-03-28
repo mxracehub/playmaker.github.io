@@ -15,7 +15,8 @@ import {
   Target,
   Play,
   Swords,
-  Timer
+  Timer,
+  Snowflake
 } from "lucide-react";
 
 const BaseballIcon = ({ className }: { className?: string }) => (
@@ -76,6 +77,13 @@ const BoxingIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const HockeyIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M17 3l-2 2-7 7-3-1-2 2 4 4 2-2-1-3 7-7 2-2" />
+    <circle cx="19" cy="5" r="2" />
+  </svg>
+);
+
 const sports = [
   { 
     id: 'all', 
@@ -94,6 +102,12 @@ const sports = [
     name: 'NFL Gridiron', 
     img: "https://picsum.photos/seed/football/400/250",
     icon: <Trophy className="w-5 h-5 text-green-500" />
+  },
+  { 
+    id: 'hockey', 
+    name: 'NHL Frozen', 
+    img: "https://picsum.photos/seed/hockey/400/250",
+    icon: <Snowflake className="w-5 h-5 text-cyan-400" />
   },
   { 
     id: 'soccer', 
