@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useRef, use, Suspense } from "react";
@@ -235,13 +234,6 @@ function ArenaContent({ gameId }: { gameId: string }) {
                     </div>
                   </CardContent>
                 </Card>
-              </div>
-              
-              <div className="p-8 rounded-3xl bg-card/20 border border-dashed border-white/5 flex flex-col items-center justify-center text-center space-y-4">
-                <Zap className={cn("h-12 w-12", status === 'Live' ? 'text-accent' : 'text-accent/20')} />
-                <p className="font-headline text-xl font-bold uppercase text-muted-foreground/40 tracking-widest italic">
-                  {status === 'Live' ? 'Live Arena Feed Active' : 'Waiting for Showdown Initialization'}
-                </p>
               </div>
             </div>
 
