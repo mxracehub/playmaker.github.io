@@ -173,7 +173,6 @@ export default function Home() {
   const [selectedSport, setSelectedSport] = useState("all");
   const [selectedAthletes, setSelectedAthletes] = useState<string[]>([]);
 
-  // Live Stats Logic
   const db = useFirestore();
   const gamesQuery = useMemoFirebase(() => collection(db, "games"), [db]);
   const { data: games } = useCollection(gamesQuery);
@@ -199,8 +198,8 @@ export default function Home() {
         {/* Hero Section */}
         <section className="mb-12 overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#1a237e] to-[#0d1219] p-8 md:p-12 text-white relative shadow-2xl border-2 border-white/5">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none" />
-          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-12">
-            <div className="max-w-2xl">
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-12">
+            <div className="max-w-xl">
               <h1 className="font-headline text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-none uppercase italic">
                 The Ultimate <br/><span className="text-accent">Playmaker</span> Arena
               </h1>
@@ -221,27 +220,27 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Live Stats Cards - Matching the image */}
-            <div className="flex flex-col gap-6 md:min-w-[280px]">
-              <div className="flex items-center gap-6 bg-white/5 backdrop-blur-2xl px-8 py-6 rounded-[2rem] border border-white/10 shadow-2xl transition-transform hover:scale-105 duration-300">
+            {/* Live Stats Cards - Positioned on the Right Side */}
+            <div className="flex flex-col gap-6 w-full md:w-auto md:min-w-[320px]">
+              <div className="flex items-center gap-6 bg-white/5 backdrop-blur-2xl px-8 py-8 rounded-[2rem] border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
                 <div className="h-14 w-14 rounded-2xl bg-accent/10 flex items-center justify-center border border-accent/20">
                   <Gamepad2 className="h-7 w-7 text-accent" />
                 </div>
                 <div>
                   <p className="text-[10px] text-white/40 font-black uppercase tracking-[0.25em] mb-1">ACTIVE GAMES</p>
-                  <p className="text-4xl font-headline font-bold tracking-tighter italic">
+                  <p className="text-5xl font-headline font-bold tracking-tighter italic">
                     {activeGamesCount.toLocaleString()}
                   </p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-6 bg-white/5 backdrop-blur-2xl px-8 py-6 rounded-[2rem] border border-white/10 shadow-2xl transition-transform hover:scale-105 duration-300">
+              <div className="flex items-center gap-6 bg-white/5 backdrop-blur-2xl px-8 py-8 rounded-[2rem] border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
                 <div className="h-14 w-14 rounded-2xl bg-accent/10 flex items-center justify-center border border-accent/20">
                   <Target className="h-7 w-7 text-accent" />
                 </div>
                 <div>
                   <p className="text-[10px] text-white/40 font-black uppercase tracking-[0.25em] mb-1">WINNERS TODAY</p>
-                  <p className="text-4xl font-headline font-bold tracking-tighter italic">
+                  <p className="text-5xl font-headline font-bold tracking-tighter italic">
                     {winnersTodayCount.toLocaleString()}
                   </p>
                 </div>
