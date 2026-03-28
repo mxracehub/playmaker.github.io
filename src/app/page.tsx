@@ -109,7 +109,7 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Tighter Live Stats Cards - Smaller for shorter page */}
+            {/* Tighter Live Stats Cards - Compacted for shorter page */}
             <div className="flex flex-col gap-2 w-full md:w-auto md:min-w-[200px]">
               <div className="flex items-center gap-3 bg-white/5 backdrop-blur-2xl px-4 py-3 rounded-2xl border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
                 <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center border border-accent/20">
