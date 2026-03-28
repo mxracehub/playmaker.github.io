@@ -110,15 +110,23 @@ const sports = [
     icon: <Trophy className="w-5 h-5" />, 
     color: "text-green-500",
     events: [
-      { id: 'e4', name: "Super Bowl LX", date: "Feb 08, 2026" },
-      { id: 'e5', name: "Chiefs @ Eagles (Season Opener)", date: "Sep 10, 2026" },
-      { id: 'e6', name: "Cowboys @ Giants (Thanksgiving)", date: "Nov 26, 2026" }
+      { id: 'nfl-e1', name: "Super Bowl LX (San Francisco)", date: "Feb 08, 2026" },
+      { id: 'nfl-e2', name: "NFL Draft 2026: Day 1", date: "Apr 23, 2026" },
+      { id: 'nfl-e3', name: "Hall of Fame Game: Canton", date: "Aug 06, 2026" },
+      { id: 'nfl-e4', name: "Chiefs @ Eagles (Season Opener)", date: "Sep 10, 2026" },
+      { id: 'nfl-e5', name: "Jets @ Dolphins (Monday Night)", date: "Sep 21, 2026" },
+      { id: 'nfl-e6', name: "London Series: Game 1 (Tottenham)", date: "Oct 11, 2026" },
+      { id: 'nfl-e7', name: "49ers @ Seahawks (Divisional Battle)", date: "Oct 25, 2026" },
+      { id: 'nfl-e8', name: "Munich Game: International Series", date: "Nov 08, 2026" },
+      { id: 'nfl-e9', name: "Cowboys @ Giants (Thanksgiving)", date: "Nov 26, 2026" },
+      { id: 'nfl-e10', name: "Lions @ Packers (Holiday Clash)", date: "Dec 13, 2026" },
+      { id: 'nfl-e11', name: "Christmas Triple Header", date: "Dec 25, 2026" }
     ],
     options: [
       "Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills", "Carolina Panthers", 
       "Chicago Bears", "Cincinnati Bengals", "Cleveland Browns", "Dallas Cowboys", "Denver Broncos", 
       "Detroit Lions", "Green Bay Packers", "Houston Texans", "Indianapolis Colts", "Jacksonville Jaguars", 
-      "Kansas City Chiefs", "Las Vegas Raiders", "Los Angeles Chargers", "Los Los Rams", "Miami Dolphins", 
+      "Kansas City Chiefs", "Las Vegas Raiders", "Los Angeles Chargers", "Los Angeles Rams", "Miami Dolphins", 
       "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants", "New York Jets", 
       "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Buccaneers", 
       "Tennessee Titans", "Washington Commanders"
