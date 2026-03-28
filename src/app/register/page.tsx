@@ -209,24 +209,24 @@ export default function RegisterPage() {
           </Link>
         </div>
 
-        <Card className="bg-card/50 backdrop-blur-xl border-white/5 shadow-2xl">
-          <CardHeader className="space-y-1 text-center">
-            <CardTitle className="text-3xl font-headline font-bold uppercase tracking-tight">Join the Elite</CardTitle>
-            <CardDescription className="text-muted-foreground">
+        <Card className="bg-card/50 backdrop-blur-xl border-white/5 shadow-2xl overflow-hidden">
+          <CardHeader className="space-y-2 text-center pb-8 pt-8">
+            <CardTitle className="text-4xl font-headline font-bold uppercase tracking-tight text-white">JOIN THE ELITE</CardTitle>
+            <CardDescription className="text-muted-foreground font-medium text-sm">
               Create your profile and start challenging friends
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSignUp}>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Email</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input 
                     id="email" 
                     type="email" 
-                    placeholder="name@example.com" 
-                    className="pl-10 bg-secondary/30 border-white/5" 
+                    placeholder="mxracehub@proton.me" 
+                    className="pl-10 h-12 bg-secondary/30 border-white/5 text-white" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -234,33 +234,34 @@ export default function RegisterPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" id="password-label" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Password</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input 
                     id="password" 
                     type="password" 
-                    className="pl-10 bg-secondary/30 border-white/5" 
+                    placeholder="••••••"
+                    className="pl-10 h-12 bg-secondary/30 border-white/5 text-white" 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                 </div>
               </div>
-              <p className="text-[10px] text-muted-foreground leading-tight px-1">
+              <p className="text-[10px] text-muted-foreground leading-relaxed px-1 text-center italic">
                 By signing up, you agree to our Terms of Service and Privacy Policy. Must be 18+ to enter sweepstakes.
               </p>
             </CardContent>
-            <CardFooter className="flex flex-col gap-4">
-              <Button type="submit" disabled={isVerifying} className="w-full h-12 font-bold uppercase tracking-wider text-lg">
-                {isVerifying ? <Loader2 className="animate-spin" /> : <>Create Account <UserCircle className="ml-2 h-5 w-5" /></>}
+            <CardFooter className="flex flex-col gap-6 pb-10">
+              <Button type="submit" disabled={isVerifying} className="w-full h-14 font-headline text-xl font-bold uppercase tracking-widest bg-primary text-white hover:bg-primary/90 shadow-xl shadow-primary/20">
+                {isVerifying ? <Loader2 className="animate-spin" /> : <>CREATE ACCOUNT</>}
               </Button>
-              <div className="flex items-center justify-center gap-2 text-[10px] text-muted-foreground uppercase font-bold tracking-widest">
-                <ShieldCheck className="h-3 w-3 text-accent" /> Secured by reCAPTCHA Enterprise
+              <div className="flex items-center justify-center gap-2 text-[9px] text-muted-foreground uppercase font-black tracking-[0.2em]">
+                <ShieldCheck className="h-3 w-3 text-accent" /> SECURED BY RECAPTCHA ENTERPRISE
               </div>
-              <p className="text-center text-sm text-muted-foreground">
+              <p className="text-center text-xs text-muted-foreground font-medium">
                 Already a Playmaker?{" "}
-                <Link href="/login" className="text-accent font-bold hover:underline">Sign In</Link>
+                <Link href="/login" className="text-accent font-bold hover:underline ml-1">Sign In</Link>
               </p>
             </CardFooter>
           </form>
