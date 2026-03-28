@@ -141,20 +141,10 @@ export default function FriendsPage() {
             <h1 className="font-headline text-3xl font-bold uppercase tracking-tight">Your <span className="text-accent">Friends</span></h1>
             <p className="text-muted-foreground">Challenge your circle and dominate the leaderboards</p>
           </div>
-          <div className="flex gap-2">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input 
-                placeholder="Filter current friends..." 
-                className="pl-10 w-[240px] bg-card/50 border-white/10" 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            
+          <div className="flex flex-col gap-3 min-w-[280px]">
             <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="font-bold uppercase tracking-wider">
+                <Button className="w-full h-12 font-bold uppercase tracking-wider bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
                   <UserPlus className="mr-2 h-4 w-4" /> Add Friend
                 </Button>
               </DialogTrigger>
@@ -213,6 +203,16 @@ export default function FriendsPage() {
                 </div>
               </DialogContent>
             </Dialog>
+
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input 
+                placeholder="Filter current friends..." 
+                className="pl-10 w-full bg-card/50 border-white/10" 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
           </div>
         </div>
 
