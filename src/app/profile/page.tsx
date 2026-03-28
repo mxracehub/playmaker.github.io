@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trophy, Settings, Wallet, History, Star, Gamepad2, Landmark, Coins, Bell, Zap, ArrowRight, Check, X } from "lucide-react";
+import { Trophy, Settings, Wallet, History, Star, Gamepad2, Landmark, Coins, Bell, Zap, ArrowRight, Check, X, DollarSign } from "lucide-react";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { cn } from "@/lib/utils";
@@ -108,7 +108,7 @@ export default function ProfilePage() {
                 </Link>
                 <Link href="/exchange" className="w-full">
                   <Button variant="outline" className="w-full font-bold uppercase tracking-wider border-accent text-accent">
-                    Redeem SC
+                    <DollarSign className="mr-2 h-4 w-4 text-green-500" /> Redeem SC
                   </Button>
                 </Link>
               </div>
