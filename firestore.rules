@@ -35,7 +35,7 @@ service cloud.firestore {
      * We use a broad read permission to ensure collection listing is allowed for visitors.
      */
     match /games/{gameId} {
-      allow read: if true;
+      allow list, get: if true;
       allow create: if isSignedIn();
       allow update: if isSignedIn() && (
         request.auth.uid == resource.data.creatorId || 

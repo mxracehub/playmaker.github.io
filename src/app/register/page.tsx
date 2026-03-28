@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Trophy, Mail, Lock, UserCircle, ShieldCheck, ArrowLeft, Loader2 } from "lucide-react";
+import { Trophy, Mail, Lock, ShieldCheck, ArrowLeft, Loader2 } from "lucide-react";
 import { useAuth, useUser, initiateEmailSignUp, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -193,12 +193,9 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden px-4">
-      <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent/10 blur-[120px] rounded-full" />
-      
-      <div className="w-full max-w-md z-10">
-        <div className="flex justify-center mb-8">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0D1219] px-4 py-20">
+      <div className="w-full max-w-md flex-1 flex flex-col justify-center">
+        <div className="flex justify-center mb-12">
           <Link href="/" className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary shadow-xl shadow-primary/20">
               <Trophy className="h-7 w-7 text-white" />
@@ -209,54 +206,54 @@ export default function RegisterPage() {
           </Link>
         </div>
 
-        <Card className="bg-card/50 backdrop-blur-xl border-white/5 shadow-2xl overflow-hidden">
-          <CardHeader className="space-y-2 text-center pb-8 pt-8">
+        <Card className="bg-card/30 backdrop-blur-sm border-white/5 shadow-2xl overflow-hidden mb-12">
+          <CardHeader className="space-y-2 text-center pb-8 pt-10">
             <CardTitle className="text-4xl font-headline font-bold uppercase tracking-tight text-white">JOIN THE ELITE</CardTitle>
             <CardDescription className="text-muted-foreground font-medium text-sm">
               Create your profile and start challenging friends
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSignUp}>
-            <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Email</Label>
+            <CardContent className="space-y-8">
+              <div className="space-y-3">
+                <Label htmlFor="email" className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground ml-1">EMAIL</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input 
                     id="email" 
                     type="email" 
-                    placeholder="mxracehub@proton.me" 
-                    className="pl-10 h-12 bg-secondary/30 border-white/5 text-white" 
+                    placeholder="bradyprice17@gmail.com" 
+                    className="pl-12 h-14 bg-secondary/30 border-white/5 text-white text-base rounded-xl" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="password" id="password-label" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Password</Label>
+              <div className="space-y-3">
+                <Label htmlFor="password" id="password-label" className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground ml-1">PASSWORD</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input 
                     id="password" 
                     type="password" 
                     placeholder="••••••"
-                    className="pl-10 h-12 bg-secondary/30 border-white/5 text-white" 
+                    className="pl-12 h-14 bg-secondary/30 border-white/5 text-white text-base rounded-xl" 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                 </div>
               </div>
-              <p className="text-[10px] text-muted-foreground leading-relaxed px-1 text-center italic">
+              <p className="text-[10px] text-muted-foreground leading-relaxed px-4 text-center italic">
                 By signing up, you agree to our Terms of Service and Privacy Policy. Must be 18+ to enter sweepstakes.
               </p>
             </CardContent>
-            <CardFooter className="flex flex-col gap-6 pb-10">
-              <Button type="submit" disabled={isVerifying} className="w-full h-14 font-headline text-xl font-bold uppercase tracking-widest bg-primary text-white hover:bg-primary/90 shadow-xl shadow-primary/20">
+            <CardFooter className="flex flex-col gap-6 pb-12">
+              <Button type="submit" disabled={isVerifying} className="w-full h-16 font-headline text-xl font-bold uppercase tracking-[0.15em] bg-primary text-white hover:bg-primary/90 shadow-xl shadow-primary/20 rounded-xl">
                 {isVerifying ? <Loader2 className="animate-spin" /> : <>CREATE ACCOUNT</>}
               </Button>
-              <div className="flex items-center justify-center gap-2 text-[9px] text-muted-foreground uppercase font-black tracking-[0.2em]">
+              <div className="flex items-center justify-center gap-2 text-[9px] text-muted-foreground uppercase font-black tracking-[0.25em]">
                 <ShieldCheck className="h-3 w-3 text-accent" /> SECURED BY RECAPTCHA ENTERPRISE
               </div>
               <p className="text-center text-xs text-muted-foreground font-medium">
