@@ -220,152 +220,142 @@ export default function GameArenaPage({ params }: { params: { gameId: string } }
       <Navbar />
       
       {/* Sport Specific Gradient */}
-      <div className={`absolute top-0 inset-x-0 h-96 bg-gradient-to-b ${theme.color} to-transparent -z-10`} />
+      <div className={`absolute top-0 inset-x-0 h-[500px] bg-gradient-to-b ${theme.color} to-transparent -z-10 opacity-40`} />
 
       <main className="mx-auto max-w-6xl px-4 py-12">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Main Arena Content */}
-          <div className="flex-1 space-y-8">
-            <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className={`h-16 w-16 rounded-2xl ${theme.bg} border border-white/10 flex items-center justify-center shadow-2xl`}>
-                    <div className={theme.accent}>{theme.icon}</div>
-                  </div>
-                  <div>
-                    <Badge className="bg-white/10 text-white font-bold uppercase mb-1">{theme.label}</Badge>
-                    <h1 className="font-headline text-4xl font-bold uppercase tracking-tight">{params.gameId}</h1>
-                  </div>
-                </div>
-                <div className="flex items-center gap-6 text-sm text-muted-foreground font-medium">
-                  <span className="flex items-center gap-1.5 font-bold text-accent animate-pulse"><Clock className="h-4 w-4" /> LIVE SHOWDOWN</span>
-                  <span className="flex items-center gap-1.5"><Users className="h-4 w-4" /> 2/2 PLAYMAKERS</span>
-                  <span className={`flex items-center gap-1.5 font-bold ${theme.accent}`}>
-                    <Zap className="h-4 w-4" /> {parseInt(fee) * 2} {currency.toUpperCase()} PRIZE POOL
+        <div className="flex flex-col gap-10">
+          {/* Header Section */}
+          <header className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+            <div className="flex items-center gap-6">
+              <div className="h-20 w-20 rounded-2xl bg-card border border-white/10 flex items-center justify-center shadow-2xl">
+                <div className={theme.accent}>{theme.icon}</div>
+              </div>
+              <div className="space-y-1">
+                <Badge className="bg-white/10 text-white font-bold uppercase text-[10px] tracking-widest py-1 border-none">{theme.label}</Badge>
+                <h1 className="font-headline text-5xl font-bold uppercase tracking-tighter text-white">{params.gameId}</h1>
+                <div className="flex items-center gap-6 text-[11px] text-muted-foreground font-bold uppercase tracking-widest pt-2">
+                  <span className="flex items-center gap-2 text-accent"><Clock className="h-3.5 w-3.5" /> LIVE SHOWDOWN</span>
+                  <span className="flex items-center gap-2"><Users className="h-3.5 w-3.5" /> 2/2 PLAYMAKERS</span>
+                  <span className={`flex items-center gap-2 ${theme.accent}`}>
+                    <Zap className="h-3.5 w-3.5 fill-current" /> {parseInt(fee) * 2} {currency.toUpperCase()} PRIZE POOL
                   </span>
                 </div>
               </div>
-              <Button className="font-bold uppercase tracking-wider bg-white/10 hover:bg-white/20 border border-white/10">
-                <Share2 className="mr-2 h-4 w-4" /> Share Game
-              </Button>
-            </header>
+            </div>
+            <Button className="font-bold uppercase tracking-widest bg-white/5 hover:bg-white/10 border border-white/10 h-12 px-6">
+              <Share2 className="mr-2 h-4 w-4" /> Share Game
+            </Button>
+          </header>
 
-            {/* My Locked Selection */}
-            <Card className="bg-accent/5 border-accent/20 border-2 overflow-hidden animate-in zoom-in-95 duration-700">
-               <CardContent className="p-6 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="h-14 w-14 rounded-full bg-accent/20 flex items-center justify-center">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            <div className="lg:col-span-2 space-y-8">
+              {/* My Prediction Card */}
+              <Card className="bg-[#1A232E]/60 backdrop-blur-md border-accent/20 border-2 overflow-hidden">
+                <CardContent className="p-8 flex items-center justify-between">
+                  <div className="flex items-center gap-6">
+                    <div className="h-16 w-16 rounded-full bg-accent/10 flex items-center justify-center border border-accent/20">
                       <Trophy className="h-8 w-8 text-accent" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-accent uppercase tracking-widest">Your Prediction</p>
-                      <h2 className="font-headline text-2xl font-bold text-white uppercase">{myPick}</h2>
+                      <p className="text-[10px] font-bold text-accent uppercase tracking-[0.2em] mb-1">Your Prediction</p>
+                      <h2 className="font-headline text-3xl font-bold text-white uppercase tracking-tight">{myPick}</h2>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <Badge variant="outline" className="border-accent text-accent font-bold">LOCKED IN</Badge>
-                  </div>
-               </CardContent>
-            </Card>
+                  <Badge variant="outline" className="border-accent text-accent font-bold uppercase tracking-widest text-[10px] py-1 px-4 rounded-full">LOCKED IN</Badge>
+                </CardContent>
+              </Card>
 
-            {/* Scoreboard / Roster */}
-            <Card className="bg-card/40 backdrop-blur-xl border-white/5 shadow-2xl overflow-hidden">
-              <CardHeader className="bg-secondary/30 border-b">
-                <CardTitle className="font-headline text-lg uppercase flex items-center gap-2">
-                  <Target className={`h-5 w-5 ${theme.accent}`} />
-                  Live Showdown Standings
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="divide-y divide-white/5">
-                  <div className="p-6 flex items-center justify-between bg-accent/5">
-                    <div className="flex items-center gap-4">
-                      <span className="font-headline font-bold text-2xl text-accent">#01</span>
-                      <Avatar className="h-12 w-12 border-2 border-accent">
-                        <AvatarImage src={`https://picsum.photos/seed/you/100/100`} />
-                        <AvatarFallback>YOU</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-bold text-lg leading-none mb-1">You (Elite_Playmaker)</p>
-                        <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">Pick: {myPick}</p>
+              {/* Standings Card */}
+              <Card className="bg-card/40 backdrop-blur-xl border-white/5 shadow-2xl overflow-hidden rounded-2xl">
+                <CardHeader className="bg-secondary/20 border-b border-white/5 px-8 py-6">
+                  <CardTitle className="font-headline text-sm uppercase flex items-center gap-3 tracking-widest text-white/80">
+                    <div className="h-5 w-5 rounded-full border-2 border-accent flex items-center justify-center">
+                      <div className="h-1.5 w-1.5 bg-accent rounded-full animate-ping" />
+                    </div>
+                    Live Showdown Standings
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="divide-y divide-white/5">
+                    {/* Player Row: You */}
+                    <div className="px-8 py-8 flex items-center justify-between bg-accent/5">
+                      <div className="flex items-center gap-6">
+                        <span className="font-headline font-bold text-3xl text-accent tracking-tighter italic">#01</span>
+                        <div className="relative">
+                          <Avatar className="h-14 w-14 border-2 border-accent shadow-xl">
+                            <AvatarImage src={`https://picsum.photos/seed/you/100/100`} />
+                            <AvatarFallback>YOU</AvatarFallback>
+                          </Avatar>
+                          <div className="absolute -bottom-1 -right-1 bg-accent rounded-full p-1 border-2 border-background">
+                            <CheckCircle2 className="h-3 w-3 text-background" />
+                          </div>
+                        </div>
+                        <div>
+                          <p className="font-bold text-xl leading-none text-white mb-1">You (Elite_Playmaker)</p>
+                          <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">PICK: {myPick}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className={`font-headline text-4xl font-bold ${theme.accent} tracking-tighter`}>154.2</p>
+                        <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1">{theme.statLabel}</p>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className={`font-headline text-3xl font-bold ${theme.accent}`}>154.2</p>
-                      <p className="text-[10px] font-bold text-muted-foreground uppercase">{theme.statLabel}</p>
-                    </div>
-                  </div>
-                  <div className="p-6 flex items-center justify-between hover:bg-white/5 transition-colors">
-                    <div className="flex items-center gap-4">
-                      <span className="font-headline font-bold text-2xl text-muted-foreground">#02</span>
-                      <Avatar className="h-12 w-12 border-2 border-primary/20">
-                        <AvatarImage src={`https://picsum.photos/seed/${challenger}/100/100`} />
-                        <AvatarFallback>CH</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-bold text-lg leading-none mb-1">{challenger}</p>
-                        <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">Pick: Underdog Squad</p>
+
+                    {/* Player Row: Opponent */}
+                    <div className="px-8 py-8 flex items-center justify-between hover:bg-white/5 transition-colors">
+                      <div className="flex items-center gap-6">
+                        <span className="font-headline font-bold text-3xl text-muted-foreground tracking-tighter italic">#02</span>
+                        <Avatar className="h-14 w-14 border-2 border-white/10">
+                          <AvatarImage src={`https://picsum.photos/seed/${challenger}/100/100`} />
+                          <AvatarFallback>CH</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-bold text-xl leading-none text-white/80 mb-1">{challenger}</p>
+                          <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">PICK: Underdog Squad</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-headline text-4xl font-bold text-white/40 tracking-tighter">128.0</p>
+                        <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1">{theme.statLabel}</p>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-headline text-3xl font-bold text-white/60">128.0</p>
-                      <p className="text-[10px] font-bold text-muted-foreground uppercase">{theme.statLabel}</p>
-                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Live Feed */}
-            <div className="space-y-4">
-              <h3 className="font-headline font-bold uppercase text-muted-foreground tracking-widest text-xs flex items-center gap-2">
-                <div className="h-1.5 w-6 bg-accent rounded-full" />
-                Live Arena Feed
-              </h3>
-              <div className="space-y-3">
-                {[
-                  `${myPick} just made a game-changing play! +12.5 pts`,
-                  `${challenger} is trailing by 26.2 points.`,
-                  "Game is entering the final quarter. Hold the line!"
-                ].map((msg, i) => (
-                  <div key={i} className="flex items-center gap-3 p-4 rounded-2xl bg-secondary/20 border border-white/5 text-sm">
-                    <div className={`h-2 w-2 rounded-full ${theme.bg} animate-pulse`} />
-                    <p className="text-muted-foreground font-medium">{msg}</p>
-                  </div>
-                ))}
-              </div>
+                </CardContent>
+              </Card>
             </div>
-          </div>
 
-          {/* Side Stats */}
-          <div className="w-full lg:w-80 space-y-6">
-            <Card className="bg-card/50 border shadow-xl">
-              <CardHeader>
-                <CardTitle className="text-sm font-headline uppercase tracking-widest">Prize Distribution</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="p-4 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase">1st Place (90%)</span>
-                  <span className="font-headline font-bold text-accent">{parseInt(fee) * 1.8} {currency.toUpperCase()}</span>
+            {/* Sidebar Details */}
+            <aside className="space-y-6">
+              <Card className="bg-[#1A232E]/60 border border-white/5 p-6 rounded-2xl">
+                <h4 className="font-headline font-bold uppercase tracking-widest text-[10px] text-muted-foreground mb-6">Arena Intel</h4>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-white/60">Commission</span>
+                    <span className="font-bold text-white">5%</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-white/60">Prize Split</span>
+                    <span className="font-bold text-accent">Winner Take All</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm pt-4 border-t border-white/5">
+                    <span className="text-white/60">Expected Payout</span>
+                    <span className="font-headline font-bold text-xl text-accent">{(parseInt(fee) * 2 * 0.95).toLocaleString()} {currency.toUpperCase()}</span>
+                  </div>
                 </div>
-                <div className="p-4 rounded-xl bg-secondary/30 border border-white/5 flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase">2nd Place (10%)</span>
-                  <span className="font-headline font-bold">{parseInt(fee) * 0.2} {currency.toUpperCase()}</span>
+              </Card>
+
+              <div className="p-6 rounded-2xl bg-secondary/10 border border-dashed border-white/10 space-y-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Target className={`h-4 w-4 ${theme.accent}`} />
+                  <h5 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white">Showdown Rules</h5>
                 </div>
-                <p className="text-[10px] text-center text-muted-foreground italic font-medium">
-                  Forge Ratio: $1.00 = 100 {currency.toUpperCase()}
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-secondary/10 border-dashed border-2 p-6">
-              <h4 className="font-headline font-bold uppercase text-center mb-4">Showdown Rules</h4>
-              <ul className="space-y-3 text-xs text-muted-foreground font-medium">
-                <li className="flex items-start gap-2">• Winner takes 90% of the total prize pool</li>
-                <li className="flex items-start gap-2">• Score updates in real-time from official feeds</li>
-                <li className="flex items-start gap-2">• Tie-breakers split the pool evenly</li>
-              </ul>
-            </Card>
+                <ul className="space-y-3 text-[11px] text-muted-foreground font-medium leading-relaxed">
+                  <li className="flex gap-2"><span>•</span> <span>Winner determined by official provider score at arena close.</span></li>
+                  <li className="flex gap-2"><span>•</span> <span>Scoring updates trigger every 30 seconds via global satellite feed.</span></li>
+                  <li className="flex gap-2"><span>•</span> <span>In the event of an arena tie, stakes are returned to all playmakers.</span></li>
+                </ul>
+              </div>
+            </aside>
           </div>
         </div>
       </main>
