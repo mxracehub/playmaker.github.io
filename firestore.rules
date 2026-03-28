@@ -3,99 +3,49 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * CORE PHILOSOPHY
-     * This ruleset enforces a strict user-ownership and member-participation model. 
-     * Access is granted based on verified identity (Firebase Auth) and participation 
-     * metadata denormalized onto documents.
+     * ARENA SECURITY CORE
+     * Public read is allowed for lobby stats.
+     * Write access is strictly tied to authenticated identity.
      */
 
-    // --- Helper Functions ---
-
-    function isSignedIn() {
-      return request.auth != null;
-    }
-
-    function isOwner(userId) {
-      return isSignedIn() && request.auth.uid == userId;
-    }
-
-    function isExistingOwner(userId) {
-      return resource != null && isOwner(userId);
-    }
-
-    function isAdmin() {
-      return isSignedIn() && exists(/databases/$(database)/documents/adminRoles/$(request.auth.uid));
-    }
-
-    // --- Rules ---
-
-    /**
-     * @description Arena games for the dashboard and stats.
-     * PUBLIC READ is explicitly required for the lobby floor metrics.
-     * We use a broad read permission to ensure collection listing is allowed for visitors.
-     */
     match /games/{gameId} {
-      allow list, get: if true;
-      allow create: if isSignedIn();
-      allow update: if isSignedIn() && (
+      // Explicitly allow public read to resolve dashboard listing errors
+      allow read: if true;
+      
+      allow create: if request.auth != null;
+      allow update: if request.auth != null && (
         request.auth.uid == resource.data.creatorId || 
-        request.auth.uid == resource.data.opponentId || 
-        isAdmin()
+        request.auth.uid == resource.data.opponentId
       );
-      allow delete: if isSignedIn() && (request.auth.uid == resource.data.creatorId || isAdmin());
+      allow delete: if request.auth != null && (
+        request.auth.uid == resource.data.creatorId
+      );
     }
 
-    /**
-     * @description User profiles containing personal details and balances.
-     */
     match /userProfiles/{userId} {
-      allow get: if isOwner(userId);
+      allow get: if request.auth != null && request.auth.uid == userId;
       allow list: if false;
-      allow create: if isOwner(userId);
-      allow update: if isExistingOwner(userId);
-      allow delete: if isExistingOwner(userId);
-
-      match /currencyTransactions/{transactionId} {
-        allow get, list: if isOwner(userId);
-        allow create: if isOwner(userId) && request.resource.data.userId == userId;
-        allow update, delete: if false;
-      }
-
-      match /redemptionRequests/{requestId} {
-        allow get, list: if isOwner(userId) || isAdmin();
-        allow create: if isOwner(userId) && request.resource.data.userId == userId;
-        allow update: if isExistingOwner(userId) || isAdmin();
-        allow delete: if isExistingOwner(userId);
-      }
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if request.auth != null && request.auth.uid == userId;
     }
 
-    /**
-     * @description Publicly readable catalog data.
-     */
-    match /sports/{sportId} {
-      allow get, list: if true;
-      allow create, update, delete: if isAdmin();
-    }
-
-    match /events/{eventId} {
-      allow get, list: if true;
-      allow create, update, delete: if isAdmin();
-    }
-
-    /**
-     * @description Profile syncing and fallback paths.
-     */
     match /users/{userId} {
-      allow get: if isOwner(userId);
+      allow get: if request.auth != null && request.auth.uid == userId;
       allow list: if false;
-      allow create: if isOwner(userId);
-      allow update: if isExistingOwner(userId);
-      allow delete: if isExistingOwner(userId);
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if request.auth != null && request.auth.uid == userId;
     }
 
     match /adminRoles/{userId} {
-      allow get: if isOwner(userId) || isAdmin();
+      allow get: if request.auth != null && request.auth.uid == userId;
       allow list, create, update, delete: if false;
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }
