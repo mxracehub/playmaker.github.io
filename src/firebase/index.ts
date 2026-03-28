@@ -22,11 +22,15 @@ export function initializeFirebase() {
 
     // App Check Initialization with reCAPTCHA Enterprise
     if (typeof window !== 'undefined') {
-      // Enable debug token for local development. 
-      // Look for "AppCheck debug token" in the browser console.
+      /**
+       * ARENA SECURITY SHIELD
+       * In development mode, we enable the debug token bypass.
+       * Look for the "AppCheck debug token" in your browser console to register it 
+       * in the Firebase Console if enforcement is required.
+       */
       if (process.env.NODE_ENV !== 'production') {
         // @ts-ignore
-        self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+        window.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
       }
 
       initializeAppCheck(firebaseApp, {

@@ -1,15 +1,17 @@
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * ARENA SECURITY CORE
+     * ARENA SECURITY CORE v1.2
+     * Resolved: auth/firebase-app-check-token-is-invalid
      * Public read is allowed for lobby stats.
      * Write access is strictly tied to authenticated identity.
      */
 
     match /games/{gameId} {
-      // Explicitly allow public read to resolve dashboard listing errors
+      // Explicitly allow public read (get and list) for lobby dashboard
       allow read: if true;
       
       allow create: if request.auth != null;
