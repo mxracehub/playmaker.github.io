@@ -62,10 +62,6 @@ export default function ProfilePage() {
               <p className="text-muted-foreground mb-6 font-medium italic">"{bio}"</p>
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
                 <div className="flex items-center gap-2 bg-secondary/50 px-4 py-2 rounded-full border border-white/5">
-                  <Star className="h-4 w-4 text-accent fill-accent" />
-                  <span className="text-sm font-bold">4.8 Rating</span>
-                </div>
-                <div className="flex items-center gap-2 bg-secondary/50 px-4 py-2 rounded-full border border-white/5">
                   <Gamepad2 className="h-4 w-4 text-primary" />
                   <span className="text-sm font-bold">128 Games Won</span>
                 </div>
