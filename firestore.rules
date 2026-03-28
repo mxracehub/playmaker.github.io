@@ -8,47 +8,31 @@ service cloud.firestore {
      * Access is granted based on verified identity (Firebase Auth) and participation 
      * metadata denormalized onto documents to ensure high performance and Authorization 
      * Independence.
-     *
-     * DATA STRUCTURE
-     * - User-specific data is nested under /userProfiles/{userId} or associated via a `userId` field.
-     * - Shared data (Games/Contests) uses a flat collection structure with participation IDs.
-     * - Public reference data (Sports, Events) is top-level and read-accessible to all.
      */
 
     // --- Helper Functions ---
 
-    /** @description Checks if the user is authenticated. */
     function isSignedIn() {
       return request.auth != null;
     }
 
-    /** @description Checks if the user is the owner of the document based on the provided UID. */
     function isOwner(userId) {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    /** @description Checks if the user is an owner and the document exists. */
     function isExistingOwner(userId) {
       return resource != null && isOwner(userId);
     }
 
-    /** @description Checks if the authenticated user has an entry in the adminRoles collection. */
     function isAdmin() {
       return isSignedIn() && exists(/databases/$(database)/documents/adminRoles/$(request.auth.uid));
-    }
-
-    /** @description Checks if the user is in a list of participants. */
-    function isParticipant(participantIds) {
-      return isSignedIn() && (request.auth.uid in participantIds);
     }
 
     // --- Rules ---
 
     /**
      * @description Arena games for the dashboard and stats.
-     * @path /games/{gameId}
-     * @allow (get, list) For any user to see arena stats and active showdowns.
-     * @allow (create) If signed in.
+     * Public read is required for the lobby and live arena metrics.
      */
     match /games/{gameId} {
       allow get, list: if true;
@@ -63,7 +47,6 @@ service cloud.firestore {
 
     /**
      * @description User profiles containing personal details and balances.
-     * @path /userProfiles/{userId}
      */
     match /userProfiles/{userId} {
       allow get: if isOwner(userId);
@@ -84,17 +67,6 @@ service cloud.firestore {
         allow update: if isExistingOwner(userId) || isAdmin();
         allow delete: if isExistingOwner(userId);
       }
-    }
-
-    /**
-     * @description Legacy/Alternative path for users (for profile syncing).
-     */
-    match /users/{userId} {
-      allow get: if isOwner(userId);
-      allow list: if false;
-      allow create: if isOwner(userId);
-      allow update: if isExistingOwner(userId);
-      allow delete: if isExistingOwner(userId);
     }
 
     /**
@@ -121,8 +93,16 @@ service cloud.firestore {
     }
 
     /**
-     * @description Admin Roles collection used for DBAC.
+     * @description Legacy/Alternative path for users (for profile syncing).
      */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId);
+      allow update: if isExistingOwner(userId);
+      allow delete: if isExistingOwner(userId);
+    }
+
     match /adminRoles/{userId} {
       allow get: if isOwner(userId) || isAdmin();
       allow list, create, update, delete: if false;

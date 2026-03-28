@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -56,116 +55,6 @@ const mockAthletes = [
       { label: "Points", value: "140" },
       { label: "Assists", value: "89" }
     ]
-  },
-  {
-    id: "30",
-    name: "Lionel Messi",
-    team: "Inter Miami",
-    sport: "Soccer",
-    avatar: "https://picsum.photos/seed/messi/400/400",
-    stats: [
-      { label: "Goals", value: "14" },
-      { label: "Assists", value: "11" }
-    ]
-  },
-  {
-    id: "40",
-    name: "Jon Jones",
-    team: "Heavyweight",
-    sport: "UFC",
-    avatar: "https://picsum.photos/seed/jones/400/400",
-    stats: [
-      { label: "Record", value: "27-1-0" },
-      { label: "KOs", value: "10" }
-    ]
-  },
-  {
-    id: "50",
-    name: "Canelo Alvarez",
-    team: "Super Middle",
-    sport: "Boxing",
-    avatar: "https://picsum.photos/seed/canelo/400/400",
-    stats: [
-      { label: "Wins", value: "61" },
-      { label: "KOs", value: "39" }
-    ]
-  },
-  {
-    id: "20",
-    name: "Carlos Alcaraz",
-    team: "ATP Elite",
-    sport: "Tennis",
-    avatar: "https://picsum.photos/seed/alcaraz/400/400",
-    stats: [
-      { label: "Rank", value: "#3" },
-      { label: "Win Rate", value: "78%" }
-    ]
-  },
-  {
-    id: "21",
-    name: "Ben Johns",
-    team: "PPA Tour",
-    sport: "Pickleball",
-    avatar: "https://picsum.photos/seed/benjohns/400/400",
-    stats: [
-      { label: "Majors", value: "12" },
-      { label: "Win Streak", value: "15" }
-    ]
-  },
-  {
-    id: "22",
-    name: "Annie Drews",
-    team: "Team USA",
-    sport: "Volleyball",
-    avatar: "https://picsum.photos/seed/annie/400/400",
-    stats: [
-      { label: "Kills", value: "452" },
-      { label: "Avg Block", value: "2.1" }
-    ]
-  },
-  {
-    id: "3",
-    name: "John John Florence",
-    team: "WSL Elite",
-    sport: "Surfing",
-    avatar: "https://picsum.photos/seed/jjf/400/400",
-    stats: [
-      { label: "Avg Heat", value: "16.4" },
-      { label: "Wins", value: "2" }
-    ]
-  },
-  {
-    id: "4",
-    name: "Nyjah Huston",
-    team: "X-Games",
-    sport: "Skateboarding",
-    avatar: "https://picsum.photos/seed/nyjah/400/400",
-    stats: [
-      { label: "Best Trick", value: "9.8" },
-      { label: "Medals", value: "15" }
-    ]
-  },
-  {
-    id: "5",
-    name: "Scottie Scheffler",
-    team: "PGA Tour",
-    sport: "Golf",
-    avatar: "https://picsum.photos/seed/scottie/400/400",
-    stats: [
-      { label: "Avg Score", value: "68.2" },
-      { label: "Wins", value: "4" }
-    ]
-  },
-  {
-    id: "6",
-    name: "Kyle Larson",
-    team: "Hendrick Motors",
-    sport: "NASCAR",
-    avatar: "https://picsum.photos/seed/larson/400/400",
-    stats: [
-      { label: "Avg Finish", value: "8.4" },
-      { label: "Top 5s", value: "12" }
-    ]
   }
 ];
 
@@ -220,27 +109,27 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Compact Live Stats Cards - Right Side Positioned */}
-            <div className="flex flex-col gap-3 w-full md:w-auto md:min-w-[240px]">
-              <div className="flex items-center gap-4 bg-white/5 backdrop-blur-2xl px-5 py-4 rounded-[1.25rem] border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
-                <div className="h-10 w-10 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
-                  <Gamepad2 className="h-5 w-5 text-accent" />
+            {/* Tighter Live Stats Cards - Smaller for shorter page */}
+            <div className="flex flex-col gap-2 w-full md:w-auto md:min-w-[200px]">
+              <div className="flex items-center gap-3 bg-white/5 backdrop-blur-2xl px-4 py-3 rounded-2xl border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
+                <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center border border-accent/20">
+                  <Gamepad2 className="h-4 w-4 text-accent" />
                 </div>
                 <div>
-                  <p className="text-[8px] text-white/40 font-black uppercase tracking-[0.25em] mb-0.5">ACTIVE GAMES</p>
-                  <p className="text-3xl font-headline font-bold tracking-tighter italic leading-none">
+                  <p className="text-[7px] text-white/40 font-black uppercase tracking-[0.25em] mb-0.5">ACTIVE GAMES</p>
+                  <p className="text-2xl font-headline font-bold tracking-tighter italic leading-none">
                     {activeGamesCount.toLocaleString()}
                   </p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-4 bg-white/5 backdrop-blur-2xl px-5 py-4 rounded-[1.25rem] border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
-                <div className="h-10 w-10 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
-                  <Target className="h-5 w-5 text-accent" />
+              <div className="flex items-center gap-3 bg-white/5 backdrop-blur-2xl px-4 py-3 rounded-2xl border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
+                <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center border border-accent/20">
+                  <Target className="h-4 w-4 text-accent" />
                 </div>
                 <div>
-                  <p className="text-[8px] text-white/40 font-black uppercase tracking-[0.25em] mb-0.5">WINNERS TODAY</p>
-                  <p className="text-3xl font-headline font-bold tracking-tighter italic leading-none">
+                  <p className="text-[7px] text-white/40 font-black uppercase tracking-[0.25em] mb-0.5">WINNERS TODAY</p>
+                  <p className="text-2xl font-headline font-bold tracking-tighter italic leading-none">
                     {winnersTodayCount.toLocaleString()}
                   </p>
                 </div>
@@ -259,7 +148,7 @@ export default function Home() {
         </div>
 
         {/* Athlete Grid */}
-        <ScrollArea className="h-[650px] rounded-3xl border border-white/5 bg-card/20 p-6 shadow-inner mb-12">
+        <ScrollArea className="h-[600px] rounded-3xl border border-white/5 bg-card/20 p-6 shadow-inner mb-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pr-4">
             {filteredAthletes.map((athlete) => (
               <AthleteCard 
