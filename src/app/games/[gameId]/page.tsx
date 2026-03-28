@@ -293,20 +293,20 @@ function ArenaContent({ gameId }: { gameId: string }) {
   }
 
   return (
-    <div className="min-h-screen pb-24 md:pt-20 bg-background relative overflow-hidden">
+    <div className="min-h-screen pb-24 pt-20 bg-background relative overflow-hidden">
       <Navbar />
       <div className={`absolute top-0 inset-x-0 h-[500px] bg-gradient-to-b ${theme.color} to-transparent -z-10 opacity-40`} />
 
       <main ref={arenaRef} className="mx-auto max-w-6xl px-4 py-8 md:py-12">
         <div className="flex flex-col gap-6 md:gap-10">
           <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-8">
-            <div className="flex items-start md:items-center gap-4 md:gap-6">
+            <div className="flex items-center gap-4 md:gap-6">
               <div className="h-14 w-14 md:h-20 md:w-20 rounded-xl md:rounded-2xl bg-card border border-white/10 flex items-center justify-center shadow-2xl shrink-0">
                 <div className={theme.accent}>{theme.icon}</div>
               </div>
-              <div className="space-y-1 min-w-0">
+              <div className="space-y-1 min-w-0 flex-1">
                 <Badge className="bg-white/10 text-white font-bold uppercase text-[9px] md:text-[10px] tracking-widest py-0.5 md:py-1 border-none">{theme.label}</Badge>
-                <h1 className="font-headline text-2xl sm:text-3xl md:text-5xl font-bold uppercase tracking-tighter text-white break-all leading-tight">{gameId}</h1>
+                <h1 className="font-headline text-xl sm:text-3xl md:text-5xl font-bold uppercase tracking-tighter text-white break-all leading-tight">{gameId}</h1>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] md:text-[11px] text-muted-foreground font-bold uppercase tracking-widest pt-1 md:pt-2">
                   <span className="flex items-center gap-1.5 text-accent"><Clock className="h-3 w-3 md:h-3.5 md:w-3.5" /> LIVE SHOWDOWN</span>
                   <span className="flex items-center gap-1.5"><Users className="h-3 w-3 md:h-3.5 md:w-3.5" /> 2/2 PLAYMAKERS</span>
