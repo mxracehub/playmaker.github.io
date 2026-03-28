@@ -236,6 +236,25 @@ const sports = [
     ], 
     options: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney", "Kyle Busch", "William Byron", "Joey Logano", "Tyler Reddick", "Ross Chastain", "Martin Truex Jr"] 
   },
+  { 
+    id: 'golf', 
+    name: 'Golf Arena', 
+    icon: <Target className="h-5 w-5" />, 
+    color: "text-emerald-400", 
+    events: [
+      { id: 'g-1', name: "WM Phoenix Open", date: "Feb 05, 2026" },
+      { id: 'g-2', name: "The Genesis Invitational", date: "Feb 12, 2026" },
+      { id: 'g-3', name: "The Players Championship", date: "Mar 12, 2026" },
+      { id: 'g-4', name: "The Masters 2026", date: "Apr 09, 2026" },
+      { id: 'g-5', name: "PGA Championship", date: "May 14, 2026" },
+      { id: 'g-6', name: "The Memorial Tournament", date: "Jun 04, 2026" },
+      { id: 'g-7', name: "U.S. Open (Shinnecock)", date: "Jun 18, 2026" },
+      { id: 'g-8', name: "The Open (Royal Birkdale)", date: "Jul 16, 2026" },
+      { id: 'g-9', name: "Tour Championship", date: "Aug 27, 2026" },
+      { id: 'g-10', name: "Ryder Cup (Adare Manor)", date: "Sep 25, 2026" },
+    ], 
+    options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Xander Schauffele", "Ludvig Åberg", "Tiger Woods", "Brooks Koepka", "Jordan Spieth", "Collin Morikawa"] 
+  },
   { id: 'ufc', name: 'UFC', icon: <Swords className="w-5 h-5" />, color: "text-red-600", events: [{ id: 'ufc-e1', name: "UFC 300 Global", date: "Apr 2026" }], options: ["Jon Jones", "Alex Pereira", "Islam Makhachev", "Leon Edwards"] },
   { id: 'boxing', name: 'Boxing', icon: <BoxingIcon className="w-5 h-5" />, color: "text-yellow-600", events: [{ id: 'box-e1', name: "Heavyweight Title", date: "May 2026" }], options: ["Tyson Fury", "Oleksandr Usyk", "Anthony Joshua", "Canelo Alvarez"] },
   { id: 'tennis', name: 'Tennis', icon: <TennisIcon className="w-5 h-5" />, color: "text-lime-400", events: [{ id: 'ten-e1', name: "Wimbledon Final", date: "Jul 2026" }], options: ["Djokovic", "Alcaraz", "Sinner", "Swiatek", "Gauff"] },
@@ -245,7 +264,6 @@ const sports = [
   { id: 'skateboarding', name: 'Skate', icon: <Zap className="w-5 h-5" />, color: "text-yellow-400", events: [{ id: 'skate-e1', name: "X Games Vert", date: "Jul 2026" }], options: ["Tony Hawk", "Nyjah Huston", "Yuto Horigome"] },
   { id: 'bmx', name: 'BMX', icon: <Bike className="w-5 h-5" />, color: "text-red-400", events: [{ id: 'bmx-e1', name: "BMX Dirt Open", date: "Aug 2026" }], options: ["Logan Martin", "Marcus Christopher", "Ryan Williams"] },
   { id: 'snowboarding', name: 'Snowboard', icon: <Mountain className="w-5 h-5" />, color: "text-cyan-400", events: [{ id: 'snow-e1', name: "Burton US Open", date: "Mar 2026" }], options: ["Shaun White", "Chloe Kim", "Mark McMorris"] },
-  { id: 'golf', name: 'Golf', icon: <Target className="h-5 w-5" />, color: "text-emerald-400", events: [{ id: 'golf-e1', name: "The Masters 2026", date: "Apr 2026" }], options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Tiger Woods"] },
 ];
 
 function CreateGameForm() {
