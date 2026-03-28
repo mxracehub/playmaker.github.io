@@ -23,9 +23,9 @@ const sports = [
     icon: <Dribbble className="w-5 h-5" />, 
     color: "text-orange-500",
     events: [
-      { id: 'e1', name: "Lakers @ Warriors", date: "Tonight 7:30 PM" },
-      { id: 'e2', name: "Celtics @ Bucks", date: "Tomorrow 8:00 PM" },
-      { id: 'e3', name: "Knicks @ Nets", date: "Friday 7:00 PM" }
+      { id: 'e1', name: "Lakers @ Warriors (Opening Night)", date: "Oct 24, 2026" },
+      { id: 'e2', name: "Celtics @ Bucks (Christmas Special)", date: "Dec 25, 2026" },
+      { id: 'e3', name: "NBA All-Star Game 2026", date: "Feb 15, 2026" }
     ],
     options: [
       "Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", 
@@ -42,9 +42,9 @@ const sports = [
     icon: <Trophy className="w-5 h-5" />, 
     color: "text-green-500",
     events: [
-      { id: 'e4', name: "Chiefs @ Eagles", date: "Sunday 1:00 PM" },
-      { id: 'e5', name: "49ers @ Lions", date: "Sunday 4:25 PM" },
-      { id: 'e6', name: "Cowboys @ Giants", date: "Monday 8:15 PM" }
+      { id: 'e4', name: "Super Bowl LX", date: "Feb 08, 2026" },
+      { id: 'e5', name: "Chiefs @ Eagles (Season Opener)", date: "Sep 10, 2026" },
+      { id: 'e6', name: "Cowboys @ Giants (Thanksgiving)", date: "Nov 26, 2026" }
     ],
     options: [
       "Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills", "Carolina Panthers", 
@@ -62,8 +62,9 @@ const sports = [
     icon: <Waves className="w-5 h-5" />, 
     color: "text-blue-400",
     events: [
-      { id: 'e7', name: "Pipe Masters - Day 1", date: "Starting Soon" },
-      { id: 'e8', name: "Gold Coast Pro", date: "Mar 12, 2024" }
+      { id: 'e7', name: "Pipe Masters 2026", date: "Jan 29, 2026" },
+      { id: 'e8', name: "Gold Coast Pro", date: "May 12, 2026" },
+      { id: 'e8b', name: "Teahupo'o Pro", date: "Aug 20, 2026" }
     ],
     options: [
       "John John Florence", "Carissa Moore", "Gabriel Medina", "Italo Ferreira", "Filipe Toledo",
@@ -77,8 +78,9 @@ const sports = [
     icon: <Zap className="w-5 h-5" />, 
     color: "text-yellow-400",
     events: [
-      { id: 'e9', name: "SLS Tokyo Qualifier", date: "Mar 15, 2024" },
-      { id: 'e10', name: "Tampa Pro Finals", date: "Mar 20, 2024" }
+      { id: 'e9', name: "SLS World Tour - Tokyo", date: "Mar 15, 2026" },
+      { id: 'e10', name: "Tampa Pro Finals 2026", date: "Apr 20, 2026" },
+      { id: 'e10b', name: "X-Games Summer Showcase", date: "Jul 18, 2026" }
     ],
     options: [
       "Nyjah Huston", "Yuto Horigome", "Rayssa Leal", "Sky Brown", "Zion Wright",
@@ -92,7 +94,8 @@ const sports = [
     icon: <Bike className="w-5 h-5" />, 
     color: "text-red-400",
     events: [
-      { id: 'e11', name: "X-Games Dirt Qualifiers", date: "Apr 05, 2024" }
+      { id: 'e11', name: "X-Games Dirt Qualifiers", date: "Jun 05, 2026" },
+      { id: 'e11b', name: "BMX Worlds - Montpellier", date: "May 22, 2026" }
     ],
     options: [
       "Logan Martin", "Garrett Reynolds", "Hannah Roberts", "Charlotte Worthington", "Jose Torres",
@@ -106,7 +109,9 @@ const sports = [
     icon: <Mountain className="w-5 h-5" />, 
     color: "text-cyan-400",
     events: [
-      { id: 'e12', name: "US Open Halfpipe", date: "Mar 08, 2024" }
+      { id: 'e12', name: "US Open Halfpipe 2026", date: "Mar 08, 2026" },
+      { id: 'e12b', name: "Natural Selection Finals", date: "Feb 14, 2026" },
+      { id: 'e12c', name: "X-Games Aspen 2026", date: "Jan 23, 2026" }
     ],
     options: [
       "Shaun White", "Chloe Kim", "Mark McMorris", "Zoi Sadowski-Synnott", "Ayumu Hirano",
@@ -120,8 +125,9 @@ const sports = [
     icon: <Target className="w-5 h-5" />, 
     color: "text-emerald-400",
     events: [
-      { id: 'e13', name: "The Masters - Round 1", date: "Apr 11, 2024" },
-      { id: 'e14', name: "Arnold Palmer Invite", date: "Mar 07, 2024" }
+      { id: 'e13', name: "The Masters 2026", date: "Apr 09, 2026" },
+      { id: 'e14', name: "US Open 2026", date: "Jun 18, 2026" },
+      { id: 'e14b', name: "The Open Championship", date: "Jul 16, 2026" }
     ],
     options: [
       "Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Ludvig Aberg", 
@@ -144,8 +150,9 @@ const sports = [
     icon: <Flag className="w-5 h-5" />, 
     color: "text-red-500",
     events: [
-      { id: 'e15', name: "Daytona 500", date: "Feb 18, 2024" },
-      { id: 'e16', name: "Las Vegas 400", date: "Mar 03, 2024" }
+      { id: 'e15', name: "Daytona 500 (The Great American Race)", date: "Feb 15, 2026" },
+      { id: 'e16', name: "Coca-Cola 600", date: "May 24, 2026" },
+      { id: 'e16b', name: "NASCAR Cup Series Championship", date: "Nov 08, 2026" }
     ],
     options: [
       "Kyle Larson (Hendrick Motorsports)", 
