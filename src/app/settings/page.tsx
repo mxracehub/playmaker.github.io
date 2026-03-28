@@ -354,7 +354,7 @@ export default function SettingsPage() {
                           Enable 2FA
                         </Button>
                       )}
-                    </DropdownMenuTrigger>
+                    </DialogTrigger>
                     {!profile?.twoFactorEnabled && (
                       <DialogContent className="bg-card border-white/10">
                         <DialogHeader>
