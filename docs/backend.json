@@ -1,11 +1,10 @@
-
 {
   "entities": {
     "UserProfile": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "UserProfile",
       "type": "object",
-      "description": "Represents a user's profile in the Playmakers app, storing personal details, friend connections, and general account information.",
+      "description": "Represents a user's profile and their in-app currency balances.",
       "properties": {
         "id": {
           "type": "string",
@@ -13,166 +12,488 @@
         },
         "username": {
           "type": "string",
-          "description": "The user's chosen unique username for display within the app."
+          "description": "Unique username chosen by the user."
         },
         "email": {
           "type": "string",
-          "description": "The user's email address, used for communication and account recovery.",
+          "description": "User's email address.",
           "format": "email"
         },
-        "profilePictureUrl": {
+        "firstName": {
           "type": "string",
-          "description": "URL to the user's profile picture, if set.",
-          "format": "uri"
+          "description": "User's first name."
         },
-        "bio": {
+        "lastName": {
           "type": "string",
-          "description": "A short biographical description provided by the user for their profile."
+          "description": "User's last name."
+        },
+        "dateJoined": {
+          "type": "string",
+          "description": "Timestamp when the user account was created.",
+          "format": "date-time"
+        },
+        "goldCoinsBalance": {
+          "type": "number",
+          "description": "Current balance of Gold Coins, used for gameplay."
+        },
+        "sweepstakesCoinsBalance": {
+          "type": "number",
+          "description": "Current balance of Sweepstakes Coins, redeemable for cash prizes or packages."
         },
         "friendIds": {
           "type": "array",
-          "description": "References to other UserProfile entities that this user has added as friends.",
+          "description": "References to UserProfile entities who are friends with this user. (Relationship: UserProfile N:N UserProfile)",
           "items": {
             "type": "string"
           }
-        },
-        "createdAt": {
-          "type": "string",
-          "description": "Timestamp indicating when the user profile was created.",
-          "format": "date-time"
-        },
-        "updatedAt": {
-          "type": "string",
-          "description": "Timestamp indicating when the user profile was last updated.",
-          "format": "date-time"
-        },
-        "role": {
-          "type": "string",
-          "description": "The user's role, e.g., 'admin' or 'player'.",
-          "enum": ["admin", "player"]
         }
       },
       "required": [
         "id",
         "username",
         "email",
-        "createdAt",
-        "updatedAt"
+        "firstName",
+        "lastName",
+        "dateJoined",
+        "goldCoinsBalance",
+        "sweepstakesCoinsBalance"
       ]
     },
-    "Game": {
+    "Sport": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Game",
+      "title": "Sport",
       "type": "object",
-      "description": "Represents a friend-to-friend sweepstakes or pick-em game created by a user for a specific sports event.",
+      "description": "Defines a type of sport available for contests.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the Game entity."
+          "description": "Unique identifier for the Sport entity."
         },
         "name": {
           "type": "string",
-          "description": "The name of the game."
+          "description": "The common name of the sport (e.g., 'Basketball', 'Football')."
         },
-        "creatorId": {
+        "description": {
           "type": "string",
-          "description": "Reference to the UserProfile entity of the user who created this game."
+          "description": "A brief description of the sport."
         },
-        "creatorPick": {
+        "imageUrl": {
           "type": "string",
-          "description": "The team or athlete selected by the creator."
-        },
-        "opponentId": {
-          "type": "string",
-          "description": "Reference to the UserProfile entity of the user who accepted the challenge."
-        },
-        "opponentPick": {
-          "type": "string",
-          "description": "The team or athlete selected by the opponent."
-        },
-        "sportId": {
-          "type": "string",
-          "description": "The sport this game is based on."
-        },
-        "currencyType": {
-          "type": "string",
-          "description": "The currency used for entry: 'gold' or 'sweeps'."
-        },
-        "entryFee": {
-          "type": "number",
-          "description": "The number of coins required to enter."
-        },
-        "prizePool": {
-          "type": "number",
-          "description": "The total potential coins awarded to winners."
-        },
-        "status": {
-          "type": "string",
-          "description": "The current status (e.g., 'Open', 'Live', 'Completed')."
-        },
-        "inviteCode": {
-          "type": "string",
-          "description": "A unique code that friends can use to join."
-        },
-        "winnerId": {
-          "type": "string",
-          "description": "Reference to the UserProfile of the winner."
-        },
-        "finalScores": {
-          "type": "object",
-          "description": "Final scores for each participant.",
-          "additionalProperties": { "type": "number" }
-        },
-        "createdAt": {
-          "type": "string",
-          "description": "Timestamp when the game was created.",
-          "format": "date-time"
+          "description": "URL to an image representing the sport for UI display.",
+          "format": "uri"
         }
       },
       "required": [
+        "id",
         "name",
-        "creatorId",
-        "sportId",
-        "currencyType",
-        "entryFee",
-        "status",
-        "createdAt"
+        "description"
       ]
     },
-    "UserWallet": {
+    "Event": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "UserWallet",
+      "title": "Event",
       "type": "object",
-      "description": "Manages the in-app currency balances (Gold Coins and Sweepstakes Coins) for each user.",
+      "description": "Represents a specific professional sporting event for which contests can be created.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the UserWallet entity."
+          "description": "Unique identifier for the Event entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the event (e.g., 'NBA Finals Game 7', 'Super Bowl LVIII')."
+        },
+        "sportId": {
+          "type": "string",
+          "description": "Reference to the Sport this event belongs to. (Relationship: Sport 1:N Event)"
+        },
+        "eventDateTime": {
+          "type": "string",
+          "description": "The scheduled date and time of the event.",
+          "format": "date-time"
+        },
+        "location": {
+          "type": "string",
+          "description": "The venue or location where the event takes place."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the event (e.g., 'upcoming', 'live', 'final')."
+        },
+        "externalId": {
+          "type": "string",
+          "description": "An identifier from an external sports data provider, if applicable."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the event."
+        },
+        "homeTeamName": {
+          "type": "string",
+          "description": "The name of the home team or participant for the event."
+        },
+        "awayTeamName": {
+          "type": "string",
+          "description": "The name of the away team or participant for the event."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "sportId",
+        "eventDateTime",
+        "location",
+        "status",
+        "description"
+      ]
+    },
+    "Athlete": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Athlete",
+      "type": "object",
+      "description": "Represents a professional athlete available for selection in contests.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Athlete entity."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The first name of the athlete."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The last name of the athlete."
+        },
+        "sportId": {
+          "type": "string",
+          "description": "Reference to the Sport the athlete primarily plays. (Relationship: Sport 1:N Athlete)"
+        },
+        "team": {
+          "type": "string",
+          "description": "The current team the athlete plays for."
+        },
+        "position": {
+          "type": "string",
+          "description": "The athlete's primary playing position."
+        },
+        "externalId": {
+          "type": "string",
+          "description": "An identifier from an external sports data provider, if applicable."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the athlete."
+        },
+        "profileImageUrl": {
+          "type": "string",
+          "description": "URL to the athlete's profile picture.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "sportId",
+        "description"
+      ]
+    },
+    "Contest": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Contest",
+      "type": "object",
+      "description": "Represents a friend-to-friend sweepstakes or pick-em game.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Contest entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name or title of the contest."
+        },
+        "creatorId": {
+          "type": "string",
+          "description": "Reference to the UserProfile who created this contest. (Relationship: UserProfile 1:N Contest)"
+        },
+        "eventId": {
+          "type": "string",
+          "description": "Reference to the specific Event this contest is based on. (Relationship: Event 1:N Contest)"
+        },
+        "sportId": {
+          "type": "string",
+          "description": "Reference to the Sport the contest belongs to. (Relationship: Sport 1:N Contest)"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of contest (e.g., 'pick-em', 'sweepstakes')."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the contest (e.g., 'open', 'in-progress', 'completed')."
+        },
+        "entryFeeGoldCoins": {
+          "type": "number",
+          "description": "The amount of Gold Coins required to join the contest."
+        },
+        "prizeSweepstakesCoins": {
+          "type": "number",
+          "description": "The amount of Sweepstakes Coins awarded to the winner(s) of the contest."
+        },
+        "inviteCode": {
+          "type": "string",
+          "description": "A unique code for inviting participants to a private contest."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the contest was created.",
+          "format": "date-time"
+        },
+        "startDateTime": {
+          "type": "string",
+          "description": "The specific start date and time for the contest (e.g., pick deadline).",
+          "format": "date-time"
+        },
+        "endDateTime": {
+          "type": "string",
+          "description": "The specific end date and time for the contest (e.g., when results are final).",
+          "format": "date-time"
+        },
+        "participantIds": {
+          "type": "array",
+          "description": "References to UserProfile entities who have joined this contest. (Relationship: UserProfile N:N Contest)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "winningEntryId": {
+          "type": "string",
+          "description": "Reference to the ContestEntry that won the contest, if applicable. (Relationship: Contest 1:1 ContestEntry)"
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description or rules for the contest."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "creatorId",
+        "eventId",
+        "sportId",
+        "type",
+        "status",
+        "entryFeeGoldCoins",
+        "prizeSweepstakesCoins",
+        "createdAt",
+        "startDateTime",
+        "endDateTime",
+        "description"
+      ]
+    },
+    "ContestEntry": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ContestEntry",
+      "type": "object",
+      "description": "Represents a user's submitted picks for a specific contest.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ContestEntry entity."
+        },
+        "contestId": {
+          "type": "string",
+          "description": "Reference to the Contest this entry belongs to. (Relationship: Contest 1:N ContestEntry)"
         },
         "userId": {
           "type": "string",
-          "description": "Reference to the UserProfile entity this wallet belongs to."
+          "description": "Reference to the UserProfile who submitted this entry. (Relationship: UserProfile 1:N ContestEntry)"
         },
-        "goldCoins": {
-          "type": "number",
-          "description": "The current balance of Gold Coins."
+        "submissionDateTime": {
+          "type": "string",
+          "description": "Timestamp when the entry was submitted.",
+          "format": "date-time"
         },
-        "sweepstakesCoins": {
+        "pickedAthleteIds": {
+          "type": "array",
+          "description": "References to Athlete entities selected by the user for this entry. (Relationship: Athlete N:N ContestEntry)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "score": {
           "type": "number",
-          "description": "The current balance of Sweepstakes Coins."
+          "description": "The calculated score for this entry based on athlete performance."
+        },
+        "rank": {
+          "type": "number",
+          "description": "The ranking of this entry within its contest."
+        },
+        "isWinner": {
+          "type": "boolean",
+          "description": "Indicates if this entry won the contest."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the contest entry."
+        }
+      },
+      "required": [
+        "id",
+        "contestId",
+        "userId",
+        "submissionDateTime",
+        "pickedAthleteIds",
+        "score",
+        "isWinner",
+        "description"
+      ]
+    },
+    "EventPerformance": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "EventPerformance",
+      "type": "object",
+      "description": "Records an athlete's performance statistics for a specific event, used for contest scoring.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the EventPerformance entity."
+        },
+        "eventId": {
+          "type": "string",
+          "description": "Reference to the Event this performance data is for. (Relationship: Event 1:N EventPerformance)"
+        },
+        "athleteId": {
+          "type": "string",
+          "description": "Reference to the Athlete whose performance is recorded. (Relationship: Athlete 1:N EventPerformance)"
+        },
+        "performanceDetails": {
+          "type": "string",
+          "description": "A JSON string containing key-value pairs of various statistics for the athlete in this event (e.g., '{\"points\": 25, \"rebounds\": 10, \"assists\": 5}')."
         },
         "lastUpdated": {
           "type": "string",
-          "description": "Timestamp indicating when the wallet balances were last updated.",
+          "description": "Timestamp when this performance data was last updated.",
           "format": "date-time"
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the recorded performance."
+        }
+      },
+      "required": [
+        "id",
+        "eventId",
+        "athleteId",
+        "performanceDetails",
+        "lastUpdated",
+        "description"
+      ]
+    },
+    "CurrencyTransaction": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CurrencyTransaction",
+      "type": "object",
+      "description": "Records all transactions involving Gold Coins and Sweepstakes Coins for a user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CurrencyTransaction entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the UserProfile involved in the transaction. (Relationship: UserProfile 1:N CurrencyTransaction)"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of transaction (e.g., 'purchase_gold', 'entry_fee', 'prize_sweepstakes', 'redemption')."
+        },
+        "currencyType": {
+          "type": "string",
+          "description": "The type of currency involved ('gold' or 'sweepstakes')."
+        },
+        "amount": {
+          "type": "number",
+          "description": "The amount of currency transacted (can be negative for deductions)."
+        },
+        "transactionDateTime": {
+          "type": "string",
+          "description": "Timestamp when the transaction occurred.",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the transaction."
+        },
+        "relatedEntityId": {
+          "type": "string",
+          "description": "Optional reference to another entity related to this transaction (e.g., Contest ID for entry fee, RedemptionRequest ID for redemption)."
         }
       },
       "required": [
         "id",
         "userId",
-        "goldCoins",
-        "sweepstakesCoins",
-        "lastUpdated"
+        "type",
+        "currencyType",
+        "amount",
+        "transactionDateTime",
+        "description"
+      ]
+    },
+    "RedemptionRequest": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "RedemptionRequest",
+      "type": "object",
+      "description": "Represents a user's request to redeem Sweepstakes Coins for prizes.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the RedemptionRequest entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the UserProfile making the redemption request. (Relationship: UserProfile 1:N RedemptionRequest)"
+        },
+        "sweepstakesCoinsAmount": {
+          "type": "number",
+          "description": "The amount of Sweepstakes Coins requested for redemption."
+        },
+        "redemptionTarget": {
+          "type": "string",
+          "description": "The target prize or payout method for the redemption (e.g., 'cash_payout', 'package_A')."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the redemption request (e.g., 'pending', 'approved', 'rejected', 'completed')."
+        },
+        "requestDateTime": {
+          "type": "string",
+          "description": "Timestamp when the redemption request was made.",
+          "format": "date-time"
+        },
+        "completionDateTime": {
+          "type": "string",
+          "description": "Timestamp when the redemption request was completed.",
+          "format": "date-time"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Any internal notes or external details regarding the redemption process."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the redemption request."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "sweepstakesCoinsAmount",
+        "redemptionTarget",
+        "status",
+        "requestDateTime",
+        "description"
       ]
     }
   },
@@ -185,53 +506,96 @@
   "firestore": {
     "structure": [
       {
-        "path": "/users/{userId}",
+        "path": "/userProfiles/{userId}",
         "definition": {
           "entityName": "UserProfile",
           "schema": {
             "$ref": "#/backend/entities/UserProfile"
           },
-          "description": "Stores user profile information.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The unique ID of the user."
-            }
-          ]
+          "description": "Stores individual user profiles including personal details and in-app currency balances. Access is restricted to the authenticated user (`request.auth.uid == userId`)."
         }
       },
       {
-        "path": "/users/{userId}/wallet",
+        "path": "/userProfiles/{userId}/currencyTransactions/{transactionId}",
         "definition": {
-          "entityName": "UserWallet",
+          "entityName": "CurrencyTransaction",
           "schema": {
-            "$ref": "#/backend/entities/UserWallet"
+            "$ref": "#/backend/entities/CurrencyTransaction"
           },
-          "description": "Manages in-app currency balances for each user.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The unique ID of the user."
-            }
-          ]
+          "description": "Records all currency transactions for a specific user. The `userId` in the path ensures authorization independence; only the owning user can read/write their transactions."
         }
       },
       {
-        "path": "/games/{gameId}",
+        "path": "/userProfiles/{userId}/redemptionRequests/{requestId}",
         "definition": {
-          "entityName": "Game",
+          "entityName": "RedemptionRequest",
           "schema": {
-            "$ref": "#/backend/entities/Game"
+            "$ref": "#/backend/entities/RedemptionRequest"
           },
-          "description": "Represents a friend-to-friend game arena.",
-          "params": [
-            {
-              "name": "gameId",
-              "description": "The unique ID of the game."
-            }
-          ]
+          "description": "Stores redemption requests made by a specific user. The `userId` in the path ensures authorization independence. Users can create/read/cancel their own requests; admins can manage (read/update status)."
+        }
+      },
+      {
+        "path": "/sports/{sportId}",
+        "definition": {
+          "entityName": "Sport",
+          "schema": {
+            "$ref": "#/backend/entities/Sport"
+          },
+          "description": "Public, read-only collection of available sports. Accessible to all users (authenticated and unauthenticated) for browsing. Admin-only write access."
+        }
+      },
+      {
+        "path": "/events/{eventId}",
+        "definition": {
+          "entityName": "Event",
+          "schema": {
+            "$ref": "#/backend/entities/Event"
+          },
+          "description": "Public, read-only collection of professional sporting events. Accessible to all users (authenticated and unauthenticated) for browsing. Admin-only write access."
+        }
+      },
+      {
+        "path": "/athletes/{athleteId}",
+        "definition": {
+          "entityName": "Athlete",
+          "schema": {
+            "$ref": "#/backend/entities/Athlete"
+          },
+          "description": "Public, read-only collection of professional athletes. Accessible to all users (authenticated and unauthenticated) for browsing. Admin-only write access."
+        }
+      },
+      {
+        "path": "/contests/{contestId}",
+        "definition": {
+          "entityName": "Contest",
+          "schema": {
+            "$ref": "#/backend/entities/Contest"
+          },
+          "description": "Collection of friend-to-friend contests. Includes denormalized `creatorId` and `participantIds` array for authorization independence, allowing read/write access to creators and participants without requiring `get()` calls in rules. Supports QAPs for listing by enforcing `where('participantIds', 'array-contains', request.auth.uid)`."
+        }
+      },
+      {
+        "path": "/contestEntries/{contestEntryId}",
+        "definition": {
+          "entityName": "ContestEntry",
+          "schema": {
+            "$ref": "#/backend/entities/ContestEntry"
+          },
+          "description": "Collection of user-submitted contest entries. Includes `userId` for ownership and denormalized `contestParticipantIds` (copied from parent Contest) for authorization independence, enabling participants to view all entries for a contest (e.g., leaderboards) without `get()` calls in rules. Supports QAPs for listing."
+        }
+      },
+      {
+        "path": "/eventPerformances/{eventPerformanceId}",
+        "definition": {
+          "entityName": "EventPerformance",
+          "schema": {
+            "$ref": "#/backend/entities/EventPerformance"
+          },
+          "description": "Public, read-only collection of athlete performance data for events. Accessible to all users (authenticated and unauthenticated) for contest scoring and information. Admin-only write access."
         }
       }
-    ]
+    ],
+    "reasoning": "The Firestore structure is designed to be secure, scalable, and debuggable, strictly adhering to the core design principles and strategy mandates. The primary goal is to ensure Authorization Independence, particularly for `list` operations (QAPs).\n\n**Authorization Independence via Denormalization:**\nThis design critically avoids `get()` calls in Firestore Security Rules by denormalizing authorization context directly into the relevant documents. For entities where access depends on membership or parent attributes:\n\n*   **Contest (`/contests/{contestId}`):** Access to a contest is determined by the `creatorId` or the `participantIds` array. Both `creatorId` and `participantIds` are direct fields within the `Contest` document. This allows security rules to check `request.auth.uid == resource.data.creatorId || request.auth.uid in resource.data.participantIds` without needing to fetch any parent or related documents.\n*   **ContestEntry (`/contestEntries/{contestEntryId}`):** An entry is owned by a `userId` and associated with a `contestId`. To enable listing all entries for a contest (e.g., for leaderboards) by a contest participant, and to maintain Authorization Independence, each `ContestEntry` document includes `contestParticipantIds`, which is a denormalized copy of the `participantIds` array from its parent `Contest` document. This allows rules to verify `request.auth.uid in resource.data.contestParticipantIds` or `request.auth.uid == resource.data.userId` directly on the `ContestEntry` document, facilitating atomic operations and simplifying rules.\n*   **CurrencyTransaction and RedemptionRequest:** These are user-specific and are structured as subcollections (`/userProfiles/{userId}/currencyTransactions/{transactionId}` and `/userProfiles/{userId}/redemptionRequests/{requestId}`). This places the `userId` directly in the document path, enabling rules to easily verify `request.auth.uid == userId` without denormalization within the document itself or `get()` calls.\n\n**Support for QAPs (Queries Are Not Filters):**\nThe structure supports secure `list` operations by ensuring that collections either contain only publicly accessible data or include sufficient authorization context within each document to enforce query predicates.\n\n*   **Public Data Collections (`/sports`, `/events`, `/athletes`, `/eventPerformances`):** These collections are designed for public, read-only access by all users (authenticated and unauthenticated). This allows `list` operations without specific filtering conditions on the client-side, as all documents within these collections have the same open security posture.\n*   **Collaborative Data Collections (`/contests`, `/contestEntries`):** For these collections, `list` operations are restricted. Client-side queries *must* include conditions that filter results to what the requesting user is authorized to see (e.g., `where('participantIds', 'array-contains', request.auth.uid)`). The security rules will then verify this condition for *every document* returned by the query, ensuring that no unauthorized documents are included in the result set. The denormalized `participantIds` and `contestParticipantIds` fields are crucial for this enforcement.\n\n**Structural Segregation & Access Modeling:**\n*   **Private User Data:** `/userProfiles/{userId}` houses private user profiles. Subcollections like `/userProfiles/{userId}/currencyTransactions` and `/userProfiles/{userId}/redemptionRequests` store data directly owned by and typically only accessible to the specific user.\n*   **Public Reference Data:** `/sports`, `/events`, `/athletes`, `/eventPerformances` store globally readable, administrative data. These are segregated from private user data to simplify rules and allow broad read access.\n*   **Collaborative/Shared Data:** `/contests` and `/contestEntries` are top-level collections but leverage denormalized membership maps (`participantIds`) to manage access for groups of users without complex rule logic or `get()` calls.\n*   **DBAC (Database Access Control):** For global roles, roles are stored in the database. For example, an `/adminRoles/{userId}` collection would grant admin status by the mere existence of a document, allowing security rules to check `exists(/databases/$(database)/documents/adminRoles/$(request.auth.uid))` for privileged operations (e.g., modifying public data or processing redemption requests). Note: A corresponding `AdminRole` entity schema would be required to formally represent this path in the `firestorePaths` list.\n\nThis design directly addresses the reported `auth: null` `list` error on `games` (assumed to be `contests`) by ensuring that `Contest` documents are not publicly listable by unauthenticated users. The client must either authenticate or query for genuinely public, browsable data like `/sports` or `/events`."
   }
 }
