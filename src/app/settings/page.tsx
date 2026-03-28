@@ -9,11 +9,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
-import { User, Bell, Shield, Wallet, Save, CheckCircle2 } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { User, Bell, Shield, Wallet, Save, CheckCircle2, Camera, Link as LinkIcon } from "lucide-react";
 import { useUser, useFirestore, setDocumentNonBlocking, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { validateTOTP, getOTPAuthUri } from "@/lib/2fa";
+import { cn } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
@@ -24,12 +26,25 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+const PRESET_AVATARS = [
+  { id: 'guitar', label: 'Classic Pro' },
+  { id: 'basketball', label: 'Hoops' },
+  { id: 'football', label: 'Gridiron' },
+  { id: 'surfing', label: 'Wave Master' },
+  { id: 'skate', label: 'Skater' },
+  { id: 'snow', label: 'Alpine' },
+  { id: 'mma', label: 'Fighter' },
+  { id: 'nascar', label: 'Speedster' },
+];
+
 export default function SettingsPage() {
   const { user } = useUser();
   const db = useFirestore();
   const { toast } = useToast();
   
   const [displayName, setDisplayName] = useState("");
+  const [bio, setBio] = useState("");
+  const [profilePictureUrl, setProfilePictureUrl] = useState("");
   const [is2FADialogOpen, setIs2FADialogOpen] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
 
@@ -37,10 +52,10 @@ export default function SettingsPage() {
   const { data: profile } = useDoc(userProfileRef);
 
   useEffect(() => {
-    if (user?.displayName) {
-      setDisplayName(user.displayName);
-    } else if (profile?.username) {
-      setDisplayName(profile.username);
+    if (profile) {
+      setDisplayName(profile.username || user?.displayName || "");
+      setBio(profile.bio || "");
+      setProfilePictureUrl(profile.profilePictureUrl || "");
     }
   }, [user, profile]);
 
@@ -51,13 +66,15 @@ export default function SettingsPage() {
       id: user.uid,
       email: user.email,
       username: displayName,
+      bio: bio,
+      profilePictureUrl: profilePictureUrl,
       updatedAt: new Date().toISOString(),
       createdAt: profile?.createdAt || new Date().toISOString(),
     }, { merge: true });
 
     toast({
       title: "Profile Updated",
-      description: "Your arena nickname has been saved successfully.",
+      description: "Your arena nickname and persona have been saved.",
     });
   };
 
@@ -133,15 +150,68 @@ export default function SettingsPage() {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="profile" className="animate-in fade-in-50 duration-500">
+          <TabsContent value="profile" className="animate-in fade-in-50 duration-500 space-y-6">
             <Card className="bg-card/50 backdrop-blur-sm border shadow-xl overflow-hidden">
               <CardHeader className="bg-secondary/20 border-b">
-                <CardTitle className="font-headline text-xl uppercase tracking-tighter">Profile Information</CardTitle>
+                <CardTitle className="font-headline text-xl uppercase tracking-tighter">Arena Persona</CardTitle>
+                <CardDescription>Choose an elite avatar or upload your own image URL</CardDescription>
+              </CardHeader>
+              <CardContent className="p-6 space-y-8">
+                <div className="flex flex-col md:flex-row items-center gap-8">
+                  <div className="relative group">
+                    <Avatar className="h-32 w-32 border-4 border-primary shadow-2xl transition-transform group-hover:scale-105">
+                      <AvatarImage src={profilePictureUrl || `https://picsum.photos/seed/guitar/400/400`} />
+                      <AvatarFallback className="text-2xl font-bold">{displayName[0]}</AvatarFallback>
+                    </Avatar>
+                    <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                      <Camera className="h-8 w-8 text-white" />
+                    </div>
+                  </div>
+
+                  <div className="flex-1 space-y-4">
+                    <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Select Preset Persona</Label>
+                    <div className="grid grid-cols-4 md:grid-cols-8 gap-3">
+                      {PRESET_AVATARS.map((avatar) => {
+                        const url = `https://picsum.photos/seed/${avatar.id}/400/400`;
+                        return (
+                          <button
+                            key={avatar.id}
+                            onClick={() => setProfilePictureUrl(url)}
+                            className={cn(
+                              "relative h-12 w-12 rounded-lg overflow-hidden border-2 transition-all hover:scale-110",
+                              profilePictureUrl === url ? "border-accent ring-2 ring-accent/20" : "border-transparent opacity-60 hover:opacity-100"
+                            )}
+                          >
+                            <img src={url} alt={avatar.label} className="object-cover h-full w-full" />
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <div className="space-y-2 pt-2">
+                      <Label htmlFor="avatar-url" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                        <LinkIcon className="h-3 w-3" /> Custom Avatar URL
+                      </Label>
+                      <Input 
+                        id="avatar-url"
+                        value={profilePictureUrl}
+                        onChange={(e) => setProfilePictureUrl(e.target.value)}
+                        placeholder="https://example.com/image.jpg"
+                        className="bg-secondary/30 border-white/5 h-10 text-xs"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card/50 backdrop-blur-sm border shadow-xl overflow-hidden">
+              <CardHeader className="bg-secondary/20 border-b">
+                <CardTitle className="font-headline text-xl uppercase tracking-tighter">Profile Details</CardTitle>
                 <CardDescription>Update how you appear in the Playmakers arena</CardDescription>
               </CardHeader>
               <CardContent className="p-6 space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="username" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Display Name</Label>
+                  <Label htmlFor="username" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Arena Nickname</Label>
                   <Input 
                     id="username" 
                     value={displayName} 
@@ -151,19 +221,25 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div className="space-y-2">
+                  <Label htmlFor="bio" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Profile Bio</Label>
+                  <Input 
+                    id="bio" 
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                    placeholder="Tell the world your playmaker status..." 
+                    className="bg-secondary/30 border-white/5 h-12" 
+                  />
+                </div>
+                <div className="space-y-2">
                   <Label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Email Address</Label>
                   <Input id="email" value={user?.email || ""} disabled className="bg-secondary/10 opacity-60 h-12" />
                   <p className="text-[10px] text-muted-foreground italic">Email changes require manual support verification for security.</p>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="bio" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Profile Bio</Label>
-                  <Input id="bio" placeholder="Tell the world your playmaker status..." className="bg-secondary/30 border-white/5 h-12" />
                 </div>
               </CardContent>
               <CardFooter className="bg-secondary/10 p-6 border-t flex justify-between items-center">
                 <p className="text-xs text-muted-foreground">Manage your identity in the arena.</p>
                 <Button onClick={handleSaveProfile} className="font-bold uppercase tracking-wider px-8 h-12 shadow-lg shadow-primary/20">
-                  <Save className="mr-2 h-5 w-5" /> Save Changes
+                  <Save className="mr-2 h-5 w-5" /> Save Profile
                 </Button>
               </CardFooter>
             </Card>

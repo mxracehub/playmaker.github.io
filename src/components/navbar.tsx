@@ -32,7 +32,7 @@ export function Navbar() {
   const auth = useAuth();
   const db = useFirestore();
 
-  // Sync with Firestore profile to get the latest username
+  // Sync with Firestore profile to get the latest username and avatar
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "users", user.uid) : null), [db, user]);
   const { data: profile } = useDoc(userProfileRef);
 
@@ -44,9 +44,10 @@ export function Navbar() {
     }
   };
 
-  // Match the identity from the profile arena
+  // Identity logic
   const displayName = profile?.username || user?.displayName || 'BRADY PRICE';
   const emailDisplay = user?.email || 'mxracehub@proton.me';
+  const avatarUrl = profile?.profilePictureUrl || user?.photoURL || `https://picsum.photos/seed/guitar/100/100`;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b bg-card/80 backdrop-blur-md shadow-sm">
@@ -88,7 +89,7 @@ export function Navbar() {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0 hover:bg-transparent focus-visible:ring-0">
                       <Avatar className="h-10 w-10 border-2 border-primary/20 transition-all hover:border-primary">
-                        <AvatarImage src={`https://picsum.photos/seed/guitar/100/100`} alt={displayName} />
+                        <AvatarImage src={avatarUrl} alt={displayName} />
                         <AvatarFallback className="bg-secondary text-primary font-bold">
                           {displayName[0]}
                         </AvatarFallback>
