@@ -104,20 +104,13 @@ const sports = [
       { id: 'nba-2', name: "Lakers @ Warriors", date: "Jan 15, 2026" },
       { id: 'nba-3', name: "Bucks @ 76ers", date: "Jan 18, 2026" },
       { id: 'nba-4', name: "Heat @ Mavericks", date: "Jan 22, 2026" },
-      { id: 'nba-5', name: "Suns @ Nuggets", date: "Jan 25, 2026" },
-      { id: 'nba-6', name: "Bulls @ Pistons", date: "Feb 02, 2026" },
-      { id: 'nba-7', name: "NBA All-Star 2026", date: "Feb 15, 2026" },
-      { id: 'nba-8', name: "Rockets @ Spurs", date: "Mar 14, 2026" },
-      { id: 'nba-9', name: "Clippers @ Kings", date: "Mar 18, 2026" },
       { id: 'nba-ny', name: "Nets @ Knicks (NY)", date: "Jan 20, 2026" },
       { id: 'nba-ca', name: "Warriors @ Lakers (CA)", date: "Jan 28, 2026" },
       { id: 'nba-tx', name: "Spurs @ Mavericks (TX)", date: "Feb 05, 2026" },
-      { id: 'nba-fl', name: "Magic @ Heat (FL)", date: "Feb 12, 2026" },
-      { id: 'nba-pa', name: "76ers @ Raptors", date: "Mar 02, 2026" },
-      { id: 'nba-ga', name: "Hawks @ Hornets", date: "Mar 10, 2026" },
+      { id: 'nba-sb', name: "All-Star 2026", date: "Feb 15, 2026" },
       { id: 'nba-10', name: "Finals Game 1", date: "Jun 04, 2026" },
     ], 
-    options: ["Lakers", "Warriors", "Celtics", "Bucks", "Suns", "Nets", "Knicks", "Spurs", "Mavericks", "Nuggets", "76ers", "Heat"] 
+    options: ["Lakers", "Warriors", "Celtics", "Bucks", "Suns", "Nuggets", "76ers", "Mavericks"] 
   },
   { 
     id: 'nfl', 
@@ -125,20 +118,14 @@ const sports = [
     icon: <Trophy className="w-5 h-5" />, 
     color: "text-green-500", 
     events: [
-      { id: 'nfl-w1', name: "Chiefs @ Eagles (W1)", date: "Sep 10, 2026" },
-      { id: 'nfl-w2', name: "Cowboys @ Giants (W2)", date: "Sep 17, 2026" },
-      { id: 'nfl-w3', name: "Ravens @ Bengals (W3)", date: "Sep 24, 2026" },
-      { id: 'nfl-w4', name: "Jets @ Patriots (W4)", date: "Oct 01, 2026" },
-      { id: 'nfl-w5', name: "Browns @ Steelers (W5)", date: "Oct 08, 2026" },
-      { id: 'nfl-w6', name: "Lions @ Vikings", date: "Oct 15, 2026" },
-      { id: 'nfl-w7', name: "49ers @ Seahawks", date: "Oct 22, 2026" },
-      { id: 'nfl-w12', name: "Thanksgiving Classic", date: "Nov 26, 2026" },
       { id: 'nfl-p1', name: "Wild Card Round", date: "Jan 10, 2026" },
       { id: 'nfl-p2', name: "Divisional Round", date: "Jan 17, 2026" },
       { id: 'nfl-p3', name: "Championship Sunday", date: "Jan 25, 2026" },
       { id: 'nfl-sb', name: "Super Bowl LX", date: "Feb 08, 2026" },
+      { id: 'nfl-w1', name: "Chiefs @ Eagles (Season Opener)", date: "Sep 10, 2026" },
+      { id: 'nfl-w12', name: "Thanksgiving Classic", date: "Nov 26, 2026" },
     ], 
-    options: ["Chiefs", "Eagles", "49ers", "Lions", "Cowboys", "Giants", "Bills", "Jets", "Bengals", "Ravens", "Packers", "Dolphins"] 
+    options: ["Chiefs", "Eagles", "49ers", "Lions", "Cowboys", "Bills", "Ravens", "Bengals"] 
   },
   { 
     id: 'hockey', 
@@ -149,13 +136,10 @@ const sports = [
       { id: 'h-1', name: "NHL Winter Classic", date: "Jan 01, 2026" },
       { id: 'h-2', name: "Rangers @ Islanders", date: "Jan 15, 2026" },
       { id: 'h-3', name: "Oilers @ Avalanche", date: "Jan 28, 2026" },
-      { id: 'h-4', name: "NHL All-Star Game", date: "Feb 07, 2026" },
-      { id: 'h-5', name: "Bruins @ Maple Leafs", date: "Mar 12, 2026" },
-      { id: 'h-6', name: "Golden Knights @ Stars", date: "Mar 25, 2026" },
       { id: 'h-8', name: "Stanley Cup Playoffs G1", date: "Apr 18, 2026" },
       { id: 'h-10', name: "Stanley Cup Finals G1", date: "Jun 08, 2026" },
     ], 
-    options: ["Oilers", "Avalanche", "Bruins", "Rangers", "Leafs", "Panthers", "Stars", "Knights", "Hurricanes", "Devils"] 
+    options: ["Oilers", "Avalanche", "Bruins", "Rangers", "Leafs", "Panthers", "Stars", "Knights"] 
   },
   { 
     id: 'soccer', 
@@ -167,12 +151,9 @@ const sports = [
       { id: 's-2', name: "Man City vs Liverpool", date: "Apr 12, 2026" },
       { id: 's-3', name: "Champions League Final", date: "May 30, 2026" },
       { id: 's-4', name: "World Cup 2026: Opening Match", date: "Jun 11, 2026" },
-      { id: 's-5', name: "World Cup 2026: USA vs England", date: "Jun 18, 2026" },
-      { id: 's-6', name: "World Cup 2026: Brazil vs France", date: "Jun 30, 2026" },
-      { id: 's-7', name: "World Cup 2026: Semi-Finals", date: "Jul 12, 2026" },
       { id: 's-8', name: "World Cup 2026: Grand Final", date: "Jul 19, 2026" },
     ], 
-    options: ["Real Madrid", "Barcelona", "Man City", "Liverpool", "PSG", "USA", "England", "Argentina", "France", "Brazil", "Germany"] 
+    options: ["Real Madrid", "Barcelona", "Man City", "Liverpool", "USA", "England", "Argentina", "Brazil"] 
   },
   { 
     id: 'mlb', 
@@ -182,21 +163,11 @@ const sports = [
     events: [
       { id: 'm-1', name: "MLB Opening Day 2026", date: "Mar 26, 2026" },
       { id: 'm-2', name: "Yankees @ Red Sox", date: "Apr 15, 2026" },
-      { id: 'm-3', name: "Dodgers @ Padres", date: "Apr 28, 2026" },
       { id: 'm-4', name: "MLB All-Star Game", date: "Jul 14, 2026" },
-      { id: 'm-5', name: "Braves @ Phillies", date: "May 12, 2026" },
-      { id: 'm-6', name: "Cubs @ Cardinals", date: "Jun 05, 2026" },
-      { id: 'm-7', name: "Astros @ Rangers", date: "Jun 20, 2026" },
-      { id: 'm-8', name: "Mets @ Marlins", date: "Jul 04, 2026" },
-      { id: 'm-9', name: "Orioles @ Blue Jays", date: "Aug 15, 2026" },
-      { id: 'm-10', name: "Diamondbacks @ Giants", date: "Sep 10, 2026" },
       { id: 'm-11', name: "Wild Card Series", date: "Oct 06, 2026" },
-      { id: 'm-12', name: "Division Series", date: "Oct 10, 2026" },
-      { id: 'm-13', name: "Championship Series", date: "Oct 18, 2026" },
       { id: 'm-14', name: "World Series Game 1", date: "Oct 23, 2026" },
-      { id: 'm-15', name: "World Series Game 7", date: "Oct 31, 2026" },
     ], 
-    options: ["Dodgers", "Yankees", "Braves", "Astros", "Phillies", "Cubs", "Red Sox", "Padres", "Rangers", "Orioles", "Mets", "Blue Jays", "Mariners", "Guardians"] 
+    options: ["Dodgers", "Yankees", "Braves", "Astros", "Phillies", "Cubs", "Red Sox", "Mariners"] 
   },
   { 
     id: 'nascar', 
@@ -205,16 +176,12 @@ const sports = [
     color: "text-red-500", 
     events: [
       { id: 'nas-1', name: "Daytona 500", date: "Feb 15, 2026" },
-      { id: 'nas-2', name: "Atlanta Speedway", date: "Feb 22, 2026" },
       { id: 'nas-3', name: "Las Vegas Duel", date: "Mar 01, 2026" },
-      { id: 'nas-4', name: "Phoenix Raceway", date: "Mar 08, 2026" },
-      { id: 'nas-5', name: "Bristol Dirt Race", date: "Mar 22, 2026" },
       { id: 'nas-6', name: "Talladega Superspeedway", date: "Apr 19, 2026" },
       { id: 'nas-10', name: "Coca-Cola 600", date: "May 24, 2026" },
-      { id: 'nas-15', name: "Indy Brickyard 400", date: "Jul 26, 2026" },
       { id: 'nas-20', name: "Phoenix Championship", date: "Nov 08, 2026" },
     ], 
-    options: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney", "Kyle Busch", "William Byron", "Joey Logano", "Tyler Reddick"] 
+    options: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney", "Kyle Busch", "Joey Logano"] 
   },
   { 
     id: 'golf', 
@@ -225,13 +192,11 @@ const sports = [
       { id: 'g-3', name: "The Players Championship", date: "Mar 12, 2026" },
       { id: 'g-4', name: "The Masters 2026", date: "Apr 09, 2026" },
       { id: 'g-5', name: "PGA Championship", date: "May 14, 2026" },
-      { id: 'g-6', name: "Memorial Tournament", date: "Jun 04, 2026" },
       { id: 'g-7', name: "U.S. Open", date: "Jun 18, 2026" },
       { id: 'g-8', name: "The Open", date: "Jul 16, 2026" },
-      { id: 'g-9', name: "FedEx Cup Playoffs", date: "Aug 20, 2026" },
       { id: 'g-10', name: "Ryder Cup 2026", date: "Sep 25, 2026" },
     ], 
-    options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Xander Schauffele", "Tiger Woods", "Brooks Koepka"] 
+    options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Tiger Woods", "Brooks Koepka"] 
   },
   { 
     id: 'ufc', 
@@ -240,25 +205,89 @@ const sports = [
     color: "text-red-600", 
     events: [
       { id: 'ufc-300', name: "UFC 300: Global Championship", date: "Apr 11, 2026" },
-      { id: 'ufc-301', name: "UFC 301: Rio Showdown", date: "May 09, 2026" },
       { id: 'ufc-302', name: "UFC 302: International Fight Week", date: "Jun 27, 2026" },
-      { id: 'ufc-303', name: "UFC 303: Summer Slugfest", date: "Jul 18, 2026" },
-      { id: 'ufc-304', name: "UFC 304: London Bridge", date: "Aug 15, 2026" },
-      { id: 'ufc-305', name: "UFC 305: Desert Duel (Abu Dhabi)", date: "Sep 12, 2026" },
-      { id: 'ufc-306', name: "UFC 306: Sphere Spectacular", date: "Oct 10, 2026" },
-      { id: 'ufc-307', name: "UFC 307: MSG Elite", date: "Nov 14, 2026" },
-      { id: 'ufc-308', name: "UFC 308: Year End Carnage", date: "Dec 12, 2026" },
+      { id: 'ufc-305', name: "UFC 305: Desert Duel", date: "Sep 12, 2026" },
+      { id: 'ufc-308', name: "Year End Carnage", date: "Dec 12, 2026" },
     ], 
-    options: ["Jon Jones", "Alex Pereira", "Islam Makhachev", "Leon Edwards", "Sean O'Malley", "Conor McGregor", "Israel Adesanya"] 
+    options: ["Jon Jones", "Alex Pereira", "Islam Makhachev", "Leon Edwards", "Sean O'Malley", "Conor McGregor"] 
   },
-  { id: 'boxing', name: 'Boxing', icon: <BoxingIcon className="w-5 h-5" />, color: "text-yellow-600", events: [{ id: 'box-e1', name: "Heavyweight Title", date: "May 2026" }], options: ["Tyson Fury", "Oleksandr Usyk", "Anthony Joshua", "Canelo Alvarez"] },
-  { id: 'tennis', name: 'Tennis', icon: <TennisIcon className="w-5 h-5" />, color: "text-lime-400", events: [{ id: 'ten-e1', name: "Wimbledon Final", date: "Jul 2026" }], options: ["Djokovic", "Alcaraz", "Sinner", "Swiatek", "Gauff"] },
-  { id: 'pickleball', name: 'Pickleball', icon: <PickleballIcon className="w-5 h-5" />, color: "text-yellow-500", events: [{ id: 'pb-e1', name: "US Open Pickleball", date: "Apr 2026" }], options: ["Ben Johns", "Anna Leigh Waters", "Tyson McGuffin", "Lea Jansen"] },
-  { id: 'volleyball', name: 'Volleyball', icon: <VolleyballIcon className="w-5 h-5" />, color: "text-indigo-400", events: [{ id: 'vb-e1', name: "Nations League Final", date: "Jul 2026" }], options: ["USA", "Poland", "Brazil", "Turkey", "Italy", "Japan"] },
-  { id: 'surfing', name: 'Surfing', icon: <Waves className="w-5 h-5" />, color: "text-blue-400", events: [{ id: 'surf-e1', name: "Pipe Masters", date: "Dec 2026" }], options: ["Kelly Slater", "John John Florence", "Gabriel Medina"] },
-  { id: 'skateboarding', name: 'Skate', icon: <Zap className="w-5 h-5" />, color: "text-yellow-400", events: [{ id: 'skate-e1', name: "X Games Vert", date: "Jul 2026" }], options: ["Tony Hawk", "Nyjah Huston", "Yuto Horigome"] },
-  { id: 'bmx', name: 'BMX', icon: <Bike className="w-5 h-5" />, color: "text-red-400", events: [{ id: 'bmx-e1', name: "BMX Dirt Open", date: "Aug 2026" }], options: ["Logan Martin", "Marcus Christopher", "Ryan Williams"] },
-  { id: 'snowboarding', name: 'Snowboard', icon: <Mountain className="w-5 h-5" />, color: "text-cyan-400", events: [{ id: 'snow-e1', name: "Burton US Open", date: "Mar 2026" }], options: ["Shaun White", "Chloe Kim", "Mark McMorris"] },
+  { 
+    id: 'boxing', 
+    name: 'Boxing', 
+    icon: <BoxingIcon className="w-5 h-5" />, 
+    color: "text-yellow-600", 
+    events: [
+      { id: 'box-1', name: "Fury vs Usyk III: Unified Heavyweight", date: "Feb 21, 2026" },
+      { id: 'box-2', name: "Canelo vs Benavidez: Super Middleweight", date: "May 02, 2026" },
+      { id: 'box-3', name: "Davis vs Garcia II: The Rematch", date: "Jul 11, 2026" },
+      { id: 'box-4', name: "Heavyweight Title Eliminator", date: "Oct 17, 2026" },
+    ], 
+    options: ["Tyson Fury", "Oleksandr Usyk", "Canelo Alvarez", "Gervonta Davis", "Anthony Joshua", "Ryan Garcia"] 
+  },
+  { 
+    id: 'pickleball', 
+    name: 'Pickleball', 
+    icon: <PickleballIcon className="w-5 h-5" />, 
+    color: "text-yellow-500", 
+    events: [
+      { id: 'pb-1', name: "PPA Florida Open", date: "Feb 12, 2026" },
+      { id: 'pb-2', name: "US Open Pickleball Championship", date: "Apr 18, 2026" },
+      { id: 'pb-3', name: "Masters Newport Beach", date: "Jun 25, 2026" },
+      { id: 'pb-4', name: "PPA World Finals", date: "Dec 05, 2026" },
+    ], 
+    options: ["Ben Johns", "Anna Leigh Waters", "Tyson McGuffin", "Lea Jansen", "Catherine Parenteau", "Riley Newman"] 
+  },
+  { 
+    id: 'volleyball', 
+    name: 'Volleyball', 
+    icon: <VolleyballIcon className="w-5 h-5" />, 
+    color: "text-indigo-400", 
+    events: [
+      { id: 'vb-1', name: "VNL: Nations League Finals", date: "Jul 08, 2026" },
+      { id: 'vb-2', name: "World Beach Pro Tour: Gstaad", date: "Aug 15, 2026" },
+      { id: 'vb-3', name: "European Championship Group Stage", date: "Sep 02, 2026" },
+      { id: 'vb-4', name: "Club World Championship", date: "Dec 14, 2026" },
+    ], 
+    options: ["USA", "Poland", "Brazil", "Turkey", "Italy", "Japan", "Serbia", "China"] 
+  },
+  { 
+    id: 'surfing', 
+    name: 'Surfing', 
+    icon: <Waves className="w-5 h-5" />, 
+    color: "text-blue-400", 
+    events: [
+      { id: 'surf-1', name: "WSL: Pipeline Pro (Hawaii)", date: "Jan 29, 2026" },
+      { id: 'surf-2', name: "WSL: Margaret River Pro (AUS)", date: "Apr 11, 2026" },
+      { id: 'surf-3', name: "WSL: Tahiti Pro (Teahupo'o)", date: "Aug 20, 2026" },
+      { id: 'surf-4', name: "WSL Finals: Lower Trestles", date: "Sep 15, 2026" },
+    ], 
+    options: ["John John Florence", "Gabriel Medina", "Carissa Moore", "Caroline Marks", "Griffin Colapinto", "Italo Ferreira"] 
+  },
+  { 
+    id: 'skateboarding', 
+    name: 'Skate', 
+    icon: <Zap className="w-5 h-5" />, 
+    color: "text-yellow-400", 
+    events: [
+      { id: 'skate-1', name: "X Games Japan: Street Finals", date: "May 15, 2026" },
+      { id: 'skate-2', name: "Street League: Chicago Stop", date: "Jul 22, 2026" },
+      { id: 'skate-3', name: "X Games California: Vert Open", date: "Sep 10, 2026" },
+    ], 
+    options: ["Nyjah Huston", "Yuto Horigome", "Rayssa Leal", "Sky Brown", "Tony Hawk (Legend)", "Leticia Bufoni"] 
+  },
+  { 
+    id: 'bmx', 
+    name: 'BMX', 
+    icon: <Bike className="w-5 h-5" />, 
+    color: "text-red-400", 
+    events: [
+      { id: 'bmx-1', name: "UCI Freestyle World Cup: France", date: "Jun 04, 2026" },
+      { id: 'bmx-2', name: "BMX Dirt Open: Austin", date: "Aug 22, 2026" },
+      { id: 'bmx-3', name: "X Games: BMX Park Finals", date: "Sep 12, 2026" },
+    ], 
+    options: ["Logan Martin", "Marcus Christopher", "Hannah Roberts", "Ryan Williams", "Kieran Reilly", "Jose Torres"] 
+  },
+  { id: 'snowboarding', name: 'Snowboard', icon: <Mountain className="w-5 h-5" />, color: "text-cyan-400", events: [{ id: 'snow-1', name: "Burton US Open", date: "Mar 05, 2026" }], options: ["Shaun White", "Chloe Kim", "Mark McMorris"] },
 ];
 
 function CreateGameForm() {
