@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -14,6 +13,7 @@ import { useAuth, useUser, initiateEmailSignUp, useFirestore, useDoc, useMemoFir
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { validateTOTP, getOTPAuthUri } from "@/lib/2fa";
+import { verifyRecaptchaAction } from "@/app/actions/recaptcha";
 
 declare global {
   interface Window {
@@ -62,8 +62,21 @@ export default function RegisterPage() {
     if (typeof window !== 'undefined' && window.grecaptcha?.enterprise) {
       window.grecaptcha.enterprise.ready(async () => {
         try {
-          await window.grecaptcha.enterprise.execute('6LfU-ZssAAAAAFcYu-2NemXNroyLyheF3YzMCh9v', { action: 'SIGNUP' });
-          initiateEmailSignUp(auth, email, password);
+          const token = await window.grecaptcha.enterprise.execute('6LfU-ZssAAAAAFcYu-2NemXNroyLyheF3YzMCh9v', { action: 'SIGNUP' });
+          
+          // Server-side Assessment Verification
+          const assessment = await verifyRecaptchaAction(token, 'SIGNUP');
+          
+          if (assessment.success) {
+            initiateEmailSignUp(auth, email, password);
+          } else {
+            setIsVerifying(false);
+            toast({
+              variant: "destructive",
+              title: "Registration Blocked",
+              description: "Automated activity detected. Use a different network or try again later.",
+            });
+          }
         } catch (error) {
           console.error('reCAPTCHA execution failed:', error);
           initiateEmailSignUp(auth, email, password);
@@ -242,6 +255,9 @@ export default function RegisterPage() {
               <Button type="submit" disabled={isVerifying} className="w-full h-12 font-bold uppercase tracking-wider text-lg">
                 {isVerifying ? <Loader2 className="animate-spin" /> : <>Create Account <UserCircle className="ml-2 h-5 w-5" /></>}
               </Button>
+              <div className="flex items-center justify-center gap-2 text-[10px] text-muted-foreground uppercase font-bold tracking-widest">
+                <ShieldCheck className="h-3 w-3 text-accent" /> Secured by reCAPTCHA Enterprise
+              </div>
               <p className="text-center text-sm text-muted-foreground">
                 Already a Playmaker?{" "}
                 <Link href="/login" className="text-accent font-bold hover:underline">Sign In</Link>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -9,11 +8,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Trophy, ArrowRight, Mail, Lock, ShieldCheck, ArrowLeft, Loader2 } from "lucide-react";
+import { Trophy, ArrowRight, Mail, Lock, ShieldCheck, ArrowLeft, Loader2, ShieldAlert } from "lucide-react";
 import { useAuth, useUser, initiateEmailSignIn, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { validateTOTP, getOTPAuthUri } from "@/lib/2fa";
+import { verifyRecaptchaAction } from "@/app/actions/recaptcha";
 
 declare global {
   interface Window {
@@ -62,11 +62,24 @@ export default function LoginPage() {
     if (typeof window !== 'undefined' && window.grecaptcha?.enterprise) {
       window.grecaptcha.enterprise.ready(async () => {
         try {
-          await window.grecaptcha.enterprise.execute('6LfU-ZssAAAAAFcYu-2NemXNroyLyheF3YzMCh9v', { action: 'LOGIN' });
-          initiateEmailSignIn(auth, email, password);
+          const token = await window.grecaptcha.enterprise.execute('6LfU-ZssAAAAAFcYu-2NemXNroyLyheF3YzMCh9v', { action: 'LOGIN' });
+          
+          // Server-side Assessment Verification
+          const assessment = await verifyRecaptchaAction(token, 'LOGIN');
+          
+          if (assessment.success) {
+            initiateEmailSignIn(auth, email, password);
+          } else {
+            setIsVerifying(false);
+            toast({
+              variant: "destructive",
+              title: "Security Shield Triggered",
+              description: "Automated activity detected. Please try again later.",
+            });
+          }
         } catch (error) {
           console.error('reCAPTCHA execution failed:', error);
-          // Fallback to regular sign-in if reCAPTCHA fails to load
+          // Fallback if service is down
           initiateEmailSignIn(auth, email, password);
         }
       });
@@ -243,6 +256,9 @@ export default function LoginPage() {
               <Button type="submit" disabled={isVerifying} className="w-full h-12 font-bold uppercase tracking-wider text-lg">
                 {isVerifying ? <Loader2 className="animate-spin" /> : <>Enter Arena <ArrowRight className="ml-2 h-5 w-5" /></>}
               </Button>
+              <div className="flex items-center justify-center gap-2 text-[10px] text-muted-foreground uppercase font-bold tracking-widest">
+                <ShieldCheck className="h-3 w-3 text-accent" /> Secured by reCAPTCHA Enterprise
+              </div>
               <p className="text-center text-sm text-muted-foreground">
                 Don't have an account?{" "}
                 <Link href="/register" className="text-accent font-bold hover:underline">Create one</Link>
