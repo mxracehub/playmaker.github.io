@@ -201,7 +201,7 @@ export default function Home() {
           <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-12">
             <div className="max-w-xl">
               <h1 className="font-headline text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-none uppercase italic">
-                The Ultimate <br/><span className="text-accent">Playmaker</span> Arena
+                The Ultimate <br/><span className="text-accent">Playmaker</span> Arcade
               </h1>
               <p className="text-xl text-white/70 mb-8 font-medium leading-relaxed max-w-lg">
                 Challenge your circle in the next generation of sports games. Pick your elite roster and dominate.
