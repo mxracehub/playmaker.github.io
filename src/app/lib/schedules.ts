@@ -14,10 +14,10 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE & ROSTER DATABASE v14.0
+ * ARENA SCHEDULE & ROSTER DATABASE v15.0
  * Unified source of truth for all 16 professional sports.
  * Featuring literal seasonal schedules for MLB (162 games), NFL (17 games), 
- * NBA (82 games), and NHL (52 games) for the 2026 seasons.
+ * NBA (82 games), NHL (52 games), and NASCAR (42 races) for the 2026 seasons.
  */
 
 export interface SportEvent {
@@ -62,6 +62,21 @@ const nflOpponents = [
 
 const nhlOpponents = [
   "Anaheim Ducks", "Boston Bruins", "Buffalo Sabres", "Calgary Flames", "Carolina Hurricanes", "Chicago Blackhawks", "Colorado Avalanche", "Columbus Blue Jackets", "Dallas Stars", "Detroit Red Wings", "Edmonton Oilers", "Florida Panthers", "Los Angeles Kings", "Minnesota Wild", "Montreal Canadiens", "Nashville Predators", "New Jersey Devils", "New York Islanders", "New York Rangers", "Ottawa Senators", "Philadelphia Flyers", "Pittsburgh Penguins", "San Jose Sharks", "Seattle Kraken", "St. Louis Blues", "Tampa Bay Lightning", "Toronto Maple Leafs", "Utah Hockey Club", "Vancouver Canucks", "Vegas Golden Knights", "Washington Capitals", "Winnipeg Jets"
+];
+
+const nascarVenues = [
+  "Daytona International Speedway", "Atlanta Motor Speedway", "Las Vegas Motor Speedway", 
+  "Phoenix Raceway", "Bristol Motor Speedway", "Circuit of the Americas", 
+  "Richmond Raceway", "Martinsville Speedway", "Texas Motor Speedway", 
+  "Talladega Superspeedway", "Dover Motor Speedway", "Kansas Speedway", 
+  "Darlington Raceway", "North Wilkesboro Speedway", "Charlotte Motor Speedway", 
+  "World Wide Technology Raceway", "Sonoma Raceway", "Iowa Speedway", 
+  "New Hampshire Motor Speedway", "Nashville Superspeedway", "Chicago Street Course", 
+  "Pocono Raceway", "Indianapolis Motor Speedway", "Michigan International Speedway", 
+  "Watkins Glen International", "Homestead-Miami Speedway", "Kansas Speedway", 
+  "Bristol Motor Speedway", "Talladega Superspeedway", "Charlotte Motor Speedway Roval", 
+  "Las Vegas Motor Speedway", "Homestead-Miami Speedway", "Martinsville Speedway", 
+  "Phoenix Raceway (Finale)"
 ];
 
 const generateNBAGames = (teamName: string, startId: string) => {
@@ -160,39 +175,24 @@ const generateNFLGames = (teamAbbr: string, teamName: string, startId: string) =
   });
 };
 
+const generateNASCARRaces = () => {
+  return Array.from({ length: 42 }, (_, i) => {
+    const venue = nascarVenues[i % nascarVenues.length];
+    const date = new Date(2026, 1, 15); // Starting Feb 15, 2026 (Daytona 500)
+    date.setDate(date.getDate() + (i * 7));
+    
+    const dateString = date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+
+    return {
+      id: `nas-26-r${(i + 1).toString().padStart(2, '0')}`,
+      name: `Race ${(i + 1)}: ${venue}`,
+      date: dateString
+    };
+  });
+};
+
 const nflTeamsList = [
-  { abbr: "ARI", name: "Cardinals" },
-  { abbr: "ATL", name: "Falcons" },
-  { abbr: "BAL", name: "Ravens" },
-  { abbr: "BUF", name: "Bills" },
-  { abbr: "CAR", name: "Panthers" },
-  { abbr: "CHI", name: "Bears" },
-  { abbr: "CIN", name: "Bengals" },
-  { abbr: "CLE", name: "Browns" },
-  { abbr: "DAL", name: "Cowboys" },
-  { abbr: "DEN", name: "Broncos" },
-  { abbr: "DET", name: "Lions" },
-  { abbr: "GB", name: "Packers" },
-  { abbr: "HOU", name: "Texans" },
-  { abbr: "IND", name: "Colts" },
-  { abbr: "JAX", name: "Jaguars" },
-  { abbr: "KC", name: "Chiefs" },
-  { abbr: "LV", name: "Raiders" },
-  { abbr: "LAC", name: "Chargers" },
-  { abbr: "LAR", name: "Rams" },
-  { abbr: "MIA", name: "Dolphins" },
-  { abbr: "MIN", name: "Vikings" },
-  { abbr: "NE", name: "Patriots" },
-  { abbr: "NO", name: "Saints" },
-  { abbr: "NYG", name: "Giants" },
-  { abbr: "NYJ", name: "Jets" },
-  { abbr: "PHI", name: "Eagles" },
-  { abbr: "PIT", name: "Steelers" },
-  { abbr: "SF", name: "49ers" },
-  { abbr: "SEA", name: "Seahawks" },
-  { abbr: "TB", name: "Buccaneers" },
-  { abbr: "TEN", name: "Titans" },
-  { abbr: "WAS", name: "Commanders" }
+  { abbr: "ARI", name: "Cardinals" }, { abbr: "ATL", name: "Falcons" }, { abbr: "BAL", name: "Ravens" }, { abbr: "BUF", name: "Bills" }, { abbr: "CAR", name: "Panthers" }, { abbr: "CHI", name: "Bears" }, { abbr: "CIN", name: "Bengals" }, { abbr: "CLE", name: "Browns" }, { abbr: "DAL", name: "Cowboys" }, { abbr: "DEN", name: "Broncos" }, { abbr: "DET", name: "Lions" }, { abbr: "GB", name: "Packers" }, { abbr: "HOU", name: "Texans" }, { abbr: "IND", name: "Colts" }, { abbr: "JAX", name: "Jaguars" }, { abbr: "KC", name: "Chiefs" }, { abbr: "LV", name: "Raiders" }, { abbr: "LAC", name: "Chargers" }, { abbr: "LAR", name: "Rams" }, { abbr: "MIA", name: "Dolphins" }, { abbr: "MIN", name: "Vikings" }, { abbr: "NE", name: "Patriots" }, { abbr: "NO", name: "Saints" }, { abbr: "NYG", name: "Giants" }, { abbr: "NYJ", name: "Jets" }, { abbr: "PHI", name: "Eagles" }, { abbr: "PIT", name: "Steelers" }, { abbr: "SF", name: "49ers" }, { abbr: "SEA", name: "Seahawks" }, { abbr: "TB", name: "Buccaneers" }, { abbr: "TEN", name: "Titans" }, { abbr: "WAS", name: "Commanders" }
 ];
 
 export const sportsData: Sport[] = [
@@ -283,8 +283,7 @@ export const sportsData: Sport[] = [
     icon: 'Flag', 
     color: "text-red-500", 
     events: [
-      { id: 'nas-26-daytona', name: "Daytona 500 (Florida)", date: "Feb 15, 2026" },
-      { id: 'nas-26-finale', name: "Cup Series Championship", date: "Nov 08, 2026" },
+      ...generateNASCARRaces(),
     ], 
     options: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney", "William Byron", "Christopher Bell", "Joey Logano", "Martin Truex Jr.", "Tyler Reddick", "Ross Chastain", "Kyle Busch", "Bubba Wallace", "Brad Keselowski", "Ty Gibbs", "Chris Buescher", "Michael McDowell", "Alex Bowman", "Chase Briscoe"] 
   },
