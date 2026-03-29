@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE & ROSTER DATABASE v8.10
+ * ARENA SCHEDULE & ROSTER DATABASE v8.11
  * Unified source of truth for all 16 professional sports.
- * Featuring 162-game literal schedules for COL, SFG, ARI, NYY, LAD, NYM, HOU, CHC, BOS, SEA, and TOR.
+ * Featuring 162-game literal schedules for COL, SFG, ARI, NYY, LAD, NYM, HOU, CHC, BOS, SEA, TOR, and STL.
  */
 
 export interface SportEvent {
@@ -83,7 +83,7 @@ export const sportsData: Sport[] = [
       { id: 'nba-26-xmas-1', name: "Xmas: Celtics @ 76ers", date: "Dec 25, 2026" },
       { id: 'nba-26-xmas-2', name: "Xmas: Lakers @ Warriors", date: "Dec 25, 2026" },
     ], 
-    options: ["Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", "Cleveland Cavaliers", "Dallas Mavericks", "Denver Nuggets", "Detroit Pistons", "Golden State Warriors", "Houston Rockets", "Indiana Pacers", "LA Clippers", "LA Lakers", "Memphis Grizzlies", "Miami Heat", "Milwaukee Bucks", "Minnesota Timberwolves", "New Orleans Pelicans", "New York Knicks", "Oklahoma City Thunder", "Orlando Magic", "Philadelphia 76ers", "Phoenix Suns", "Portland Trail Blazers", "Sacramento Kings", "San Antonio Spurs", "Toronto Raptors", "Utah Jazz", "Washington Wizards"] 
+    options: ["Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", "Cleveland Cavaliers", "Dallas Mavericks", "Denver Nuggets", "Detroit Pistons", "Golden State Warriors", "Houston Rockets", "Indiana Pacers", "LA Clippers", "LA Lakers", "Memphis Grizzlies", "Miami Heat", "Milwaukee Bucks", "Minnesota Timberwolves", "New York Knicks", "Oklahoma City Thunder", "Orlando Magic", "Philadelphia 76ers", "Phoenix Suns", "Portland Trail Blazers", "Sacramento Kings", "San Antonio Spurs", "Toronto Raptors", "Utah Jazz", "Washington Wizards"] 
   },
   { 
     id: 'nfl', 
@@ -118,6 +118,7 @@ export const sportsData: Sport[] = [
       ...generateMLBGames("BOS", "Boston Red Sox", "mlb-26-bos"),
       ...generateMLBGames("SEA", "Seattle Mariners", "mlb-26-sea"),
       ...generateMLBGames("TOR", "Toronto Blue Jays", "mlb-26-tor"),
+      ...generateMLBGames("STL", "St. Louis Cardinals", "mlb-26-stl"),
       { id: 'mlb-26-asg', name: "2026 MLB All-Star Game (Atlanta)", date: "Jul 14, 2026" },
       { id: 'mlb-26-ws', name: "2026 World Series: Game 1", date: "Oct 23, 2026" },
     ], 
