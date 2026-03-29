@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE & ROSTER DATABASE v8.8
+ * ARENA SCHEDULE & ROSTER DATABASE v8.9
  * Unified source of truth for all 16 professional sports.
- * Featuring 162-game literal schedules for COL, SFG, ARI, NYY, LAD, NYM, HOU, and CHC.
+ * Featuring 162-game literal schedules for COL, SFG, ARI, NYY, LAD, NYM, HOU, CHC, and BOS.
  */
 
 export interface SportEvent {
@@ -115,6 +115,7 @@ export const sportsData: Sport[] = [
       ...generateMLBGames("NYM", "NY Mets", "mlb-26-nym"),
       ...generateMLBGames("HOU", "Houston Astros", "mlb-26-hou"),
       ...generateMLBGames("CHC", "Chicago Cubs", "mlb-26-chc"),
+      ...generateMLBGames("BOS", "Boston Red Sox", "mlb-26-bos"),
       { id: 'mlb-26-asg', name: "2026 MLB All-Star Game (Atlanta)", date: "Jul 14, 2026" },
       { id: 'mlb-26-ws', name: "2026 World Series: Game 1", date: "Oct 23, 2026" },
     ], 
