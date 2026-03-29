@@ -306,27 +306,29 @@ export default function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="scoring" className="space-y-6">
-            <div className="flex items-center justify-between p-4 bg-secondary/20 rounded-2xl border border-white/5">
-              <div className="flex items-center gap-4">
+            <div className="flex flex-col gap-4 p-6 bg-secondary/20 rounded-2xl border border-white/5">
+              <div className="flex items-center gap-4 border-b border-white/5 pb-4">
                 <Filter className="h-4 w-4 text-muted-foreground" />
-                <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Filter Arena</span>
-                <div className="flex flex-wrap gap-2">
-                  {["all", "nba", "nfl", "soccer", "ufc", "golf"].map(s => (
-                    <button 
-                      key={s} 
-                      onClick={() => setResultsFilter(s)}
-                      className={cn(
-                        "px-3 py-1 rounded-full text-[10px] font-bold uppercase transition-all",
-                        resultsFilter === s ? "bg-primary text-white" : "bg-white/5 text-muted-foreground hover:bg-white/10"
-                      )}
-                    >
-                      {s}
-                    </button>
-                  ))}
-                </div>
+                <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Arena Selection</span>
               </div>
-              <div className="text-[10px] font-bold text-muted-foreground uppercase">
-                {filteredScoringGames.length} Matchups in Queue
+              <div className="flex flex-wrap gap-2">
+                {["all", ...Object.keys(sportPicks)].map(s => (
+                  <button 
+                    key={s} 
+                    onClick={() => setResultsFilter(s)}
+                    className={cn(
+                      "px-4 py-2 rounded-lg text-[10px] font-bold uppercase transition-all border",
+                      resultsFilter === s 
+                        ? "bg-primary text-white border-primary shadow-lg shadow-primary/20" 
+                        : "bg-white/5 text-muted-foreground border-white/5 hover:bg-white/10"
+                    )}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+              <div className="pt-2 text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+                {filteredScoringGames.length} Matchups in {resultsFilter.toUpperCase()} Queue
               </div>
             </div>
 
@@ -367,9 +369,9 @@ export default function AdminDashboard() {
                   </Card>
                 ))
               ) : (
-                <div className="text-center py-20 bg-card/10 rounded-3xl border border-dashed">
+                <div className="text-center py-24 bg-card/10 rounded-3xl border border-dashed">
                   <Database className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-20" />
-                  <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest opacity-50">No scoring tasks available</p>
+                  <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest opacity-50">No scoring tasks for {resultsFilter.toUpperCase()}</p>
                 </div>
               )}
             </div>
