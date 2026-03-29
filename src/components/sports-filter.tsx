@@ -1,3 +1,4 @@
+
 "use client"
 
 import Link from "next/link";
@@ -57,99 +58,99 @@ const sports = [
   { 
     id: 'nba', 
     name: 'NBA', 
-    img: "https://picsum.photos/seed/basketball/400/250",
+    img: "https://picsum.photos/seed/nba-pro/400/250",
     icon: <Dribbble className="w-5 h-5 text-orange-500" />
   },
   { 
     id: 'nfl', 
     name: 'NFL', 
-    img: "https://picsum.photos/seed/football/400/250",
+    img: "https://picsum.photos/seed/nfl-pro/400/250",
     icon: <Trophy className="w-5 h-5 text-green-500" />
+  },
+  { 
+    id: 'mlb', 
+    name: 'MLB', 
+    img: "https://picsum.photos/seed/mlb-pro/400/250",
+    icon: <BaseballIcon className="w-5 h-5 text-blue-500" />
   },
   { 
     id: 'hockey', 
     name: 'NHL', 
-    img: "https://picsum.photos/seed/hockey/400/250",
+    img: "https://picsum.photos/seed/nhl-pro/400/250",
     icon: <Snowflake className="w-5 h-5 text-cyan-400" />
   },
   { 
     id: 'soccer', 
     name: 'Soccer', 
-    img: "https://picsum.photos/seed/soccer/400/250",
+    img: "https://picsum.photos/seed/soccer-pro/400/250",
     icon: <SoccerIcon className="w-5 h-5 text-white" />
   },
   { 
     id: 'ufc', 
     name: 'UFC', 
-    img: "https://picsum.photos/seed/ufc/400/250",
+    img: "https://picsum.photos/seed/ufc-pro/400/250",
     icon: <Swords className="w-5 h-5 text-red-600" />
   },
   { 
     id: 'boxing', 
     name: 'Boxing', 
-    img: "https://picsum.photos/seed/boxing/400/250",
+    img: "https://picsum.photos/seed/boxing-pro/400/250",
     icon: <BoxingIcon className="w-5 h-5 text-yellow-600" />
-  },
-  { 
-    id: 'mlb', 
-    name: 'MLB', 
-    img: "https://picsum.photos/seed/baseball/400/250",
-    icon: <BaseballIcon className="w-5 h-5 text-blue-500" />
-  },
-  { 
-    id: 'tennis', 
-    name: 'Tennis', 
-    img: "https://picsum.photos/seed/tennis/400/250",
-    icon: <Target className="w-5 h-5 text-lime-400" />
-  },
-  { 
-    id: 'pickleball', 
-    name: 'Pickleball', 
-    img: "https://picsum.photos/seed/pickle/400/250",
-    icon: <Trophy className="w-5 h-5 text-yellow-500" />
-  },
-  { 
-    id: 'volleyball', 
-    name: 'Volleyball', 
-    img: "https://picsum.photos/seed/volley/400/250",
-    icon: <Trophy className="w-5 h-5 text-indigo-400" />
-  },
-  { 
-    id: 'surfing', 
-    name: 'Surfing', 
-    img: "https://picsum.photos/seed/surfing/400/250",
-    icon: <Waves className="w-5 h-5 text-blue-400" />
-  },
-  { 
-    id: 'skateboarding', 
-    name: 'Skateboarding', 
-    img: "https://picsum.photos/seed/skate/400/250",
-    icon: <Zap className="w-5 h-5 text-yellow-400" />
-  },
-  { 
-    id: 'bmx', 
-    name: 'BMX', 
-    img: "https://picsum.photos/seed/bmx/400/250",
-    icon: <Bike className="w-5 h-5 text-red-400" />
-  },
-  { 
-    id: 'snowboarding', 
-    name: 'Snowboarding', 
-    img: "https://picsum.photos/seed/snow/400/250",
-    icon: <Mountain className="w-5 h-5 text-cyan-400" />
   },
   { 
     id: 'nascar', 
     name: 'NASCAR', 
-    img: "https://picsum.photos/seed/nascar/400/250",
+    img: "https://picsum.photos/seed/nascar-pro/400/250",
     icon: <Flag className="w-5 h-5 text-red-500" />
   },
   { 
     id: 'golf', 
     name: 'Golf', 
-    img: "https://picsum.photos/seed/golf/400/250",
+    img: "https://picsum.photos/seed/golf-pro/400/250",
     icon: <Target className="h-5 w-5 text-emerald-400" />
   },
+  { 
+    id: 'tennis', 
+    name: 'Tennis', 
+    img: "https://picsum.photos/seed/tennis-pro/400/250",
+    icon: <Target className="w-5 h-5 text-lime-400" />
+  },
+  { 
+    id: 'pickleball', 
+    name: 'Pickleball', 
+    img: "https://picsum.photos/seed/pickleball-pro/400/250",
+    icon: <Trophy className="w-5 h-5 text-yellow-500" />
+  },
+  { 
+    id: 'volleyball', 
+    name: 'Volleyball', 
+    img: "https://picsum.photos/seed/volleyball-pro/400/250",
+    icon: <Trophy className="w-5 h-5 text-indigo-400" />
+  },
+  { 
+    id: 'surfing', 
+    name: 'Surfing', 
+    img: "https://picsum.photos/seed/surfing-pro/400/250",
+    icon: <Waves className="w-5 h-5 text-blue-400" />
+  },
+  { 
+    id: 'skateboarding', 
+    name: 'Skateboarding', 
+    img: "https://picsum.photos/seed/skateboarding-pro/400/250",
+    icon: <Zap className="w-5 h-5 text-yellow-400" />
+  },
+  { 
+    id: 'bmx', 
+    name: 'BMX', 
+    img: "https://picsum.photos/seed/bmx-pro/400/250",
+    icon: <Bike className="w-5 h-5 text-red-400" />
+  },
+  { 
+    id: 'snowboarding', 
+    name: 'Snowboarding', 
+    img: "https://picsum.photos/seed/snowboarding-pro/400/250",
+    icon: <Mountain className="w-5 h-5 text-cyan-400" />
+  }
 ];
 
 interface SportsFilterProps {

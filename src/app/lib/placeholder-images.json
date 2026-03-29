@@ -2,172 +2,100 @@
 {
   "placeholderImages": [
     {
-      "id": "hockey-hero",
+      "id": "nba-cover",
+      "description": "Professional basketball game action",
+      "imageUrl": "https://picsum.photos/seed/nba-pro/800/600",
+      "imageHint": "basketball action"
+    },
+    {
+      "id": "nfl-cover",
+      "description": "American football stadium lights",
+      "imageUrl": "https://picsum.photos/seed/nfl-pro/800/600",
+      "imageHint": "football stadium"
+    },
+    {
+      "id": "mlb-cover",
+      "description": "Major league baseball stadium",
+      "imageUrl": "https://picsum.photos/seed/mlb-pro/800/600",
+      "imageHint": "baseball field"
+    },
+    {
+      "id": "nhl-cover",
       "description": "NHL hockey game action on ice",
-      "imageUrl": "https://picsum.photos/seed/hockey/1200/600",
+      "imageUrl": "https://picsum.photos/seed/nhl-pro/800/600",
       "imageHint": "hockey rink"
     },
     {
-      "id": "basketball-hero",
-      "description": "Professional basketball game action",
-      "imageUrl": "https://picsum.photos/seed/basketball/1200/600",
-      "imageHint": "basketball stadium"
-    },
-    {
-      "id": "football-hero",
-      "description": "American football stadium lights",
-      "imageUrl": "https://picsum.photos/seed/football/1200/600",
-      "imageHint": "football field"
-    },
-    {
-      "id": "surfing-hero",
-      "description": "Huge wave surfing action",
-      "imageUrl": "https://picsum.photos/seed/surfing/600/400",
-      "imageHint": "surfing wave"
-    },
-    {
-      "id": "skateboarding-hero",
-      "description": "Skateboarder performing a trick",
-      "imageUrl": "https://picsum.photos/seed/skate/600/400",
-      "imageHint": "skateboarding trick"
-    },
-    {
-      "id": "bmx-hero",
-      "description": "BMX rider in the air",
-      "imageUrl": "https://picsum.photos/seed/bmx/600/400",
-      "imageHint": "bmx jump"
-    },
-    {
-      "id": "snowboarding-hero",
-      "description": "Snowboarder in deep powder",
-      "imageUrl": "https://picsum.photos/seed/snow/600/400",
-      "imageHint": "snowboarding mountain"
-    },
-    {
-      "id": "nascar-hero",
-      "description": "Race cars on a track",
-      "imageUrl": "https://picsum.photos/seed/nascar/600/400",
-      "imageHint": "race track"
-    },
-    {
-      "id": "golf-hero",
-      "description": "Pristine golf course green",
-      "imageUrl": "https://picsum.photos/seed/golf/600/400",
-      "imageHint": "golf course"
-    },
-    {
-      "id": "soccer-hero",
+      "id": "soccer-cover",
       "description": "Soccer stadium at night",
-      "imageUrl": "https://picsum.photos/seed/soccer/600/400",
-      "imageHint": "soccer stadium"
+      "imageUrl": "https://picsum.photos/seed/soccer-pro/800/600",
+      "imageHint": "soccer game"
     },
     {
-      "id": "ufc-hero",
+      "id": "ufc-cover",
       "description": "MMA Octagon lighting",
-      "imageUrl": "https://picsum.photos/seed/ufc/600/400",
-      "imageHint": "mma ring"
+      "imageUrl": "https://picsum.photos/seed/ufc-pro/800/600",
+      "imageHint": "mma cage"
     },
     {
-      "id": "boxing-hero",
+      "id": "boxing-cover",
       "description": "Boxing ring and gloves",
-      "imageUrl": "https://picsum.photos/seed/boxing/600/400",
+      "imageUrl": "https://picsum.photos/seed/boxing-pro/800/600",
       "imageHint": "boxing ring"
     },
     {
-      "id": "athlete-luka",
-      "description": "Luka Doncic style athlete",
-      "imageUrl": "https://picsum.photos/seed/luka/400/400",
-      "imageHint": "basketball player"
+      "id": "nascar-cover",
+      "description": "Race cars on a track",
+      "imageUrl": "https://picsum.photos/seed/nascar-pro/800/600",
+      "imageHint": "race track"
     },
     {
-      "id": "athlete-mahomes",
-      "description": "Patrick Mahomes style athlete",
-      "imageUrl": "https://picsum.photos/seed/mahomes/400/400",
-      "imageHint": "football player"
+      "id": "golf-cover",
+      "description": "Pristine golf course green",
+      "imageUrl": "https://picsum.photos/seed/golf-pro/800/600",
+      "imageHint": "golf course"
     },
     {
-      "id": "athlete-messi",
-      "description": "Lionel Messi style athlete",
-      "imageUrl": "https://picsum.photos/seed/messi/400/400",
-      "imageHint": "soccer player"
+      "id": "tennis-cover",
+      "description": "Professional tennis court",
+      "imageUrl": "https://picsum.photos/seed/tennis-pro/800/600",
+      "imageHint": "tennis match"
     },
     {
-      "id": "athlete-jones",
-      "description": "Jon Jones style athlete",
-      "imageUrl": "https://picsum.photos/seed/jjones/400/400",
-      "imageHint": "mma fighter"
+      "id": "pickleball-cover",
+      "description": "Pickleball court action",
+      "imageUrl": "https://picsum.photos/seed/pickleball-pro/800/600",
+      "imageHint": "pickleball court"
     },
     {
-      "id": "athlete-ohtani",
-      "description": "Shohei Ohtani style athlete",
-      "imageUrl": "https://picsum.photos/seed/ohtani/400/400",
-      "imageHint": "baseball player"
+      "id": "volleyball-cover",
+      "description": "Volleyball match action",
+      "imageUrl": "https://picsum.photos/seed/volleyball-pro/800/600",
+      "imageHint": "volleyball game"
     },
     {
-      "id": "athlete-mcdavid",
-      "description": "Connor McDavid style athlete",
-      "imageUrl": "https://picsum.photos/seed/mcdavid/400/400",
-      "imageHint": "hockey player"
+      "id": "surfing-cover",
+      "description": "Huge wave surfing action",
+      "imageUrl": "https://picsum.photos/seed/surfing-pro/800/600",
+      "imageHint": "surfing wave"
     },
     {
-      "id": "athlete-fury",
-      "description": "Tyson Fury style athlete",
-      "imageUrl": "https://picsum.photos/seed/fury/400/400",
-      "imageHint": "boxer"
+      "id": "skateboarding-cover",
+      "description": "Skateboarder performing a trick",
+      "imageUrl": "https://picsum.photos/seed/skateboarding-pro/800/600",
+      "imageHint": "skateboarding trick"
     },
     {
-      "id": "athlete-djokovic",
-      "description": "Novak Djokovic style athlete",
-      "imageUrl": "https://picsum.photos/seed/djokovic/400/400",
-      "imageHint": "tennis player"
+      "id": "bmx-cover",
+      "description": "BMX rider in the air",
+      "imageUrl": "https://picsum.photos/seed/bmx-pro/800/600",
+      "imageHint": "bmx jump"
     },
     {
-      "id": "athlete-bjohns",
-      "description": "Ben Johns style athlete",
-      "imageUrl": "https://picsum.photos/seed/bjohns/400/400",
-      "imageHint": "pickleball player"
-    },
-    {
-      "id": "athlete-vball",
-      "description": "Volleyball player action",
-      "imageUrl": "https://picsum.photos/seed/vball/400/400",
-      "imageHint": "volleyball player"
-    },
-    {
-      "id": "athlete-surfpro",
-      "description": "Professional surfer",
-      "imageUrl": "https://picsum.photos/seed/surfpro/400/400",
-      "imageHint": "surfer"
-    },
-    {
-      "id": "athlete-skatepro",
-      "description": "Professional skateboarder",
-      "imageUrl": "https://picsum.photos/seed/skatepro/400/400",
-      "imageHint": "skateboarder"
-    },
-    {
-      "id": "athlete-bmxpro",
-      "description": "BMX pro athlete",
-      "imageUrl": "https://picsum.photos/seed/bmxpro/400/400",
-      "imageHint": "bmx rider"
-    },
-    {
-      "id": "athlete-snowpro",
-      "description": "Pro snowboarder",
-      "imageUrl": "https://picsum.photos/seed/snowpro/400/400",
-      "imageHint": "snowboarder"
-    },
-    {
-      "id": "athlete-nascarpro",
-      "description": "Race car driver",
-      "imageUrl": "https://picsum.photos/seed/nascarpro/400/400",
-      "imageHint": "race driver"
-    },
-    {
-      "id": "athlete-golfpro",
-      "description": "Pro golfer",
-      "imageUrl": "https://picsum.photos/seed/golfpro/400/400",
-      "imageHint": "golfer"
+      "id": "snowboarding-cover",
+      "description": "Snowboarder in deep powder",
+      "imageUrl": "https://picsum.photos/seed/snowboarding-pro/800/600",
+      "imageHint": "snowboarding mountain"
     }
   ]
 }
