@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -59,34 +60,22 @@ const BaseballIcon = ({ className }: { className?: string }) => (
 );
 
 const mockAthletes = [
-  {
-    id: "1",
-    name: "Luka Doncic",
-    team: "Dallas Mavericks",
-    sport: "NBA",
-    avatar: "https://picsum.photos/seed/luka/400/400"
-  },
-  {
-    id: "2",
-    name: "Patrick Mahomes",
-    team: "KC Chiefs",
-    sport: "NFL",
-    avatar: "https://picsum.photos/seed/mahomes/400/400"
-  },
-  {
-    id: "hockey-1",
-    name: "Connor McDavid",
-    team: "Edmonton Oilers",
-    sport: "Hockey",
-    avatar: "https://picsum.photos/seed/mcdavid/400/400"
-  },
-  {
-    id: "hockey-2",
-    name: "Nathan MacKinnon",
-    team: "Colorado Avalanche",
-    sport: "Hockey",
-    avatar: "https://picsum.photos/seed/mackinnon/400/400"
-  }
+  { id: "nba-1", name: "Luka Doncic", team: "Dallas Mavericks", sport: "NBA", avatar: "https://picsum.photos/seed/luka/400/400" },
+  { id: "nfl-1", name: "Patrick Mahomes", team: "KC Chiefs", sport: "NFL", avatar: "https://picsum.photos/seed/mahomes/400/400" },
+  { id: "mlb-1", name: "Shohei Ohtani", team: "LA Dodgers", sport: "MLB", avatar: "https://picsum.photos/seed/ohtani/400/400" },
+  { id: "nhl-1", name: "Connor McDavid", team: "Edmonton Oilers", sport: "Hockey", avatar: "https://picsum.photos/seed/mcdavid/400/400" },
+  { id: "soccer-1", name: "Lionel Messi", team: "Inter Miami", sport: "Soccer", avatar: "https://picsum.photos/seed/messi/400/400" },
+  { id: "ufc-1", name: "Jon Jones", team: "Elite Heavyweight", sport: "UFC", avatar: "https://picsum.photos/seed/jjones/400/400" },
+  { id: "boxing-1", name: "Tyson Fury", team: "Heavyweight Pro", sport: "Boxing", avatar: "https://picsum.photos/seed/fury/400/400" },
+  { id: "tennis-1", name: "Novak Djokovic", team: "ATP Tour Elite", sport: "Tennis", avatar: "https://picsum.photos/seed/djokovic/400/400" },
+  { id: "pickle-1", name: "Ben Johns", team: "PPA Tour Champ", sport: "Pickleball", avatar: "https://picsum.photos/seed/bjohns/400/400" },
+  { id: "vball-1", name: "USA National", team: "Olympic Roster", sport: "Volleyball", avatar: "https://picsum.photos/seed/vball/400/400" },
+  { id: "surf-1", name: "J.J. Florence", team: "WSL Pro Tour", sport: "Surfing", avatar: "https://picsum.photos/seed/surfpro/400/400" },
+  { id: "skate-1", name: "Nyjah Huston", team: "SLS Pro Elite", sport: "Skateboarding", avatar: "https://picsum.photos/seed/skatepro/400/400" },
+  { id: "bmx-1", name: "Logan Martin", team: "UCI World Elite", sport: "BMX", avatar: "https://picsum.photos/seed/bmxpro/400/400" },
+  { id: "snow-1", name: "Chloe Kim", team: "X-Games Champ", sport: "Snowboarding", avatar: "https://picsum.photos/seed/snowpro/400/400" },
+  { id: "nas-1", name: "Kyle Larson", team: "Hendrick Motor", sport: "NASCAR", avatar: "https://picsum.photos/seed/nascarpro/400/400" },
+  { id: "golf-1", name: "S. Scheffler", team: "PGA Tour Elite", sport: "Golf", avatar: "https://picsum.photos/seed/golfpro/400/400" },
 ];
 
 const sportEmptyStates: Record<string, { icon: React.ReactNode; label: string }> = {
@@ -237,15 +226,18 @@ export default function Home() {
           <div className="bg-primary/95 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl p-4 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="flex -space-x-3">
-                {selectedAthletes.slice(0, 3).map((id) => (
-                  <div key={id} className="h-10 w-10 rounded-full border-2 border-primary bg-secondary overflow-hidden ring-2 ring-background">
-                    <img 
-                      src={`https://picsum.photos/seed/${id}/100/100`} 
-                      alt="athlete"
-                      className="object-cover h-full w-full"
-                    />
-                  </div>
-                ))}
+                {selectedAthletes.slice(0, 3).map((id) => {
+                  const athlete = mockAthletes.find(a => a.id === id);
+                  return (
+                    <div key={id} className="h-10 w-10 rounded-full border-2 border-primary bg-secondary overflow-hidden ring-2 ring-background">
+                      <img 
+                        src={athlete?.avatar || `https://picsum.photos/seed/${id}/100/100`} 
+                        alt="athlete"
+                        className="object-cover h-full w-full"
+                      />
+                    </div>
+                  );
+                })}
                 {selectedAthletes.length > 3 && (
                   <div className="h-10 w-10 rounded-full border-2 border-primary bg-secondary flex items-center justify-center ring-2 ring-background text-[10px] font-bold">
                     +{selectedAthletes.length - 3}

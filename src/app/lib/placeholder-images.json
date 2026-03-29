@@ -96,6 +96,78 @@
       "description": "Jon Jones style athlete",
       "imageUrl": "https://picsum.photos/seed/jjones/400/400",
       "imageHint": "mma fighter"
+    },
+    {
+      "id": "athlete-ohtani",
+      "description": "Shohei Ohtani style athlete",
+      "imageUrl": "https://picsum.photos/seed/ohtani/400/400",
+      "imageHint": "baseball player"
+    },
+    {
+      "id": "athlete-mcdavid",
+      "description": "Connor McDavid style athlete",
+      "imageUrl": "https://picsum.photos/seed/mcdavid/400/400",
+      "imageHint": "hockey player"
+    },
+    {
+      "id": "athlete-fury",
+      "description": "Tyson Fury style athlete",
+      "imageUrl": "https://picsum.photos/seed/fury/400/400",
+      "imageHint": "boxer"
+    },
+    {
+      "id": "athlete-djokovic",
+      "description": "Novak Djokovic style athlete",
+      "imageUrl": "https://picsum.photos/seed/djokovic/400/400",
+      "imageHint": "tennis player"
+    },
+    {
+      "id": "athlete-bjohns",
+      "description": "Ben Johns style athlete",
+      "imageUrl": "https://picsum.photos/seed/bjohns/400/400",
+      "imageHint": "pickleball player"
+    },
+    {
+      "id": "athlete-vball",
+      "description": "Volleyball player action",
+      "imageUrl": "https://picsum.photos/seed/vball/400/400",
+      "imageHint": "volleyball player"
+    },
+    {
+      "id": "athlete-surfpro",
+      "description": "Professional surfer",
+      "imageUrl": "https://picsum.photos/seed/surfpro/400/400",
+      "imageHint": "surfer"
+    },
+    {
+      "id": "athlete-skatepro",
+      "description": "Professional skateboarder",
+      "imageUrl": "https://picsum.photos/seed/skatepro/400/400",
+      "imageHint": "skateboarder"
+    },
+    {
+      "id": "athlete-bmxpro",
+      "description": "BMX pro athlete",
+      "imageUrl": "https://picsum.photos/seed/bmxpro/400/400",
+      "imageHint": "bmx rider"
+    },
+    {
+      "id": "athlete-snowpro",
+      "description": "Pro snowboarder",
+      "imageUrl": "https://picsum.photos/seed/snowpro/400/400",
+      "imageHint": "snowboarder"
+    },
+    {
+      "id": "athlete-nascarpro",
+      "description": "Race car driver",
+      "imageUrl": "https://picsum.photos/seed/nascarpro/400/400",
+      "imageHint": "race driver"
+    },
+    {
+      "id": "athlete-golfpro",
+      "description": "Pro golfer",
+      "imageUrl": "https://picsum.photos/seed/golfpro/400/400",
+      "imageHint": "golfer"
     }
   ]
 }
