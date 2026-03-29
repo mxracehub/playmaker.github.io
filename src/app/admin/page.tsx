@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ShieldAlert, CheckCircle2, Play, Trophy, User, Hash, Lock, ShieldX, Loader2, X, Check, Trash2, Search, Target } from "lucide-react";
+import { ShieldAlert, CheckCircle2, Play, Trophy, User, Hash, Lock, ShieldX, Loader2, X, Check, Trash2, Search, Target, Zap } from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase, updateDocumentNonBlocking, deleteDocumentNonBlocking, useUser, useDoc } from "@/firebase";
 import { collection, doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -42,8 +42,12 @@ export default function AdminDashboard() {
 
   const [scoringGame, setScoringGame] = useState<any | null>(null);
   const [respondingGame, setRespondingGame] = useState<any | null>(null);
+  
+  // Scoring State
   const [winnerId, setWinnerId] = useState("");
-  const [scores, setScores] = useState<{ [key: string]: string }>({});
+  const [creatorScore, setCreatorScore] = useState("0");
+  const [opponentScore, setOpponentScore] = useState("0");
+  
   const [selectedPick, setSelectedPick] = useState("");
   const [searchPickQuery, setSearchPickQuery] = useState("");
 
@@ -78,21 +82,31 @@ export default function AdminDashboard() {
 
   const handleFinalizeGame = () => {
     if (!scoringGame) return;
+    
+    if (!winnerId) {
+      toast({ variant: "destructive", title: "Winner Required", description: "You must select a victor to archive the arena." });
+      return;
+    }
+
     const gameRef = doc(db, "games", scoringGame.id);
     
-    const finalScores = Object.entries(scores).reduce((acc, [uid, score]) => {
-      acc[uid] = parseFloat(score) || 0;
-      return acc;
-    }, {} as { [key: string]: number });
+    const finalScores = {
+      [scoringGame.creatorId]: parseFloat(creatorScore) || 0,
+      [scoringGame.opponentId]: parseFloat(opponentScore) || 0,
+    };
 
     updateDocumentNonBlocking(gameRef, {
       status: "Completed",
-      winnerId: winnerId || null,
+      winnerId: winnerId,
       finalScores: finalScores,
+      updatedAt: new Date().toISOString(),
     });
 
-    toast({ title: "Game Finalized", description: "Results archived." });
+    toast({ title: "Arena Results Finalized", description: "Scores recorded and prize pool distributed." });
     setScoringGame(null);
+    setCreatorScore("0");
+    setOpponentScore("0");
+    setWinnerId("");
   };
 
   const filteredPicks = respondingGame 
@@ -198,7 +212,7 @@ export default function AdminDashboard() {
                         )}
                         {game.status === "Live" && (
                           <Button size="sm" variant="destructive" onClick={() => setScoringGame(game)}>
-                            <CheckCircle2 className="mr-2 h-4 w-4" /> Finalize Results
+                            <CheckCircle2 className="mr-2 h-4 w-4" /> Enter Results
                           </Button>
                         )}
                       </div>
@@ -220,9 +234,16 @@ export default function AdminDashboard() {
                   <CardContent className="p-6 flex items-center justify-between">
                     <div>
                       <h4 className="font-bold text-white uppercase">{game.name}</h4>
-                      <p className="text-xs text-muted-foreground uppercase">Winner: {game.winnerId || "Unassigned"}</p>
+                      <p className="text-xs text-muted-foreground uppercase">Winner ID: {game.winnerId || "Unassigned"}</p>
                     </div>
-                    <Trophy className="h-5 w-5 text-accent" />
+                    <div className="text-right">
+                      <p className="text-[10px] font-bold text-accent uppercase mb-1">Final Score</p>
+                      <div className="flex items-center gap-3">
+                        <span className="font-mono text-xs text-white">C: {game.finalScores?.[game.creatorId] || 0}</span>
+                        <span className="font-mono text-xs text-white">O: {game.finalScores?.[game.opponentId] || 0}</span>
+                        <Trophy className="h-4 w-4 text-accent" />
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               ))
@@ -291,31 +312,82 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* Finalize Modal */}
+      {/* Finalize Results Modal */}
       {scoringGame && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <Card className="w-full max-w-lg bg-card border-destructive/20">
-            <CardHeader>
-              <CardTitle className="font-headline uppercase tracking-tight text-white">Finalize Results</CardTitle>
-              <CardDescription>Enter final data and declare the victor.</CardDescription>
+          <Card className="w-full max-w-xl bg-card border-destructive/20 shadow-2xl">
+            <CardHeader className="border-b bg-destructive/5 pb-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="h-8 w-8 rounded-lg bg-destructive/20 flex items-center justify-center">
+                  <Zap className="h-4 w-4 text-destructive" />
+                </div>
+                <CardTitle className="font-headline uppercase tracking-tight text-white">Record Arena Results</CardTitle>
+              </div>
+              <CardDescription>Enter final performance data for {scoringGame.name}. This action is irreversible.</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <Label className="text-xs font-bold uppercase text-muted-foreground">Winning UID</Label>
-                <div className="relative">
-                  <Trophy className="absolute left-3 top-3 h-4 w-4 text-accent" />
+            <CardContent className="p-8 space-y-8">
+              <div className="grid grid-cols-2 gap-8">
+                {/* Challenger Score */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <User className="h-3 w-3 text-primary" />
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Challenger</Label>
+                  </div>
+                  <p className="text-xs font-bold text-white truncate mb-2">{scoringGame.creatorPick}</p>
                   <Input 
-                    placeholder="Enter winner UID" 
-                    className="pl-10" 
-                    value={winnerId}
-                    onChange={(e) => setWinnerId(e.target.value)}
+                    type="number" 
+                    value={creatorScore} 
+                    onChange={(e) => setCreatorScore(e.target.value)}
+                    className="h-14 text-2xl font-headline font-bold text-center bg-secondary/30"
+                    placeholder="0"
                   />
+                  <Button 
+                    variant={winnerId === scoringGame.creatorId ? "default" : "outline"}
+                    className={cn("w-full font-bold uppercase text-[10px]", winnerId === scoringGame.creatorId && "bg-primary")}
+                    onClick={() => setWinnerId(scoringGame.creatorId)}
+                  >
+                    Set as Winner
+                  </Button>
+                </div>
+
+                {/* Opponent Score */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <User className="h-3 w-3 text-accent" />
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Opponent</Label>
+                  </div>
+                  <p className="text-xs font-bold text-white truncate mb-2">{scoringGame.opponentPick}</p>
+                  <Input 
+                    type="number" 
+                    value={opponentScore} 
+                    onChange={(e) => setOpponentScore(e.target.value)}
+                    className="h-14 text-2xl font-headline font-bold text-center bg-secondary/30"
+                    placeholder="0"
+                  />
+                  <Button 
+                    variant={winnerId === scoringGame.opponentId ? "default" : "outline"}
+                    className={cn("w-full font-bold uppercase text-[10px]", winnerId === scoringGame.opponentId && "bg-accent text-accent-foreground")}
+                    onClick={() => setWinnerId(scoringGame.opponentId)}
+                  >
+                    Set as Winner
+                  </Button>
                 </div>
               </div>
+
+              <div className="p-4 rounded-xl bg-secondary/20 border border-white/5 text-center">
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] mb-1">Winner ID to be Archived</p>
+                <p className="font-mono text-xs text-white">{winnerId || "PLEASE SELECT A VICTOR"}</p>
+              </div>
             </CardContent>
-            <CardFooter className="flex gap-3">
-              <Button variant="ghost" onClick={() => setScoringGame(null)} className="flex-1 font-bold uppercase">Cancel</Button>
-              <Button onClick={handleFinalizeGame} className="flex-1 bg-destructive text-white font-bold uppercase">Archive Matchup</Button>
+            <CardFooter className="flex gap-3 bg-secondary/10 p-6 border-t">
+              <Button variant="ghost" onClick={() => setScoringGame(null)} className="flex-1 font-bold uppercase tracking-widest">Cancel</Button>
+              <Button 
+                onClick={handleFinalizeGame} 
+                disabled={!winnerId}
+                className="flex-1 bg-destructive text-white font-bold uppercase tracking-widest shadow-xl shadow-destructive/20"
+              >
+                Confirm & Archive
+              </Button>
             </CardFooter>
           </Card>
         </div>
