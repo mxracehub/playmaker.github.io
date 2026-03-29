@@ -7,9 +7,56 @@ import { SportsFilter } from "@/components/sports-filter";
 import { AthleteCard } from "@/components/athlete-card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowRight, Target, Gamepad2, Trophy, Sparkles, Loader2 } from "lucide-react";
+import { 
+  ArrowRight, 
+  Target, 
+  Gamepad2, 
+  Trophy, 
+  Sparkles, 
+  Loader2,
+  Dribbble,
+  Swords,
+  Snowflake,
+  Waves,
+  Zap,
+  Bike,
+  Mountain,
+  Flag,
+  SearchX
+} from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection } from "firebase/firestore";
+import { cn } from "@/lib/utils";
+
+const SoccerIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="m12 12 5-3v6l-5 3-5-3v-6z" />
+    <path d="M12 2v5" />
+    <path d="M12 17v5" />
+    <path d="M2 12h5" />
+    <path d="M17 12h5" />
+  </svg>
+);
+
+const BoxingIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M18 11h-2a2 2 0 0 1-2-2v0a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2Z" />
+    <path d="M10 10H8a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v0a2 2 0 0 0-2-2Z" />
+    <path d="M18 11V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v5" />
+    <path d="M6 14v5a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4" />
+  </svg>
+);
+
+const BaseballIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2a10 10 0 0 1 0 20" />
+    <path d="M2 12a10 10 0 0 1 20 0" />
+    <path d="M7 7c2 1 3 3 3 5s-1 4-3 5" />
+    <path d="M17 7c-2 1-3 3-3 5s1 4 3 5" />
+  </svg>
+);
 
 const mockAthletes = [
   {
@@ -42,6 +89,26 @@ const mockAthletes = [
   }
 ];
 
+const sportEmptyStates: Record<string, { icon: React.ReactNode; label: string }> = {
+  all: { icon: <Sparkles className="h-12 w-12" />, label: "NO ATHLETES IN THIS ARENA YET" },
+  nba: { icon: <Dribbble className="h-12 w-12" />, label: "NO NBA PLAYMAKERS FOUND" },
+  nfl: { icon: <Trophy className="h-12 w-12" />, label: "NO NFL PLAYMAKERS FOUND" },
+  hockey: { icon: <Snowflake className="h-12 w-12" />, label: "NO NHL PLAYMAKERS FOUND" },
+  soccer: { icon: <SoccerIcon className="h-12 w-12" />, label: "NO SOCCER PLAYMAKERS FOUND" },
+  ufc: { icon: <Swords className="h-12 w-12" />, label: "NO UFC FIGHTERS FOUND" },
+  boxing: { icon: <BoxingIcon className="h-12 w-12" />, label: "NO BOXING CONTENDERS FOUND" },
+  mlb: { icon: <BaseballIcon className="h-12 w-12" />, label: "NO MLB PLAYMAKERS FOUND" },
+  tennis: { icon: <Target className="h-12 w-12" />, label: "NO TENNIS PLAYMAKERS FOUND" },
+  pickleball: { icon: <Trophy className="h-12 w-12" />, label: "NO PICKLEBALL PLAYMAKERS FOUND" },
+  volleyball: { icon: <Trophy className="h-12 w-12" />, label: "NO VOLLEYBALL PLAYMAKERS FOUND" },
+  surfing: { icon: <Waves className="h-12 w-12" />, label: "NO SURFING PLAYMAKERS FOUND" },
+  skateboarding: { icon: <Zap className="h-12 w-12" />, label: "NO SKATE PLAYMAKERS FOUND" },
+  bmx: { icon: <Bike className="h-12 w-12" />, label: "NO BMX PLAYMAKERS FOUND" },
+  snowboarding: { icon: <Mountain className="h-12 w-12" />, label: "NO SNOW PLAYMAKERS FOUND" },
+  nascar: { icon: <Flag className="h-12 w-12" />, label: "NO NASCAR PLAYMAKERS FOUND" },
+  golf: { icon: <Target className="h-12 w-12" />, label: "NO GOLF PLAYMAKERS FOUND" },
+};
+
 export default function Home() {
   const [selectedSport, setSelectedSport] = useState("all");
   const [selectedAthletes, setSelectedAthletes] = useState<string[]>([]);
@@ -62,6 +129,8 @@ export default function Home() {
   const filteredAthletes = selectedSport === "all" 
     ? mockAthletes 
     : mockAthletes.filter(a => a.sport.toLowerCase() === selectedSport.toLowerCase());
+
+  const emptyState = sportEmptyStates[selectedSport] || sportEmptyStates.all;
 
   return (
     <div className="min-h-screen pt-20 pb-24">
@@ -93,7 +162,6 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Tighter Live Stats Cards */}
             <div className="flex flex-col gap-3 w-full md:w-auto md:min-w-[220px]">
               <div className="flex items-center gap-4 bg-white/5 backdrop-blur-2xl px-5 py-4 rounded-2xl border border-white/10 shadow-2xl transition-all hover:scale-105 hover:bg-white/10 duration-300">
                 <div className="h-10 w-10 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
@@ -133,20 +201,30 @@ export default function Home() {
 
         {/* Athlete Grid */}
         <ScrollArea className="h-[600px] rounded-3xl border border-white/5 bg-card/20 p-6 shadow-inner mb-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pr-4">
-            {filteredAthletes.map((athlete) => (
-              <AthleteCard 
-                key={athlete.id} 
-                {...athlete} 
-                isSelected={selectedAthletes.includes(athlete.id)}
-                onSelect={() => toggleAthlete(athlete.id)}
-              />
-            ))}
-            {filteredAthletes.length === 0 && (
-              <div className="col-span-full py-20 text-center bg-card/20 rounded-3xl border border-dashed border-white/5">
-                <Sparkles className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-20" />
-                <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest">No Athletes in this Arena yet</p>
-                <p className="text-xs text-muted-foreground mt-2">Try selecting another sport to see the elite roster.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pr-4 h-full">
+            {filteredAthletes.length > 0 ? (
+              filteredAthletes.map((athlete) => (
+                <AthleteCard 
+                  key={athlete.id} 
+                  {...athlete} 
+                  isSelected={selectedAthletes.includes(athlete.id)}
+                  onSelect={() => toggleAthlete(athlete.id)}
+                />
+              ))
+            ) : (
+              <div className="col-span-full h-full min-h-[400px] flex flex-col items-center justify-center text-center px-4">
+                <div className="relative mb-6">
+                  <div className="absolute inset-0 bg-accent/5 blur-3xl rounded-full scale-150" />
+                  <div className="relative text-muted-foreground opacity-20">
+                    {emptyState.icon}
+                  </div>
+                </div>
+                <h3 className="font-headline text-2xl md:text-3xl font-bold uppercase tracking-widest text-muted-foreground/60 mb-3">
+                  {emptyState.label}
+                </h3>
+                <p className="text-sm text-muted-foreground/40 max-w-xs font-medium uppercase tracking-wider">
+                  The roster is being verified. Try selecting another sport to see the elite lineup.
+                </p>
               </div>
             )}
           </div>
