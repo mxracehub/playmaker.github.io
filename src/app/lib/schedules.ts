@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE & ROSTER DATABASE v8.1
+ * ARENA SCHEDULE & ROSTER DATABASE v8.2
  * Unified source of truth for all 16 professional sports.
- * Featuring 162-game literal schedules for COL, SFG, and ARI.
+ * Featuring 162-game literal schedules for COL, SFG, ARI, and NYY.
  */
 
 export interface SportEvent {
@@ -51,7 +51,6 @@ const generateMLBGames = (teamAbbr: string, teamName: string, startId: string) =
     const date = new Date(2026, 2, 30); // Starting March 30, 2026
     date.setDate(date.getDate() + i + Math.floor(i / 6) * 1); // Roughly 162 games over 180 days
     
-    // Fixed: 'year' option must be 'numeric' or '2-digit', not a specific year string.
     const dateString = date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
 
     return {
@@ -108,6 +107,7 @@ export const sportsData: Sport[] = [
       ...generateMLBGames("COL", "Colorado Rockies", "mlb-26-col"),
       ...generateMLBGames("SFG", "SF Giants", "mlb-26-sfg"),
       ...generateMLBGames("ARI", "Arizona Diamondbacks", "mlb-26-ari"),
+      ...generateMLBGames("NYY", "NY Yankees", "mlb-26-nyy"),
       { id: 'mlb-26-asg', name: "2026 MLB All-Star Game (Atlanta)", date: "Jul 14, 2026" },
       { id: 'mlb-26-ws', name: "2026 World Series: Game 1", date: "Oct 23, 2026" },
     ], 
