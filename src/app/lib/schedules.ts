@@ -123,6 +123,7 @@ export const sportsData: Sport[] = [
       ...generateMLBGames("PHI", "Philadelphia Phillies", "mlb-26-phi"),
       ...generateMLBGames("MIA", "Miami Marlins", "mlb-26-mia"),
       ...generateMLBGames("MIL", "Milwaukee Brewers", "mlb-26-mil"),
+      ...generateMLBGames("CWS", "Chicago White Sox", "mlb-26-cws"),
       { id: 'mlb-26-asg', name: "2026 MLB All-Star Game (Atlanta)", date: "Jul 14, 2026" },
       { id: 'mlb-26-ws', name: "2026 World Series: Game 1", date: "Oct 23, 2026" },
     ], 
