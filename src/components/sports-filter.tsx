@@ -77,17 +77,10 @@ const BoxingIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const HockeyIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M17 3l-2 2-7 7-3-1-2 2 4 4 2-2-1-3 7-7 2-2" />
-    <circle cx="19" cy="5" r="2" />
-  </svg>
-);
-
 const sports = [
   { 
     id: 'all', 
-    name: 'ALL GAMES', 
+    name: 'ALL ARENAS', 
     img: "https://picsum.photos/seed/all-arenas/400/250",
     icon: <LayoutGrid className="w-5 h-5 text-white" />
   },
@@ -129,31 +122,31 @@ const sports = [
   },
   { 
     id: 'mlb', 
-    name: 'Baseball', 
+    name: 'Diamond Duel', 
     img: "https://picsum.photos/seed/baseball/400/250",
     icon: <BaseballIcon className="w-5 h-5 text-blue-500" />
   },
   { 
     id: 'tennis', 
-    name: 'Tennis Court', 
+    name: 'Grand Slam', 
     img: "https://picsum.photos/seed/tennis/400/250",
     icon: <TennisIcon className="w-5 h-5 text-lime-400" />
   },
   { 
     id: 'pickleball', 
-    name: 'Pickleball', 
+    name: 'Kitchen Combat', 
     img: "https://picsum.photos/seed/pickle/400/250",
     icon: <PickleballIcon className="w-5 h-5 text-yellow-500" />
   },
   { 
     id: 'volleyball', 
-    name: 'Volleyball', 
+    name: 'The Net Zone', 
     img: "https://picsum.photos/seed/volley/400/250",
     icon: <VolleyballIcon className="w-5 h-5 text-indigo-400" />
   },
   { 
     id: 'surfing', 
-    name: 'Surfing Pipe', 
+    name: 'Pipe Masters', 
     img: "https://picsum.photos/seed/surfing/400/250",
     icon: <Waves className="w-5 h-5 text-blue-400" />
   },
@@ -171,7 +164,7 @@ const sports = [
   },
   { 
     id: 'snowboarding', 
-    name: 'Snowboard', 
+    name: 'Halfpipe', 
     img: "https://picsum.photos/seed/snow/400/250",
     icon: <Mountain className="w-5 h-5 text-cyan-400" />
   },
