@@ -276,14 +276,9 @@ export default function AdminDashboard() {
 
                       <div className="flex flex-wrap gap-2">
                         {game.status === "Open" && game.opponentId === 'house-admin' && (
-                          <>
-                            <Button size="sm" onClick={() => setRespondingGame(game)} className="bg-accent text-accent-foreground hover:bg-accent/90">
-                              <Check className="mr-2 h-4 w-4" /> Respond
-                            </Button>
-                            <Button size="sm" variant="destructive" onClick={() => handleOpenScoring(game)}>
-                              <CheckCircle2 className="mr-2 h-4 w-4" /> Enter Results
-                            </Button>
-                          </>
+                          <Button size="sm" onClick={() => setRespondingGame(game)} className="bg-accent text-accent-foreground hover:bg-accent/90">
+                            <Check className="mr-2 h-4 w-4" /> Respond
+                          </Button>
                         )}
                         {game.status === "Open" && game.opponentId !== 'house-admin' && (
                           <>
@@ -295,11 +290,9 @@ export default function AdminDashboard() {
                             </Button>
                           </>
                         )}
-                        {game.status === "Live" && (
-                          <Button size="sm" variant="destructive" onClick={() => handleOpenScoring(game)}>
-                            <CheckCircle2 className="mr-2 h-4 w-4" /> Enter Results
-                          </Button>
-                        )}
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase self-center bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                          Outcome managed via Scoring Center
+                        </span>
                       </div>
                     </div>
                   </CardContent>
