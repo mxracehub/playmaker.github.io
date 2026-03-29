@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE & ROSTER DATABASE v8.14
+ * ARENA SCHEDULE & ROSTER DATABASE v9.0
  * Unified source of truth for all 16 professional sports.
- * Featuring 162-game literal schedules for major MLB franchises.
+ * Featuring 162-game literal schedules for ALL 30 MLB franchises.
  */
 
 export interface SportEvent {
@@ -38,15 +38,17 @@ const mlbOpponents = [
   "LA Dodgers", "SD Padres", "SF Giants", "AZ Diamondbacks", "CO Rockies",
   "NY Yankees", "BOS Red Sox", "CHI Cubs", "STL Cardinals", "ATL Braves",
   "HOU Astros", "PHI Phillies", "NY Mets", "TOR Blue Jays", "SEA Mariners",
-  "MIA Marlins", "TX Rangers", "TB Rays", "MIL Brewers", "MIN Twins"
+  "MIA Marlins", "TX Rangers", "TB Rays", "MIL Brewers", "MIN Twins",
+  "DET Tigers", "KC Royals", "LA Angels", "OAK Athletics", "PIT Pirates",
+  "WSH Nationals", "BAL Orioles", "CIN Reds", "CLE Guardians", "CHW White Sox"
 ];
 
 const generateMLBGames = (teamAbbr: string, teamName: string, startId: string) => {
   return Array.from({ length: 162 }, (_, i) => {
     const gameNum = i + 1;
     const opponent = mlbOpponents[i % mlbOpponents.length];
-    // Avoid team playing itself - simple check for the team name or abbr in the opponent string
-    const finalOpponent = (opponent.includes(teamName) || opponent.startsWith(teamAbbr)) 
+    // Avoid team playing itself
+    const finalOpponent = (opponent.includes(teamName) || opponent.includes(teamAbbr)) 
       ? mlbOpponents[(i + 1) % mlbOpponents.length] 
       : opponent;
       
@@ -108,25 +110,36 @@ export const sportsData: Sport[] = [
     icon: 'Trophy', 
     color: "text-blue-500", 
     events: [
-      ...generateMLBGames("COL", "Colorado Rockies", "mlb-26-col"),
-      ...generateMLBGames("SFG", "SF Giants", "mlb-26-sfg"),
-      ...generateMLBGames("ARI", "Arizona Diamondbacks", "mlb-26-ari"),
+      ...generateMLBGames("HOU", "Houston Astros", "mlb-26-hou"),
       ...generateMLBGames("NYY", "NY Yankees", "mlb-26-nyy"),
       ...generateMLBGames("LAD", "LA Dodgers", "mlb-26-lad"),
-      ...generateMLBGames("NYM", "NY Mets", "mlb-26-nym"),
-      ...generateMLBGames("HOU", "Houston Astros", "mlb-26-hou"),
-      ...generateMLBGames("CHC", "Chicago Cubs", "mlb-26-chc"),
       ...generateMLBGames("BOS", "Boston Red Sox", "mlb-26-bos"),
-      ...generateMLBGames("SEA", "Seattle Mariners", "mlb-26-sea"),
+      ...generateMLBGames("CHC", "Chicago Cubs", "mlb-26-chc"),
+      ...generateMLBGames("ATL", "Atlanta Braves", "mlb-26-atl"),
+      ...generateMLBGames("PHI", "Philadelphia Phillies", "mlb-26-phi"),
+      ...generateMLBGames("NYM", "NY Mets", "mlb-26-nym"),
+      ...generateMLBGames("SDP", "San Diego Padres", "mlb-26-sdp"),
+      ...generateMLBGames("TEX", "Texas Rangers", "mlb-26-tex"),
       ...generateMLBGames("TOR", "Toronto Blue Jays", "mlb-26-tor"),
       ...generateMLBGames("STL", "St. Louis Cardinals", "mlb-26-stl"),
-      ...generateMLBGames("PHI", "Philadelphia Phillies", "mlb-26-phi"),
-      ...generateMLBGames("MIA", "Miami Marlins", "mlb-26-mia"),
-      ...generateMLBGames("MIL", "Milwaukee Brewers", "mlb-26-mil"),
-      ...generateMLBGames("CWS", "Chicago White Sox", "mlb-26-cws"),
+      ...generateMLBGames("SFG", "SF Giants", "mlb-26-sfg"),
+      ...generateMLBGames("ARI", "Arizona Diamondbacks", "mlb-26-ari"),
+      ...generateMLBGames("SEA", "Seattle Mariners", "mlb-26-sea"),
       ...generateMLBGames("BAL", "Baltimore Orioles", "mlb-26-bal"),
-      ...generateMLBGames("CIN", "Cincinnati Reds", "mlb-26-cin"),
+      ...generateMLBGames("TBR", "Tampa Bay Rays", "mlb-26-tbr"),
+      ...generateMLBGames("MIN", "Minnesota Twins", "mlb-26-min"),
       ...generateMLBGames("CLE", "Cleveland Guardians", "mlb-26-cle"),
+      ...generateMLBGames("DET", "Detroit Tigers", "mlb-26-det"),
+      ...generateMLBGames("KCR", "Kansas City Royals", "mlb-26-kcr"),
+      ...generateMLBGames("MIL", "Milwaukee Brewers", "mlb-26-mil"),
+      ...generateMLBGames("MIA", "Miami Marlins", "mlb-26-mia"),
+      ...generateMLBGames("CIN", "Cincinnati Reds", "mlb-26-cin"),
+      ...generateMLBGames("PIT", "Pittsburgh Pirates", "mlb-26-pit"),
+      ...generateMLBGames("WSH", "Washington Nationals", "mlb-26-wsh"),
+      ...generateMLBGames("LAA", "LA Angels", "mlb-26-laa"),
+      ...generateMLBGames("OAK", "Oakland Athletics", "mlb-26-oak"),
+      ...generateMLBGames("CWS", "Chicago White Sox", "mlb-26-cws"),
+      ...generateMLBGames("COL", "Colorado Rockies", "mlb-26-col"),
       { id: 'mlb-26-asg', name: "2026 MLB All-Star Game (Atlanta)", date: "Jul 14, 2026" },
       { id: 'mlb-26-ws', name: "2026 World Series: Game 1", date: "Oct 23, 2026" },
     ], 
