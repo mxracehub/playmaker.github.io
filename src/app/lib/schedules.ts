@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE & ROSTER DATABASE v8.12
+ * ARENA SCHEDULE & ROSTER DATABASE v8.13
  * Unified source of truth for all 16 professional sports.
- * Featuring 162-game literal schedules for COL, SFG, ARI, NYY, LAD, NYM, HOU, CHC, BOS, SEA, TOR, STL, and PHI.
+ * Featuring 162-game literal schedules for COL, SFG, ARI, NYY, LAD, NYM, HOU, CHC, BOS, SEA, TOR, STL, PHI, and MIA.
  */
 
 export interface SportEvent {
@@ -37,7 +37,8 @@ export interface Sport {
 const mlbOpponents = [
   "LA Dodgers", "SD Padres", "SF Giants", "AZ Diamondbacks", "CO Rockies",
   "NY Yankees", "BOS Red Sox", "CHI Cubs", "STL Cardinals", "ATL Braves",
-  "HOU Astros", "PHI Phillies", "NY Mets", "TOR Blue Jays", "SEA Mariners"
+  "HOU Astros", "PHI Phillies", "NY Mets", "TOR Blue Jays", "SEA Mariners",
+  "MIA Marlins", "TX Rangers", "TB Rays", "MIL Brewers", "MIN Twins"
 ];
 
 const generateMLBGames = (teamAbbr: string, teamName: string, startId: string) => {
@@ -120,6 +121,7 @@ export const sportsData: Sport[] = [
       ...generateMLBGames("TOR", "Toronto Blue Jays", "mlb-26-tor"),
       ...generateMLBGames("STL", "St. Louis Cardinals", "mlb-26-stl"),
       ...generateMLBGames("PHI", "Philadelphia Phillies", "mlb-26-phi"),
+      ...generateMLBGames("MIA", "Miami Marlins", "mlb-26-mia"),
       { id: 'mlb-26-asg', name: "2026 MLB All-Star Game (Atlanta)", date: "Jul 14, 2026" },
       { id: 'mlb-26-ws', name: "2026 World Series: Game 1", date: "Oct 23, 2026" },
     ], 
