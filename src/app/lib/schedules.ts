@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE & ROSTER DATABASE v8.0
+ * ARENA SCHEDULE & ROSTER DATABASE v8.1
  * Unified source of truth for all 16 professional sports.
  * Featuring 162-game literal schedules for COL, SFG, and ARI.
  */
@@ -51,7 +51,8 @@ const generateMLBGames = (teamAbbr: string, teamName: string, startId: string) =
     const date = new Date(2026, 2, 30); // Starting March 30, 2026
     date.setDate(date.getDate() + i + Math.floor(i / 6) * 1); // Roughly 162 games over 180 days
     
-    const dateString = date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: '2026' });
+    // Fixed: 'year' option must be 'numeric' or '2-digit', not a specific year string.
+    const dateString = date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
 
     return {
       id: `${startId}-${gameNum.toString().padStart(3, '0')}`,
