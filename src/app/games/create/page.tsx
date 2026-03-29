@@ -92,6 +92,7 @@ function CreateGameForm() {
   const [selectedFriend, setSelectedFriend] = useState<string>("");
   const [searchFriendQuery, setSearchFriendQuery] = useState("");
   const [searchPickQuery, setSearchPickQuery] = useState("");
+  const [searchEventQuery, setSearchEventQuery] = useState("");
   const [currency, setCurrency] = useState("gold");
   const [fee, setFee] = useState("1000");
 
@@ -116,6 +117,7 @@ function CreateGameForm() {
   const currentSport = sportsData.find(s => s.id === selectedSport);
   const filteredPicks = currentSport?.options.filter(option => option.toLowerCase().includes(searchPickQuery.toLowerCase())) || [];
   const filteredFriends = availableFriends.filter(friend => (friend.username || friend.name || "").toLowerCase().includes(searchFriendQuery.toLowerCase()));
+  const filteredEvents = currentSport?.events.filter(event => event.name.toLowerCase().includes(searchEventQuery.toLowerCase())) || [];
 
   const entryAmount = parseFloat(fee) || 0;
   const prizeInCoins = entryAmount * 2;
@@ -205,7 +207,7 @@ function CreateGameForm() {
               {sportsData.map((sport) => (
                 <button
                   key={sport.id}
-                  onClick={() => { setSelectedSport(sport.id); setSelectedEvent(""); setSelectedPick(""); }}
+                  onClick={() => { setSelectedSport(sport.id); setSelectedEvent(""); setSelectedPick(""); setSelectedPick(""); setSearchEventQuery(""); }}
                   className={`flex flex-col items-center p-3 rounded-xl border-2 transition-all ${selectedSport === sport.id ? 'bg-primary/20 border-primary' : 'bg-secondary/30 border-transparent hover:bg-secondary/50'}`}
                 >
                   <div className={`mb-2 ${sport.color}`}>
@@ -220,22 +222,39 @@ function CreateGameForm() {
           <div className="space-y-4">
             <Label className="text-xs font-bold uppercase tracking-widest">2. Select Event</Label>
             {selectedSport ? (
-              <div className="grid gap-3 max-h-[400px] overflow-y-auto pr-2 no-scrollbar">
-                <div className="bg-accent/5 border border-accent/20 p-3 rounded-xl mb-2">
-                  <p className="text-[10px] text-accent font-bold uppercase tracking-widest text-center">Available Slates: {currentSport?.events.length}</p>
+              <div className="space-y-4">
+                <div className="relative">
+                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    placeholder="Search events (e.g. Broncos, Week 1, Rockies)..." 
+                    className="bg-secondary/30 border-white/5 pl-10 h-12" 
+                    value={searchEventQuery} 
+                    onChange={(e) => setSearchEventQuery(e.target.value)} 
+                  />
                 </div>
-                {currentSport?.events.map((event) => (
-                  <button key={event.id} onClick={() => setSelectedEvent(event.id)} className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all ${selectedEvent === event.id ? 'bg-accent/10 border-accent' : 'bg-secondary/20 border-white/5 hover:border-white/10'}`}>
-                    <div className="flex items-center gap-3">
-                      <CalendarDays className="h-5 w-5" />
-                      <div className="text-left">
-                        <p className="font-bold text-sm">{event.name}</p>
-                        <p className="text-[10px] uppercase text-muted-foreground">{event.date}</p>
+                
+                <div className="grid gap-3 max-h-[400px] overflow-y-auto pr-2 no-scrollbar">
+                  <div className="bg-accent/5 border border-accent/20 p-3 rounded-xl mb-2">
+                    <p className="text-[10px] text-accent font-bold uppercase tracking-widest text-center">Available Slates: {filteredEvents.length}</p>
+                  </div>
+                  {filteredEvents.map((event) => (
+                    <button key={event.id} onClick={() => setSelectedEvent(event.id)} className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all ${selectedEvent === event.id ? 'bg-accent/10 border-accent' : 'bg-secondary/20 border-white/5 hover:border-white/10'}`}>
+                      <div className="flex items-center gap-3">
+                        <CalendarDays className="h-5 w-5" />
+                        <div className="text-left">
+                          <p className="font-bold text-sm">{event.name}</p>
+                          <p className="text-[10px] uppercase text-muted-foreground">{event.date}</p>
+                        </div>
                       </div>
+                      {selectedEvent === event.id && <CheckCircle2 className="h-5 w-5 text-accent" />}
+                    </button>
+                  ))}
+                  {filteredEvents.length === 0 && (
+                    <div className="py-10 text-center opacity-40">
+                      <p className="text-xs font-bold uppercase italic">No events matching your search</p>
                     </div>
-                    {selectedEvent === event.id && <CheckCircle2 className="h-5 w-5 text-accent" />}
-                  </button>
-                ))}
+                  )}
+                </div>
               </div>
             ) : <div className="p-6 text-center bg-secondary/10 rounded-xl border border-dashed opacity-50"><p className="text-xs uppercase">Select a Sport first</p></div>}
           </div>
