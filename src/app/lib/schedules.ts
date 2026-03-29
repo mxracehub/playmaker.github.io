@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE & ROSTER DATABASE v9.0
+ * ARENA SCHEDULE & ROSTER DATABASE v10.0
  * Unified source of truth for all 16 professional sports.
- * Featuring 162-game literal schedules for ALL 30 MLB franchises.
+ * Featuring 162-game literal schedules for ALL 30 MLB franchises and 17-game schedules for elite NFL teams.
  */
 
 export interface SportEvent {
@@ -94,6 +94,23 @@ export const sportsData: Sport[] = [
     icon: 'Trophy', 
     color: "text-green-500", 
     events: [
+      { id: 'nfl-26-sf-01', name: "SF 49ers @ Seahawks", date: "Sep 13, 2026" },
+      { id: 'nfl-26-sf-02', name: "Rams @ SF 49ers", date: "Sep 20, 2026" },
+      { id: 'nfl-26-sf-03', name: "SF 49ers @ Cardinals", date: "Sep 27, 2026" },
+      { id: 'nfl-26-sf-04', name: "Cowboys @ SF 49ers", date: "Oct 04, 2026" },
+      { id: 'nfl-26-sf-05', name: "SF 49ers @ Packers", date: "Oct 11, 2026" },
+      { id: 'nfl-26-sf-06', name: "Chiefs @ SF 49ers", date: "Oct 18, 2026" },
+      { id: 'nfl-26-sf-07', name: "SF 49ers @ Vikings", date: "Oct 25, 2026" },
+      { id: 'nfl-26-sf-08', name: "Eagles @ SF 49ers", date: "Nov 01, 2026" },
+      { id: 'nfl-26-sf-10', name: "SF 49ers @ Raiders", date: "Nov 15, 2026" },
+      { id: 'nfl-26-sf-11', name: "Seahawks @ SF 49ers", date: "Nov 22, 2026" },
+      { id: 'nfl-26-sf-12', name: "SF 49ers @ Rams", date: "Nov 29, 2026" },
+      { id: 'nfl-26-sf-13', name: "Cardinals @ SF 49ers", date: "Dec 06, 2026" },
+      { id: 'nfl-26-sf-14', name: "SF 49ers @ Bills", date: "Dec 13, 2026" },
+      { id: 'nfl-26-sf-15', name: "Lions @ SF 49ers", date: "Dec 20, 2026" },
+      { id: 'nfl-26-sf-16', name: "SF 49ers @ Bears", date: "Dec 27, 2026" },
+      { id: 'nfl-26-sf-17', name: "Jets @ SF 49ers", date: "Jan 03, 2027" },
+      { id: 'nfl-26-sf-18', name: "SF 49ers @ Dolphins", date: "Jan 10, 2027" },
       { id: 'nfl-26-w1', name: "Week 1: Ravens @ Chiefs (Kickoff)", date: "Sep 10, 2026" },
       { id: 'nfl-26-w1-brazil', name: "Week 1: Packers @ Eagles (Brazil)", date: "Sep 11, 2026" },
       { id: 'nfl-26-thanks-1', name: "Thanksgiving: Giants @ Cowboys", date: "Nov 26, 2026" },
