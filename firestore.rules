@@ -4,55 +4,63 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * ARENA SECURITY RULES v10.0
-     * Explicit public visibility for lobby stats and admin-only controls.
+     * ARENA SECURITY RULES v11.0
+     * Unified protection for playmakers, games, and administrative control.
      */
 
+    // Helper function to check if the requesting user is an admin
+    function isAdmin() {
+      return request.auth != null && 
+        get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.role == 'admin';
+    }
+
     match /games/{gameId} {
-      // Explicitly allow public read (get and list) for lobby stats
+      // Explicitly allow public read (get and list) for lobby stats and social discovery
       allow read: if true;
       
-      // Only registered playmakers can issue challenges
+      // Any authenticated playmaker can issue a challenge
       allow create: if request.auth != null;
       
-      // Participants or Admins for updates
+      // Participants or Admins can update game state (e.g., accepting invites or updating picks)
       allow update: if request.auth != null && (
         request.auth.uid == resource.data.creatorId || 
         request.auth.uid == resource.data.opponentId ||
-        get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.role == 'admin'
+        isAdmin()
       );
       
-      // Only initiators or Admins can scrap a challenge
+      // Only the initiator or Admins can scrap a challenge
       allow delete: if request.auth != null && (
         request.auth.uid == resource.data.creatorId ||
-        get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.role == 'admin'
+        isAdmin()
       );
     }
 
     match /userProfiles/{userId} {
-      // Profiles are readable for social discovery
+      // Profiles are readable for social discovery and friend search
       allow get: if true;
       allow list: if request.auth != null;
       
-      // Users can manage their own profiles; Admins can manage any profile
+      // Users can manage their own identity; Admins have full override
       allow create, update: if request.auth != null && (
         request.auth.uid == userId ||
-        get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.role == 'admin'
+        isAdmin()
       );
       
-      // Only Admins can delete profiles
-      allow delete: if request.auth != null && get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.role == 'admin';
+      // Only Admins can purge a playmaker profile
+      allow delete: if isAdmin();
     }
 
     match /sports/{sportId} {
       allow read: if true;
+      allow write: if isAdmin();
     }
 
     match /events/{eventId} {
       allow read: if true;
+      allow write: if isAdmin();
     }
 
-    // Standard fallback
+    // Standard fallback to prevent unauthorized access to hidden collections
     match /{document=**} {
       allow read, write: if false;
     }
