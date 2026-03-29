@@ -55,22 +55,22 @@ function ArenaContent({ gameId }: { gameId: string }) {
   const opponentPick = isCreator ? game?.opponentPick : game?.creatorPick;
 
   const themes = {
-    nba: { color: "from-orange-600/20 to-orange-900/40", accent: "text-orange-500", bg: "bg-orange-500/10", icon: <Dribbble className="h-8 w-8 md:h-10 md:w-10" />, label: "NBA Arena" },
-    nfl: { color: "from-green-600/20 to-green-900/40", accent: "text-green-500", bg: "bg-green-500/10", icon: <Trophy className="h-8 w-8 md:h-10 md:w-10" />, label: "NFL Arena" },
-    hockey: { color: "from-cyan-600/20 to-cyan-900/40", accent: "text-cyan-400", bg: "bg-cyan-400/10", icon: <Snowflake className="h-8 w-8 md:h-10 md:w-10" />, label: "NHL Arena" },
-    soccer: { color: "from-slate-600/20 to-slate-900/40", accent: "text-white", bg: "bg-white/10", icon: <SoccerIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "Soccer Arena" },
-    ufc: { color: "from-red-600/20 to-red-900/40", accent: "text-red-500", bg: "bg-red-500/10", icon: <Swords className="h-8 w-8 md:h-10 md:w-10" />, label: "UFC Arena" },
-    boxing: { color: "from-yellow-600/20 to-yellow-900/40", accent: "text-yellow-500", bg: "bg-yellow-500/10", icon: <BoxingIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "Boxing Arena" },
-    mlb: { color: "from-blue-600/20 to-blue-900/40", accent: "text-blue-500", bg: "bg-blue-500/10", icon: <Trophy className="h-8 w-8 md:h-10 md:w-10" />, label: "MLB Arena" },
-    tennis: { color: "from-lime-600/20 to-lime-900/40", accent: "text-lime-400", bg: "bg-lime-400/10", icon: <Target className="h-8 w-8 md:h-10 md:w-10" />, label: "Tennis Arena" },
-    pickleball: { color: "from-yellow-600/20 to-yellow-900/40", accent: "text-yellow-500", bg: "bg-yellow-500/10", icon: <Trophy className="h-8 w-8 md:h-10 md:w-10" />, label: "Pickleball Arena" },
-    volleyball: { color: "from-indigo-600/20 to-indigo-900/40", accent: "text-indigo-400", bg: "bg-indigo-400/10", icon: <Trophy className="h-8 w-8 md:h-10 md:w-10" />, label: "Volleyball Arena" },
-    golf: { color: "from-emerald-600/20 to-emerald-900/40", accent: "text-emerald-400", bg: "bg-emerald-400/10", icon: <Target className="h-8 w-8 md:h-10 md:w-10" />, label: "Golf Arena" },
-    nascar: { color: "from-red-600/20 to-red-900/40", accent: "text-red-500", bg: "bg-red-500/10", icon: <Flag className="h-8 w-8 md:h-10 md:w-10" />, label: "NASCAR Arena" },
-    surfing: { color: "from-blue-600/20 to-blue-400/40", accent: "text-blue-400", bg: "bg-blue-400/10", icon: <Waves className="h-8 w-8 md:h-10 md:w-10" />, label: "Surfing Arena" },
-    skateboarding: { color: "from-yellow-600/20 to-yellow-400/40", accent: "text-yellow-400", bg: "bg-yellow-400/10", icon: <Zap className="h-8 w-8 md:h-10 md:w-10" />, label: "Skate Arena" },
-    bmx: { color: "from-red-600/20 to-red-400/40", accent: "text-red-400", bg: "bg-red-400/10", icon: <Bike className="h-8 w-8 md:h-10 md:w-10" />, label: "BMX Arena" },
-    snowboarding: { color: "from-cyan-600/20 to-cyan-400/40", accent: "text-cyan-400", bg: "bg-cyan-400/10", icon: <Mountain className="h-8 w-8 md:h-10 md:w-10" />, label: "Snow Arena" }
+    nba: { color: "from-orange-600/20 to-orange-900/40", accent: "text-orange-500", bg: "bg-orange-500/10", icon: <Dribbble className="h-8 w-8 md:h-10 md:w-10" />, label: "NBA" },
+    nfl: { color: "from-green-600/20 to-green-900/40", accent: "text-green-500", bg: "bg-green-500/10", icon: <Trophy className="h-8 w-8 md:h-10 md:w-10" />, label: "NFL" },
+    hockey: { color: "from-cyan-600/20 to-cyan-900/40", accent: "text-cyan-400", bg: "bg-cyan-400/10", icon: <Snowflake className="h-8 w-8 md:h-10 md:w-10" />, label: "NHL" },
+    soccer: { color: "from-slate-600/20 to-slate-900/40", accent: "text-white", bg: "bg-white/10", icon: <SoccerIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "Soccer" },
+    ufc: { color: "from-red-600/20 to-red-900/40", accent: "text-red-500", bg: "bg-red-500/10", icon: <Swords className="h-8 w-8 md:h-10 md:w-10" />, label: "UFC" },
+    boxing: { color: "from-yellow-600/20 to-yellow-900/40", accent: "text-yellow-500", bg: "bg-yellow-500/10", icon: <BoxingIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "Boxing" },
+    mlb: { color: "from-blue-600/20 to-blue-900/40", accent: "text-blue-500", bg: "bg-blue-500/10", icon: <Trophy className="h-8 w-8 md:h-10 md:w-10" />, label: "MLB" },
+    tennis: { color: "from-lime-600/20 to-lime-900/40", accent: "text-lime-400", bg: "bg-lime-400/10", icon: <Target className="h-8 w-8 md:h-10 md:w-10" />, label: "Tennis" },
+    pickleball: { color: "from-yellow-600/20 to-yellow-900/40", accent: "text-yellow-500", bg: "bg-yellow-500/10", icon: <Trophy className="h-8 w-8 md:h-10 md:w-10" />, label: "Pickleball" },
+    volleyball: { color: "from-indigo-600/20 to-indigo-900/40", accent: "text-indigo-400", bg: "bg-indigo-400/10", icon: <Trophy className="h-8 w-8 md:h-10 md:w-10" />, label: "Volleyball" },
+    golf: { color: "from-emerald-600/20 to-emerald-900/40", accent: "text-emerald-400", bg: "bg-emerald-400/10", icon: <Target className="h-8 w-8 md:h-10 md:w-10" />, label: "Golf" },
+    nascar: { color: "from-red-600/20 to-red-900/40", accent: "text-red-500", bg: "bg-red-500/10", icon: <Flag className="h-8 w-8 md:h-10 md:w-10" />, label: "NASCAR" },
+    surfing: { color: "from-blue-600/20 to-blue-400/40", accent: "text-blue-400", bg: "bg-blue-400/10", icon: <Waves className="h-8 w-8 md:h-10 md:w-10" />, label: "Surfing" },
+    skateboarding: { color: "from-yellow-600/20 to-yellow-400/40", accent: "text-yellow-400", bg: "bg-yellow-400/10", icon: <Zap className="h-8 w-8 md:h-10 md:w-10" />, label: "Skateboarding" },
+    bmx: { color: "from-red-600/20 to-red-400/40", accent: "text-red-400", bg: "bg-red-400/10", icon: <Bike className="h-8 w-8 md:h-10 md:w-10" />, label: "BMX" },
+    snowboarding: { color: "from-cyan-600/20 to-cyan-400/40", accent: "text-cyan-400", bg: "bg-cyan-400/10", icon: <Mountain className="h-8 w-8 md:h-10 md:w-10" />, label: "Snowboarding" }
   };
 
   const theme = themes[sportId as keyof typeof themes] || themes.nba;

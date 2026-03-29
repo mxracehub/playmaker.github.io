@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -266,7 +265,7 @@ export default function AdminDashboard() {
                         </div>
                         <h3 className="font-headline text-xl font-bold uppercase text-white">{game.name}</h3>
                         <div className="flex items-center gap-4 text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
-                          <span>{game.sportId.toUpperCase()}</span>
+                          <span className="text-white">{game.sportId.toUpperCase()}</span>
                           <span>•</span>
                           <span className="text-accent">{game.entryFee} {game.currencyType.toUpperCase()} ENTRY</span>
                           <span>•</span>
@@ -300,7 +299,7 @@ export default function AdminDashboard() {
               ))
             ) : (
               <div className="text-center py-20 bg-card/20 rounded-3xl border border-dashed">
-                <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest opacity-50">No active arenas found</p>
+                <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest opacity-50">No active matchups found</p>
               </div>
             )}
           </TabsContent>
@@ -309,7 +308,7 @@ export default function AdminDashboard() {
             <div className="flex flex-col gap-4 p-6 bg-secondary/20 rounded-2xl border border-white/5">
               <div className="flex items-center gap-4 border-b border-white/5 pb-4">
                 <Filter className="h-4 w-4 text-muted-foreground" />
-                <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Arena Selection</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Sport Selection</span>
               </div>
               <div className="flex flex-wrap gap-2">
                 {["all", ...Object.keys(sportPicks)].map(s => (
@@ -328,7 +327,7 @@ export default function AdminDashboard() {
                 ))}
               </div>
               <div className="pt-2 text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
-                {filteredScoringGames.length} Matchups in {resultsFilter.toUpperCase()} Queue
+                {filteredScoringGames.length} Showdowns in {resultsFilter.toUpperCase()} Queue
               </div>
             </div>
 
@@ -362,7 +361,7 @@ export default function AdminDashboard() {
                           onClick={() => handleOpenScoring(game)}
                           className="bg-accent text-accent-foreground font-bold uppercase tracking-widest h-12 px-8"
                         >
-                          Record Scores <ArrowRight className="ml-2 h-4 w-4" />
+                          Record Results <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
                       </div>
                     </CardContent>
@@ -371,7 +370,7 @@ export default function AdminDashboard() {
               ) : (
                 <div className="text-center py-24 bg-card/10 rounded-3xl border border-dashed">
                   <Database className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-20" />
-                  <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest opacity-50">No scoring tasks for {resultsFilter.toUpperCase()}</p>
+                  <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest opacity-50">No results to record for {resultsFilter.toUpperCase()}</p>
                 </div>
               )}
             </div>
@@ -387,7 +386,7 @@ export default function AdminDashboard() {
                       <p className="text-xs text-muted-foreground uppercase">Winner ID: {game.winnerId || "Unassigned"}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-[10px] font-bold text-accent uppercase mb-1">Final Score</p>
+                      <p className="text-[10px] font-bold text-accent uppercase mb-1">Final Outcome</p>
                       <div className="flex items-center gap-3">
                         <span className="font-mono text-xs text-white">C: {game.finalScores?.[game.creatorId] || 0}</span>
                         <span className="font-mono text-xs text-white">O: {game.finalScores?.[game.opponentId] || 0}</span>
@@ -456,7 +455,7 @@ export default function AdminDashboard() {
                   disabled={!selectedPick}
                   className="flex-1 bg-accent text-accent-foreground font-bold uppercase"
                 >
-                  Accept Arena
+                  Confirm Entry
                 </Button>
               </CardFooter>
             </Card>
@@ -475,8 +474,8 @@ export default function AdminDashboard() {
                     <Zap className="h-6 w-6 text-destructive fill-current" />
                   </div>
                   <div>
-                    <Badge variant="outline" className="text-[9px] font-black uppercase tracking-[0.2em] mb-1 border-destructive/50 text-destructive">Arena Official</Badge>
-                    <CardTitle className="font-headline text-2xl uppercase tracking-tighter text-white">Record Arena Results</CardTitle>
+                    <Badge variant="outline" className="text-[9px] font-black uppercase tracking-[0.2em] mb-1 border-destructive/50 text-destructive">Official Scoring</Badge>
+                    <CardTitle className="font-headline text-2xl uppercase tracking-tighter text-white">Record Showdown Results</CardTitle>
                   </div>
                 </div>
                 <CardDescription className="text-muted-foreground/80 font-medium">
@@ -504,7 +503,7 @@ export default function AdminDashboard() {
                     </div>
                     
                     <div className="w-full space-y-4" onClick={(e) => e.stopPropagation()}>
-                      <Label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">FINAL SCORE / WIN COUNT</Label>
+                      <Label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">FINAL WIN COUNT</Label>
                       <Input 
                         type="number" 
                         value={creatorScore} 
@@ -542,13 +541,13 @@ export default function AdminDashboard() {
                           <UserCheck className="h-3 w-3" /> Opponent (Arena Master)
                         </div>
                         <h3 className="font-headline text-xl font-bold text-white uppercase italic truncate px-2">
-                          {housePickOverride || scoringGame.opponentPick || "PENDING SELECTION"}
+                          {housePickOverride || scoringGame.opponentPick || "PENDING ENTRY"}
                         </h3>
                       </div>
                       
                       <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-end" onClick={(e) => e.stopPropagation()}>
                         <div className="space-y-4">
-                          <Label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">FINAL SCORE / WIN COUNT</Label>
+                          <Label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">FINAL WIN COUNT</Label>
                           <Input 
                             type="number" 
                             value={opponentScore} 
@@ -603,14 +602,14 @@ export default function AdminDashboard() {
 
                 {/* Status Footer */}
                 <div className="mt-12 p-6 rounded-2xl bg-[#1A232E] border border-white/5 text-center space-y-3">
-                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">Winner Record Update</p>
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">Official Record Update</p>
                   {winnerId ? (
                     <div className="flex flex-col items-center gap-2">
                       <div className="flex items-center justify-center gap-3">
                         <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
                         <span className="font-mono text-sm text-accent font-bold tracking-widest uppercase truncate max-w-md">{winnerId}</span>
                       </div>
-                      {housePickOverride && <Badge variant="outline" className="text-[8px] border-accent/20 text-accent uppercase">Finalizing with House Pick: {housePickOverride}</Badge>}
+                      {housePickOverride && <Badge variant="outline" className="text-[8px] border-accent/20 text-accent uppercase">Finalizing with House Entry: {housePickOverride}</Badge>}
                     </div>
                   ) : (
                     <p className="text-sm font-bold text-destructive/60 italic">PENDING VICTOR SELECTION...</p>
@@ -631,7 +630,7 @@ export default function AdminDashboard() {
                   disabled={!winnerId || (scoringGame.opponentId === 'house-admin' && !housePickOverride && !scoringGame.opponentPick)}
                   className="flex-[2] h-14 bg-destructive text-white font-black uppercase tracking-[0.2em] shadow-2xl shadow-destructive/20 hover:bg-destructive/90 transition-all active:scale-95 disabled:opacity-30"
                 >
-                  <CheckCircle2 className="mr-3 h-5 w-5" /> Confirm & Archive Showdown
+                  <CheckCircle2 className="mr-3 h-5 w-5" /> Confirm & Archive Results
                 </Button>
               </CardFooter>
             </Card>
