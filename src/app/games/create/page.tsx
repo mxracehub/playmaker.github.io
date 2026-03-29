@@ -73,7 +73,6 @@ const sports = [
       { id: 'nba-26-mlk-2', name: "MLK Day: Lakers @ Celtics", date: "Jan 19, 2026" },
       { id: 'nba-26-05', name: "76ers @ Suns", date: "Jan 22, 2026" },
       { id: 'nba-26-06', name: "Clippers @ Timberwolves", date: "Jan 28, 2026" },
-      { id: 'nba-26-07', name: "Nuggets @ Kings", date: "Feb 05, 2026" },
       { id: 'nba-26-allstar', name: "NBA All-Star Game 2026 (Phoenix)", date: "Feb 15, 2026" },
       { id: 'nba-26-08', name: "Nets @ Knicks (NY Derby)", date: "Feb 20, 2026" },
       { id: 'nba-26-09', name: "Celtics @ Nuggets", date: "Mar 15, 2026" },
@@ -101,18 +100,20 @@ const sports = [
       { id: 'nfl-26-w2', name: "Week 2: Bengals @ Chiefs", date: "Sep 20, 2026" },
       { id: 'nfl-26-w3', name: "Week 3: Jaguars @ Bills", date: "Sep 28, 2026" },
       { id: 'nfl-26-w4', name: "Week 4: Seahawks @ Lions", date: "Oct 05, 2026" },
-      { id: 'nfl-26-w5-lon', name: "Week 5: Jets @ Vikings (London)", date: "Oct 11, 2026" },
-      { id: 'nfl-26-w6-lon', name: "Week 6: Jaguars @ Bears (London)", date: "Oct 18, 2026" },
+      { id: 'nfl-26-w5', name: "Week 5: Jets @ Vikings (London)", date: "Oct 11, 2026" },
+      { id: 'nfl-26-w6', name: "Week 6: Jaguars @ Bears (London)", date: "Oct 18, 2026" },
       { id: 'nfl-26-w7', name: "Week 7: Chiefs @ 49ers", date: "Oct 25, 2026" },
       { id: 'nfl-26-w8', name: "Week 8: Cowboys @ 49ers", date: "Nov 01, 2026" },
       { id: 'nfl-26-w9', name: "Week 9: Lions @ Packers", date: "Nov 08, 2026" },
-      { id: 'nfl-26-w10-ger', name: "Week 10: Giants @ Panthers (Munich)", date: "Nov 15, 2026" },
+      { id: 'nfl-26-w10', name: "Week 10: Giants @ Panthers (Munich)", date: "Nov 15, 2026" },
       { id: 'nfl-26-w11', name: "Week 11: Chiefs @ Bills", date: "Nov 22, 2026" },
+      { id: 'nfl-26-w12', name: "Week 12: Ravens @ Chargers", date: "Nov 30, 2026" },
       { id: 'nfl-26-thanks-1', name: "Thanksgiving: Bears @ Lions", date: "Nov 26, 2026" },
       { id: 'nfl-26-thanks-2', name: "Thanksgiving: Giants @ Cowboys", date: "Nov 26, 2026" },
       { id: 'nfl-26-thanks-3', name: "Thanksgiving Night: Dolphins @ Packers", date: "Nov 26, 2026" },
       { id: 'nfl-26-blackfriday', name: "Black Friday: Raiders @ Chiefs", date: "Nov 27, 2026" },
       { id: 'nfl-26-w14', name: "Week 14: Packers @ Lions", date: "Dec 13, 2026" },
+      { id: 'nfl-26-w15', name: "Week 15: Cowboys @ Eagles", date: "Dec 20, 2026" },
       { id: 'nfl-26-xmas-1', name: "Xmas: Chiefs @ Steelers", date: "Dec 25, 2026" },
       { id: 'nfl-26-xmas-2', name: "Xmas: Ravens @ Texans", date: "Dec 25, 2026" },
       { id: 'nfl-26-w18', name: "Week 18: Regular Season Finale Slate", date: "Jan 10, 2027" },
@@ -423,6 +424,9 @@ function CreateGameForm() {
             <Label className="text-xs font-bold uppercase tracking-widest">2. Select Event</Label>
             {selectedSport ? (
               <div className="grid gap-3 max-h-[400px] overflow-y-auto pr-2 no-scrollbar">
+                <div className="bg-accent/5 border border-accent/20 p-3 rounded-xl mb-2">
+                  <p className="text-[10px] text-accent font-bold uppercase tracking-widest text-center">Available Slates: {currentSport?.events.length}</p>
+                </div>
                 {currentSport?.events.map((event) => (
                   <button key={event.id} onClick={() => setSelectedEvent(event.id)} className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all ${selectedEvent === event.id ? 'bg-accent/10 border-accent' : 'bg-secondary/20 border-white/5 hover:border-white/10'}`}>
                     <div className="flex items-center gap-3">
