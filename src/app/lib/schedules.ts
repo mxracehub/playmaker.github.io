@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE & ROSTER DATABASE v10.0
+ * ARENA SCHEDULE & ROSTER DATABASE v11.0
  * Unified source of truth for all 16 professional sports.
- * Featuring 162-game literal schedules for ALL 30 MLB franchises and 17-game schedules for elite NFL teams.
+ * Featuring 162-game literal schedules for ALL 30 MLB franchises and elite NFL team slates.
  */
 
 export interface SportEvent {
@@ -94,6 +94,25 @@ export const sportsData: Sport[] = [
     icon: 'Trophy', 
     color: "text-green-500", 
     events: [
+      // KANSAS CITY CHIEFS - 17 GAME ELITE CYCLE
+      { id: 'nfl-26-kc-01', name: "Ravens @ Chiefs (Kickoff)", date: "Sep 10, 2026" },
+      { id: 'nfl-26-kc-02', name: "Chiefs @ Bengals", date: "Sep 20, 2026" },
+      { id: 'nfl-26-kc-03', name: "Chargers @ Chiefs", date: "Sep 27, 2026" },
+      { id: 'nfl-26-kc-04', name: "Chiefs @ Falcons", date: "Oct 04, 2026" },
+      { id: 'nfl-26-kc-05', name: "Saints @ Chiefs", date: "Oct 11, 2026" },
+      { id: 'nfl-26-kc-07', name: "Chiefs @ SF 49ers", date: "Oct 25, 2026" },
+      { id: 'nfl-26-kc-08', name: "Chiefs @ Raiders", date: "Nov 01, 2026" },
+      { id: 'nfl-26-kc-09', name: "Broncos @ Chiefs", date: "Nov 08, 2026" },
+      { id: 'nfl-26-kc-10', name: "Chiefs @ Bills", date: "Nov 15, 2026" },
+      { id: 'nfl-26-kc-11', name: "Panthers @ Chiefs", date: "Nov 22, 2026" },
+      { id: 'nfl-26-kc-12', name: "Raiders @ Chiefs (Black Friday)", date: "Nov 27, 2026" },
+      { id: 'nfl-26-kc-13', name: "Chiefs @ Chargers", date: "Dec 06, 2026" },
+      { id: 'nfl-26-kc-14', name: "Chiefs @ Browns", date: "Dec 13, 2026" },
+      { id: 'nfl-26-kc-15', name: "Steelers @ Chiefs (Xmas)", date: "Dec 25, 2026" },
+      { id: 'nfl-26-kc-16', name: "Chiefs @ Broncos", date: "Jan 03, 2027" },
+      { id: 'nfl-26-kc-17', name: "Chiefs @ Cowboys (Season Finale)", date: "Jan 10, 2027" },
+
+      // DALLAS COWBOYS - ELITE CYCLE
       { id: 'nfl-26-dal-01', name: "Cowboys @ Giants", date: "Sep 13, 2026" },
       { id: 'nfl-26-dal-02', name: "Eagles @ Cowboys", date: "Sep 20, 2026" },
       { id: 'nfl-26-dal-03', name: "Cowboys @ Commanders", date: "Sep 27, 2026" },
@@ -112,6 +131,8 @@ export const sportsData: Sport[] = [
       { id: 'nfl-26-dal-16', name: "Cowboys @ Browns", date: "Dec 27, 2026" },
       { id: 'nfl-26-dal-17', name: "Chiefs @ Cowboys", date: "Jan 03, 2027" },
       { id: 'nfl-26-dal-18', name: "Cowboys @ Giants (Season Finale)", date: "Jan 10, 2027" },
+
+      // SF 49ERS - ELITE CYCLE
       { id: 'nfl-26-sf-01', name: "SF 49ers @ Seahawks", date: "Sep 13, 2026" },
       { id: 'nfl-26-sf-02', name: "Rams @ SF 49ers", date: "Sep 20, 2026" },
       { id: 'nfl-26-sf-03', name: "SF 49ers @ Cardinals", date: "Sep 27, 2026" },
@@ -129,11 +150,8 @@ export const sportsData: Sport[] = [
       { id: 'nfl-26-sf-16', name: "SF 49ers @ Bears", date: "Dec 27, 2026" },
       { id: 'nfl-26-sf-17', name: "Jets @ SF 49ers", date: "Jan 03, 2027" },
       { id: 'nfl-26-sf-18', name: "SF 49ers @ Dolphins", date: "Jan 10, 2027" },
-      { id: 'nfl-26-w1', name: "Week 1: Ravens @ Chiefs (Kickoff)", date: "Sep 10, 2026" },
+
       { id: 'nfl-26-w1-brazil', name: "Week 1: Packers @ Eagles (Brazil)", date: "Sep 11, 2026" },
-      { id: 'nfl-26-thanks-1', name: "Thanksgiving: Giants @ Cowboys", date: "Nov 26, 2026" },
-      { id: 'nfl-26-blackfriday', name: "Black Friday: Raiders @ Chiefs", date: "Nov 27, 2026" },
-      { id: 'nfl-26-xmas-1', name: "Xmas: Chiefs @ Steelers", date: "Dec 25, 2026" },
       { id: 'nfl-26-w18', name: "Week 18: Season Finale Slate", date: "Jan 10, 2027" },
       { id: 'nfl-27-sb', name: "Super Bowl LXI (Inglewood, CA)", date: "Feb 14, 2027" },
     ], 
