@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -11,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Bell, Shield, Wallet, Save, CheckCircle2, Camera, Link as LinkIcon, Upload } from "lucide-react";
+import { User, Bell, Shield, Wallet, Save, CheckCircle2, Camera, Link as LinkIcon, Upload, Smartphone, ExternalLink } from "lucide-react";
 import { useUser, useFirestore, setDocumentNonBlocking, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -147,9 +146,8 @@ export default function SettingsPage() {
     });
   };
 
-  const qrCodeUrl = user 
-    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(getOTPAuthUri(user.uid, user.email || ''))}`
-    : "";
+  const otpUri = user ? getOTPAuthUri(user.uid, user.email || '') : "";
+  const qrCodeUrl = otpUri ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(otpUri)}` : "";
 
   return (
     <div className="min-h-screen pb-24 md:pt-20">
@@ -362,25 +360,43 @@ export default function SettingsPage() {
                         <DialogHeader>
                           <DialogTitle className="font-headline text-xl uppercase">Enable Two-Factor Auth</DialogTitle>
                           <DialogDescription>
-                            Scan your account-specific QR key and enter the 6-digit verification code.
+                            Scan your account-specific QR key or use the mobile link below.
                           </DialogDescription>
                         </DialogHeader>
                         <div className="flex flex-col items-center justify-center py-6 gap-6">
-                          <div className="p-2 bg-white rounded-lg">
-                            {qrCodeUrl && (
-                              <Image 
-                                src={qrCodeUrl} 
-                                alt="2FA QR Code" 
-                                width={200} 
-                                height={200} 
-                                className="rounded-sm"
-                              />
-                            )}
+                          <div className="flex flex-col gap-4 w-full">
+                            <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-accent/5 border border-accent/20 w-full">
+                              <Smartphone className="h-5 w-5 text-accent" />
+                              <p className="text-[10px] font-bold uppercase tracking-widest text-accent text-center">
+                                On Mobile?
+                              </p>
+                              <a href={otpUri} className="w-full">
+                                <Button type="button" variant="outline" size="sm" className="w-full h-10 font-bold uppercase text-[10px] tracking-widest border-accent/30 hover:bg-accent/10">
+                                  <ExternalLink className="mr-2 h-3.5 w-3.5" /> Setup in App
+                                </Button>
+                              </a>
+                            </div>
+
+                            <div className="flex justify-center p-2 bg-white rounded-lg self-center">
+                              {qrCodeUrl && (
+                                <Image 
+                                  src={qrCodeUrl} 
+                                  alt="2FA QR Code" 
+                                  width={200} 
+                                  height={200} 
+                                  className="rounded-sm"
+                                />
+                              )}
+                            </div>
                           </div>
+
                           <div className="w-full space-y-2">
                             <Label className="text-xs font-bold uppercase tracking-widest">Verification Code</Label>
                             <Input 
                               value={verificationCode}
+                              inputMode="numeric"
+                              autoComplete="one-time-code"
+                              pattern="[0-9]*"
                               onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                               placeholder="000000" 
                               className="text-center text-2xl tracking-[0.5em] font-headline h-14 bg-secondary/50"

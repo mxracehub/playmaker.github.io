@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Trophy, ArrowRight, Mail, Lock, ShieldCheck, Loader2, LogOut, Smartphone } from "lucide-react";
+import { Trophy, ArrowRight, Mail, Lock, ShieldCheck, Loader2, LogOut, Smartphone, ExternalLink } from "lucide-react";
 import { useAuth, useUser, initiateEmailSignIn, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
@@ -116,9 +116,8 @@ export default function LoginPage() {
     setVerificationCode("");
   };
 
-  const qrCodeUrl = user 
-    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(getOTPAuthUri(user.uid, user.email || ''))}`
-    : "";
+  const otpUri = user ? getOTPAuthUri(user.uid, user.email || '') : "";
+  const qrCodeUrl = otpUri ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(otpUri)}` : "";
 
   const showLoading = user && (isProfileLoading || isUserLoading || isVerifying) && !show2FA && !passed2FA;
 
@@ -152,29 +151,40 @@ export default function LoginPage() {
             </CardHeader>
             <form onSubmit={handleVerify2FA}>
               <CardContent className="space-y-6 flex flex-col items-center">
-                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-accent/5 border border-accent/20 w-full">
-                  <Smartphone className="h-5 w-5 text-accent" />
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent text-center">
-                    Download Google Authenticator App
-                  </p>
+                <div className="flex flex-col gap-3 w-full">
+                  <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-accent/5 border border-accent/20 w-full">
+                    <Smartphone className="h-5 w-5 text-accent" />
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent text-center">
+                      On Mobile?
+                    </p>
+                    <a href={otpUri} className="w-full">
+                      <Button type="button" variant="outline" size="sm" className="w-full h-10 font-bold uppercase text-[10px] tracking-widest border-accent/30 hover:bg-accent/10">
+                        <ExternalLink className="mr-2 h-3.5 w-3.5" /> Setup in App
+                      </Button>
+                    </a>
+                  </div>
+                  
+                  <div className="flex justify-center p-2 bg-white rounded-lg shadow-inner">
+                    {qrCodeUrl && (
+                      <Image 
+                        src={qrCodeUrl} 
+                        alt="2FA QR Code" 
+                        width={160} 
+                        height={160} 
+                        className="rounded-sm"
+                      />
+                    )}
+                  </div>
                 </div>
-                
-                <div className="p-2 bg-white rounded-lg shadow-inner">
-                  {qrCodeUrl && (
-                    <Image 
-                      src={qrCodeUrl} 
-                      alt="2FA QR Code" 
-                      width={160} 
-                      height={160} 
-                      className="rounded-sm"
-                    />
-                  )}
-                </div>
+
                 <div className="space-y-2 w-full text-center">
                   <Label htmlFor="code" className="text-xs font-bold uppercase tracking-widest text-muted-foreground block">Verification Code</Label>
                   <Input 
                     id="code"
                     type="text"
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    pattern="[0-9]*"
                     value={verificationCode}
                     onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                     placeholder="000000" 
