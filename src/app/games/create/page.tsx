@@ -59,259 +59,22 @@ const BoxingIcon = ({ className }: { className?: string }) => (
 );
 
 const sports = [
-  { 
-    id: 'nba', 
-    name: 'NBA Arena', 
-    icon: <Dribbble className="w-5 h-5" />, 
-    color: "text-orange-500", 
-    events: [
-      { id: 'nba-1', name: "Knicks @ Celtics", date: "Jan 12, 2026" },
-      { id: 'nba-2', name: "Lakers @ Warriors", date: "Jan 15, 2026" },
-      { id: 'nba-ny', name: "Nets @ Knicks (NY)", date: "Jan 20, 2026" },
-      { id: 'nba-as', name: "All-Star Game 2026", date: "Feb 15, 2026" },
-      { id: 'nba-f1', name: "NBA Finals Game 1", date: "Jun 04, 2026" },
-    ], 
-    options: [
-      "Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", 
-      "Cleveland Cavaliers", "Dallas Mavericks", "Denver Nuggets", "Detroit Pistons", "Golden State Warriors", 
-      "Houston Rockets", "Indiana Pacers", "LA Clippers", "LA Lakers", "Memphis Grizzlies", 
-      "Miami Heat", "Milwaukee Bucks", "Minnesota Timberwolves", "New Orleans Pelicans", "New York Knicks", 
-      "Oklahoma City Thunder", "Orlando Magic", "Philadelphia 76ers", "Phoenix Suns", "Portland Trail Blazers", 
-      "Sacramento Kings", "San Antonio Spurs", "Toronto Raptors", "Utah Jazz", "Washington Wizards"
-    ] 
-  },
-  { 
-    id: 'nfl', 
-    name: 'NFL Arena', 
-    icon: <Trophy className="w-5 h-5" />, 
-    color: "text-green-500", 
-    events: [
-      { id: 'nfl-sb', name: "Super Bowl LX (New Orleans)", date: "Feb 08, 2026" },
-      { id: 'nfl-p1', name: "NFL Wild Card Round", date: "Jan 10, 2026" },
-      { id: 'nfl-w1', name: "Season Opener 2026", date: "Sep 10, 2026" },
-    ], 
-    options: [
-      "Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills", "Carolina Panthers", 
-      "Chicago Bears", "Cincinnati Bengals", "Cleveland Browns", "Dallas Cowboys", "Denver Broncos", 
-      "Detroit Lions", "Green Bay Packers", "Houston Texans", "Indianapolis Colts", "Jacksonville Jaguars", 
-      "Kansas City Chiefs", "Las Vegas Raiders", "Los Angeles Chargers", "Los Angeles Rams", "Miami Dolphins", 
-      "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants", "New York Jets", 
-      "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Buccaneers", 
-      "Tennessee Titans", "Washington Commanders"
-    ] 
-  },
-  { 
-    id: 'hockey', 
-    name: 'NHL Arena', 
-    icon: <Snowflake className="w-5 h-5" />, 
-    color: "text-cyan-400", 
-    events: [
-      { id: 'h-1', name: "NHL Winter Classic", date: "Jan 01, 2026" },
-      { id: 'h-f', name: "Stanley Cup Finals G1", date: "Jun 08, 2026" },
-    ], 
-    options: [
-      "Anaheim Ducks", "Arizona Coyotes", "Boston Bruins", "Buffalo Sabres", "Calgary Flames", 
-      "Carolina Hurricanes", "Chicago Blackhawks", "Colorado Avalanche", "Columbus Blue Jackets", "Dallas Stars", 
-      "Detroit Red Wings", "Edmonton Oilers", "Florida Panthers", "Los Angeles Kings", "Minnesota Wild", 
-      "Montreal Canadiens", "Nashville Predators", "New Jersey Devils", "New York Islanders", "New York Rangers", 
-      "Ottawa Senators", "Philadelphia Flyers", "Pittsburgh Penguins", "San Jose Sharks", "Seattle Kraken", 
-      "St. Louis Blues", "Tampa Bay Lightning", "Toronto Maple Leafs", "Vancouver Canucks", "Vegas Golden Knights", 
-      "Washington Capitals", "Winnipeg Jets"
-    ] 
-  },
-  { 
-    id: 'soccer', 
-    name: 'Soccer Arena', 
-    icon: <SoccerIcon className="w-5 h-5" />, 
-    color: "text-white", 
-    events: [
-      { id: 's-4', name: "World Cup 2026: Opening Match", date: "Jun 11, 2026" },
-      { id: 's-8', name: "World Cup 2026: Grand Final", date: "Jul 19, 2026" },
-      { id: 's-1', name: "Champions League Final", date: "May 30, 2026" },
-    ], 
-    options: [
-      "USA", "Mexico", "Canada", "Argentina", "Brazil", "England", "France", "Germany", "Spain", "Italy", 
-      "Portugal", "Netherlands", "Real Madrid", "Barcelona", "Manchester City", "Liverpool", "Arsenal", 
-      "PSG", "Bayern Munich", "Inter Milan", "Juventus", "AC Milan"
-    ] 
-  },
-  { 
-    id: 'ufc', 
-    name: 'UFC Arena', 
-    icon: <Swords className="w-5 h-5" />, 
-    color: "text-red-600", 
-    events: [
-      { id: 'ufc-300', name: "UFC 300: Global Championship", date: "Apr 11, 2026" },
-      { id: 'ufc-308', name: "Year End Carnage", date: "Dec 12, 2026" },
-    ], 
-    options: [
-      "Jon Jones", "Alex Pereira", "Islam Makhachev", "Leon Edwards", "Sean O'Malley", "Conor McGregor", 
-      "Ilia Topuria", "Dustin Poirier", "Max Holloway", "Israel Adesanya", "Tom Aspinall", "Charles Oliveira", 
-      "Justin Gaethje", "Alexandre Pantoja", "Dricus Du Plessis", "Sean Strickland", "Khamzat Chimaev"
-    ] 
-  },
-  { 
-    id: 'boxing', 
-    name: 'Boxing Arena', 
-    icon: <BoxingIcon className="w-5 h-5" />, 
-    color: "text-yellow-600", 
-    events: [
-      { id: 'box-1', name: "Heavyweight Title Unification", date: "Mar 14, 2026" },
-      { id: 'box-2', name: "Las Vegas Showdown", date: "Sep 19, 2026" },
-    ], 
-    options: [
-      "Tyson Fury", "Oleksandr Usyk", "Anthony Joshua", "Canelo Alvarez", "Terence Crawford", "Naoya Inoue", 
-      "Gervonta Davis", "Shakur Stevenson", "Artur Beterbiev", "Dmitry Bivol", "Devin Haney", "Ryan Garcia"
-    ] 
-  },
-  { 
-    id: 'mlb', 
-    name: 'MLB Arena', 
-    icon: <Trophy className="w-5 h-5" />, 
-    color: "text-blue-500", 
-    events: [
-      { id: 'm-1', name: "MLB Opening Day 2026", date: "Mar 26, 2026" },
-      { id: 'm-14', name: "World Series Game 1", date: "Oct 23, 2026" },
-    ], 
-    options: [
-      "Arizona Diamondbacks", "Atlanta Braves", "Baltimore Orioles", "Boston Red Sox", "Chicago Cubs", 
-      "Chicago White Sox", "Cincinnati Reds", "Cleveland Guardians", "Colorado Rockies", "Detroit Tigers", 
-      "Houston Astros", "Kansas City Royals", "Los Angeles Angels", "Los Angeles Dodgers", "Miami Marlins", 
-      "Milwaukee Brewers", "Minnesota Twins", "New York Mets", "New York Yankees", "Oakland Athletics", 
-      "Philadelphia Phillies", "Pittsburgh Pirates", "San Diego Padres", "San Francisco Giants", "Seattle Mariners", 
-      "St. Louis Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"
-    ] 
-  },
-  { 
-    id: 'tennis', 
-    name: 'Tennis Arena', 
-    icon: <Target className="w-5 h-5" />, 
-    color: "text-lime-400", 
-    events: [
-      { id: 'ten-1', name: "Australian Open Final", date: "Jan 25, 2026" },
-      { id: 'ten-2', name: "Wimbledon Championship", date: "Jul 12, 2026" },
-      { id: 'ten-3', name: "US Open Final", date: "Sep 13, 2026" },
-    ], 
-    options: [
-      "Novak Djokovic", "Carlos Alcaraz", "Jannik Sinner", "Daniil Medvedev", "Alexander Zverev", 
-      "Iga Swiatek", "Aryna Sabalenka", "Coco Gauff", "Elena Rybakina", "Jessica Pegula"
-    ] 
-  },
-  { 
-    id: 'pickleball', 
-    name: 'Pickleball Arena', 
-    icon: <Trophy className="w-5 h-5" />, 
-    color: "text-yellow-500", 
-    events: [
-      { id: 'pb-1', name: "PPA Masters", date: "Jan 15, 2026" },
-      { id: 'pb-2', name: "USAP National Championships", date: "Nov 08, 2026" },
-    ], 
-    options: [
-      "Ben Johns", "Anna Leigh Waters", "Tyson McGuffin", "Lea Jansen", "Riley Newman", 
-      "Catherine Parenteau", "JW Johnson", "Dylan Frazier", "Anna Bright"
-    ] 
-  },
-  { 
-    id: 'volleyball', 
-    name: 'Volleyball Arena', 
-    icon: <Trophy className="w-5 h-5" />, 
-    color: "text-indigo-400", 
-    events: [
-      { id: 'v-1', name: "Nations League Finals", date: "Jul 05, 2026" },
-      { id: 'v-2', name: "World Championship G1", date: "Sep 20, 2026" },
-    ], 
-    options: [
-      "USA", "Poland", "Brazil", "Turkey", "Italy", "Japan", "Serbia", "China", "France", "Slovenia"
-    ] 
-  },
-  { 
-    id: 'surfing', 
-    name: 'Surfing Arena', 
-    icon: <Waves className="w-5 h-5" />, 
-    color: "text-blue-400", 
-    events: [
-      { id: 'surf-1', name: "Pipe Masters (Oahu)", date: "Jan 29, 2026" },
-      { id: 'surf-2', name: "Teahupo'o Pro (Tahiti)", date: "Aug 15, 2026" },
-    ], 
-    options: [
-      "John John Florence", "Gabriel Medina", "Filipe Toledo", "Italo Ferreira", "Jack Robinson", 
-      "Carissa Moore", "Caroline Marks", "Tyler Wright", "Stephanie Gilmore", "Molly Picklum"
-    ] 
-  },
-  { 
-    id: 'skateboarding', 
-    name: 'Skate Arena', 
-    icon: <Zap className="w-5 h-5" />, 
-    color: "text-yellow-400", 
-    events: [
-      { id: 'sk-1', name: "X-Games Summer (CA)", date: "Jul 20, 2026" },
-      { id: 'sk-2', name: "SLS Super Crown", date: "Nov 15, 2026" },
-    ], 
-    options: [
-      "Nyjah Huston", "Yuto Horigome", "Sky Brown", "Rayssa Leal", "Kelvin Hoefler", 
-      "Leticia Bufoni", "Shane O'Neill", "Aurelien Giraud", "Chloe Covell"
-    ] 
-  },
-  { 
-    id: 'bmx', 
-    name: 'BMX Arena', 
-    icon: <Bike className="w-5 h-5" />, 
-    color: "text-red-400", 
-    events: [
-      { id: 'bmx-1', name: "UCI World Cup Final", date: "May 24, 2026" },
-      { id: 'bmx-2', name: "X-Games Dirt Final", date: "Jul 22, 2026" },
-    ], 
-    options: [
-      "Logan Martin", "Garrett Reynolds", "Hannah Roberts", "Charlotte Worthington", 
-      "Rim Nakamura", "Anthony Jeanjean", "Declan Brooks", "Nikita Ducarroz"
-    ] 
-  },
-  { 
-    id: 'snowboarding', 
-    name: 'Snow Arena', 
-    icon: <Mountain className="w-5 h-5" />, 
-    color: "text-cyan-400", 
-    events: [
-      { id: 'snow-1', name: "X-Games Aspen", date: "Jan 23, 2026" },
-      { id: 'snow-2', name: "Dew Tour Finals", date: "Feb 20, 2026" },
-    ], 
-    options: [
-      "Chloe Kim", "Mark McMorris", "Shaun White (Ret.)", "Ayumu Hirano", "Anna Gasser", 
-      "Red Gerard", "Su Yiming", "Zoi Sadowski-Synnott", "Valentino Guseli"
-    ] 
-  },
-  { 
-    id: 'nascar', 
-    name: 'NASCAR Arena', 
-    icon: <Flag className="w-5 h-5" />, 
-    color: "text-red-500", 
-    events: [
-      { id: 'nas-1', name: "Daytona 500", date: "Feb 15, 2026" },
-      { id: 'nas-2', name: "Talladega Showdown", date: "Apr 19, 2026" },
-      { id: 'nas-20', name: "Phoenix Championship", date: "Nov 08, 2026" },
-    ], 
-    options: [
-      "Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney", "William Byron", "Christopher Bell", 
-      "Joey Logano", "Martin Truex Jr.", "Tyler Reddick", "Ross Chastain", "Kyle Busch", "Bubba Wallace", 
-      "Brad Keselowski", "Ty Gibbs", "Chris Buescher", "Michael McDowell", "Alex Bowman", "Chase Briscoe"
-    ] 
-  },
-  { 
-    id: 'golf', 
-    name: 'Golf Arena', 
-    icon: <Target className="h-5 w-5" />, 
-    color: "text-emerald-400", 
-    events: [
-      { id: 'g-4', name: "The Masters 2026", date: "Apr 09, 2026" },
-      { id: 'g-7', name: "U.S. Open 2026", date: "Jun 18, 2026" },
-      { id: 'g-10', name: "Ryder Cup 2026", date: "Sep 25, 2026" },
-    ], 
-    options: [
-      "Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Xander Schauffele", "Ludvig Åberg", 
-      "Brooks Koepka", "Bryson DeChambeau", "Tiger Woods", "Jordan Spieth", "Justin Thomas", "Max Homa", 
-      "Wyndham Clark", "Patrick Cantlay", "Collin Morikawa", "Cameron Smith", "Hideki Matsuyama", "Tommy Fleetwood"
-    ] 
-  },
+  { id: 'nba', name: 'NBA Arena', icon: <Dribbble className="w-5 h-5" />, color: "text-orange-500", events: [{ id: 'nba-1', name: "Knicks @ Celtics", date: "Jan 12, 2026" }, { id: 'nba-2', name: "Lakers @ Warriors", date: "Jan 15, 2026" }], options: ["Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", "Cleveland Cavaliers", "Dallas Mavericks", "Denver Nuggets", "Detroit Pistons", "Golden State Warriors", "Houston Rockets", "Indiana Pacers", "LA Clippers", "LA Lakers", "Memphis Grizzlies", "Miami Heat", "Milwaukee Bucks", "Minnesota Timberwolves", "New Orleans Pelicans", "New York Knicks", "Oklahoma City Thunder", "Orlando Magic", "Philadelphia 76ers", "Phoenix Suns", "Portland Trail Blazers", "Sacramento Kings", "San Antonio Spurs", "Toronto Raptors", "Utah Jazz", "Washington Wizards"] },
+  { id: 'nfl', name: 'NFL Arena', icon: <Trophy className="w-5 h-5" />, color: "text-green-500", events: [{ id: 'nfl-sb', name: "Super Bowl LX", date: "Feb 08, 2026" }], options: ["Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills", "Carolina Panthers", "Chicago Bears", "Cincinnati Bengals", "Cleveland Browns", "Dallas Cowboys", "Denver Broncos", "Detroit Lions", "Green Bay Packers", "Houston Texans", "Indianapolis Colts", "Jacksonville Jaguars", "Kansas City Chiefs", "Las Vegas Raiders", "Los Angeles Chargers", "Los Angeles Rams", "Miami Dolphins", "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants", "New York Jets", "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Buccaneers", "Tennessee Titans", "Washington Commanders"] },
+  { id: 'hockey', name: 'NHL Arena', icon: <Snowflake className="w-5 h-5" />, color: "text-cyan-400", events: [{ id: 'h-1', name: "NHL Winter Classic", date: "Jan 01, 2026" }], options: ["Anaheim Ducks", "Arizona Coyotes", "Boston Bruins", "Buffalo Sabres", "Calgary Flames", "Carolina Hurricanes", "Chicago Blackhawks", "Colorado Avalanche", "Columbus Blue Jackets", "Dallas Stars", "Detroit Red Wings", "Edmonton Oilers", "Florida Panthers", "Los Angeles Kings", "Minnesota Wild", "Montreal Canadiens", "Nashville Predators", "New Jersey Devils", "New York Islanders", "New York Rangers", "Ottawa Senators", "Philadelphia Flyers", "Pittsburgh Penguins", "San Jose Sharks", "Seattle Kraken", "St. Louis Blues", "Tampa Bay Lightning", "Toronto Maple Leafs", "Vancouver Canucks", "Vegas Golden Knights", "Washington Capitals", "Winnipeg Jets"] },
+  { id: 'soccer', name: 'Soccer Arena', icon: <SoccerIcon className="w-5 h-5" />, color: "text-white", events: [{ id: 's-4', name: "World Cup 2026: Opening Match", date: "Jun 11, 2026" }], options: ["USA", "Mexico", "Canada", "Argentina", "Brazil", "England", "France", "Germany", "Spain", "Italy", "Portugal", "Netherlands", "Real Madrid", "Barcelona", "Manchester City", "Liverpool", "Arsenal", "PSG", "Bayern Munich", "Inter Milan", "Juventus", "AC Milan"] },
+  { id: 'ufc', name: 'UFC Arena', icon: <Swords className="w-5 h-5" />, color: "text-red-600", events: [{ id: 'ufc-300', name: "UFC 300: Global Championship", date: "Apr 11, 2026" }], options: ["Jon Jones", "Alex Pereira", "Islam Makhachev", "Leon Edwards", "Sean O'Malley", "Conor McGregor", "Ilia Topuria", "Dustin Poirier", "Max Holloway", "Israel Adesanya", "Tom Aspinall", "Charles Oliveira", "Justin Gaethje", "Alexandre Pantoja", "Dricus Du Plessis", "Sean Strickland", "Khamzat Chimaev"] },
+  { id: 'boxing', name: 'Boxing Arena', icon: <BoxingIcon className="w-5 h-5" />, color: "text-yellow-600", events: [{ id: 'box-1', name: "Heavyweight Title Unification", date: "Mar 14, 2026" }], options: ["Tyson Fury", "Oleksandr Usyk", "Anthony Joshua", "Canelo Alvarez", "Terence Crawford", "Naoya Inoue", "Gervonta Davis", "Shakur Stevenson", "Artur Beterbiev", "Dmitry Bivol", "Devin Haney", "Ryan Garcia"] },
+  { id: 'mlb', name: 'MLB Arena', icon: <Trophy className="w-5 h-5" />, color: "text-blue-500", events: [{ id: 'm-1', name: "MLB Opening Day 2026", date: "Mar 26, 2026" }], options: ["Arizona Diamondbacks", "Atlanta Braves", "Baltimore Orioles", "Boston Red Sox", "Chicago Cubs", "Chicago White Sox", "Cincinnati Reds", "Cleveland Guardians", "Colorado Rockies", "Detroit Tigers", "Houston Astros", "Kansas City Royals", "Los Angeles Angels", "Los Angeles Dodgers", "Miami Marlins", "Milwaukee Brewers", "Minnesota Twins", "New York Mets", "New York Yankees", "Oakland Athletics", "Philadelphia Phillies", "Pittsburgh Pirates", "San Diego Padres", "San Francisco Giants", "Seattle Mariners", "St. Louis Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"] },
+  { id: 'tennis', name: 'Tennis Arena', icon: <Target className="w-5 h-5" />, color: "text-lime-400", events: [{ id: 'ten-1', name: "Australian Open Final", date: "Jan 25, 2026" }], options: ["Novak Djokovic", "Carlos Alcaraz", "Jannik Sinner", "Daniil Medvedev", "Alexander Zverev", "Iga Swiatek", "Aryna Sabalenka", "Coco Gauff", "Elena Rybakina", "Jessica Pegula"] },
+  { id: 'pickleball', name: 'Pickleball Arena', icon: <Trophy className="w-5 h-5" />, color: "text-yellow-500", events: [{ id: 'pb-1', name: "PPA Masters", date: "Jan 15, 2026" }], options: ["Ben Johns", "Anna Leigh Waters", "Tyson McGuffin", "Lea Jansen", "Riley Newman", "Catherine Parenteau", "JW Johnson", "Dylan Frazier", "Anna Bright"] },
+  { id: 'volleyball', name: 'Volleyball Arena', icon: <Trophy className="w-5 h-5" />, color: "text-indigo-400", events: [{ id: 'v-1', name: "Nations League Finals", date: "Jul 05, 2026" }], options: ["USA", "Poland", "Brazil", "Turkey", "Italy", "Japan", "Serbia", "China", "France", "Slovenia"] },
+  { id: 'surfing', name: 'Surfing Arena', icon: <Waves className="w-5 h-5" />, color: "text-blue-400", events: [{ id: 'surf-1', name: "Pipe Masters (Oahu)", date: "Jan 29, 2026" }], options: ["John John Florence", "Gabriel Medina", "Filipe Toledo", "Italo Ferreira", "Jack Robinson", "Carissa Moore", "Caroline Marks", "Tyler Wright", "Stephanie Gilmore", "Molly Picklum"] },
+  { id: 'skateboarding', name: 'Skate Arena', icon: <Zap className="w-5 h-5" />, color: "text-yellow-400", events: [{ id: 'sk-1', name: "X-Games Summer (CA)", date: "Jul 20, 2026" }], options: ["Nyjah Huston", "Yuto Horigome", "Sky Brown", "Rayssa Leal", "Kelvin Hoefler", "Leticia Bufoni", "Shane O'Neill", "Aurelien Giraud", "Chloe Covell"] },
+  { id: 'bmx', name: 'BMX Arena', icon: <Bike className="w-5 h-5" />, color: "text-red-400", events: [{ id: 'bmx-1', name: "UCI World Cup Final", date: "May 24, 2026" }], options: ["Logan Martin", "Garrett Reynolds", "Hannah Roberts", "Charlotte Worthington", "Rim Nakamura", "Anthony Jeanjean", "Declan Brooks", "Nikita Ducarroz"] },
+  { id: 'snowboarding', name: 'Snow Arena', icon: <Mountain className="w-5 h-5" />, color: "text-cyan-400", events: [{ id: 'snow-1', name: "X-Games Aspen", date: "Jan 23, 2026" }], options: ["Chloe Kim", "Mark McMorris", "Shaun White (Ret.)", "Ayumu Hirano", "Anna Gasser", "Red Gerard", "Su Yiming", "Zoi Sadowski-Synnott", "Valentino Guseli"] },
+  { id: 'nascar', name: 'NASCAR Arena', icon: <Flag className="w-5 h-5" />, color: "text-red-500", events: [{ id: 'nas-1', name: "Daytona 500", date: "Feb 15, 2026" }], options: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney", "William Byron", "Christopher Bell", "Joey Logano", "Martin Truex Jr.", "Tyler Reddick", "Ross Chastain", "Kyle Busch", "Bubba Wallace", "Brad Keselowski", "Ty Gibbs", "Chris Buescher", "Michael McDowell", "Alex Bowman", "Chase Briscoe"] },
+  { id: 'golf', name: 'Golf Arena', icon: <Target className="h-5 w-5" />, color: "text-emerald-400", events: [{ id: 'g-4', name: "The Masters 2026", date: "Apr 09, 2026" }], options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Xander Schauffele", "Ludvig Åberg", "Brooks Koepka", "Bryson DeChambeau", "Tiger Woods", "Jordan Spieth", "Justin Thomas", "Max Homa", "Wyndham Clark", "Patrick Cantlay", "Collin Morikawa", "Cameron Smith", "Hideki Matsuyama", "Tommy Fleetwood"] },
 ];
 
 function CreateGameForm() {
@@ -344,7 +107,6 @@ function CreateGameForm() {
 
   useEffect(() => {
     if (isProfileLoading || isUsersLoading) return;
-    
     const friendId = searchParams.get('friendId');
     if (friendId && !selectedFriend && (availableFriends.some(f => f.id === friendId))) {
       setSelectedFriend(friendId);
@@ -359,12 +121,9 @@ function CreateGameForm() {
   const filteredPicks = currentSport?.options.filter(option => option.toLowerCase().includes(searchPickQuery.toLowerCase())) || [];
   const filteredFriends = availableFriends.filter(friend => (friend.username || friend.name || "").toLowerCase().includes(searchFriendQuery.toLowerCase()));
 
-  // Calculate Prize Pool based on currency rules
-  // GC Match: entryFee * 2 / 100 = SC Prize
-  // SC Match: entryFee * 2 = SC Prize
-  const calculatedPrize = currency === 'gold' 
-    ? (parseFloat(fee) * 2 / 100).toFixed(2)
-    : (parseFloat(fee) * 2).toFixed(2);
+  // 100:1 Ratio Prize Logic ($1 = 100 Coins)
+  // Both GC and SC follow the same dollar value in the arena per instruction.
+  const calculatedPrize = (parseFloat(fee) * 2).toFixed(2);
 
   const handleCreate = () => {
     if (!user) {
@@ -393,9 +152,9 @@ function CreateGameForm() {
       creatorId: user.uid,
       creatorPick: selectedPick,
       sportId: selectedSport,
-      currencyType: currency, // The entry currency
+      currencyType: currency,
       entryFee: cost,
-      prizePool: parseFloat(calculatedPrize), // Always in SC per user logic
+      prizePool: parseFloat(calculatedPrize),
       prizeCurrency: "sweeps", 
       status: "Open",
       inviteCode: inviteCode,
@@ -444,7 +203,7 @@ function CreateGameForm() {
           <CardTitle className="font-headline text-xl uppercase tracking-tighter">Arena Configuration</CardTitle>
         </CardHeader>
         <CardContent className="p-6 space-y-10">
-          {/* Step 1: Select Arena */}
+          {/* Step 1: Arena */}
           <div className="space-y-4">
             <Label className="text-xs font-bold uppercase tracking-widest">1. Select Arena</Label>
             <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
@@ -461,7 +220,7 @@ function CreateGameForm() {
             </div>
           </div>
 
-          {/* Step 2: Select Event */}
+          {/* Step 2: Event */}
           <div className="space-y-4">
             <Label className="text-xs font-bold uppercase tracking-widest">2. Select Event</Label>
             {selectedSport ? (
@@ -479,14 +238,14 @@ function CreateGameForm() {
             ) : <div className="p-6 text-center bg-secondary/10 rounded-xl border border-dashed opacity-50"><p className="text-xs uppercase">Select an Arena first</p></div>}
           </div>
 
-          {/* Step 3: Pick Your Winner */}
+          {/* Step 3: Winner */}
           <div className="space-y-4">
             <Label className="text-xs font-bold uppercase tracking-widest">3. Pick Your Winner</Label>
             {selectedSport ? (
               <div className="space-y-4">
                 <div className="relative">
                   <Target className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="Search roster (e.g. Lakers, Jon Jones...)" className="bg-secondary/30 border-white/5 pl-10 h-12" value={searchPickQuery} onChange={(e) => setSearchPickQuery(e.target.value)} />
+                  <Input placeholder="Search roster..." className="bg-secondary/30 border-white/5 pl-10 h-12" value={searchPickQuery} onChange={(e) => setSearchPickQuery(e.target.value)} />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-[300px] overflow-y-auto pr-2 no-scrollbar">
                   {filteredPicks.map((option) => (
@@ -513,11 +272,9 @@ function CreateGameForm() {
                 <Zap className="h-5 w-5 text-accent" />
               </div>
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Arena Prize Logic</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Arena Ratio: 100 Coins = $1.00</p>
                 <p className="text-xs text-white/80 leading-relaxed">
-                  {currency === 'gold' 
-                    ? "Enter with Gold Coins to win Sweeps Coins (SC) at the 100:1 ratio." 
-                    : "Enter with Sweeps Coins to win Redeemable Sweeps Coins (SC)."}
+                  Enter with Gold Coins or Sweeps Coins to win Redeemable Sweeps Coins (SC) at the 100:1 arena ratio.
                 </p>
               </div>
             </div>
@@ -550,14 +307,12 @@ function CreateGameForm() {
                         <SelectItem value="1000">1,000 GC</SelectItem>
                         <SelectItem value="5000">5,000 GC</SelectItem>
                         <SelectItem value="10000">10,000 GC</SelectItem>
-                        <SelectItem value="50000">50,000 GC</SelectItem>
                       </>
                     ) : (
                       <>
                         <SelectItem value="10">10 SC</SelectItem>
                         <SelectItem value="50">50 SC</SelectItem>
                         <SelectItem value="100">100 SC</SelectItem>
-                        <SelectItem value="500">500 SC</SelectItem>
                       </>
                     )}
                   </SelectContent>

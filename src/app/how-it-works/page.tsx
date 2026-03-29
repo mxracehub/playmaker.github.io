@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -40,7 +41,7 @@ export default function HowItWorksPage() {
     },
     {
       title: "4. Track & Win",
-      description: "Watch live as your playmaker score updates. The winner takes the arena prize pool!",
+      description: "Watch live as your playmaker score updates. The winner takes the arena prize pool in SC!",
       icon: <Trophy className="h-8 w-8 text-yellow-500" />,
       color: "bg-yellow-500/10"
     }
@@ -54,7 +55,7 @@ export default function HowItWorksPage() {
 
       <main className="mx-auto max-w-5xl px-4 py-12">
         <header className="text-center mb-16">
-          <Badge className="bg-accent/10 text-accent font-bold uppercase tracking-widest mb-4 px-4 py-1 border border-accent/20">The Playmaker Rulebook</Badge>
+          <div className="inline-flex items-center rounded-full text-xs font-semibold bg-accent/10 text-accent uppercase tracking-widest mb-4 px-4 py-1 border border-accent/20">The Playmaker Rulebook</div>
           <h1 className="font-headline text-5xl font-bold uppercase tracking-tight mb-4">How it <span className="text-accent">Works</span></h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Experience the next generation of sports sweepstakes. Friend vs Friend, elite stats, and real-time showdowns.
@@ -81,7 +82,7 @@ export default function HowItWorksPage() {
           <div className="space-y-6">
             <h2 className="font-headline text-3xl font-bold uppercase leading-tight">Arena <span className="text-primary">Currencies</span></h2>
             <p className="text-muted-foreground">
-              Playmakers features a dual-currency system designed for both casual play and competitive prize showdowns.
+              Playmakers features a dual-currency system designed for both casual play and competitive prize showdowns at a 100:1 ratio.
             </p>
             <div className="space-y-4">
               <div className="flex items-center gap-4 p-4 rounded-2xl bg-background/50 border border-white/5">
@@ -90,7 +91,7 @@ export default function HowItWorksPage() {
                 </div>
                 <div>
                   <p className="font-bold text-sm uppercase">Gold Coins (GC)</p>
-                  <p className="text-xs text-muted-foreground">Used for social play and training in the arena.</p>
+                  <p className="text-xs text-muted-foreground">Recreational coins. 100 GC = $1.00 USD value.</p>
                 </div>
               </div>
               <div className="flex items-center gap-4 p-4 rounded-2xl bg-accent/10 border border-accent/20">
@@ -99,16 +100,16 @@ export default function HowItWorksPage() {
                 </div>
                 <div>
                   <p className="font-bold text-sm uppercase text-accent">Sweeps Coins (SC)</p>
-                  <p className="text-xs text-muted-foreground">Bonus credits used for prize-eligible challenges.</p>
+                  <p className="text-xs text-muted-foreground">Prize-eligible coins. 100 SC = $1.00 USD value.</p>
                 </div>
               </div>
             </div>
           </div>
           <div className="bg-card/40 rounded-3xl p-8 border border-white/10 text-center space-y-6">
             <Zap className="h-12 w-12 text-accent mx-auto animate-pulse" />
-            <h3 className="font-headline text-xl font-bold uppercase tracking-widest">100% Real-Time</h3>
+            <h3 className="font-headline text-xl font-bold uppercase tracking-widest">100:1 Universal Ratio</h3>
             <p className="text-sm text-muted-foreground italic font-medium leading-relaxed">
-              "Our data feeds sync directly with official sports providers. Every point, rebound, and touchdown matters in the arena."
+              "Both GC and SC maintain a strict 100:1 ratio to the dollar. In the arena, skill is the only variable that changes your balance."
             </p>
             <div className="flex items-center justify-center gap-3">
                <div className="h-1 w-8 bg-accent rounded-full" />
@@ -134,13 +135,5 @@ export default function HowItWorksPage() {
         </footer>
       </main>
     </div>
-  );
-}
-
-function Badge({ className, children }: { className?: string; children: React.ReactNode }) {
-  return (
-    <span className={`inline-flex items-center rounded-full text-xs font-semibold ${className}`}>
-      {children}
-    </span>
   );
 }

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -7,10 +8,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Landmark, ShieldCheck, ArrowRight, ArrowLeft, CreditCard, Gift, Info, Loader2 } from "lucide-react";
+import { Landmark, ShieldCheck, ArrowRight, ArrowLeft, CreditCard, Gift, Info, Loader2 } from "lucide-center";
 import { useToast } from "@/hooks/use-toast";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
+import { Landmark as BankIcon } from "lucide-react";
 
 export default function ExchangePage() {
   const { toast } = useToast();
@@ -64,7 +66,7 @@ export default function ExchangePage() {
             <ArrowLeft className="h-3 w-3" /> Back to Profile
           </Link>
           <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-accent/10 border border-accent/20 mb-6">
-            <Landmark className="h-8 w-8 text-accent" />
+            <BankIcon className="h-8 w-8 text-accent" />
           </div>
           <h1 className="font-headline text-4xl font-bold uppercase tracking-tight mb-2">SC <span className="text-accent">Exchange</span></h1>
           <p className="text-muted-foreground">Redeem your bonus winnings for real prizes at the 100:1 arena ratio</p>
@@ -133,7 +135,7 @@ export default function ExchangePage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <button className="flex items-center gap-4 p-4 rounded-xl border-2 border-accent bg-accent/10 transition-all text-left">
                     <div className="h-10 w-10 rounded-full bg-accent/20 flex items-center justify-center">
-                      <Landmark className="h-5 w-5 text-accent" />
+                      <BankIcon className="h-5 w-5 text-accent" />
                     </div>
                     <div>
                       <p className="font-bold text-sm">Bank Transfer</p>
