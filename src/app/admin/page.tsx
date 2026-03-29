@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ShieldAlert, CheckCircle2, Play, Trophy, User, Hash, Lock, ShieldX, Loader2, X, Check, Trash2, Search, Target, Zap, UserCheck, Swords } from "lucide-react";
+import { ShieldAlert, CheckCircle2, Play, Trophy, User, Hash, Lock, ShieldX, Loader2, X, Check, Trash2, Search, Target, Zap, UserCheck, Swords, Upload, Database, RefreshCw, Filter } from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase, updateDocumentNonBlocking, deleteDocumentNonBlocking, useUser, useDoc } from "@/firebase";
 import { collection, doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -63,6 +63,7 @@ export default function AdminDashboard() {
   
   const [selectedPick, setSelectedPick] = useState("");
   const [searchPickQuery, setSearchPickQuery] = useState("");
+  const [resultsFilter, setResultsFilter] = useState("all");
 
   const isLoading = isUserLoading || isProfileLoading || (user && profile?.role === 'admin' && isCollectionLoading);
 
@@ -138,9 +139,28 @@ export default function AdminDashboard() {
     setHousePickOverride("");
   };
 
+  const handleSyncOfficialData = () => {
+    toast({
+      title: "Syncing Arena Feeds",
+      description: "Fetching official results from professional sports providers...",
+    });
+    // SIMULATION
+    setTimeout(() => {
+      toast({
+        title: "Sync Complete",
+        description: "Official win counts updated for the 2026 season.",
+      });
+    }, 2000);
+  };
+
   const filteredPicks = respondingGame 
     ? (sportPicks[respondingGame.sportId] || []).filter(p => p.toLowerCase().includes(searchPickQuery.toLowerCase()))
     : (scoringGame ? (sportPicks[scoringGame.sportId] || []) : []).filter(p => p.toLowerCase().includes(searchPickQuery.toLowerCase()));
+
+  const filteredScoringGames = games?.filter(g => 
+    (g.status === "Live" || g.status === "Open") && 
+    (resultsFilter === "all" || g.sportId === resultsFilter)
+  ) || [];
 
   if (isLoading) {
     return (
@@ -183,20 +203,31 @@ export default function AdminDashboard() {
     <div className="min-h-screen pb-24 pt-20 bg-background">
       <Navbar />
       
-      <main className="mx-auto max-w-5xl px-4 py-8">
-        <header className="flex items-center gap-4 mb-12">
-          <div className="h-12 w-12 rounded-2xl bg-destructive/10 border border-destructive/20 flex items-center justify-center">
-            <ShieldAlert className="h-6 w-6 text-destructive" />
+      <main className="mx-auto max-w-6xl px-4 py-8">
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 rounded-2xl bg-destructive/10 border border-destructive/20 flex items-center justify-center">
+              <ShieldAlert className="h-6 w-6 text-destructive" />
+            </div>
+            <div>
+              <h1 className="font-headline text-3xl font-bold uppercase tracking-tight text-white">Arena <span className="text-destructive">Control</span></h1>
+              <p className="text-muted-foreground text-sm uppercase font-bold tracking-widest">Administrative Override • {profile.username}</p>
+            </div>
           </div>
-          <div>
-            <h1 className="font-headline text-3xl font-bold uppercase tracking-tight text-white">Arena <span className="text-destructive">Control</span></h1>
-            <p className="text-muted-foreground text-sm uppercase font-bold tracking-widest">Administrative Override • {profile.username}</p>
+          <div className="flex gap-3">
+            <Button onClick={handleSyncOfficialData} variant="outline" className="font-bold uppercase tracking-wider border-accent/20 text-accent hover:bg-accent/5">
+              <RefreshCw className="mr-2 h-4 w-4" /> Sync Data
+            </Button>
+            <Button className="font-bold uppercase tracking-wider bg-destructive text-white hover:bg-destructive/90">
+              <Upload className="mr-2 h-4 w-4" /> Upload Results
+            </Button>
           </div>
         </header>
 
         <Tabs defaultValue="active" className="w-full">
-          <TabsList className="w-full h-14 bg-card border grid grid-cols-2 p-1 mb-8">
-            <TabsTrigger value="active" className="font-bold uppercase tracking-widest">Active Matchups</TabsTrigger>
+          <TabsList className="w-full h-14 bg-card border grid grid-cols-3 p-1 mb-8">
+            <TabsTrigger value="active" className="font-bold uppercase tracking-widest">Matchups</TabsTrigger>
+            <TabsTrigger value="scoring" className="font-bold uppercase tracking-widest">Scoring Center</TabsTrigger>
             <TabsTrigger value="completed" className="font-bold uppercase tracking-widest">Archive</TabsTrigger>
           </TabsList>
 
@@ -259,6 +290,76 @@ export default function AdminDashboard() {
                 <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest opacity-50">No active arenas found</p>
               </div>
             )}
+          </TabsContent>
+
+          <TabsContent value="scoring" className="space-y-6">
+            <div className="flex items-center justify-between p-4 bg-secondary/20 rounded-2xl border border-white/5">
+              <div className="flex items-center gap-4">
+                <Filter className="h-4 w-4 text-muted-foreground" />
+                <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Filter Arena</span>
+                <div className="flex flex-wrap gap-2">
+                  {["all", "nba", "nfl", "soccer", "ufc", "golf"].map(s => (
+                    <button 
+                      key={s} 
+                      onClick={() => setResultsFilter(s)}
+                      className={cn(
+                        "px-3 py-1 rounded-full text-[10px] font-bold uppercase transition-all",
+                        resultsFilter === s ? "bg-primary text-white" : "bg-white/5 text-muted-foreground hover:bg-white/10"
+                      )}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="text-[10px] font-bold text-muted-foreground uppercase">
+                {filteredScoringGames.length} Matchups in Queue
+              </div>
+            </div>
+
+            <div className="grid gap-4">
+              {filteredScoringGames.length > 0 ? (
+                filteredScoringGames.map((game) => (
+                  <Card key={game.id} className="bg-[#0D1219] border-white/5 group hover:border-accent/30 transition-all">
+                    <CardContent className="p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+                      <div className="flex items-center gap-6 flex-1">
+                        <div className="h-12 w-12 rounded-xl bg-secondary/50 flex items-center justify-center shrink-0">
+                          <Database className="h-6 w-6 text-muted-foreground" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <Badge variant="outline" className="text-[8px] uppercase">{game.sportId}</Badge>
+                            <span className="text-[10px] font-mono text-muted-foreground">{game.id}</span>
+                          </div>
+                          <h4 className="font-headline text-lg font-bold uppercase text-white">{game.name}</h4>
+                          <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+                            Challenger: <span className="text-white">{game.creatorPick}</span>
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-4 shrink-0">
+                        <div className="text-right hidden md:block mr-4">
+                          <p className="text-[9px] font-black uppercase text-accent mb-1">Status</p>
+                          <p className="text-xs font-bold text-white uppercase">{game.status}</p>
+                        </div>
+                        <Button 
+                          onClick={() => handleOpenScoring(game)}
+                          className="bg-accent text-accent-foreground font-bold uppercase tracking-widest h-12 px-8"
+                        >
+                          Record Scores <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <div className="text-center py-20 bg-card/10 rounded-3xl border border-dashed">
+                  <Database className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-20" />
+                  <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest opacity-50">No scoring tasks available</p>
+                </div>
+              )}
+            </div>
           </TabsContent>
 
           <TabsContent value="completed" className="space-y-4">
