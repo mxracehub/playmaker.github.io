@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useRef, use, Suspense } from "react";
@@ -14,44 +15,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import html2canvas from 'html2canvas';
-
-const BaseballIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 2a10 10 0 0 1 0 20" />
-    <path d="M2 12a10 10 0 0 1 20 0" />
-    <path d="M7 7c2 1 3 3 3 5s-1 4-3 5" />
-    <path d="M17 7c-2 1-3 3-3 5s1 4 3 5" />
-  </svg>
-);
-
-const TennisIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 2a10 10 0 0 1 0 20" />
-    <path d="M2 12a10 10 0 0 1 20 0" />
-    <circle cx="12" cy="12" r="2" />
-  </svg>
-);
-
-const PickleballIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M8 8l8 8" />
-    <path d="M16 8l-8 8" />
-    <circle cx="12" cy="12" r="3" />
-  </svg>
-);
-
-const VolleyballIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 2a10 10 0 0 1 0 20" />
-    <path d="M2 12a10 10 0 0 1 20 0" />
-    <path d="M7 7c2 1 3 3 3 5s-1 4-3 5" />
-    <path d="M17 7c-2 1-3 3-3 5s1 4 3 5" />
-  </svg>
-);
 
 const SoccerIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -79,7 +42,6 @@ function ArenaContent({ gameId }: { gameId: string }) {
   const { user, isUserLoading } = useUser();
   const db = useFirestore();
 
-  // Fetch real-time game data
   const gameRef = useMemoFirebase(() => doc(db, "games", gameId), [db, gameId]);
   const { data: game, isLoading: isGameLoading } = useDoc(gameRef);
 
@@ -87,6 +49,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
   const fee = game?.entryFee || 0;
   const currency = game?.currencyType || 'gold';
   const status = game?.status || 'Open';
+  const prizePool = game?.prizePool || 0;
 
   const isCreator = user?.uid === game?.creatorId;
   const myPick = isCreator ? game?.creatorPick : game?.opponentPick;
@@ -99,10 +62,10 @@ function ArenaContent({ gameId }: { gameId: string }) {
     soccer: { color: "from-slate-600/20 to-slate-900/40", accent: "text-white", bg: "bg-white/10", icon: <SoccerIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "Pitch Battle" },
     ufc: { color: "from-red-600/20 to-red-900/40", accent: "text-red-500", bg: "bg-red-500/10", icon: <Swords className="h-8 w-8 md:h-10 md:w-10" />, label: "The Octagon" },
     boxing: { color: "from-yellow-600/20 to-yellow-900/40", accent: "text-yellow-500", bg: "bg-yellow-500/10", icon: <BoxingIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "Main Event" },
-    mlb: { color: "from-blue-600/20 to-blue-900/40", accent: "text-blue-500", bg: "bg-blue-500/10", icon: <BaseballIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "Diamond Duel" },
-    tennis: { color: "from-lime-600/20 to-lime-900/40", accent: "text-lime-400", bg: "bg-lime-400/10", icon: <TennisIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "Grand Slam" },
-    pickleball: { color: "from-yellow-600/20 to-yellow-900/40", accent: "text-yellow-500", bg: "bg-yellow-500/10", icon: <PickleballIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "Kitchen Combat" },
-    volleyball: { color: "from-indigo-600/20 to-indigo-900/40", accent: "text-indigo-400", bg: "bg-indigo-400/10", icon: <VolleyballIcon className="h-8 w-8 md:h-10 md:w-10" />, label: "The Net Zone" },
+    mlb: { color: "from-blue-600/20 to-blue-900/40", accent: "text-blue-500", bg: "bg-blue-500/10", icon: <Trophy className="h-8 w-8 md:h-10 md:w-10" />, label: "Diamond Duel" },
+    tennis: { color: "from-lime-600/20 to-lime-900/40", accent: "text-lime-400", bg: "bg-lime-400/10", icon: <Target className="h-8 w-8 md:h-10 md:w-10" />, label: "Grand Slam" },
+    pickleball: { color: "from-yellow-600/20 to-yellow-900/40", accent: "text-yellow-500", bg: "bg-yellow-500/10", icon: <Trophy className="h-8 w-8 md:h-10 md:w-10" />, label: "Kitchen Combat" },
+    volleyball: { color: "from-indigo-600/20 to-indigo-900/40", accent: "text-indigo-400", bg: "bg-indigo-400/10", icon: <Trophy className="h-8 w-8 md:h-10 md:w-10" />, label: "The Net Zone" },
     golf: { color: "from-emerald-600/20 to-emerald-900/40", accent: "text-emerald-400", bg: "bg-emerald-400/10", icon: <Target className="h-8 w-8 md:h-10 md:w-10" />, label: "Masters Green" },
     nascar: { color: "from-red-600/20 to-red-900/40", accent: "text-red-500", bg: "bg-red-500/10", icon: <Flag className="h-8 w-8 md:h-10 md:w-10" />, label: "Victory Lane" },
     surfing: { color: "from-blue-600/20 to-blue-400/40", accent: "text-blue-400", bg: "bg-blue-400/10", icon: <Waves className="h-8 w-8 md:h-10 md:w-10" />, label: "Pipe Masters" },
@@ -182,10 +145,10 @@ function ArenaContent({ gameId }: { gameId: string }) {
                     <Clock className={cn("h-3 w-3 md:h-3.5 md:w-3.5", status === 'Live' && 'animate-pulse')} /> 
                     {status === 'Live' ? 'LIVE SHOWDOWN' : 'WAITING FOR OPPONENT'}
                   </span>
-                  <span className="flex items-center gap-1.5"><Users className="h-3 w-3 md:h-3.5 md:w-3.5" /> {status === 'Live' ? '2/2' : '1/2'} PLAYMAKERS</span>
+                  <span className="flex items-center gap-1.5"><Users className="h-3 w-3 md:h-3.5 md:w-3.5" /> STAKES: {fee} {currency.toUpperCase()}</span>
                   <span className={cn("flex items-center gap-1.5 font-bold", theme.accent)}>
                     <Zap className="h-3.5 w-3.5 md:h-4 md:w-4 fill-current" />
-                    {(fee * 2).toLocaleString()} {currency.toUpperCase()} PRIZE
+                    {prizePool.toLocaleString()} SC PRIZE
                   </span>
                 </div>
               </div>
@@ -197,9 +160,7 @@ function ArenaContent({ gameId }: { gameId: string }) {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 items-start">
             <div className="lg:col-span-2 space-y-6 md:space-y-8">
-              {/* Participant Status */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* You */}
                 <Card className="bg-[#0D1219] border-[#1F2937] border-2 overflow-hidden rounded-xl">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-4 mb-4">
@@ -217,7 +178,6 @@ function ArenaContent({ gameId }: { gameId: string }) {
                   </CardContent>
                 </Card>
 
-                {/* Opponent */}
                 <Card className={cn("border-2 overflow-hidden rounded-xl transition-all", status === 'Live' ? 'bg-[#0D1219] border-[#1F2937]' : 'bg-[#0D1219]/40 border-white/5 opacity-60')}>
                   <CardContent className="p-6">
                     <div className="flex items-center gap-4 mb-4">
@@ -246,18 +206,18 @@ function ArenaContent({ gameId }: { gameId: string }) {
                     <span className="font-mono font-bold text-accent">{game?.inviteCode || "------"}</span>
                   </div>
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-white/60">Established</span>
-                    <span className="font-bold text-white flex items-center gap-1.5"><Timer className="h-3 w-3" /> {game?.createdAt ? new Date(game.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "N/A"}</span>
+                    <span className="text-white/60">Entry Stake</span>
+                    <span className="font-bold text-white uppercase text-[10px]">{fee} {currency.toUpperCase()}</span>
                   </div>
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-white/60">Prize Split</span>
-                    <span className="font-bold text-accent uppercase text-[10px]">Winner Take All</span>
+                    <span className="text-white/60">Prize Type</span>
+                    <span className="font-bold text-accent uppercase text-[10px]">Sweeps Coins (SC)</span>
                   </div>
                   <div className="flex flex-col gap-2 pt-4 border-t border-white/5">
-                    <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-white/60">Total Reward Pool</span>
+                    <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-white/60">Elite Reward Pool</span>
                     <div className={cn("flex items-center gap-2 font-bold", theme.accent)}>
                       <Zap className="h-4 w-4 md:h-5 md:w-5 fill-current" />
-                      <span className="font-headline text-xl md:text-2xl">{(fee * 2).toLocaleString()} {currency.toUpperCase()} POOL</span>
+                      <span className="font-headline text-xl md:text-2xl">{prizePool.toLocaleString()} SC POOL</span>
                     </div>
                   </div>
                 </div>
@@ -266,12 +226,12 @@ function ArenaContent({ gameId }: { gameId: string }) {
               <div className="p-5 md:p-6 rounded-2xl bg-secondary/10 border border-dashed border-white/10 space-y-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Info className={`h-4 w-4 ${theme.accent}`} />
-                  <h5 className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-white">Showdown Strategy</h5>
+                  <h5 className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-white">Elite Sweepstakes Policy</h5>
                 </div>
                 <ul className="space-y-3 text-[10px] md:text-[11px] text-muted-foreground font-medium leading-relaxed">
-                  <li className="flex gap-2"><span>•</span> <span>Counter-picks are permitted until the arena status changes to LIVE.</span></li>
-                  <li className="flex gap-2"><span>•</span> <span>The winner is verified via official provider scores once the event reaches FINAL.</span></li>
-                  <li className="flex gap-2"><span>•</span> <span>Stakes are automatically escrowed in the Arena Bank upon challenge launch.</span></li>
+                  <li className="flex gap-2"><span>•</span> <span>Gold Coin (GC) entries are social stakes that reward bonus Sweeps Coins (SC).</span></li>
+                  <li className="flex gap-2"><span>•</span> <span>Sweeps Coin (SC) entries are prize stakes that reward redeemable Sweeps Coins (SC).</span></li>
+                  <li className="flex gap-2"><span>•</span> <span>Winnings are automatically deposited into your Arena Vault upon official verification.</span></li>
                 </ul>
               </div>
             </aside>

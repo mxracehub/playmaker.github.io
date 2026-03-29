@@ -29,51 +29,14 @@ import {
   ArrowRight,
   Loader2,
   Search,
-  Timer
+  Timer,
+  Info
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore, useUser, addDocumentNonBlocking, useDoc, useMemoFirebase, useCollection } from "@/firebase";
 import { collection, doc } from "firebase/firestore";
 import { HOUSE_ADMIN } from "@/hooks/use-friends-store";
 import { sendChallengeEmail } from "@/ai/flows/send-challenge-email-flow";
-
-const BaseballIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 2a10 10 0 0 1 0 20" />
-    <path d="M2 12a10 10 0 0 1 20 0" />
-    <path d="M7 7c2 1 3 3 3 5s-1 4-3 5" />
-    <path d="M17 7c-2 1-3 3-3 5s1 4 3 5" />
-  </svg>
-);
-
-const TennisIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 2a10 10 0 0 1 0 20" />
-    <path d="M2 12a10 10 0 0 1 20 0" />
-    <circle cx="12" cy="12" r="2" />
-  </svg>
-);
-
-const PickleballIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M8 8l8 8" />
-    <path d="M16 8l-8 8" />
-    <circle cx="12" cy="12" r="3" />
-  </svg>
-);
-
-const VolleyballIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 2a10 10 0 0 1 0 20" />
-    <path d="M2 12a10 10 0 0 1 20 0" />
-    <path d="M7 7c2 1 3 3 3 5s-1 4-3 5" />
-    <path d="M17 7c-2 1-3 3-3 5s1 4 3 5" />
-  </svg>
-);
 
 const SoccerIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -204,7 +167,7 @@ const sports = [
   { 
     id: 'mlb', 
     name: 'MLB Arena', 
-    icon: <BaseballIcon className="w-5 h-5" />, 
+    icon: <Trophy className="w-5 h-5" />, 
     color: "text-blue-500", 
     events: [
       { id: 'm-1', name: "MLB Opening Day 2026", date: "Mar 26, 2026" },
@@ -222,7 +185,7 @@ const sports = [
   { 
     id: 'tennis', 
     name: 'Tennis Arena', 
-    icon: <TennisIcon className="w-5 h-5" />, 
+    icon: <Target className="w-5 h-5" />, 
     color: "text-lime-400", 
     events: [
       { id: 'ten-1', name: "Australian Open Final", date: "Jan 25, 2026" },
@@ -237,7 +200,7 @@ const sports = [
   { 
     id: 'pickleball', 
     name: 'Pickleball Arena', 
-    icon: <PickleballIcon className="w-5 h-5" />, 
+    icon: <Trophy className="w-5 h-5" />, 
     color: "text-yellow-500", 
     events: [
       { id: 'pb-1', name: "PPA Masters", date: "Jan 15, 2026" },
@@ -251,7 +214,7 @@ const sports = [
   { 
     id: 'volleyball', 
     name: 'Volleyball Arena', 
-    icon: <VolleyballIcon className="w-5 h-5" />, 
+    icon: <Trophy className="w-5 h-5" />, 
     color: "text-indigo-400", 
     events: [
       { id: 'v-1', name: "Nations League Finals", date: "Jul 05, 2026" },
@@ -382,7 +345,6 @@ function CreateGameForm() {
   useEffect(() => {
     if (isProfileLoading || isUsersLoading) return;
     
-    // Only set initial values once if not already set manually
     const friendId = searchParams.get('friendId');
     if (friendId && !selectedFriend && (availableFriends.some(f => f.id === friendId))) {
       setSelectedFriend(friendId);
@@ -396,6 +358,13 @@ function CreateGameForm() {
   const currentSport = sports.find(s => s.id === selectedSport);
   const filteredPicks = currentSport?.options.filter(option => option.toLowerCase().includes(searchPickQuery.toLowerCase())) || [];
   const filteredFriends = availableFriends.filter(friend => (friend.username || friend.name || "").toLowerCase().includes(searchFriendQuery.toLowerCase()));
+
+  // Calculate Prize Pool based on currency rules
+  // GC Match: entryFee * 2 / 100 = SC Prize
+  // SC Match: entryFee * 2 = SC Prize
+  const calculatedPrize = currency === 'gold' 
+    ? (parseFloat(fee) * 2 / 100).toFixed(2)
+    : (parseFloat(fee) * 2).toFixed(2);
 
   const handleCreate = () => {
     if (!user) {
@@ -424,9 +393,10 @@ function CreateGameForm() {
       creatorId: user.uid,
       creatorPick: selectedPick,
       sportId: selectedSport,
-      currencyType: currency,
+      currencyType: currency, // The entry currency
       entryFee: cost,
-      prizePool: cost * 2,
+      prizePool: parseFloat(calculatedPrize), // Always in SC per user logic
+      prizeCurrency: "sweeps", 
       status: "Open",
       inviteCode: inviteCode,
       createdAt: new Date().toISOString(),
@@ -524,9 +494,6 @@ function CreateGameForm() {
                       {option}{selectedPick === option && <CheckCircle2 className="h-3 w-3" />}
                     </button>
                   ))}
-                  {filteredPicks.length === 0 && (
-                    <div className="p-8 text-center text-muted-foreground italic">No results found for "{searchPickQuery}"</div>
-                  )}
                 </div>
               </div>
             ) : <div className="p-6 text-center bg-secondary/10 rounded-xl border border-dashed opacity-50"><p className="text-xs uppercase">Choose Arena & Event</p></div>}
@@ -540,33 +507,70 @@ function CreateGameForm() {
                 Available: <span className="text-white">{currency === 'gold' ? (profile?.goldCoinsBalance ?? 0).toLocaleString() : (profile?.sweepstakesCoinsBalance ?? 0).toFixed(2)}</span>
               </div>
             </div>
+            
+            <div className="p-4 rounded-2xl bg-accent/5 border border-accent/20 flex items-center gap-4 mb-2">
+              <div className="h-10 w-10 rounded-full bg-accent/20 flex items-center justify-center shrink-0">
+                <Zap className="h-5 w-5 text-accent" />
+              </div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Arena Prize Logic</p>
+                <p className="text-xs text-white/80 leading-relaxed">
+                  {currency === 'gold' 
+                    ? "Enter with Gold Coins to win Sweeps Coins (SC) at the 100:1 ratio." 
+                    : "Enter with Sweeps Coins to win Redeemable Sweeps Coins (SC)."}
+                </p>
+              </div>
+            </div>
+
             <RadioGroup value={currency} className="grid grid-cols-2 gap-4" onValueChange={setCurrency}>
               <div className={`p-4 rounded-xl border-2 transition-all cursor-pointer ${currency === 'gold' ? 'border-primary bg-primary/5' : 'border-white/5'}`}>
                 <div className="flex items-center gap-2 mb-2">
                   <RadioGroupItem value="gold" id="gold" />
                   <Label htmlFor="gold" className="uppercase text-xs font-bold">Gold Coins</Label>
                 </div>
-                <p className="text-[10px] text-muted-foreground">Social Play Only</p>
+                <p className="text-[10px] text-muted-foreground">Social Stakes</p>
               </div>
               <div className={`p-4 rounded-xl border-2 transition-all cursor-pointer ${currency === 'sweeps' ? 'border-accent bg-accent/5' : 'border-white/5'}`}>
                 <div className="flex items-center gap-2 mb-2">
                   <RadioGroupItem value="sweeps" id="sweeps" />
                   <Label htmlFor="sweeps" className="uppercase text-xs font-bold text-accent">Sweeps Coins</Label>
                 </div>
-                <p className="text-[10px] text-muted-foreground">Prize Showdowns</p>
+                <p className="text-[10px] text-muted-foreground">Prize Stakes</p>
               </div>
             </RadioGroup>
-            <div className="space-y-2">
-              <Label className="text-[10px] font-bold text-muted-foreground uppercase">Entry Fee</Label>
-              <Select value={fee} onValueChange={setFee}>
-                <SelectTrigger className="bg-secondary/30 border-white/5 h-12 font-bold"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="100">100</SelectItem>
-                  <SelectItem value="1000">1,000</SelectItem>
-                  <SelectItem value="5000">5,000</SelectItem>
-                  <SelectItem value="10000">10,000</SelectItem>
-                </SelectContent>
-              </Select>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+              <div className="space-y-2">
+                <Label className="text-[10px] font-bold text-muted-foreground uppercase">Entry Fee (Per Player)</Label>
+                <Select value={fee} onValueChange={setFee}>
+                  <SelectTrigger className="bg-secondary/30 border-white/5 h-12 font-bold"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {currency === 'gold' ? (
+                      <>
+                        <SelectItem value="1000">1,000 GC</SelectItem>
+                        <SelectItem value="5000">5,000 GC</SelectItem>
+                        <SelectItem value="10000">10,000 GC</SelectItem>
+                        <SelectItem value="50000">50,000 GC</SelectItem>
+                      </>
+                    ) : (
+                      <>
+                        <SelectItem value="10">10 SC</SelectItem>
+                        <SelectItem value="50">50 SC</SelectItem>
+                        <SelectItem value="100">100 SC</SelectItem>
+                        <SelectItem value="500">500 SC</SelectItem>
+                      </>
+                    )}
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="p-4 rounded-xl bg-secondary/20 border border-white/5 text-right">
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Total Reward Pool</p>
+                <div className="flex items-center justify-end gap-2 text-accent font-headline font-bold text-xl">
+                  <Trophy className="h-4 w-4" />
+                  {calculatedPrize} SC
+                </div>
+              </div>
             </div>
           </div>
 
