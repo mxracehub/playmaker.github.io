@@ -14,9 +14,10 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE & ROSTER DATABASE v11.0
+ * ARENA SCHEDULE & ROSTER DATABASE v12.0
  * Unified source of truth for all 16 professional sports.
- * Featuring 162-game literal schedules for ALL 30 MLB franchises and elite NFL team slates.
+ * Featuring 162-game seasonal schedules for ALL 30 MLB franchises 
+ * and 17-game seasonal schedules for ALL 32 NFL franchises.
  */
 
 export interface SportEvent {
@@ -43,6 +44,13 @@ const mlbOpponents = [
   "WSH Nationals", "BAL Orioles", "CIN Reds", "CLE Guardians", "CHW White Sox"
 ];
 
+const nflOpponents = [
+  "Cardinals", "Falcons", "Ravens", "Bills", "Panthers", "Bears", "Bengals", "Browns",
+  "Cowboys", "Broncos", "Lions", "Packers", "Texans", "Colts", "Jaguars", "Chiefs",
+  "Raiders", "Chargers", "Rams", "Dolphins", "Vikings", "Patriots", "Saints", "Giants",
+  "Jets", "Eagles", "Steelers", "49ers", "Seahawks", "Buccaneers", "Titans", "Commanders"
+];
+
 const generateMLBGames = (teamAbbr: string, teamName: string, startId: string) => {
   return Array.from({ length: 162 }, (_, i) => {
     const gameNum = i + 1;
@@ -66,6 +74,69 @@ const generateMLBGames = (teamAbbr: string, teamName: string, startId: string) =
     };
   });
 };
+
+const generateNFLGames = (teamAbbr: string, teamName: string, startId: string) => {
+  return Array.from({ length: 17 }, (_, i) => {
+    const weekNum = i + 1;
+    const opponentIndex = (i + teamName.length + teamAbbr.length) % nflOpponents.length;
+    let opponent = nflOpponents[opponentIndex];
+    if (opponent === teamName || teamName.includes(opponent)) {
+        opponent = nflOpponents[(opponentIndex + 1) % nflOpponents.length];
+    }
+
+    const isHome = i % 2 === 0;
+    const date = new Date(2026, 8, 13); // Starting Sunday Sep 13, 2026
+    date.setDate(date.getDate() + (i * 7));
+    
+    // Simulate a bye week at week 9
+    if (weekNum > 9) {
+        date.setDate(date.getDate() + 7);
+    }
+
+    const dateString = date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+
+    return {
+      id: `${startId}-w${weekNum.toString().padStart(2, '0')}`,
+      name: `Week ${weekNum}: ${teamName} ${isHome ? 'vs' : '@'} ${opponent}`,
+      date: `${dateString}`
+    };
+  });
+};
+
+const nflTeamsList = [
+  { abbr: "ARI", name: "Cardinals" },
+  { abbr: "ATL", name: "Falcons" },
+  { abbr: "BAL", name: "Ravens" },
+  { abbr: "BUF", name: "Bills" },
+  { abbr: "CAR", name: "Panthers" },
+  { abbr: "CHI", name: "Bears" },
+  { abbr: "CIN", name: "Bengals" },
+  { abbr: "CLE", name: "Browns" },
+  { abbr: "DAL", name: "Cowboys" },
+  { abbr: "DEN", name: "Broncos" },
+  { abbr: "DET", name: "Lions" },
+  { abbr: "GB", name: "Packers" },
+  { abbr: "HOU", name: "Texans" },
+  { abbr: "IND", name: "Colts" },
+  { abbr: "JAX", name: "Jaguars" },
+  { abbr: "KC", name: "Chiefs" },
+  { abbr: "LV", name: "Raiders" },
+  { abbr: "LAC", name: "Chargers" },
+  { abbr: "LAR", name: "Rams" },
+  { abbr: "MIA", name: "Dolphins" },
+  { abbr: "MIN", name: "Vikings" },
+  { abbr: "NE", name: "Patriots" },
+  { abbr: "NO", name: "Saints" },
+  { abbr: "NYG", name: "Giants" },
+  { abbr: "NYJ", name: "Jets" },
+  { abbr: "PHI", name: "Eagles" },
+  { abbr: "PIT", name: "Steelers" },
+  { abbr: "SF", name: "49ers" },
+  { abbr: "SEA", name: "Seahawks" },
+  { abbr: "TB", name: "Buccaneers" },
+  { abbr: "TEN", name: "Titans" },
+  { abbr: "WAS", name: "Commanders" }
+];
 
 export const sportsData: Sport[] = [
   { 
@@ -94,122 +165,8 @@ export const sportsData: Sport[] = [
     icon: 'Trophy', 
     color: "text-green-500", 
     events: [
-      // KANSAS CITY CHIEFS - 17 GAME ELITE CYCLE
-      { id: 'nfl-26-kc-01', name: "Ravens @ Chiefs (Kickoff)", date: "Sep 10, 2026" },
-      { id: 'nfl-26-kc-02', name: "Chiefs @ Bengals", date: "Sep 20, 2026" },
-      { id: 'nfl-26-kc-03', name: "Chargers @ Chiefs", date: "Sep 27, 2026" },
-      { id: 'nfl-26-kc-04', name: "Chiefs @ Falcons", date: "Oct 04, 2026" },
-      { id: 'nfl-26-kc-05', name: "Saints @ Chiefs", date: "Oct 11, 2026" },
-      { id: 'nfl-26-kc-07', name: "Chiefs @ SF 49ers", date: "Oct 25, 2026" },
-      { id: 'nfl-26-kc-08', name: "Chiefs @ Raiders", date: "Nov 01, 2026" },
-      { id: 'nfl-26-kc-09', name: "Broncos @ Chiefs", date: "Nov 08, 2026" },
-      { id: 'nfl-26-kc-10', name: "Chiefs @ Bills", date: "Nov 15, 2026" },
-      { id: 'nfl-26-kc-11', name: "Panthers @ Chiefs", date: "Nov 22, 2026" },
-      { id: 'nfl-26-kc-12', name: "Raiders @ Chiefs (Black Friday)", date: "Nov 27, 2026" },
-      { id: 'nfl-26-kc-13', name: "Chiefs @ Chargers", date: "Dec 06, 2026" },
-      { id: 'nfl-26-kc-14', name: "Chiefs @ Browns", date: "Dec 13, 2026" },
-      { id: 'nfl-26-kc-15', name: "Steelers @ Chiefs (Xmas)", date: "Dec 25, 2026" },
-      { id: 'nfl-26-kc-16', name: "Chiefs @ Broncos", date: "Jan 03, 2027" },
-      { id: 'nfl-26-kc-17', name: "Chiefs @ Cowboys (Season Finale)", date: "Jan 10, 2027" },
-
-      // DALLAS COWBOYS - ELITE CYCLE
-      { id: 'nfl-26-dal-01', name: "Cowboys @ Giants", date: "Sep 13, 2026" },
-      { id: 'nfl-26-dal-02', name: "Eagles @ Cowboys", date: "Sep 20, 2026" },
-      { id: 'nfl-26-dal-03', name: "Cowboys @ Commanders", date: "Sep 27, 2026" },
-      { id: 'nfl-26-dal-04', name: "Cowboys @ SF 49ers", date: "Oct 04, 2026" },
-      { id: 'nfl-26-dal-05', name: "Ravens @ Cowboys", date: "Oct 11, 2026" },
-      { id: 'nfl-26-dal-06', name: "Lions @ Cowboys", date: "Oct 18, 2026" },
-      { id: 'nfl-26-dal-07', name: "Cowboys @ Rams", date: "Oct 25, 2026" },
-      { id: 'nfl-26-dal-08', name: "Cardinals @ Cowboys", date: "Nov 01, 2026" },
-      { id: 'nfl-26-dal-09', name: "Cowboys @ Falcons", date: "Nov 08, 2026" },
-      { id: 'nfl-26-dal-10', name: "Commanders @ Cowboys", date: "Nov 15, 2026" },
-      { id: 'nfl-26-dal-11', name: "Cowboys @ Eagles", date: "Nov 22, 2026" },
-      { id: 'nfl-26-dal-12', name: "Giants @ Cowboys (Thanksgiving)", date: "Nov 26, 2026" },
-      { id: 'nfl-26-dal-13', name: "Bengals @ Cowboys", date: "Dec 06, 2026" },
-      { id: 'nfl-26-dal-14', name: "Cowboys @ Panthers", date: "Dec 13, 2026" },
-      { id: 'nfl-26-dal-15', name: "Buccaneers @ Cowboys", date: "Dec 20, 2026" },
-      { id: 'nfl-26-dal-16', name: "Cowboys @ Browns", date: "Dec 27, 2026" },
-      { id: 'nfl-26-dal-17', name: "Chiefs @ Cowboys", date: "Jan 03, 2027" },
-      { id: 'nfl-26-dal-18', name: "Cowboys @ Giants (Season Finale)", date: "Jan 10, 2027" },
-
-      // SF 49ERS - ELITE CYCLE
-      { id: 'nfl-26-sf-01', name: "SF 49ers @ Seahawks", date: "Sep 13, 2026" },
-      { id: 'nfl-26-sf-02', name: "Rams @ SF 49ers", date: "Sep 20, 2026" },
-      { id: 'nfl-26-sf-03', name: "SF 49ers @ Cardinals", date: "Sep 27, 2026" },
-      { id: 'nfl-26-sf-04', name: "Cowboys @ SF 49ers", date: "Oct 04, 2026" },
-      { id: 'nfl-26-sf-05', name: "SF 49ers @ Packers", date: "Oct 11, 2026" },
-      { id: 'nfl-26-sf-06', name: "Chiefs @ SF 49ers", date: "Oct 18, 2026" },
-      { id: 'nfl-26-sf-07', name: "SF 49ers @ Vikings", date: "Oct 25, 2026" },
-      { id: 'nfl-26-sf-08', name: "Eagles @ SF 49ers", date: "Nov 01, 2026" },
-      { id: 'nfl-26-sf-10', name: "SF 49ers @ Raiders", date: "Nov 15, 2026" },
-      { id: 'nfl-26-sf-11', name: "Seahawks @ SF 49ers", date: "Nov 22, 2026" },
-      { id: 'nfl-26-sf-12', name: "SF 49ers @ Rams", date: "Nov 29, 2026" },
-      { id: 'nfl-26-sf-13', name: "Cardinals @ SF 49ers", date: "Dec 06, 2026" },
-      { id: 'nfl-26-sf-14', name: "SF 49ers @ Bills", date: "Dec 13, 2026" },
-      { id: 'nfl-26-sf-15', name: "Lions @ SF 49ers", date: "Dec 20, 2026" },
-      { id: 'nfl-26-sf-16', name: "SF 49ers @ Bears", date: "Dec 27, 2026" },
-      { id: 'nfl-26-sf-17', name: "Jets @ SF 49ers", date: "Jan 03, 2027" },
-      { id: 'nfl-26-sf-18', name: "SF 49ers @ Dolphins", date: "Jan 10, 2027" },
-
-      // ARIZONA CARDINALS - 17 GAME ELITE CYCLE
-      { id: 'nfl-26-ari-01', name: "Cardinals @ Bills", date: "Sep 13, 2026" },
-      { id: 'nfl-26-ari-02', name: "Rams @ Cardinals", date: "Sep 20, 2026" },
-      { id: 'nfl-26-ari-03', name: "SF 49ers @ Cardinals", date: "Sep 27, 2026" },
-      { id: 'nfl-26-ari-04', name: "Cardinals @ Seahawks", date: "Oct 04, 2026" },
-      { id: 'nfl-26-ari-05', name: "Cardinals @ Lions", date: "Oct 11, 2026" },
-      { id: 'nfl-26-ari-06', name: "Commanders @ Cardinals", date: "Oct 18, 2026" },
-      { id: 'nfl-26-ari-07', name: "Cardinals @ Eagles", date: "Oct 25, 2026" },
-      { id: 'nfl-26-ari-08', name: "Cardinals @ Cowboys", date: "Nov 01, 2026" },
-      { id: 'nfl-26-ari-09', name: "Vikings @ Cardinals", date: "Nov 08, 2026" },
-      { id: 'nfl-26-ari-10', name: "Cardinals @ Panthers", date: "Nov 15, 2026" },
-      { id: 'nfl-26-ari-11', name: "Seahawks @ Cardinals", date: "Nov 22, 2026" },
-      { id: 'nfl-26-ari-12', name: "Cardinals @ SF 49ers", date: "Nov 29, 2026" },
-      { id: 'nfl-26-ari-13', name: "Cardinals @ Rams", date: "Dec 06, 2026" },
-      { id: 'nfl-26-ari-14', name: "Bears @ Cardinals", date: "Dec 13, 2026" },
-      { id: 'nfl-26-ari-15', name: "Cardinals @ Jets", date: "Dec 20, 2026" },
-      { id: 'nfl-26-ari-16', name: "Saints @ Cardinals", date: "Dec 27, 2026" },
-      { id: 'nfl-26-ari-17', name: "Cardinals @ Packers", date: "Jan 03, 2027" },
-
-      // DENVER BRONCOS - 17 GAME ELITE CYCLE
-      { id: 'nfl-26-den-01', name: "Raiders @ Broncos", date: "Sep 13, 2026" },
-      { id: 'nfl-26-den-02', name: "Broncos @ Seahawks", date: "Sep 20, 2026" },
-      { id: 'nfl-26-den-03', name: "Steelers @ Broncos", date: "Sep 27, 2026" },
-      { id: 'nfl-26-den-04', name: "Broncos @ Chargers", date: "Oct 04, 2026" },
-      { id: 'nfl-26-den-05', name: "Broncos @ Ravens", date: "Oct 11, 2026" },
-      { id: 'nfl-26-den-06', name: "Falcons @ Broncos", date: "Oct 18, 2026" },
-      { id: 'nfl-26-den-07', name: "Broncos @ Saints", date: "Oct 25, 2026" },
-      { id: 'nfl-26-den-08', name: "Panthers @ Broncos", date: "Nov 01, 2026" },
-      { id: 'nfl-26-den-09', name: "Broncos @ Chiefs", date: "Nov 08, 2026" },
-      { id: 'nfl-26-den-10', name: "Broncos @ Raiders", date: "Nov 15, 2026" },
-      { id: 'nfl-26-den-11', name: "Browns @ Broncos", date: "Nov 22, 2026" },
-      { id: 'nfl-26-den-12', name: "Chargers @ Broncos", date: "Nov 29, 2026" },
-      { id: 'nfl-26-den-13', name: "Broncos @ Bengals", date: "Dec 06, 2026" },
-      { id: 'nfl-26-den-14', name: "Colts @ Broncos", date: "Dec 13, 2026" },
-      { id: 'nfl-26-den-15', name: "Broncos @ Jets", date: "Dec 20, 2026" },
-      { id: 'nfl-26-den-16', name: "Broncos @ Bills", date: "Dec 27, 2026" },
-      { id: 'nfl-26-den-17', name: "Chiefs @ Broncos (Season Finale)", date: "Jan 03, 2027" },
-
-      // GREEN BAY PACKERS - 17 GAME ELITE CYCLE
-      { id: 'nfl-26-gb-01', name: "Packers @ Eagles (Brazil Kickoff)", date: "Sep 11, 2026" },
-      { id: 'nfl-26-gb-02', name: "Colts @ Packers", date: "Sep 20, 2026" },
-      { id: 'nfl-26-gb-03', name: "Packers @ Titans", date: "Sep 27, 2026" },
-      { id: 'nfl-26-gb-04', name: "Vikings @ Packers (Rivalry)", date: "Oct 04, 2026" },
-      { id: 'nfl-26-gb-05', name: "Packers @ Rams", date: "Oct 11, 2026" },
-      { id: 'nfl-26-gb-06', name: "Cardinals @ Packers", date: "Oct 18, 2026" },
-      { id: 'nfl-26-gb-07', name: "Texans @ Packers", date: "Oct 25, 2026" },
-      { id: 'nfl-26-gb-08', name: "Packers @ Jaguars", date: "Nov 01, 2026" },
-      { id: 'nfl-26-gb-09', name: "Lions @ Packers", date: "Nov 08, 2026" },
-      { id: 'nfl-26-gb-11', name: "Packers @ Bears (Soldier Field)", date: "Nov 22, 2026" },
-      { id: 'nfl-26-gb-12', name: "49ers @ Packers (Lambeau Frozen Tundra)", date: "Nov 29, 2026" },
-      { id: 'nfl-26-gb-13', name: "Dolphins @ Packers (Thanksgiving)", date: "Nov 26, 2026" },
-      { id: 'nfl-26-gb-14', name: "Packers @ Lions", date: "Dec 06, 2026" },
-      { id: 'nfl-26-gb-15', name: "Packers @ Seahawks", date: "Dec 13, 2026" },
-      { id: 'nfl-26-gb-16', name: "Saints @ Packers", date: "Dec 20, 2026" },
-      { id: 'nfl-26-gb-17', name: "Bears @ Packers (Season Rivalry Finale)", date: "Dec 27, 2026" },
-      { id: 'nfl-26-gb-18', name: "Packers @ Vikings", date: "Jan 03, 2027" },
-
-      { id: 'nfl-26-w1-brazil', name: "Week 1: Packers @ Eagles (Brazil)", date: "Sep 11, 2026" },
-      { id: 'nfl-26-w18', name: "Week 18: Season Finale Slate", date: "Jan 10, 2027" },
+      ...nflTeamsList.flatMap(team => generateNFLGames(team.abbr, team.name, `nfl-26-${team.abbr.toLowerCase()}`)),
+      { id: 'nfl-26-w1-brazil', name: "Week 1: Packers @ Eagles (Brazil Kickoff)", date: "Sep 11, 2026" },
       { id: 'nfl-27-sb', name: "Super Bowl LXI (Inglewood, CA)", date: "Feb 14, 2027" },
     ], 
     options: ["Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills", "Carolina Panthers", "Chicago Bears", "Cincinnati Bengals", "Cleveland Browns", "Dallas Cowboys", "Denver Broncos", "Detroit Lions", "Green Bay Packers", "Houston Texans", "Indianapolis Colts", "Jacksonville Jaguars", "Kansas City Chiefs", "Las Vegas Raiders", "Los Angeles Chargers", "Los Angeles Rams", "Miami Dolphins", "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants", "New York Jets", "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Buccaneers", "Tennessee Titans", "Washington Commanders"] 
