@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE & ROSTER DATABASE v17.0
+ * ARENA SCHEDULE & ROSTER DATABASE v18.0
  * Unified source of truth for all 16 professional sports.
- * Featuring literal seasonal schedules for MLB, NFL, NBA, NHL, NASCAR, and Boxing for the 2026 seasons.
+ * Featuring literal seasonal schedules for MLB, NFL, NBA, NHL, NASCAR, Boxing, and Golf for the 2026 seasons.
  */
 
 export interface SportEvent {
@@ -314,10 +314,56 @@ export const sportsData: Sport[] = [
     icon: 'Target', 
     color: "text-emerald-400", 
     events: [
-      { id: 'g-26-masters', name: "The Masters (Augusta)", date: "Apr 09, 2026" },
-      { id: 'g-26-ryder', name: "2026 Ryder Cup (Bethpage)", date: "Sep 25, 2026" },
+      { id: 'g-26-01', name: "Sony Open in Hawaii", date: "Jan 15 - 18, 2026" },
+      { id: 'g-26-02', name: "The American Express", date: "Jan 22 - 25, 2026" },
+      { id: 'g-26-03', name: "Farmers Insurance Open", date: "Jan 29 - Feb 1, 2026" },
+      { id: 'g-26-04', name: "WM Phoenix Open", date: "Feb 5 - 8, 2026" },
+      { id: 'g-26-05', name: "AT&T Pebble Beach Pro-Am", date: "Feb 12 - 15, 2026" },
+      { id: 'g-26-06', name: "The Genesis Invitational", date: "Feb 19 - 22, 2026" },
+      { id: 'g-26-07', name: "Cognizant Classic in The Palm Beaches", date: "Feb 26 - Mar 1, 2026" },
+      { id: 'g-26-08', name: "Arnold Palmer Invitational", date: "Mar 5 - 8, 2026" },
+      { id: 'g-26-09', name: "Puerto Rico Open", date: "Mar 5 - 8, 2026" },
+      { id: 'g-26-10', name: "THE PLAYERS Championship", date: "Mar 12 - 15, 2026" },
+      { id: 'g-26-11', name: "Valspar Championship", date: "Mar 19 - 22, 2026" },
+      { id: 'g-26-12', name: "Texas Children's Houston Open", date: "Mar 26 - 29, 2026" },
+      { id: 'g-26-13', name: "Valero Texas Open", date: "Apr 2 - 5, 2026" },
+      { id: 'g-26-14', name: "Masters Tournament", date: "Apr 9 - 12, 2026" },
+      { id: 'g-26-15', name: "RBC Heritage", date: "Apr 16 - 19, 2026" },
+      { id: 'g-26-16', name: "Zurich Classic of New Orleans", date: "Apr 23 - 26, 2026" },
+      { id: 'g-26-17', name: "Cadillac Championship", date: "Apr 30 - May 3, 2026" },
+      { id: 'g-26-18', name: "Truist Championship", date: "May 7 - 10, 2026" },
+      { id: 'g-26-19', name: "ONEflight Myrtle Beach Classic", date: "May 7 - 10, 2026" },
+      { id: 'g-26-20', name: "PGA Championship", date: "May 14 - 17, 2026" },
+      { id: 'g-26-21', name: "THE CJ CUP Byron Nelson", date: "May 21 - 24, 2026" },
+      { id: 'g-26-22', name: "Charles Schwab Challenge", date: "May 28 - 31, 2026" },
+      { id: 'g-26-23', name: "the Memorial Tournament", date: "Jun 4 - 7, 2026" },
+      { id: 'g-26-24', name: "RBC Canadian Open", date: "Jun 11 - 14, 2026" },
+      { id: 'g-26-25', name: "U.S. Open", date: "Jun 18 - 21, 2026" },
+      { id: 'g-26-26', name: "Travelers Championship", date: "Jun 25 - 28, 2026" },
+      { id: 'g-26-27', name: "John Deere Classic", date: "Jul 2 - 5, 2026" },
+      { id: 'g-26-28', name: "Genesis Scottish Open", date: "Jul 9 - 12, 2026" },
+      { id: 'g-26-29', name: "ISCO Championship", date: "Jul 9 - 12, 2026" },
+      { id: 'g-26-30', name: "The Open Championship", date: "Jul 16 - 19, 2026" },
+      { id: 'g-26-31', name: "Corales Puntacana Championship", date: "Jul 16 - 19, 2026" },
+      { id: 'g-26-32', name: "3M Open", date: "Jul 23 - 26, 2026" },
+      { id: 'g-26-33', name: "Rocket Classic", date: "Jul 30 - Aug 2, 2026" },
+      { id: 'g-26-34', name: "Wyndham Championship", date: "Aug 6 - 9, 2026" },
+      { id: 'g-26-35', name: "FedEx St. Jude Championship", date: "Aug 13 - 16, 2026" },
+      { id: 'g-26-36', name: "BMW Championship", date: "Aug 20 - 23, 2026" },
+      { id: 'g-26-37', name: "TOUR Championship", date: "Aug 27 - 30, 2026" },
+      { id: 'g-26-38', name: "Biltmore Championship Asheville", date: "Sep 17 - 20, 2026" },
+      { id: 'g-26-39', name: "Presidents Cup", date: "Sep 24 - 27, 2026" },
+      { id: 'g-26-40', name: "Bank of Utah Championship", date: "Oct 1 - 4, 2026" },
+      { id: 'g-26-41', name: "Baycurrent Classic", date: "Oct 8 - 11, 2026" },
+      { id: 'g-26-42', name: "Butterfield Bermuda Championship", date: "Oct 22 - 25, 2026" },
+      { id: 'g-26-43', name: "VidantaWorld Mexico Open", date: "Oct 29 - Nov 1, 2026" },
+      { id: 'g-26-44', name: "World Wide Technology Championship", date: "Nov 5 - 8, 2026" },
+      { id: 'g-26-45', name: "Good Good Championship", date: "Nov 12 - 15, 2026" },
+      { id: 'g-26-46', name: "The RSM Classic", date: "Nov 19 - 22, 2026" },
+      { id: 'g-26-47', name: "Hero World Challenge", date: "Dec 3 - 6, 2026" },
+      { id: 'g-26-48', name: "Grant Thornton Invitational", date: "Dec 11 - 13, 2026" },
     ], 
-    options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Xander Schauffele", "Ludvig Åberg", "Brooks Koepka", "Bryson DeChambeau", "Tiger Woods", "Jordan Spieth", "Justin Thomas", "Max Homa", "Wyndham Clark", "Patrick Cantlay", "Collin Morikawa", "Cameron Smith", "Hideki Matsuyama", "Tommy Fleetwood"] 
+    options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Xander Schauffele", "Ludvig Åberg", "Brooks Koepka", "Bryson DeChambeau", "Tiger Woods", "Jordan Spieth", "Justin Thomas", "Max Homa", "Wyndham Clark", "Patrick Cantlay", "Collin Morikawa", "Cameron Smith", "Hideki Matsuyama", "Tommy Fleetwood", "Chris Gotterup", "Justin Rose", "Jacob Bridgeman", "Nico Echavarria", "Akshay Bhatia", "Ricky Castillo", "Cameron Young", "Matt Fitzpatrick", "Min Woo Lee", "Brian Harman", "Sepp Straka", "Ryan Fox", "J.J. Spaun", "Keegan Bradley", "Brian Campbell", "William Mouw", "Garrick Higgo", "Kurt Kitayama", "Aldrich Potgieter", "Michael Brennan", "Adam Schenk", "Sami Valimaki"] 
   },
   { id: 'pickleball', name: 'Pickleball', icon: 'Trophy', color: "text-yellow-500", events: [{ id: 'pb-26-01', name: "National Championships (Dallas)", date: "Nov 08, 2026" }], options: ["Ben Johns", "Anna Leigh Waters", "Tyson McGuffin", "Lea Jansen", "Riley Newman", "Catherine Parenteau", "JW Johnson", "Dylan Frazier", "Anna Bright"] },
   { id: 'volleyball', name: 'Volleyball', icon: 'Trophy', color: "text-indigo-400", events: [{ id: 'v-26-01', name: "Nations League Finals (Texas)", date: "Jul 05, 2026" }], options: ["USA", "Poland", "Brazil", "Turkey", "Italy", "Japan", "Serbia", "China", "France", "Slovenia"] },
