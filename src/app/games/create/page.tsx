@@ -59,7 +59,6 @@ const BoxingIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-// Map icon names from the library to components
 const IconMap: Record<string, React.ReactNode> = {
   Dribbble: <Dribbble className="w-5 h-5" />,
   Trophy: <Trophy className="w-5 h-5" />,
@@ -114,10 +113,30 @@ function CreateGameForm() {
     }
   }, [searchParams, availableFriends.length, isProfileLoading, isUsersLoading, selectedFriend, selectedSport]);
 
-  const currentSport = sportsData.find(s => s.id === selectedSport);
-  const filteredPicks = currentSport?.options.filter(option => option.toLowerCase().includes(searchPickQuery.toLowerCase())) || [];
-  const filteredFriends = availableFriends.filter(friend => (friend.username || friend.name || "").toLowerCase().includes(searchFriendQuery.toLowerCase()));
-  const filteredEvents = currentSport?.events.filter(event => event.name.toLowerCase().includes(searchEventQuery.toLowerCase())) || [];
+  const currentSport = useMemo(() => sportsData.find(s => s.id === selectedSport), [selectedSport]);
+
+  const filteredEvents = useMemo(() => {
+    if (!currentSport) return [];
+    const query = searchEventQuery.toLowerCase().trim();
+    if (!query) return currentSport.events;
+    return currentSport.events.filter(event => 
+      event.name.toLowerCase().includes(query) || 
+      event.date.toLowerCase().includes(query)
+    );
+  }, [currentSport, searchEventQuery]);
+
+  const filteredPicks = useMemo(() => {
+    if (!currentSport) return [];
+    const query = searchPickQuery.toLowerCase().trim();
+    if (!query) return currentSport.options;
+    return currentSport.options.filter(option => option.toLowerCase().includes(query));
+  }, [currentSport, searchPickQuery]);
+
+  const filteredFriends = useMemo(() => {
+    const query = searchFriendQuery.toLowerCase().trim();
+    if (!query) return availableFriends;
+    return availableFriends.filter(friend => (friend.username || friend.name || "").toLowerCase().includes(query));
+  }, [availableFriends, searchFriendQuery]);
 
   const entryAmount = parseFloat(fee) || 0;
   const prizeInCoins = entryAmount * 2;
@@ -207,7 +226,7 @@ function CreateGameForm() {
               {sportsData.map((sport) => (
                 <button
                   key={sport.id}
-                  onClick={() => { setSelectedSport(sport.id); setSelectedEvent(""); setSelectedPick(""); setSelectedPick(""); setSearchEventQuery(""); }}
+                  onClick={() => { setSelectedSport(sport.id); setSelectedEvent(""); setSelectedPick(""); setSearchEventQuery(""); }}
                   className={`flex flex-col items-center p-3 rounded-xl border-2 transition-all ${selectedSport === sport.id ? 'bg-primary/20 border-primary' : 'bg-secondary/30 border-transparent hover:bg-secondary/50'}`}
                 >
                   <div className={`mb-2 ${sport.color}`}>
@@ -238,7 +257,7 @@ function CreateGameForm() {
                     <p className="text-[10px] text-accent font-bold uppercase tracking-widest text-center">Available Slates: {filteredEvents.length}</p>
                   </div>
                   {filteredEvents.map((event) => (
-                    <button key={event.id} onClick={() => setSelectedEvent(event.id)} className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all ${selectedEvent === event.id ? 'bg-accent/10 border-accent' : 'bg-secondary/20 border-white/5 hover:border-white/10'}`}>
+                    <button key={event.id} onClick={() => setSelectedEvent(event.id)} className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all ${selectedEvent === event.id ? 'bg-accent/10 border-accent' : 'bg-secondary/20 border-white/5 hover:bg-white/10'}`}>
                       <div className="flex items-center gap-3">
                         <CalendarDays className="h-5 w-5" />
                         <div className="text-left">
