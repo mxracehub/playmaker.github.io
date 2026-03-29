@@ -90,23 +90,23 @@ const mockAthletes = [
 ];
 
 const sportEmptyStates: Record<string, { icon: React.ReactNode; label: string }> = {
-  all: { icon: <Sparkles className="h-12 w-12" />, label: "NO ATHLETES IN THIS ARENA YET" },
-  nba: { icon: <Dribbble className="h-12 w-12" />, label: "NO NBA PLAYMAKERS FOUND" },
-  nfl: { icon: <Trophy className="h-12 w-12" />, label: "NO NFL PLAYMAKERS FOUND" },
-  hockey: { icon: <Snowflake className="h-12 w-12" />, label: "NO NHL PLAYMAKERS FOUND" },
-  soccer: { icon: <SoccerIcon className="h-12 w-12" />, label: "NO SOCCER PLAYMAKERS FOUND" },
-  ufc: { icon: <Swords className="h-12 w-12" />, label: "NO UFC FIGHTERS FOUND" },
-  boxing: { icon: <BoxingIcon className="h-12 w-12" />, label: "NO BOXING CONTENDERS FOUND" },
-  mlb: { icon: <BaseballIcon className="h-12 w-12" />, label: "NO MLB PLAYMAKERS FOUND" },
-  tennis: { icon: <Target className="h-12 w-12" />, label: "NO TENNIS PLAYMAKERS FOUND" },
-  pickleball: { icon: <Trophy className="h-12 w-12" />, label: "NO PICKLEBALL PLAYMAKERS FOUND" },
-  volleyball: { icon: <Trophy className="h-12 w-12" />, label: "NO VOLLEYBALL PLAYMAKERS FOUND" },
-  surfing: { icon: <Waves className="h-12 w-12" />, label: "NO SURFING PLAYMAKERS FOUND" },
-  skateboarding: { icon: <Zap className="h-12 w-12" />, label: "NO SKATE PLAYMAKERS FOUND" },
-  bmx: { icon: <Bike className="h-12 w-12" />, label: "NO BMX PLAYMAKERS FOUND" },
-  snowboarding: { icon: <Mountain className="h-12 w-12" />, label: "NO SNOW PLAYMAKERS FOUND" },
-  nascar: { icon: <Flag className="h-12 w-12" />, label: "NO NASCAR PLAYMAKERS FOUND" },
-  golf: { icon: <Target className="h-12 w-12" />, label: "NO GOLF PLAYMAKERS FOUND" },
+  all: { icon: <Sparkles className="h-16 w-16" />, label: "NO ATHLETES IN THE LINEUP YET" },
+  nba: { icon: <Dribbble className="h-16 w-16" />, label: "NO NBA PLAYMAKERS FOUND" },
+  nfl: { icon: <Trophy className="h-16 w-16" />, label: "NO NFL PLAYMAKERS FOUND" },
+  hockey: { icon: <Snowflake className="h-16 w-16" />, label: "NO NHL PLAYMAKERS FOUND" },
+  soccer: { icon: <SoccerIcon className="h-16 w-16" />, label: "NO SOCCER PLAYMAKERS FOUND" },
+  ufc: { icon: <Swords className="h-16 w-16" />, label: "NO UFC FIGHTERS FOUND" },
+  boxing: { icon: <BoxingIcon className="h-16 w-16" />, label: "NO BOXING CONTENDERS FOUND" },
+  mlb: { icon: <BaseballIcon className="h-16 w-16" />, label: "NO MLB PLAYMAKERS FOUND" },
+  tennis: { icon: <Target className="h-16 w-16" />, label: "NO TENNIS PLAYMAKERS FOUND" },
+  pickleball: { icon: <Trophy className="h-16 w-16" />, label: "NO PICKLEBALL PLAYMAKERS FOUND" },
+  volleyball: { icon: <Trophy className="h-16 w-16" />, label: "NO VOLLEYBALL PLAYMAKERS FOUND" },
+  surfing: { icon: <Waves className="h-16 w-16" />, label: "NO SURFING PLAYMAKERS FOUND" },
+  skateboarding: { icon: <Zap className="h-16 w-16" />, label: "NO SKATE PLAYMAKERS FOUND" },
+  bmx: { icon: <Bike className="h-16 w-16" />, label: "NO BMX PLAYMAKERS FOUND" },
+  snowboarding: { icon: <Mountain className="h-16 w-16" />, label: "NO SNOW PLAYMAKERS FOUND" },
+  nascar: { icon: <Flag className="h-16 w-16" />, label: "NO NASCAR PLAYMAKERS FOUND" },
+  golf: { icon: <Target className="h-16 w-16" />, label: "NO GOLF PLAYMAKERS FOUND" },
 };
 
 export default function Home() {
@@ -223,7 +223,7 @@ export default function Home() {
                   {emptyState.label}
                 </h3>
                 <p className="text-sm text-muted-foreground/40 max-w-xs font-medium uppercase tracking-wider">
-                  The roster is being verified. Try selecting another sport to see the elite lineup.
+                  The official 2026 roster is being verified. Try selecting another sport to see the elite lineup.
                 </p>
               </div>
             )}

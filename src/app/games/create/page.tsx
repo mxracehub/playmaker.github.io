@@ -72,7 +72,7 @@ const sports = [
   { id: 'skateboarding', name: 'Skateboarding', icon: <Zap className="w-5 h-5" />, color: "text-yellow-400", events: [{ id: 'sk-1', name: "X-Games Summer (CA)", date: "Jul 20, 2026" }], options: ["Nyjah Huston", "Yuto Horigome", "Sky Brown", "Rayssa Leal", "Kelvin Hoefler", "Leticia Bufoni", "Shane O'Neill", "Aurelien Giraud", "Chloe Covell"] },
   { id: 'bmx', name: 'BMX', icon: <Bike className="w-5 h-5" />, color: "text-red-400", events: [{ id: 'bmx-1', name: "UCI World Cup Final", date: "May 24, 2026" }], options: ["Logan Martin", "Garrett Reynolds", "Hannah Roberts", "Charlotte Worthington", "Rim Nakamura", "Anthony Jeanjean", "Declan Brooks", "Nikita Ducarroz"] },
   { id: 'snowboarding', name: 'Snowboarding', icon: <Mountain className="w-5 h-5" />, color: "text-cyan-400", events: [{ id: 'snow-1', name: "X-Games Aspen", date: "Jan 23, 2026" }], options: ["Chloe Kim", "Mark McMorris", "Shaun White (Ret.)", "Ayumu Hirano", "Anna Gasser", "Red Gerard", "Su Yiming", "Zoi Sadowski-Synnott", "Valentino Guseli"] },
-  { id: 'nascar', name: 'NASCAR', icon: <Flag className="w-5 h-5" />, color: "text-red-500", events: [{ id: 'nas-1', name: "Daytona 500", date: "Feb 15, 2026" }], options: ["Kyle Larson", "Chase Elliott", "Devny Hamlin", "Ryan Blaney", "William Byron", "Christopher Bell", "Joey Logano", "Martin Truex Jr.", "Tyler Reddick", "Ross Chastain", "Kyle Busch", "Bubba Wallace", "Brad Keselowski", "Ty Gibbs", "Chris Buescher", "Michael McDowell", "Alex Bowman", "Chase Briscoe"] },
+  { id: 'nascar', name: 'NASCAR', icon: <Flag className="w-5 h-5" />, color: "text-red-500", events: [{ id: 'nas-1', name: "Daytona 500", date: "Feb 15, 2026" }], options: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney", "William Byron", "Christopher Bell", "Joey Logano", "Martin Truex Jr.", "Tyler Reddick", "Ross Chastain", "Kyle Busch", "Bubba Wallace", "Brad Keselowski", "Ty Gibbs", "Chris Buescher", "Michael McDowell", "Alex Bowman", "Chase Briscoe"] },
   { id: 'golf', name: 'Golf', icon: <Target className="h-5 w-5" />, color: "text-emerald-400", events: [{ id: 'g-4', name: "The Masters 2026", date: "Apr 09, 2026" }], options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Xander Schauffele", "Ludvig Åberg", "Brooks Koepka", "Bryson DeChambeau", "Tiger Woods", "Jordan Spieth", "Justin Thomas", "Max Homa", "Wyndham Clark", "Patrick Cantlay", "Collin Morikawa", "Cameron Smith", "Hideki Matsuyama", "Tommy Fleetwood"] },
 ];
 
@@ -120,18 +120,14 @@ function CreateGameForm() {
   const filteredPicks = currentSport?.options.filter(option => option.toLowerCase().includes(searchPickQuery.toLowerCase())) || [];
   const filteredFriends = availableFriends.filter(friend => (friend.username || friend.name || "").toLowerCase().includes(searchFriendQuery.toLowerCase()));
 
-  // 100:1 Arena Ratio Logic ($1 = 100 Coins)
-  const formatAsUSD = (amount: number) => {
-    return (amount / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-  };
-
   const entryAmount = parseFloat(fee) || 0;
+  // Standardizing 100:1 ratio - GC matching provides SC prize
   const prizeInCoins = entryAmount * 2;
-  const prizeInUSD = formatAsUSD(prizeInCoins);
+  const prizeInUSD = (prizeInCoins / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
   const handleCreate = () => {
     if (!user) {
-      toast({ variant: "destructive", title: "Authentication Required", description: "Sign in to launch an arena challenge." });
+      toast({ variant: "destructive", title: "Authentication Required", description: "Sign in to launch a challenge." });
       return;
     }
 
@@ -144,7 +140,7 @@ function CreateGameForm() {
     const available = currency === "gold" ? (profile?.goldCoinsBalance ?? 0) : (profile?.sweepstakesCoinsBalance ?? 0);
 
     if (cost > available) {
-      toast({ variant: "destructive", title: "Insufficient Funds", description: "Check your arena bank balance. You need more coins to enter." });
+      toast({ variant: "destructive", title: "Insufficient Funds", description: "Check your vault balance. You need more coins to enter." });
       return;
     }
 
@@ -204,10 +200,9 @@ function CreateGameForm() {
 
       <Card className="bg-card/50 backdrop-blur-sm border-white/5 overflow-hidden">
         <CardHeader className="border-b bg-secondary/20">
-          <CardTitle className="font-headline text-xl uppercase tracking-tighter">Arena Configuration</CardTitle>
+          <CardTitle className="font-headline text-xl uppercase tracking-tighter">Configuration</CardTitle>
         </CardHeader>
         <CardContent className="p-6 space-y-10">
-          {/* Step 1: Arena */}
           <div className="space-y-4">
             <Label className="text-xs font-bold uppercase tracking-widest">1. Select Sport</Label>
             <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
@@ -224,7 +219,6 @@ function CreateGameForm() {
             </div>
           </div>
 
-          {/* Step 2: Event */}
           <div className="space-y-4">
             <Label className="text-xs font-bold uppercase tracking-widest">2. Select Event</Label>
             {selectedSport ? (
@@ -242,7 +236,6 @@ function CreateGameForm() {
             ) : <div className="p-6 text-center bg-secondary/10 rounded-xl border border-dashed opacity-50"><p className="text-xs uppercase">Select a Sport first</p></div>}
           </div>
 
-          {/* Step 3: Winner */}
           <div className="space-y-4">
             <Label className="text-xs font-bold uppercase tracking-widest">3. Pick Your Winner</Label>
             {selectedSport ? (
@@ -262,7 +255,6 @@ function CreateGameForm() {
             ) : <div className="p-6 text-center bg-secondary/10 rounded-xl border border-dashed opacity-50"><p className="text-xs uppercase">Choose Sport & Event</p></div>}
           </div>
 
-          {/* Step 4: Stakes */}
           <div className="space-y-6 pt-4 border-t border-white/5">
             <div className="flex items-center justify-between">
               <Label className="text-xs font-bold uppercase tracking-widest">4. Set the Stakes</Label>
@@ -276,9 +268,9 @@ function CreateGameForm() {
                 <Zap className="h-5 w-5 text-accent" />
               </div>
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Arena Exchange: 100 Coins = $1.00</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Unified Ratio: 100 Coins = $1.00</p>
                 <p className="text-xs text-white/80 leading-relaxed">
-                  Enter with Gold Coins or Sweeps Coins to win Redeemable Sweeps Coins (SC) at the 100:1 elite ratio.
+                  Stakes and prizes follow the 100:1 ratio. Win prize-eligible Sweeps Coins through social or competitive play.
                 </p>
               </div>
             </div>
@@ -336,7 +328,6 @@ function CreateGameForm() {
             </div>
           </div>
 
-          {/* Step 5: Opponent */}
           <div className="space-y-4 pt-4 border-t border-white/5">
             <Label className="text-xs font-bold uppercase tracking-widest">5. Select Your Opponent</Label>
             <div className="relative mb-4">

@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -14,39 +14,10 @@ import {
   Target,
   Play,
   Swords,
-  Timer,
   Snowflake
 } from "lucide-react";
 
 const BaseballIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 2a10 10 0 0 1 0 20" />
-    <path d="M2 12a10 10 0 0 1 20 0" />
-    <path d="M7 7c2 1 3 3 3 5s-1 4-3 5" />
-    <path d="M17 7c-2 1-3 3-3 5s1 4 3 5" />
-  </svg>
-);
-
-const TennisIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 2a10 10 0 0 1 0 20" />
-    <path d="M2 12a10 10 0 0 1 20 0" />
-    <circle cx="12" cy="12" r="2" />
-  </svg>
-);
-
-const PickleballIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M8 8l8 8" />
-    <path d="M16 8l-8 8" />
-    <circle cx="12" cy="12" r="3" />
-  </svg>
-);
-
-const VolleyballIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <circle cx="12" cy="12" r="10" />
     <path d="M12 2a10 10 0 0 1 0 20" />
@@ -135,13 +106,13 @@ const sports = [
     id: 'pickleball', 
     name: 'Pickleball', 
     img: "https://picsum.photos/seed/pickle/400/250",
-    icon: <PickleballIcon className="w-5 h-5 text-yellow-500" />
+    icon: <Trophy className="w-5 h-5 text-yellow-500" />
   },
   { 
     id: 'volleyball', 
     name: 'Volleyball', 
     img: "https://picsum.photos/seed/volley/400/250",
-    icon: <VolleyballIcon className="w-5 h-5 text-indigo-400" />
+    icon: <Trophy className="w-5 h-5 text-indigo-400" />
   },
   { 
     id: 'surfing', 
@@ -200,7 +171,6 @@ export function SportsFilter({ selected, onSelect }: SportsFilterProps) {
           )}
           onClick={() => onSelect(sport.id)}
         >
-          {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0">
             <img 
               src={sport.img} 
@@ -213,7 +183,6 @@ export function SportsFilter({ selected, onSelect }: SportsFilterProps) {
             <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent" />
           </div>
 
-          {/* Arena Content */}
           <div className="relative z-10 flex flex-col justify-end h-36 p-4">
             <div className="flex items-center gap-2 mb-2">
               <div className="p-1.5 rounded-lg bg-black/40 backdrop-blur-sm border border-white/10 shadow-xl">
@@ -229,7 +198,7 @@ export function SportsFilter({ selected, onSelect }: SportsFilterProps) {
                 "text-[10px] font-bold uppercase tracking-widest transition-opacity duration-300",
                 selected === sport.id ? "text-accent opacity-100" : "text-white/40 opacity-0 group-hover:opacity-100"
               )}>
-                {selected === sport.id ? "Arena Active" : "Enter Arena"}
+                {selected === sport.id ? "Active Filter" : "Filter Sport"}
               </span>
               
               {sport.id !== 'all' && (
