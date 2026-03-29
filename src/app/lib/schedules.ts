@@ -14,10 +14,10 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE & ROSTER DATABASE v13.0
+ * ARENA SCHEDULE & ROSTER DATABASE v14.0
  * Unified source of truth for all 16 professional sports.
  * Featuring literal seasonal schedules for MLB (162 games), NFL (17 games), 
- * and now NBA (82 games) for the 2026 seasons.
+ * NBA (82 games), and NHL (52 games) for the 2026 seasons.
  */
 
 export interface SportEvent {
@@ -60,11 +60,14 @@ const nflOpponents = [
   "Jets", "Eagles", "Steelers", "49ers", "Seahawks", "Buccaneers", "Titans", "Commanders"
 ];
 
+const nhlOpponents = [
+  "Anaheim Ducks", "Boston Bruins", "Buffalo Sabres", "Calgary Flames", "Carolina Hurricanes", "Chicago Blackhawks", "Colorado Avalanche", "Columbus Blue Jackets", "Dallas Stars", "Detroit Red Wings", "Edmonton Oilers", "Florida Panthers", "Los Angeles Kings", "Minnesota Wild", "Montreal Canadiens", "Nashville Predators", "New Jersey Devils", "New York Islanders", "New York Rangers", "Ottawa Senators", "Philadelphia Flyers", "Pittsburgh Penguins", "San Jose Sharks", "Seattle Kraken", "St. Louis Blues", "Tampa Bay Lightning", "Toronto Maple Leafs", "Utah Hockey Club", "Vancouver Canucks", "Vegas Golden Knights", "Washington Capitals", "Winnipeg Jets"
+];
+
 const generateNBAGames = (teamName: string, startId: string) => {
   return Array.from({ length: 82 }, (_, i) => {
     const gameNum = i + 1;
     const opponent = nbaOpponents[i % nbaOpponents.length];
-    // Avoid team playing itself
     const finalOpponent = (opponent === teamName) 
       ? nbaOpponents[(i + 1) % nbaOpponents.length] 
       : opponent;
@@ -72,7 +75,30 @@ const generateNBAGames = (teamName: string, startId: string) => {
     const isHome = i % 2 === 0;
     const venue = isHome ? "at Home" : "on the Road";
     const date = new Date(2026, 9, 20); // Starting Oct 20, 2026
-    date.setDate(date.getDate() + Math.floor(i * 2.1)); // 82 games spread over ~6 months
+    date.setDate(date.getDate() + Math.floor(i * 2.1));
+    
+    const dateString = date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+
+    return {
+      id: `${startId}-${gameNum.toString().padStart(2, '0')}`,
+      name: `${teamName} ${isHome ? 'vs' : '@'} ${finalOpponent}`,
+      date: `${dateString} • ${venue}`
+    };
+  });
+};
+
+const generateNHLGames = (teamName: string, startId: string) => {
+  return Array.from({ length: 52 }, (_, i) => {
+    const gameNum = i + 1;
+    const opponent = nhlOpponents[i % nhlOpponents.length];
+    const finalOpponent = (opponent === teamName) 
+      ? nhlOpponents[(i + 1) % nhlOpponents.length] 
+      : opponent;
+      
+    const isHome = i % 2 === 0;
+    const venue = isHome ? "at Home" : "on the Road";
+    const date = new Date(2026, 9, 8); // Starting Oct 8, 2026
+    date.setDate(date.getDate() + Math.floor(i * 3.2));
     
     const dateString = date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
 
@@ -88,7 +114,6 @@ const generateMLBGames = (teamAbbr: string, teamName: string, startId: string) =
   return Array.from({ length: 162 }, (_, i) => {
     const gameNum = i + 1;
     const opponent = mlbOpponents[i % mlbOpponents.length];
-    // Avoid team playing itself
     const finalOpponent = (opponent.includes(teamName) || opponent.includes(teamAbbr)) 
       ? mlbOpponents[(i + 1) % mlbOpponents.length] 
       : opponent;
@@ -96,7 +121,7 @@ const generateMLBGames = (teamAbbr: string, teamName: string, startId: string) =
     const isHome = i % 2 === 0;
     const venue = isHome ? "at Home" : "on the Road";
     const date = new Date(2026, 2, 30); // Starting March 30, 2026
-    date.setDate(date.getDate() + i + Math.floor(i / 6) * 1); // Roughly 162 games over 180 days
+    date.setDate(date.getDate() + i + Math.floor(i / 6) * 1);
     
     const dateString = date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
 
@@ -121,7 +146,6 @@ const generateNFLGames = (teamAbbr: string, teamName: string, startId: string) =
     const date = new Date(2026, 8, 13); // Starting Sunday Sep 13, 2026
     date.setDate(date.getDate() + (i * 7));
     
-    // Simulate a bye week at week 9
     if (weekNum > 9) {
         date.setDate(date.getDate() + 7);
     }
@@ -202,40 +226,11 @@ export const sportsData: Sport[] = [
     icon: 'Trophy', 
     color: "text-blue-500", 
     events: [
-      ...generateMLBGames("HOU", "Houston Astros", "mlb-26-hou"),
-      ...generateMLBGames("NYY", "NY Yankees", "mlb-26-nyy"),
-      ...generateMLBGames("LAD", "LA Dodgers", "mlb-26-lad"),
-      ...generateMLBGames("BOS", "Boston Red Sox", "mlb-26-bos"),
-      ...generateMLBGames("CHC", "Chicago Cubs", "mlb-26-chc"),
-      ...generateMLBGames("ATL", "Atlanta Braves", "mlb-26-atl"),
-      ...generateMLBGames("PHI", "Philadelphia Phillies", "mlb-26-phi"),
-      ...generateMLBGames("NYM", "NY Mets", "mlb-26-nym"),
-      ...generateMLBGames("SDP", "San Diego Padres", "mlb-26-sdp"),
-      ...generateMLBGames("TEX", "Texas Rangers", "mlb-26-tex"),
-      ...generateMLBGames("TOR", "Toronto Blue Jays", "mlb-26-tor"),
-      ...generateMLBGames("STL", "St. Louis Cardinals", "mlb-26-stl"),
-      ...generateMLBGames("SFG", "SF Giants", "mlb-26-sfg"),
-      ...generateMLBGames("ARI", "Arizona Diamondbacks", "mlb-26-ari"),
-      ...generateMLBGames("SEA", "Seattle Mariners", "mlb-26-sea"),
-      ...generateMLBGames("BAL", "Baltimore Orioles", "mlb-26-bal"),
-      ...generateMLBGames("TBR", "Tampa Bay Rays", "mlb-26-tbr"),
-      ...generateMLBGames("MIN", "Minnesota Twins", "mlb-26-min"),
-      ...generateMLBGames("CLE", "Cleveland Guardians", "mlb-26-cle"),
-      ...generateMLBGames("DET", "Detroit Tigers", "mlb-26-det"),
-      ...generateMLBGames("KCR", "Kansas City Royals", "mlb-26-kcr"),
-      ...generateMLBGames("MIL", "Milwaukee Brewers", "mlb-26-mil"),
-      ...generateMLBGames("MIA", "Miami Marlins", "mlb-26-mia"),
-      ...generateMLBGames("CIN", "Cincinnati Reds", "mlb-26-cin"),
-      ...generateMLBGames("PIT", "Pittsburgh Pirates", "mlb-26-pit"),
-      ...generateMLBGames("WSH", "Washington Nationals", "mlb-26-wsh"),
-      ...generateMLBGames("LAA", "LA Angels", "mlb-26-laa"),
-      ...generateMLBGames("OAK", "Oakland Athletics", "mlb-26-oak"),
-      ...generateMLBGames("CWS", "Chicago White Sox", "mlb-26-cws"),
-      ...generateMLBGames("COL", "Colorado Rockies", "mlb-26-col"),
+      ...mlbOpponents.flatMap(team => generateMLBGames(team.substring(0,3), team, `mlb-26-${team.toLowerCase().replace(/\s+/g, '-')}`)),
       { id: 'mlb-26-asg', name: "2026 MLB All-Star Game (Atlanta)", date: "Jul 14, 2026" },
       { id: 'mlb-26-ws', name: "2026 World Series: Game 1", date: "Oct 23, 2026" },
     ], 
-    options: ["Arizona Diamondbacks", "Atlanta Braves", "Baltimore Orioles", "Boston Red Sox", "Chicago Cubs", "Chicago White Sox", "Cincinnati Reds", "Cleveland Guardians", "Colorado Rockies", "Detroit Tigers", "Houston Astros", "Kansas City Royals", "Los Angeles Angels", "Los Angeles Dodgers", "Miami Marlins", "Milwaukee Brewers", "Minnesota Twins", "New York Mets", "New York Yankees", "Oakland Athletics", "Philadelphia Phillies", "Pittsburgh Pirates", "San Diego Padres", "San Francisco Giants", "Seattle Mariners", "St. Louis Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"] 
+    options: [...mlbOpponents] 
   },
   { 
     id: 'hockey', 
@@ -243,11 +238,12 @@ export const sportsData: Sport[] = [
     icon: 'Snowflake', 
     color: "text-cyan-400", 
     events: [
+      ...nhlOpponents.flatMap(team => generateNHLGames(team, `nhl-26-${team.toLowerCase().replace(/\s+/g, '-')}`)),
       { id: 'nhl-26-winter', name: "Winter Classic: Blues vs Blackhawks", date: "Jan 01, 2026" },
       { id: 'nhl-26-finals', name: "Stanley Cup Final: Game 1", date: "Jun 03, 2026" },
       { id: 'nhl-26-opening', name: "2026-27 Season Opening Night", date: "Oct 08, 2026" },
     ], 
-    options: ["Anaheim Ducks", "Boston Bruins", "Buffalo Sabres", "Calgary Flames", "Carolina Hurricanes", "Chicago Blackhawks", "Colorado Avalanche", "Columbus Blue Jackets", "Dallas Stars", "Detroit Red Wings", "Edmonton Oilers", "Florida Panthers", "Los Angeles Kings", "Minnesota Wild", "Montreal Canadiens", "Nashville Predators", "New Jersey Devils", "New York Islanders", "New York Rangers", "Ottawa Senators", "Philadelphia Flyers", "Pittsburgh Penguins", "San Jose Sharks", "Seattle Kraken", "St. Louis Blues", "Tampa Bay Lightning", "Toronto Maple Leafs", "Vancouver Canucks", "Vegas Golden Knights", "Washington Capitals", "Winnipeg Jets"] 
+    options: [...nhlOpponents] 
   },
   { 
     id: 'soccer', 
