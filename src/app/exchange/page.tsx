@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -8,11 +7,19 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Landmark, ShieldCheck, ArrowRight, ArrowLeft, CreditCard, Gift, Info, Loader2 } from "lucide-center";
+import { 
+  Landmark as BankIcon, 
+  ShieldCheck, 
+  ArrowRight, 
+  ArrowLeft, 
+  CreditCard, 
+  Gift, 
+  Info, 
+  Loader2 
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUser, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
-import { Landmark as BankIcon } from "lucide-react";
 
 export default function ExchangePage() {
   const { toast } = useToast();
