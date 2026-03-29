@@ -292,230 +292,234 @@ export default function AdminDashboard() {
 
       {/* Response Modal (House Accept) */}
       {respondingGame && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <Card className="w-full max-w-lg bg-card border-accent/20">
-            <CardHeader>
-              <CardTitle className="font-headline uppercase tracking-tight text-white">House Response: {respondingGame.name}</CardTitle>
-              <CardDescription>Select the Arena Master's counter-pick to enter the showdown.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="p-4 rounded-xl bg-secondary/30 border border-white/5">
-                <p className="text-[10px] font-bold text-muted-foreground uppercase mb-1">Opponent Locked In</p>
-                <p className="font-headline text-lg text-white uppercase font-bold">{respondingGame.creatorPick}</p>
-              </div>
-
-              <div className="space-y-4">
-                <div className="relative">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input 
-                    placeholder="Search roster..." 
-                    className="pl-10" 
-                    value={searchPickQuery}
-                    onChange={(e) => setSearchPickQuery(e.target.value)}
-                  />
+        <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/80 backdrop-blur-sm p-4">
+          <div className="min-h-full flex items-center justify-center py-8">
+            <Card className="w-full max-w-lg bg-card border-accent/20">
+              <CardHeader>
+                <CardTitle className="font-headline uppercase tracking-tight text-white">House Response: {respondingGame.name}</CardTitle>
+                <CardDescription>Select the Arena Master's counter-pick to enter the showdown.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="p-4 rounded-xl bg-secondary/30 border border-white/5">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase mb-1">Opponent Locked In</p>
+                  <p className="font-headline text-lg text-white uppercase font-bold">{respondingGame.creatorPick}</p>
                 </div>
-                <ScrollArea className="h-[200px] border rounded-xl p-2 bg-black/20">
-                  <div className="grid gap-2">
-                    {filteredPicks.map(p => (
-                      <button 
-                        key={p} 
-                        onClick={() => setSelectedPick(p)}
-                        className={cn(
-                          "w-full text-left px-4 py-3 rounded-lg text-sm font-bold uppercase transition-all",
-                          selectedPick === p ? "bg-accent text-accent-foreground" : "bg-white/5 hover:bg-white/10 text-white"
-                        )}
-                      >
-                        {p}
-                      </button>
-                    ))}
+
+                <div className="space-y-4">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input 
+                      placeholder="Search roster..." 
+                      className="pl-10" 
+                      value={searchPickQuery}
+                      onChange={(e) => setSearchPickQuery(e.target.value)}
+                    />
                   </div>
-                </ScrollArea>
-              </div>
-            </CardContent>
-            <CardFooter className="flex gap-3">
-              <Button variant="ghost" onClick={() => setRespondingGame(null)} className="flex-1 font-bold uppercase">Cancel</Button>
-              <Button 
-                onClick={handleAcceptChallenge} 
-                disabled={!selectedPick}
-                className="flex-1 bg-accent text-accent-foreground font-bold uppercase"
-              >
-                Accept Arena
-              </Button>
-            </CardFooter>
-          </Card>
+                  <ScrollArea className="h-[200px] border rounded-xl p-2 bg-black/20">
+                    <div className="grid gap-2">
+                      {filteredPicks.map(p => (
+                        <button 
+                          key={p} 
+                          onClick={() => setSelectedPick(p)}
+                          className={cn(
+                            "w-full text-left px-4 py-3 rounded-lg text-sm font-bold uppercase transition-all",
+                            selectedPick === p ? "bg-accent text-accent-foreground" : "bg-white/5 hover:bg-white/10 text-white"
+                          )}
+                        >
+                          {p}
+                        </button>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </div>
+              </CardContent>
+              <CardFooter className="flex gap-3">
+                <Button variant="ghost" onClick={() => setRespondingGame(null)} className="flex-1 font-bold uppercase">Cancel</Button>
+                <Button 
+                  onClick={handleAcceptChallenge} 
+                  disabled={!selectedPick}
+                  className="flex-1 bg-accent text-accent-foreground font-bold uppercase"
+                >
+                  Accept Arena
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
         </div>
       )}
 
       {/* Finalize Results Modal */}
       {scoringGame && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
-          <Card className="w-full max-w-4xl bg-[#0D1219] border-white/10 shadow-2xl overflow-hidden">
-            <CardHeader className="border-b border-white/5 bg-secondary/10 pb-8">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="h-12 w-12 rounded-2xl bg-destructive/20 flex items-center justify-center border border-destructive/30">
-                  <Zap className="h-6 w-6 text-destructive fill-current" />
-                </div>
-                <div>
-                  <Badge variant="outline" className="text-[9px] font-black uppercase tracking-[0.2em] mb-1 border-destructive/50 text-destructive">Arena Official</Badge>
-                  <CardTitle className="font-headline text-2xl uppercase tracking-tighter text-white">Record Arena Results</CardTitle>
-                </div>
-              </div>
-              <CardDescription className="text-muted-foreground/80 font-medium">
-                Finalizing <span className="text-white font-bold uppercase">{scoringGame.name}</span>. Precision data entry is mandatory.
-              </CardDescription>
-            </CardHeader>
-            
-            <CardContent className="p-8">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
-                {/* Challenger Score */}
-                <div 
-                  className={cn(
-                    "relative group flex flex-col items-center p-6 rounded-2xl border-2 transition-all duration-300 text-center cursor-pointer",
-                    winnerId === scoringGame.creatorId 
-                      ? "bg-primary/10 border-primary ring-4 ring-primary/20" 
-                      : "bg-secondary/20 border-white/5 hover:border-white/20"
-                  )}
-                  onClick={() => setWinnerId(scoringGame.creatorId)}
-                >
-                  <div className="mb-6 space-y-1">
-                    <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-primary">
-                      <User className="h-3 w-3" /> Challenger
-                    </div>
-                    <h3 className="font-headline text-xl font-bold text-white uppercase truncate px-2">{scoringGame.creatorPick}</h3>
+        <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/90 backdrop-blur-md p-4">
+          <div className="min-h-full flex items-center justify-center py-8">
+            <Card className="w-full max-w-4xl bg-[#0D1219] border-white/10 shadow-2xl overflow-hidden">
+              <CardHeader className="border-b border-white/5 bg-secondary/10 pb-8">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-12 w-12 rounded-2xl bg-destructive/20 flex items-center justify-center border border-destructive/30">
+                    <Zap className="h-6 w-6 text-destructive fill-current" />
                   </div>
-                  
-                  <div className="w-full space-y-4" onClick={(e) => e.stopPropagation()}>
-                    <Label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">FINAL SCORE / WIN COUNT</Label>
-                    <Input 
-                      type="number" 
-                      value={creatorScore} 
-                      onChange={(e) => setCreatorScore(e.target.value)}
-                      className="h-20 text-4xl font-headline font-black text-center bg-black/40 border-white/10 focus:border-primary transition-colors rounded-xl"
-                      placeholder="0"
-                    />
-                  </div>
-
-                  <div className={cn(
-                    "mt-6 flex items-center gap-2 px-4 py-2 rounded-full border text-[10px] font-black uppercase tracking-widest transition-all",
-                    winnerId === scoringGame.creatorId 
-                      ? "bg-primary text-white border-transparent shadow-lg shadow-primary/20" 
-                      : "bg-white/5 text-muted-foreground border-white/10 group-hover:text-white"
-                  )}>
-                    {winnerId === scoringGame.creatorId ? <Trophy className="h-3 w-3 fill-current" /> : null}
-                    {winnerId === scoringGame.creatorId ? "WINNER DECLARED" : "SET AS WINNER"}
+                  <div>
+                    <Badge variant="outline" className="text-[9px] font-black uppercase tracking-[0.2em] mb-1 border-destructive/50 text-destructive">Arena Official</Badge>
+                    <CardTitle className="font-headline text-2xl uppercase tracking-tighter text-white">Record Arena Results</CardTitle>
                   </div>
                 </div>
-
-                {/* Opponent (House) Selection / Score */}
-                <div className="lg:col-span-2 space-y-8">
-                  {/* Opponent Header */}
+                <CardDescription className="text-muted-foreground/80 font-medium">
+                  Finalizing <span className="text-white font-bold uppercase">{scoringGame.name}</span>. Precision data entry is mandatory.
+                </CardDescription>
+              </CardHeader>
+              
+              <CardContent className="p-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+                  {/* Challenger Score */}
                   <div 
                     className={cn(
-                      "relative group flex flex-col items-center p-6 rounded-2xl border-2 transition-all duration-300 text-center cursor-pointer w-full",
-                      winnerId === scoringGame.opponentId 
-                        ? "bg-accent/10 border-accent ring-4 ring-accent/20" 
+                      "relative group flex flex-col items-center p-6 rounded-2xl border-2 transition-all duration-300 text-center cursor-pointer",
+                      winnerId === scoringGame.creatorId 
+                        ? "bg-primary/10 border-primary ring-4 ring-primary/20" 
                         : "bg-secondary/20 border-white/5 hover:border-white/20"
                     )}
-                    onClick={() => setWinnerId(scoringGame.opponentId)}
+                    onClick={() => setWinnerId(scoringGame.creatorId)}
                   >
                     <div className="mb-6 space-y-1">
-                      <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-accent">
-                        <UserCheck className="h-3 w-3" /> Opponent (Arena Master)
+                      <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-primary">
+                        <User className="h-3 w-3" /> Challenger
                       </div>
-                      <h3 className="font-headline text-xl font-bold text-white uppercase italic truncate px-2">
-                        {housePickOverride || "PENDING SELECTION"}
-                      </h3>
+                      <h3 className="font-headline text-xl font-bold text-white uppercase truncate px-2">{scoringGame.creatorPick}</h3>
                     </div>
                     
-                    <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-end" onClick={(e) => e.stopPropagation()}>
-                      <div className="space-y-4">
-                        <Label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">FINAL SCORE / WIN COUNT</Label>
-                        <Input 
-                          type="number" 
-                          value={opponentScore} 
-                          onChange={(e) => setOpponentScore(e.target.value)}
-                          className="h-20 text-4xl font-headline font-black text-center bg-black/40 border-white/10 focus:border-accent transition-colors rounded-xl"
-                          placeholder="0"
-                        />
-                      </div>
-
-                      <div className="space-y-4">
-                        <Label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">SELECT HOUSE PICK</Label>
-                        <div className="relative">
-                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                          <Input 
-                            placeholder="Filter roster..." 
-                            className="pl-10 h-12 bg-black/40"
-                            value={searchPickQuery}
-                            onChange={(e) => setSearchPickQuery(e.target.value)}
-                          />
-                        </div>
-                        <ScrollArea className="h-[120px] rounded-xl border border-white/5 bg-black/20 p-2">
-                          <div className="grid grid-cols-2 gap-2">
-                            {filteredPicks.map(p => (
-                              <button 
-                                key={p} 
-                                onClick={() => setHousePickOverride(p)}
-                                className={cn(
-                                  "text-left px-3 py-2 rounded-lg text-[10px] font-bold uppercase transition-all",
-                                  housePickOverride === p ? "bg-accent text-accent-foreground" : "bg-white/5 hover:bg-white/10 text-white"
-                                )}
-                              >
-                                {p}
-                              </button>
-                            ))}
-                          </div>
-                        </ScrollArea>
-                      </div>
+                    <div className="w-full space-y-4" onClick={(e) => e.stopPropagation()}>
+                      <Label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">FINAL SCORE / WIN COUNT</Label>
+                      <Input 
+                        type="number" 
+                        value={creatorScore} 
+                        onChange={(e) => setCreatorScore(e.target.value)}
+                        className="h-20 text-4xl font-headline font-black text-center bg-black/40 border-white/10 focus:border-primary transition-colors rounded-xl"
+                        placeholder="0"
+                      />
                     </div>
 
                     <div className={cn(
                       "mt-6 flex items-center gap-2 px-4 py-2 rounded-full border text-[10px] font-black uppercase tracking-widest transition-all",
-                      winnerId === scoringGame.opponentId 
-                        ? "bg-accent text-accent-foreground border-transparent shadow-lg shadow-accent/20" 
+                      winnerId === scoringGame.creatorId 
+                        ? "bg-primary text-white border-transparent shadow-lg shadow-primary/20" 
                         : "bg-white/5 text-muted-foreground border-white/10 group-hover:text-white"
                     )}>
-                      {winnerId === scoringGame.opponentId ? <Trophy className="h-3 w-3 fill-current" /> : null}
-                      {winnerId === scoringGame.opponentId ? "WINNER DECLARED" : "SET AS WINNER"}
+                      {winnerId === scoringGame.creatorId ? <Trophy className="h-3 w-3 fill-current" /> : null}
+                      {winnerId === scoringGame.creatorId ? "WINNER DECLARED" : "SET AS WINNER"}
+                    </div>
+                  </div>
+
+                  {/* Opponent (House) Selection / Score */}
+                  <div className="lg:col-span-2 space-y-8">
+                    {/* Opponent Header */}
+                    <div 
+                      className={cn(
+                        "relative group flex flex-col items-center p-6 rounded-2xl border-2 transition-all duration-300 text-center cursor-pointer w-full",
+                        winnerId === scoringGame.opponentId 
+                          ? "bg-accent/10 border-accent ring-4 ring-accent/20" 
+                          : "bg-secondary/20 border-white/5 hover:border-white/20"
+                      )}
+                      onClick={() => setWinnerId(scoringGame.opponentId)}
+                    >
+                      <div className="mb-6 space-y-1">
+                        <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-accent">
+                          <UserCheck className="h-3 w-3" /> Opponent (Arena Master)
+                        </div>
+                        <h3 className="font-headline text-xl font-bold text-white uppercase italic truncate px-2">
+                          {housePickOverride || "PENDING SELECTION"}
+                        </h3>
+                      </div>
+                      
+                      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-end" onClick={(e) => e.stopPropagation()}>
+                        <div className="space-y-4">
+                          <Label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">FINAL SCORE / WIN COUNT</Label>
+                          <Input 
+                            type="number" 
+                            value={opponentScore} 
+                            onChange={(e) => setOpponentScore(e.target.value)}
+                            className="h-20 text-4xl font-headline font-black text-center bg-black/40 border-white/10 focus:border-accent transition-colors rounded-xl"
+                            placeholder="0"
+                          />
+                        </div>
+
+                        <div className="space-y-4">
+                          <Label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">SELECT HOUSE PICK</Label>
+                          <div className="relative">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Input 
+                              placeholder="Filter roster..." 
+                              className="pl-10 h-12 bg-black/40"
+                              value={searchPickQuery}
+                              onChange={(e) => setSearchPickQuery(e.target.value)}
+                            />
+                          </div>
+                          <ScrollArea className="h-[120px] rounded-xl border border-white/5 bg-black/20 p-2">
+                            <div className="grid grid-cols-2 gap-2">
+                              {filteredPicks.map(p => (
+                                <button 
+                                  key={p} 
+                                  onClick={() => setHousePickOverride(p)}
+                                  className={cn(
+                                    "text-left px-3 py-2 rounded-lg text-[10px] font-bold uppercase transition-all",
+                                    housePickOverride === p ? "bg-accent text-accent-foreground" : "bg-white/5 hover:bg-white/10 text-white"
+                                  )}
+                                >
+                                  {p}
+                                </button>
+                              ))}
+                            </div>
+                          </ScrollArea>
+                        </div>
+                      </div>
+
+                      <div className={cn(
+                        "mt-6 flex items-center gap-2 px-4 py-2 rounded-full border text-[10px] font-black uppercase tracking-widest transition-all",
+                        winnerId === scoringGame.opponentId 
+                          ? "bg-accent text-accent-foreground border-transparent shadow-lg shadow-accent/20" 
+                          : "bg-white/5 text-muted-foreground border-white/10 group-hover:text-white"
+                      )}>
+                        {winnerId === scoringGame.opponentId ? <Trophy className="h-3 w-3 fill-current" /> : null}
+                        {winnerId === scoringGame.opponentId ? "WINNER DECLARED" : "SET AS WINNER"}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Status Footer */}
-              <div className="mt-12 p-6 rounded-2xl bg-[#1A232E] border border-white/5 text-center space-y-3">
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">Winner Record Update</p>
-                {winnerId ? (
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="flex items-center justify-center gap-3">
-                      <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                      <span className="font-mono text-sm text-accent font-bold tracking-widest uppercase truncate max-w-md">{winnerId}</span>
+                {/* Status Footer */}
+                <div className="mt-12 p-6 rounded-2xl bg-[#1A232E] border border-white/5 text-center space-y-3">
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">Winner Record Update</p>
+                  {winnerId ? (
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="flex items-center justify-center gap-3">
+                        <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+                        <span className="font-mono text-sm text-accent font-bold tracking-widest uppercase truncate max-w-md">{winnerId}</span>
+                      </div>
+                      {housePickOverride && <Badge variant="outline" className="text-[8px] border-accent/20 text-accent uppercase">Finalizing with House Pick: {housePickOverride}</Badge>}
                     </div>
-                    {housePickOverride && <Badge variant="outline" className="text-[8px] border-accent/20 text-accent uppercase">Finalizing with House Pick: {housePickOverride}</Badge>}
-                  </div>
-                ) : (
-                  <p className="text-sm font-bold text-destructive/60 italic">PENDING VICTOR SELECTION...</p>
-                )}
-              </div>
-            </CardContent>
+                  ) : (
+                    <p className="text-sm font-bold text-destructive/60 italic">PENDING VICTOR SELECTION...</p>
+                  )}
+                </div>
+              </CardContent>
 
-            <CardFooter className="flex gap-4 bg-secondary/5 p-8 border-t border-white/5">
-              <Button 
-                variant="ghost" 
-                onClick={() => setScoringGame(null)} 
-                className="flex-1 h-14 font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-white transition-colors"
-              >
-                Abort Action
-              </Button>
-              <Button 
-                onClick={handleFinalizeGame} 
-                disabled={!winnerId || (scoringGame.opponentId === 'house-admin' && !housePickOverride)}
-                className="flex-[2] h-14 bg-destructive text-white font-black uppercase tracking-[0.2em] shadow-2xl shadow-destructive/20 hover:bg-destructive/90 transition-all active:scale-95 disabled:opacity-30"
-              >
-                <CheckCircle2 className="mr-3 h-5 w-5" /> Confirm & Archive Showdown
-              </Button>
-            </CardFooter>
-          </Card>
+              <CardFooter className="flex gap-4 bg-secondary/5 p-8 border-t border-white/5">
+                <Button 
+                  variant="ghost" 
+                  onClick={() => setScoringGame(null)} 
+                  className="flex-1 h-14 font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-white transition-colors"
+                >
+                  Abort Action
+                </Button>
+                <Button 
+                  onClick={handleFinalizeGame} 
+                  disabled={!winnerId || (scoringGame.opponentId === 'house-admin' && !housePickOverride)}
+                  className="flex-[2] h-14 bg-destructive text-white font-black uppercase tracking-[0.2em] shadow-2xl shadow-destructive/20 hover:bg-destructive/90 transition-all active:scale-95 disabled:opacity-30"
+                >
+                  <CheckCircle2 className="mr-3 h-5 w-5" /> Confirm & Archive Showdown
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
         </div>
       )}
     </div>
