@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE & ROSTER DATABASE v16.0
+ * ARENA SCHEDULE & ROSTER DATABASE v17.0
  * Unified source of truth for all 16 professional sports.
- * Featuring literal seasonal schedules for MLB, NFL, NBA, NHL, NASCAR, and UFC for the 2026 seasons.
+ * Featuring literal seasonal schedules for MLB, NFL, NBA, NHL, NASCAR, and Boxing for the 2026 seasons.
  */
 
 export interface SportEvent {
@@ -282,9 +282,21 @@ export const sportsData: Sport[] = [
     icon: 'Swords', 
     color: "text-yellow-600", 
     events: [
-      { id: 'box-26-01', name: "Heavyweight Unification (Vegas)", date: "Mar 14, 2026" },
+      { id: 'box-26-0314', name: "Arnold Barboza Jr. vs. Kenneth Sims Jr.", date: "Mar 14, 2026 • Anaheim, CA" },
+      { id: 'box-26-0315', name: "Knockout CP Freshmart vs. Shokichi Iwata (WBC)", date: "Mar 15, 2026 • Yokohama, JP" },
+      { id: 'box-26-0321', name: "Carlos Adames vs. Austin Williams (WBC)", date: "Mar 21, 2026 • Orlando, FL" },
+      { id: 'box-26-0328-lv', name: "Sebastian Fundora vs. Keith Thurman (WBC)", date: "Mar 28, 2026 • Las Vegas, NV" },
+      { id: 'box-26-0328-uk', name: "Moses Itauma vs. Jermaine Franklin Jr.", date: "Mar 28, 2026 • Manchester, UK" },
+      { id: 'box-26-0404', name: "Deontay Wilder vs. Derek Chisora", date: "Apr 04, 2026 • London, UK" },
+      { id: 'box-26-0411', name: "Tyson Fury vs. Arslanbek Makhmudov", date: "Apr 11, 2026 • London, UK" },
+      { id: 'box-26-0418', name: "Callum Smith vs. David Morrell", date: "Apr 18, 2026 • Liverpool, UK" },
+      { id: 'box-26-0502-lv', name: "Gilberto Ramirez vs. David Benavidez", date: "May 02, 2026 • Las Vegas, NV" },
+      { id: 'box-26-0502-tk', name: "Naoya Inoue vs. Junto Nakatani", date: "May 02, 2026 • Tokyo, JP" },
+      { id: 'box-26-0509', name: "Fabio Wardley vs. Daniel Dubois (WBO)", date: "May 09, 2026 • Manchester, UK" },
+      { id: 'box-26-0523', name: "Oleksandr Usyk vs. Rico Verhoeven (WBC)", date: "May 23, 2026 • Giza, EG" },
+      { id: 'box-26-0919', name: "Manny Pacquiao vs. Floyd Mayweather", date: "Sep 19, 2026 • Las Vegas, NV" },
     ], 
-    options: ["Tyson Fury", "Oleksandr Usyk", "Anthony Joshua", "Canelo Alvarez", "Terence Crawford", "Naoya Inoue", "Gervonta Davis", "Shakur Stevenson", "Artur Beterbiev", "Dmitry Bivol", "Devin Haney", "Ryan Garcia"] 
+    options: ["Tyson Fury", "Oleksandr Usyk", "Anthony Joshua", "Canelo Alvarez", "Terence Crawford", "Naoya Inoue", "Gervonta Davis", "Shakur Stevenson", "Artur Beterbiev", "Dmitry Bivol", "Devin Haney", "Ryan Garcia", "Arnold Barboza Jr.", "Kenneth Sims Jr.", "Knockout CP Freshmart", "Shokichi Iwata", "Carlos Adames", "Austin Williams", "Sebastian Fundora", "Keith Thurman", "Moses Itauma", "Jermaine Franklin Jr.", "Deontay Wilder", "Derek Chisora", "Arslanbek Makhmudov", "Callum Smith", "David Morrell", "Gilberto Ramirez", "David Benavidez", "Junto Nakatani", "Fabio Wardley", "Daniel Dubois", "Rico Verhoeven", "Manny Pacquiao", "Floyd Mayweather"] 
   },
   { 
     id: 'nascar', 
