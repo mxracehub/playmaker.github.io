@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -14,12 +13,11 @@ interface AthleteProps {
   team: string;
   sport: string;
   avatar: string;
-  stats: { label: string; value: string }[];
   isSelected?: boolean;
   onSelect?: () => void;
 }
 
-export function AthleteCard({ name, team, sport, avatar, stats, isSelected, onSelect }: AthleteProps) {
+export function AthleteCard({ name, team, sport, avatar, isSelected, onSelect }: AthleteProps) {
   return (
     <Card className={cn(
       "group relative overflow-hidden transition-all duration-300 border-2",
@@ -45,15 +43,6 @@ export function AthleteCard({ name, team, sport, avatar, stats, isSelected, onSe
         </div>
         
         <div className="p-4">
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            {stats.map((stat, i) => (
-              <div key={i} className="text-center">
-                <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-tighter">{stat.label}</p>
-                <p className="font-headline text-base font-bold text-accent">{stat.value}</p>
-              </div>
-            ))}
-          </div>
-          
           <Button 
             onClick={onSelect}
             variant={isSelected ? "default" : "outline"}

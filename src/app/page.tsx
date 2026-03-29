@@ -17,44 +17,28 @@ const mockAthletes = [
     name: "Luka Doncic",
     team: "Dallas Mavericks",
     sport: "NBA",
-    avatar: "https://picsum.photos/seed/luka/400/400",
-    stats: [
-      { label: "Points/G", value: "33.9" },
-      { label: "Rebounds/G", value: "9.2" }
-    ]
+    avatar: "https://picsum.photos/seed/luka/400/400"
   },
   {
     id: "2",
     name: "Patrick Mahomes",
     team: "KC Chiefs",
     sport: "NFL",
-    avatar: "https://picsum.photos/seed/mahomes/400/400",
-    stats: [
-      { label: "Pass Yds", value: "4,183" },
-      { label: "TDs", value: "27" }
-    ]
+    avatar: "https://picsum.photos/seed/mahomes/400/400"
   },
   {
     id: "hockey-1",
     name: "Connor McDavid",
     team: "Edmonton Oilers",
     sport: "Hockey",
-    avatar: "https://picsum.photos/seed/mcdavid/400/400",
-    stats: [
-      { label: "Points", value: "132" },
-      { label: "Goals", value: "32" }
-    ]
+    avatar: "https://picsum.photos/seed/mcdavid/400/400"
   },
   {
     id: "hockey-2",
     name: "Nathan MacKinnon",
     team: "Colorado Avalanche",
     sport: "Hockey",
-    avatar: "https://picsum.photos/seed/mackinnon/400/400",
-    stats: [
-      { label: "Points", value: "140" },
-      { label: "Assists", value: "89" }
-    ]
+    avatar: "https://picsum.photos/seed/mackinnon/400/400"
   }
 ];
 
