@@ -14,10 +14,9 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE & ROSTER DATABASE v15.0
+ * ARENA SCHEDULE & ROSTER DATABASE v16.0
  * Unified source of truth for all 16 professional sports.
- * Featuring literal seasonal schedules for MLB (162 games), NFL (17 games), 
- * NBA (82 games), NHL (52 games), and NASCAR (42 races) for the 2026 seasons.
+ * Featuring literal seasonal schedules for MLB, NFL, NBA, NHL, NASCAR, and UFC for the 2026 seasons.
  */
 
 export interface SportEvent {
@@ -262,10 +261,20 @@ export const sportsData: Sport[] = [
     icon: 'Swords', 
     color: "text-red-600", 
     events: [
+      { id: 'ufc-26-0404', name: "UFC Fight Night: Moicano vs. Duncan", date: "Apr 04, 2026 • Meta APEX" },
+      { id: 'ufc-26-0411', name: "UFC 327: Procházka vs. Ulberg", date: "Apr 11, 2026 • Miami, FL" },
+      { id: 'ufc-26-0418', name: "UFC Fight Night: Burns vs. Malott", date: "Apr 18, 2026 • Winnipeg, MB" },
+      { id: 'ufc-26-0425', name: "UFC Fight Night: Sterling vs. Zalal", date: "Apr 25, 2026 • Meta APEX" },
+      { id: 'ufc-26-0502', name: "UFC Fight Night: Della Maddalena vs. Prates", date: "May 02, 2026 • Perth, WA" },
+      { id: 'ufc-26-0509', name: "UFC 328: Chimaev vs. Strickland", date: "May 09, 2026 • Newark, NJ" },
+      { id: 'ufc-26-0516', name: "UFC Fight Night: Allen vs. Costa", date: "May 16, 2026 • Meta APEX" },
+      { id: 'ufc-26-0530', name: "UFC Fight Night: Song vs. Figueiredo", date: "May 30, 2026 • Macau" },
+      { id: 'ufc-26-0606', name: "UFC Fight Night: Muhammad vs. Bonfim", date: "Jun 06, 2026 • Meta APEX" },
+      { id: 'ufc-26-0614', name: "UFC Freedom 250: Topuria vs. Gaethje", date: "Jun 14, 2026 • Washington, DC" },
       { id: 'ufc-310', name: "UFC 310: Vegas Showdown", date: "Jan 17, 2026" },
       { id: 'ufc-315', name: "UFC 315: Year-End Championship", date: "Dec 12, 2026" },
     ], 
-    options: ["Jon Jones", "Alex Pereira", "Islam Makhachev", "Leon Edwards", "Sean O'Malley", "Conor McGregor", "Ilia Topuria", "Dustin Poirier", "Max Holloway", "Israel Adesanya", "Tom Aspinall", "Charles Oliveira", "Justin Gaethje", "Alexandre Pantoja", "Dricus Du Plessis", "Sean Strickland", "Khamzat Chimaev"] 
+    options: ["Jon Jones", "Alex Pereira", "Islam Makhachev", "Leon Edwards", "Sean O'Malley", "Conor McGregor", "Ilia Topuria", "Dustin Poirier", "Max Holloway", "Israel Adesanya", "Tom Aspinall", "Charles Oliveira", "Justin Gaethje", "Alexandre Pantoja", "Dricus Du Plessis", "Sean Strickland", "Khamzat Chimaev", "Renato Moicano", "Jiri Procházka", "Carlos Ulberg", "Gilbert Burns", "Mike Malott", "Aljamain Sterling", "Melsik Zalal", "Jack Della Maddalena", "Carlos Prates", "Brendan Allen", "Paulo Costa", "Song Yadong", "Deiveson Figueiredo", "Belal Muhammad"] 
   },
   { 
     id: 'boxing', 
