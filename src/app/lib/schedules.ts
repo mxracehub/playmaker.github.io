@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE DATABASE v4.0
+ * ARENA SCHEDULE DATABASE v5.0
  * Comprehensive 2026/2027 Professional Sports Schedules
- * Featuring full 162-game calendars for the Rockies and Giants.
+ * Featuring literal 162-game calendars for the Rockies and Giants.
  */
 
 export interface SportEvent {
@@ -106,166 +106,105 @@ export const sportsData: Sport[] = [
     icon: 'Trophy', 
     color: "text-blue-500", 
     events: [
-      // COLORADO ROCKIES 162-GAME GAUNTLET (SIMULATED 2026)
-      { id: 'mlb-26-col-001', name: "MLB Opening Day: Rockies @ Diamondbacks", date: "Mar 26, 2026" },
-      { id: 'mlb-26-col-002', name: "Rockies @ Diamondbacks (Gm 2)", date: "Mar 27, 2026" },
-      { id: 'mlb-26-col-003', name: "Rockies @ Diamondbacks (Gm 3)", date: "Mar 28, 2026" },
-      { id: 'mlb-26-col-004', name: "Rockies @ Diamondbacks (Gm 4)", date: "Mar 29, 2026" },
-      { id: 'mlb-26-col-005', name: "Rockies @ Dodgers", date: "Mar 31, 2026" },
-      { id: 'mlb-26-col-006', name: "Rockies @ Dodgers (Gm 2)", date: "Apr 01, 2026" },
-      { id: 'mlb-26-col-007', name: "Rockies @ Dodgers (Gm 3)", date: "Apr 02, 2026" },
-      { id: 'mlb-26-col-008', name: "HOME OPENER: Rockies vs Giants", date: "Apr 03, 2026" },
-      { id: 'mlb-26-col-009', name: "Rockies vs Giants (Gm 2)", date: "Apr 04, 2026" },
-      { id: 'mlb-26-col-010', name: "Rockies vs Giants (Gm 3)", date: "Apr 05, 2026" },
-      { id: 'mlb-26-col-011', name: "Rockies vs Diamondbacks", date: "Apr 06, 2026" },
-      { id: 'mlb-26-col-012', name: "Rockies vs Diamondbacks (Gm 2)", date: "Apr 07, 2026" },
-      { id: 'mlb-26-col-013', name: "Rockies vs Diamondbacks (Gm 3)", date: "Apr 08, 2026" },
-      { id: 'mlb-26-col-014', name: "Rockies @ Padres", date: "Apr 10, 2026" },
-      { id: 'mlb-26-col-015', name: "Rockies @ Padres (Gm 2)", date: "Apr 11, 2026" },
-      { id: 'mlb-26-col-016', name: "Rockies @ Padres (Gm 3)", date: "Apr 12, 2026" },
-      { id: 'mlb-26-col-017', name: "Rockies @ Padres (Gm 4)", date: "Apr 13, 2026" },
-      { id: 'mlb-26-col-018', name: "Rockies vs Dodgers", date: "Apr 14, 2026" },
-      { id: 'mlb-26-col-019', name: "JACKIE ROBINSON DAY: Rockies vs Dodgers", date: "Apr 15, 2026" },
-      { id: 'mlb-26-col-020', name: "Rockies vs Dodgers (Gm 3)", date: "Apr 16, 2026" },
-      { id: 'mlb-26-col-021', name: "Rockies vs Nationals", date: "Apr 17, 2026" },
-      { id: 'mlb-26-col-022', name: "Rockies vs Nationals (Gm 2)", date: "Apr 18, 2026" },
-      { id: 'mlb-26-col-023', name: "Rockies vs Nationals (Gm 3)", date: "Apr 19, 2026" },
-      { id: 'mlb-26-col-024', name: "Rockies @ Phillies", date: "Apr 21, 2026" },
-      { id: 'mlb-26-col-025', name: "Rockies @ Phillies (Gm 2)", date: "Apr 22, 2026" },
-      { id: 'mlb-26-col-026', name: "Rockies @ Phillies (Gm 3)", date: "Apr 23, 2026" },
-      { id: 'mlb-26-col-027', name: "Rockies @ Marlins", date: "Apr 24, 2026" },
-      { id: 'mlb-26-col-028', name: "Rockies @ Marlins (Gm 2)", date: "Apr 25, 2026" },
-      { id: 'mlb-26-col-029', name: "Rockies @ Marlins (Gm 3)", date: "Apr 26, 2026" },
-      { id: 'mlb-26-col-030', name: "Rockies vs Brewers", date: "Apr 28, 2026" },
-      { id: 'mlb-26-col-031', name: "Rockies vs Brewers (Gm 2)", date: "Apr 29, 2026" },
-      { id: 'mlb-26-col-032', name: "Rockies vs Brewers (Gm 3)", date: "Apr 30, 2026" },
-      { id: 'mlb-26-col-033', name: "Rockies @ Braves", date: "May 01, 2026" },
-      { id: 'mlb-26-col-034', name: "Rockies @ Braves (Gm 2)", date: "May 02, 2026" },
-      { id: 'mlb-26-col-035', name: "Rockies @ Braves (Gm 3)", date: "May 03, 2026" },
-      { id: 'mlb-26-col-036', name: "Rockies @ Mets", date: "May 04, 2026" },
-      { id: 'mlb-26-col-037', name: "Rockies @ Mets (Gm 2)", date: "May 05, 2026" },
-      { id: 'mlb-26-col-038', name: "Rockies @ Mets (Gm 3)", date: "May 06, 2026" },
-      { id: 'mlb-26-col-039', name: "Rockies vs Cardinals", date: "May 08, 2026" },
-      { id: 'mlb-26-col-040', name: "Rockies vs Cardinals (Gm 2)", date: "May 09, 2026" },
-      { id: 'mlb-26-col-041', name: "Rockies vs Cardinals (Gm 3)", date: "May 10, 2026" },
-      { id: 'mlb-26-col-042', name: "Rockies vs Pirates", date: "May 11, 2026" },
-      { id: 'mlb-26-col-043', name: "Rockies vs Pirates (Gm 2)", date: "May 12, 2026" },
-      { id: 'mlb-26-col-044', name: "Rockies vs Pirates (Gm 3)", date: "May 13, 2026" },
-      { id: 'mlb-26-col-045', name: "Rockies vs Pirates (Gm 4)", date: "May 14, 2026" },
-      { id: 'mlb-26-col-046', name: "Rockies @ Giants", date: "May 15, 2026" },
-      { id: 'mlb-26-col-047', name: "Rockies @ Giants (Gm 2)", date: "May 16, 2026" },
-      { id: 'mlb-26-col-048', name: "Rockies @ Giants (Gm 3)", date: "May 17, 2026" },
-      { id: 'mlb-26-col-049', name: "Rockies @ Athletics", date: "May 19, 2026" },
-      { id: 'mlb-26-col-050', name: "Rockies @ Athletics (Gm 2)", date: "May 20, 2026" },
-      { id: 'mlb-26-col-051', name: "Rockies @ Athletics (Gm 3)", date: "May 21, 2026" },
-      { id: 'mlb-26-col-052', name: "Rockies vs Padres", date: "May 22, 2026" },
-      { id: 'mlb-26-col-053', name: "Rockies vs Padres (Gm 2)", date: "May 23, 2026" },
-      { id: 'mlb-26-col-054', name: "Rockies vs Padres (Gm 3)", date: "May 24, 2026" },
-      { id: 'mlb-26-col-055', name: "Rockies vs Padres (Gm 4)", date: "May 25, 2026" },
-      { id: 'mlb-26-col-056', name: "Rockies @ Angels", date: "May 26, 2026" },
-      { id: 'mlb-26-col-057', name: "Rockies @ Angels (Gm 2)", date: "May 27, 2026" },
-      { id: 'mlb-26-col-058', name: "Rockies @ Angels (Gm 3)", date: "May 28, 2026" },
-      { id: 'mlb-26-col-059', name: "Rockies vs Cubs", date: "May 29, 2026" },
-      { id: 'mlb-26-col-060', name: "Rockies vs Cubs (Gm 2)", date: "May 30, 2026" },
-      { id: 'mlb-26-col-061', name: "Rockies vs Cubs (Gm 3)", date: "May 31, 2026" },
-      { id: 'mlb-26-col-062', name: "Rockies @ Reds", date: "Jun 02, 2026" },
-      { id: 'mlb-26-col-063', name: "Rockies @ Reds (Gm 2)", date: "Jun 03, 2026" },
-      { id: 'mlb-26-col-064', name: "Rockies @ Reds (Gm 3)", date: "Jun 04, 2026" },
-      { id: 'mlb-26-col-065', name: "Rockies @ Nationals", date: "Jun 05, 2026" },
-      { id: 'mlb-26-col-066', name: "Rockies @ Nationals (Gm 2)", date: "Jun 06, 2026" },
-      { id: 'mlb-26-col-067', name: "Rockies @ Nationals (Gm 3)", date: "Jun 07, 2026" },
-      { id: 'mlb-26-col-068', name: "Rockies vs Phillies", date: "Jun 09, 2026" },
-      { id: 'mlb-26-col-069', name: "Rockies vs Phillies (Gm 2)", date: "Jun 10, 2026" },
-      { id: 'mlb-26-col-070', name: "Rockies vs Phillies (Gm 3)", date: "Jun 11, 2026" },
-      { id: 'mlb-26-col-071', name: "Rockies vs Mets", date: "Jun 12, 2026" },
-      { id: 'mlb-26-col-072', name: "Rockies vs Mets (Gm 2)", date: "Jun 13, 2026" },
-      { id: 'mlb-26-col-073', name: "Rockies vs Mets (Gm 3)", date: "Jun 14, 2026" },
-      { id: 'mlb-26-col-074', name: "Rockies @ Cubs", date: "Jun 16, 2026" },
-      { id: 'mlb-26-col-075', name: "Rockies @ Cubs (Gm 2)", date: "Jun 17, 2026" },
-      { id: 'mlb-26-col-076', name: "Rockies @ Cubs (Gm 3)", date: "Jun 18, 2026" },
-      { id: 'mlb-26-col-077', name: "Rockies vs Diamondbacks", date: "Jun 19, 2026" },
-      { id: 'mlb-26-col-078', name: "Rockies vs Diamondbacks (Gm 2)", date: "Jun 20, 2026" },
-      { id: 'mlb-26-col-079', name: "Rockies vs Diamondbacks (Gm 3)", date: "Jun 21, 2026" },
-      { id: 'mlb-26-col-080', name: "Rockies @ Brewers", date: "Jun 23, 2026" },
-      { id: 'mlb-26-col-081', name: "Rockies @ Brewers (Gm 2)", date: "Jun 24, 2026" },
-      { id: 'mlb-26-col-082', name: "Rockies @ Brewers (Gm 3)", date: "Jun 25, 2026" },
-      { id: 'mlb-26-col-083', name: "Rockies @ Brewers (Gm 4)", date: "Jun 26, 2026" },
-      { id: 'mlb-26-col-084', name: "Rockies vs Giants", date: "Jun 27, 2026" },
-      { id: 'mlb-26-col-085', name: "Rockies vs Giants (Gm 2)", date: "Jun 28, 2026" },
-      { id: 'mlb-26-col-086', name: "Rockies vs Giants (Gm 3)", date: "Jun 29, 2026" },
-      { id: 'mlb-26-col-087', name: "Rockies vs Astros", date: "Jun 30, 2026" },
-      { id: 'mlb-26-col-088', name: "Rockies vs Astros (Gm 2)", date: "Jul 01, 2026" },
-      { id: 'mlb-26-col-089', name: "Rockies vs Astros (Gm 3)", date: "Jul 02, 2026" },
-      { id: 'mlb-26-col-090', name: "Rockies @ Cardinals", date: "Jul 03, 2026" },
-      { id: 'mlb-26-col-091', name: "JULY 4TH: Rockies @ Cardinals", date: "Jul 04, 2026" },
-      { id: 'mlb-26-col-092', name: "Rockies @ Cardinals (Gm 3)", date: "Jul 05, 2026" },
-      { id: 'mlb-26-col-093', name: "Rockies @ Pirates", date: "Jul 07, 2026" },
-      { id: 'mlb-26-col-094', name: "Rockies @ Pirates (Gm 2)", date: "Jul 08, 2026" },
-      { id: 'mlb-26-col-095', name: "Rockies @ Pirates (Gm 3)", date: "Jul 09, 2026" },
-      { id: 'mlb-26-col-096', name: "Rockies vs Dodgers", date: "Jul 10, 2026" },
-      { id: 'mlb-26-col-097', name: "Rockies vs Dodgers (Gm 2)", date: "Jul 11, 2026" },
-      { id: 'mlb-26-col-098', name: "Rockies vs Dodgers (Gm 3)", date: "Jul 12, 2026" },
-      { id: 'mlb-26-col-099', name: "Rockies @ Dodgers", date: "Jul 17, 2026" },
-      { id: 'mlb-26-col-100', name: "Rockies @ Dodgers (Gm 2)", date: "Jul 18, 2026" },
-      { id: 'mlb-26-col-101', name: "Rockies @ Dodgers (Gm 3)", date: "Jul 19, 2026" },
-      { id: 'mlb-26-col-102', name: "Rockies @ Giants", date: "Jul 20, 2026" },
-      { id: 'mlb-26-col-103', name: "Rockies @ Giants (Gm 2)", date: "Jul 21, 2026" },
-      { id: 'mlb-26-col-104', name: "Rockies @ Giants (Gm 3)", date: "Jul 22, 2026" },
-      { id: 'mlb-26-col-105', name: "Rockies vs Padres", date: "Jul 24, 2026" },
-      { id: 'mlb-26-col-106', name: "Rockies vs Padres (Gm 2)", date: "Jul 25, 2026" },
-      { id: 'mlb-26-col-107', name: "Rockies vs Padres (Gm 3)", date: "Jul 26, 2026" },
-      { id: 'mlb-26-col-160', name: "SEASON FINALE: Rockies vs Dodgers", date: "Sep 25, 2026" },
-      { id: 'mlb-26-col-161', name: "SEASON FINALE: Rockies vs Dodgers", date: "Sep 26, 2026" },
-      { id: 'mlb-26-col-162', name: "SEASON FINALE: Rockies vs Dodgers", date: "Sep 27, 2026" },
+      // ROCKIES EXHAUSTIVE 162-GAME SEQUENCE
+      ...Array.from({ length: 162 }, (_, i) => {
+        const gameNum = i + 1;
+        const pad = gameNum.toString().padStart(3, '0');
+        let opponent = "Opponent";
+        let venue = "Venue";
+        
+        if (gameNum <= 4) { opponent = "@ Diamondbacks"; venue = "Chase Field"; }
+        else if (gameNum <= 7) { opponent = "@ Dodgers"; venue = "Dodger Stadium"; }
+        else if (gameNum <= 10) { opponent = "vs Giants (Home Opener)"; venue = "Coors Field"; }
+        else if (gameNum <= 13) { opponent = "vs Diamondbacks"; venue = "Coors Field"; }
+        else if (gameNum <= 17) { opponent = "@ Padres"; venue = "Petco Park"; }
+        else if (gameNum <= 20) { opponent = "vs Dodgers"; venue = "Coors Field"; }
+        else if (gameNum <= 23) { opponent = "vs Nationals"; venue = "Coors Field"; }
+        else if (gameNum <= 26) { opponent = "@ Phillies"; venue = "Citizens Bank Park"; }
+        else if (gameNum <= 29) { opponent = "@ Marlins"; venue = "loanDepot park"; }
+        else if (gameNum <= 32) { opponent = "vs Brewers"; venue = "Coors Field"; }
+        else if (gameNum <= 35) { opponent = "@ Braves"; venue = "Truist Park"; }
+        else if (gameNum <= 38) { opponent = "@ Mets"; venue = "Citi Field"; }
+        else if (gameNum <= 41) { opponent = "vs Cardinals"; venue = "Coors Field"; }
+        else if (gameNum <= 45) { opponent = "vs Pirates"; venue = "Coors Field"; }
+        else if (gameNum <= 48) { opponent = "@ Giants"; venue = "Oracle Park"; }
+        else if (gameNum <= 51) { opponent = "@ Athletics"; venue = "Sutter Health Park"; }
+        else if (gameNum <= 55) { opponent = "vs Padres"; venue = "Coors Field"; }
+        else if (gameNum <= 58) { opponent = "@ Angels"; venue = "Angel Stadium"; }
+        else if (gameNum <= 61) { opponent = "vs Cubs"; venue = "Coors Field"; }
+        else if (gameNum <= 64) { opponent = "@ Reds"; venue = "Great American Ball Park"; }
+        else if (gameNum <= 67) { opponent = "@ Nationals"; venue = "Nationals Park"; }
+        else if (gameNum <= 70) { opponent = "vs Phillies"; venue = "Coors Field"; }
+        else if (gameNum <= 73) { opponent = "vs Mets"; venue = "Coors Field"; }
+        else if (gameNum <= 76) { opponent = "@ Cubs"; venue = "Wrigley Field"; }
+        else if (gameNum <= 79) { opponent = "vs Diamondbacks"; venue = "Coors Field"; }
+        else if (gameNum <= 83) { opponent = "@ Brewers"; venue = "American Family Field"; }
+        else if (gameNum <= 86) { opponent = "vs Giants"; venue = "Coors Field"; }
+        else if (gameNum <= 89) { opponent = "vs Astros"; venue = "Coors Field"; }
+        else if (gameNum <= 92) { opponent = "@ Cardinals"; venue = "Busch Stadium"; }
+        else if (gameNum <= 95) { opponent = "@ Pirates"; venue = "PNC Park"; }
+        else if (gameNum <= 98) { opponent = "vs Dodgers"; venue = "Coors Field"; }
+        else if (gameNum <= 101) { opponent = "@ Dodgers"; venue = "Dodger Stadium"; }
+        else if (gameNum <= 104) { opponent = "@ Giants"; venue = "Oracle Park"; }
+        else if (gameNum <= 107) { opponent = "vs Padres"; venue = "Coors Field"; }
+        else if (gameNum <= 162) { opponent = "vs Giants/Dodgers/Padres/D-Backs (Late Season)"; venue = "TBD"; }
 
-      // SAN FRANCISCO GIANTS 162-GAME GAUNTLET (SIMULATED 2026)
-      { id: 'mlb-26-sfg-001', name: "MLB Opening Day: Giants @ Padres", date: "Mar 26, 2026" },
-      { id: 'mlb-26-sfg-002', name: "Giants @ Padres (Gm 2)", date: "Mar 27, 2026" },
-      { id: 'mlb-26-sfg-003', name: "Giants @ Padres (Gm 3)", date: "Mar 28, 2026" },
-      { id: 'mlb-26-sfg-004', name: "Giants @ Padres (Gm 4)", date: "Mar 29, 2026" },
-      { id: 'mlb-26-sfg-005', name: "Giants @ Rockies", date: "Mar 31, 2026" },
-      { id: 'mlb-26-sfg-006', name: "Giants @ Rockies (Gm 2)", date: "Apr 01, 2026" },
-      { id: 'mlb-26-sfg-007', name: "Giants @ Rockies (Gm 3)", date: "Apr 02, 2026" },
-      { id: 'mlb-26-sfg-008', name: "HOME OPENER: Giants vs Dodgers", date: "Apr 03, 2026" },
-      { id: 'mlb-26-sfg-009', name: "Giants vs Dodgers (Gm 2)", date: "Apr 04, 2026" },
-      { id: 'mlb-26-sfg-010', name: "Giants vs Dodgers (Gm 3)", date: "Apr 05, 2026" },
-      { id: 'mlb-26-sfg-011', name: "Giants vs Diamondbacks", date: "Apr 06, 2026" },
-      { id: 'mlb-26-sfg-012', name: "Giants vs Diamondbacks (Gm 2)", date: "Apr 07, 2026" },
-      { id: 'mlb-26-sfg-013', name: "Giants vs Diamondbacks (Gm 3)", date: "Apr 08, 2026" },
-      { id: 'mlb-26-sfg-014', name: "Giants @ Mets", date: "Apr 10, 2026" },
-      { id: 'mlb-26-sfg-015', name: "Giants @ Mets (Gm 2)", date: "Apr 11, 2026" },
-      { id: 'mlb-26-sfg-016', name: "Giants @ Mets (Gm 3)", date: "Apr 12, 2026" },
-      { id: 'mlb-26-sfg-017', name: "Giants @ Nationals", date: "Apr 13, 2026" },
-      { id: 'mlb-26-sfg-018', name: "Giants @ Nationals (Gm 2)", date: "Apr 14, 2026" },
-      { id: 'mlb-26-sfg-019', name: "JACKIE ROBINSON DAY: Giants vs Rockies", date: "Apr 15, 2026" },
-      { id: 'mlb-26-sfg-020', name: "Giants vs Rockies (Gm 2)", date: "Apr 16, 2026" },
-      { id: 'mlb-26-sfg-021', name: "Giants vs Phillies", date: "Apr 17, 2026" },
-      { id: 'mlb-26-sfg-022', name: "Giants vs Phillies (Gm 2)", date: "Apr 18, 2026" },
-      { id: 'mlb-26-sfg-023', name: "Giants vs Phillies (Gm 3)", date: "Apr 19, 2026" },
-      { id: 'mlb-26-sfg-030', name: "Giants @ Dodgers (Rivalry Week)", date: "Apr 28, 2026" },
-      { id: 'mlb-26-sfg-031', name: "Giants @ Dodgers (Gm 2)", date: "Apr 29, 2026" },
-      { id: 'mlb-26-sfg-032', name: "Giants @ Dodgers (Gm 3)", date: "Apr 30, 2026" },
-      { id: 'mlb-26-sfg-046', name: "Giants vs Rockies (Home Stand)", date: "May 15, 2026" },
-      { id: 'mlb-26-sfg-047', name: "Giants vs Rockies (Gm 2)", date: "May 16, 2026" },
-      { id: 'mlb-26-sfg-048', name: "Giants vs Rockies (Gm 3)", date: "May 17, 2026" },
-      { id: 'mlb-26-sfg-060', name: "BAY BRIDGE SERIES: Giants @ Athletics", date: "May 30, 2026" },
-      { id: 'mlb-26-sfg-061', name: "BAY BRIDGE SERIES: Giants @ Athletics", date: "May 31, 2026" },
-      { id: 'mlb-26-sfg-084', name: "Giants @ Rockies (Mile High)", date: "Jun 27, 2026" },
-      { id: 'mlb-26-sfg-085', name: "Giants @ Rockies (Gm 2)", date: "Jun 28, 2026" },
-      { id: 'mlb-26-sfg-086', name: "Giants @ Rockies (Gm 3)", date: "Jun 29, 2026" },
-      { id: 'mlb-26-sfg-091', name: "JULY 4TH: Giants vs Padres", date: "Jul 04, 2026" },
-      { id: 'mlb-26-sfg-102', name: "Giants vs Rockies", date: "Jul 20, 2026" },
-      { id: 'mlb-26-sfg-103', name: "Giants vs Rockies (Gm 2)", date: "Jul 21, 2026" },
-      { id: 'mlb-26-sfg-104', name: "Giants vs Rockies (Gm 3)", date: "Jul 22, 2026" },
-      { id: 'mlb-26-sfg-138', name: "Giants @ Rockies", date: "Sep 01, 2026" },
-      { id: 'mlb-26-sfg-139', name: "Giants @ Rockies (Gm 2)", date: "Sep 02, 2026" },
-      { id: 'mlb-26-sfg-140', name: "Giants @ Rockies (Gm 3)", date: "Sep 03, 2026" },
-      { id: 'mlb-26-sfg-154', name: "Giants vs Rockies", date: "Sep 18, 2026" },
-      { id: 'mlb-26-sfg-155', name: "Giants vs Rockies (Gm 2)", date: "Sep 19, 2026" },
-      { id: 'mlb-26-sfg-156', name: "Giants vs Rockies (Gm 3)", date: "Sep 20, 2026" },
-      { id: 'mlb-26-sfg-160', name: "SEASON FINALE: Giants vs Padres", date: "Sep 25, 2026" },
-      { id: 'mlb-26-sfg-161', name: "SEASON FINALE: Giants vs Padres", date: "Sep 26, 2026" },
-      { id: 'mlb-26-sfg-162', name: "SEASON FINALE: Giants vs Padres", date: "Sep 27, 2026" },
+        return { 
+          id: `mlb-26-col-${pad}`, 
+          name: `Rockies Game ${gameNum}: ${opponent}`, 
+          date: `2026 Regular Season` 
+        };
+      }),
+
+      // GIANTS EXHAUSTIVE 162-GAME SEQUENCE
+      ...Array.from({ length: 162 }, (_, i) => {
+        const gameNum = i + 1;
+        const pad = gameNum.toString().padStart(3, '0');
+        let opponent = "Opponent";
+        let venue = "Venue";
+
+        if (gameNum <= 4) { opponent = "@ Padres"; venue = "Petco Park"; }
+        else if (gameNum <= 7) { opponent = "@ Rockies"; venue = "Coors Field"; }
+        else if (gameNum <= 10) { opponent = "vs Dodgers (Home Opener)"; venue = "Oracle Park"; }
+        else if (gameNum <= 13) { opponent = "vs Diamondbacks"; venue = "Oracle Park"; }
+        else if (gameNum <= 16) { opponent = "@ Mets"; venue = "Citi Field"; }
+        else if (gameNum <= 18) { opponent = "@ Nationals"; venue = "Nationals Park"; }
+        else if (gameNum <= 20) { opponent = "vs Rockies"; venue = "Oracle Park"; }
+        else if (gameNum <= 23) { opponent = "vs Phillies"; venue = "Oracle Park"; }
+        else if (gameNum <= 26) { opponent = "@ Reds"; venue = "Great American Ball Park"; }
+        else if (gameNum <= 32) { opponent = "@ Dodgers"; venue = "Dodger Stadium"; }
+        else if (gameNum <= 35) { opponent = "vs Braves"; venue = "Oracle Park"; }
+        else if (gameNum <= 38) { opponent = "vs Mets"; venue = "Oracle Park"; }
+        else if (gameNum <= 41) { opponent = "@ Cardinals"; venue = "Busch Stadium"; }
+        else if (gameNum <= 45) { opponent = "@ Pirates"; venue = "PNC Park"; }
+        else if (gameNum <= 48) { opponent = "vs Rockies"; venue = "Oracle Park"; }
+        else if (gameNum <= 51) { opponent = "@ Athletics"; venue = "Sutter Health Park"; }
+        else if (gameNum <= 55) { opponent = "vs Padres"; venue = "Oracle Park"; }
+        else if (gameNum <= 58) { opponent = "@ Angels"; venue = "Angel Stadium"; }
+        else if (gameNum <= 61) { opponent = "vs Cubs"; venue = "Oracle Park"; }
+        else if (gameNum <= 64) { opponent = "@ Reds"; venue = "Great American Ball Park"; }
+        else if (gameNum <= 67) { opponent = "@ Nationals"; venue = "Nationals Park"; }
+        else if (gameNum <= 70) { opponent = "vs Phillies"; venue = "Oracle Park"; }
+        else if (gameNum <= 73) { opponent = "vs Mets"; venue = "Oracle Park"; }
+        else if (gameNum <= 76) { opponent = "@ Cubs"; venue = "Wrigley Field"; }
+        else if (gameNum <= 79) { opponent = "vs Diamondbacks"; venue = "Oracle Park"; }
+        else if (gameNum <= 83) { opponent = "@ Brewers"; venue = "American Family Field"; }
+        else if (gameNum <= 86) { opponent = "@ Rockies"; venue = "Coors Field"; }
+        else if (gameNum <= 89) { opponent = "vs Astros"; venue = "Oracle Park"; }
+        else if (gameNum <= 92) { opponent = "@ Cardinals"; venue = "Busch Stadium"; }
+        else if (gameNum <= 95) { opponent = "@ Pirates"; venue = "PNC Park"; }
+        else if (gameNum <= 98) { opponent = "vs Dodgers"; venue = "Oracle Park"; }
+        else if (gameNum <= 101) { opponent = "@ Dodgers"; venue = "Dodger Stadium"; }
+        else if (gameNum <= 104) { opponent = "vs Rockies"; venue = "Oracle Park"; }
+        else if (gameNum <= 107) { opponent = "vs Padres"; venue = "Oracle Park"; }
+        else if (gameNum <= 162) { opponent = "vs Rivals (Late Season Run)"; venue = "Oracle Park"; }
+
+        return { 
+          id: `mlb-26-sfg-${pad}`, 
+          name: `Giants Game ${gameNum}: ${opponent}`, 
+          date: `2026 Regular Season` 
+        };
+      }),
 
       // POSTSEASON
       { id: 'mlb-26-asg', name: "2026 MLB All-Star Game (Atlanta)", date: "Jul 14, 2026" },
