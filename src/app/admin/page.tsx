@@ -17,12 +17,24 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-// Shared rosters for Admin response
+// Unified 2026 rosters for Admin response and results
 const sportPicks: { [key: string]: string[] } = {
   nba: ["Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", "Cleveland Cavaliers", "Dallas Mavericks", "Denver Nuggets", "Detroit Pistons", "Golden State Warriors", "Houston Rockets", "Indiana Pacers", "LA Clippers", "LA Lakers", "Memphis Grizzlies", "Miami Heat", "Milwaukee Bucks", "Minnesota Timberwolves", "New Orleans Pelicans", "New York Knicks", "Oklahoma City Thunder", "Orlando Magic", "Philadelphia 76ers", "Phoenix Suns", "Portland Trail Blazers", "Sacramento Kings", "San Antonio Spurs", "Toronto Raptors", "Utah Jazz", "Washington Wizards"],
-  nfl: ["Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills", "Carolina Panthers", "Chicago Bears", "Cincinnati Bengals", "Cleveland Browns", "Dallas Cowboys", "Denver Broncos", "Detroit Lions", "Green Bay Packers", "Houston Texans", "Indianapolis Colts", "Jacksonville Jaguars", "Kansas City Chiefs", "Las Vegas Raiders", "Los Angeles Chargers", "Los Angeles Rams", "Miami Dolphins", "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants", "New York Jets", "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Buccaneers", "Tennessee Titans", "Washington Commanders"],
+  nfl: ["Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills", "Carolina Panthers", "Chicago Bears", "Cincinnati Bengals", "Cleveland Browns", "Dallas Cowboys", "Denver Broncos", "Detroit Lions", "Green Bay Packers", "Houston Texans", "Indianapolis Colts", "Jacksonville Jaguars", "Kansas City Chiefs", "Las Vegas Raiders", "Los Angeles Chargers", "Los Angeles Rams", "Miami Dolphins", "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants", "New York Jets", "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Commanders", "Tennessee Titans", "Washington Commanders"],
   hockey: ["Anaheim Ducks", "Arizona Coyotes", "Boston Bruins", "Buffalo Sabres", "Calgary Flames", "Carolina Hurricanes", "Chicago Blackhawks", "Colorado Avalanche", "Columbus Blue Jackets", "Dallas Stars", "Detroit Red Wings", "Edmonton Oilers", "Florida Panthers", "Los Angeles Kings", "Minnesota Wild", "Montreal Canadiens", "Nashville Predators", "New Jersey Devils", "New York Islanders", "New York Rangers", "Ottawa Senators", "Philadelphia Flyers", "Pittsburgh Penguins", "San Jose Sharks", "Seattle Kraken", "St. Louis Blues", "Tampa Bay Lightning", "Toronto Maple Leafs", "Vancouver Canucks", "Vegas Golden Knights", "Washington Capitals", "Winnipeg Jets"],
-  mlb: ["Arizona Diamondbacks", "Atlanta Braves", "Baltimore Orioles", "Boston Red Sox", "Chicago Cubs", "Chicago White Sox", "Cincinnati Reds", "Cleveland Guardians", "Colorado Rockies", "Detroit Tigers", "Houston Astros", "Kansas City Royals", "Los Angeles Angels", "Los Angeles Dodgers", "Miami Marlins", "Milwaukee Brewers", "Minnesota Twins", "New York Mets", "New York Yankees", "Oakland Athletics", "Philadelphia Phillies", "Pittsburgh Pirates", "San Diego Padres", "San Francisco Giants", "Seattle Mariners", "St. Louis Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"]
+  mlb: ["Arizona Diamondbacks", "Atlanta Braves", "Baltimore Orioles", "Boston Red Sox", "Chicago Cubs", "Chicago White Sox", "Cincinnati Reds", "Cleveland Guardians", "Colorado Rockies", "Detroit Tigers", "Houston Astros", "Kansas City Royals", "Los Angeles Angels", "Los Angeles Dodgers", "Miami Marlins", "Milwaukee Brewers", "Minnesota Twins", "New York Mets", "New York Yankees", "Oakland Athletics", "Philadelphia Phillies", "Pittsburgh Pirates", "San Diego Padres", "San Francisco Giants", "Seattle Mariners", "St. Louis Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"],
+  ufc: ["Jon Jones", "Alex Pereira", "Islam Makhachev", "Leon Edwards", "Sean O'Malley", "Conor McGregor", "Ilia Topuria", "Dustin Poirier", "Max Holloway", "Israel Adesanya", "Tom Aspinall", "Charles Oliveira", "Justin Gaethje", "Alexandre Pantoja", "Dricus Du Plessis", "Sean Strickland", "Khamzat Chimaev"],
+  boxing: ["Tyson Fury", "Oleksandr Usyk", "Anthony Joshua", "Canelo Alvarez", "Terence Crawford", "Naoya Inoue", "Gervonta Davis", "Shakur Stevenson", "Artur Beterbiev", "Dmitry Bivol", "Devin Haney", "Ryan Garcia"],
+  soccer: ["USA", "Mexico", "Canada", "Argentina", "Brazil", "England", "France", "Germany", "Spain", "Italy", "Portugal", "Netherlands", "Real Madrid", "Barcelona", "Manchester City", "Liverpool", "Arsenal", "PSG", "Bayern Munich", "Inter Milan", "Juventus", "AC Milan"],
+  tennis: ["Novak Djokovic", "Carlos Alcaraz", "Jannik Sinner", "Daniil Medvedev", "Alexander Zverev", "Iga Swiatek", "Aryna Sabalenka", "Coco Gauff", "Elena Rybakina", "Jessica Pegula"],
+  pickleball: ["Ben Johns", "Anna Leigh Waters", "Tyson McGuffin", "Lea Jansen", "Riley Newman", "Catherine Parenteau", "JW Johnson", "Dylan Frazier", "Anna Bright"],
+  volleyball: ["USA", "Poland", "Brazil", "Turkey", "Italy", "Japan", "Serbia", "China", "France", "Slovenia"],
+  golf: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Xander Schauffele", "Ludvig Åberg", "Brooks Koepka", "Bryson DeChambeau", "Tiger Woods", "Jordan Spieth", "Justin Thomas", "Max Homa", "Wyndham Clark", "Patrick Cantlay", "Collin Morikawa", "Cameron Smith", "Hideki Matsuyama", "Tommy Fleetwood"],
+  nascar: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney", "William Byron", "Christopher Bell", "Joey Logano", "Martin Truex Jr.", "Tyler Reddick", "Ross Chastain", "Kyle Busch", "Bubba Wallace", "Brad Keselowski", "Ty Gibbs", "Chris Buescher", "Michael McDowell", "Alex Bowman", "Chase Briscoe"],
+  surfing: ["John John Florence", "Gabriel Medina", "Filipe Toledo", "Italo Ferreira", "Jack Robinson", "Carissa Moore", "Caroline Marks", "Tyler Wright", "Stephanie Gilmore", "Molly Picklum"],
+  skateboarding: ["Nyjah Huston", "Yuto Horigome", "Sky Brown", "Rayssa Leal", "Kelvin Hoefler", "Leticia Bufoni", "Shane O'Neill", "Aurelien Giraud", "Chloe Covell"],
+  bmx: ["Logan Martin", "Garrett Reynolds", "Hannah Roberts", "Charlotte Worthington", "Rim Nakamura", "Anthony Jeanjean", "Declan Brooks", "Nikita Ducarroz"],
+  snowboarding: ["Chloe Kim", "Mark McMorris", "Shaun White (Ret.)", "Ayumu Hirano", "Anna Gasser", "Red Gerard", "Su Yiming", "Zoi Sadowski-Synnott", "Valentino Guseli"]
 };
 
 export default function AdminDashboard() {
@@ -63,6 +75,13 @@ export default function AdminDashboard() {
     const gameRef = doc(db, "games", gameId);
     deleteDocumentNonBlocking(gameRef);
     toast({ variant: "destructive", title: "Challenge Denied", description: "The matchup has been scrapped." });
+  };
+
+  const handleOpenScoring = (game: any) => {
+    setScoringGame(game);
+    setWinnerId("");
+    setCreatorScore("0");
+    setOpponentScore("0");
   };
 
   const handleAcceptChallenge = () => {
@@ -211,7 +230,7 @@ export default function AdminDashboard() {
                           </>
                         )}
                         {game.status === "Live" && (
-                          <Button size="sm" variant="destructive" onClick={() => setScoringGame(game)}>
+                          <Button size="sm" variant="destructive" onClick={() => handleOpenScoring(game)}>
                             <CheckCircle2 className="mr-2 h-4 w-4" /> Enter Results
                           </Button>
                         )}
@@ -339,14 +358,14 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Challenger Score */}
-                <button 
-                  onClick={() => setWinnerId(scoringGame.creatorId)}
+                <div 
                   className={cn(
-                    "relative group flex flex-col items-center p-6 rounded-2xl border-2 transition-all duration-300 text-center",
+                    "relative group flex flex-col items-center p-6 rounded-2xl border-2 transition-all duration-300 text-center cursor-pointer",
                     winnerId === scoringGame.creatorId 
                       ? "bg-primary/10 border-primary ring-4 ring-primary/20" 
                       : "bg-secondary/20 border-white/5 hover:border-white/20"
                   )}
+                  onClick={() => setWinnerId(scoringGame.creatorId)}
                 >
                   <div className="mb-6 space-y-1">
                     <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-primary">
@@ -375,17 +394,17 @@ export default function AdminDashboard() {
                     {winnerId === scoringGame.creatorId ? <Trophy className="h-3 w-3 fill-current" /> : null}
                     {winnerId === scoringGame.creatorId ? "WINNER DECLARED" : "SET AS WINNER"}
                   </div>
-                </button>
+                </div>
 
                 {/* Opponent Score */}
-                <button 
-                  onClick={() => setWinnerId(scoringGame.opponentId)}
+                <div 
                   className={cn(
-                    "relative group flex flex-col items-center p-6 rounded-2xl border-2 transition-all duration-300 text-center",
+                    "relative group flex flex-col items-center p-6 rounded-2xl border-2 transition-all duration-300 text-center cursor-pointer",
                     winnerId === scoringGame.opponentId 
                       ? "bg-accent/10 border-accent ring-4 ring-accent/20" 
                       : "bg-secondary/20 border-white/5 hover:border-white/20"
                   )}
+                  onClick={() => setWinnerId(scoringGame.opponentId)}
                 >
                   <div className="mb-6 space-y-1">
                     <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-accent">
@@ -414,7 +433,7 @@ export default function AdminDashboard() {
                     {winnerId === scoringGame.opponentId ? <Trophy className="h-3 w-3 fill-current" /> : null}
                     {winnerId === scoringGame.opponentId ? "WINNER DECLARED" : "SET AS WINNER"}
                   </div>
-                </button>
+                </div>
               </div>
 
               {/* Status Footer */}
