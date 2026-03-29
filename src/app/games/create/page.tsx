@@ -82,7 +82,8 @@ function CreateGameForm() {
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
   const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
-  const allUsersQuery = useMemoFirebase(() => collection(db, "userProfiles"), [db]);
+  // Fetch all user profiles to enable friend selection - Guarded by user auth to match security rules
+  const allUsersQuery = useMemoFirebase(() => (user ? collection(db, "userProfiles") : null), [db, user]);
   const { data: allUsers, isLoading: isUsersLoading } = useCollection(allUsersQuery);
 
   const [selectedSport, setSelectedSport] = useState<string>("");
@@ -197,7 +198,7 @@ function CreateGameForm() {
       });
   };
 
-  if (isProfileLoading || isUsersLoading) {
+  if (isProfileLoading || (user && isUsersLoading)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <Loader2 className="h-12 w-12 animate-spin text-primary" />

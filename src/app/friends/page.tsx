@@ -38,8 +38,8 @@ export default function FriendsPage() {
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
   const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
-  // Fetch all user profiles to enable global search
-  const allUsersQuery = useMemoFirebase(() => collection(db, "userProfiles"), [db]);
+  // Fetch all user profiles to enable global search - Guarded by user auth
+  const allUsersQuery = useMemoFirebase(() => (user ? collection(db, "userProfiles") : null), [db, user]);
   const { data: allUsers, isLoading: isUsersLoading } = useCollection(allUsersQuery);
 
   // Global search for "Add Friend" (searching the database)
@@ -100,7 +100,7 @@ export default function FriendsPage() {
     });
   };
 
-  const isLoading = isUserLoading || isProfileLoading || isUsersLoading;
+  const isLoading = isUserLoading || isProfileLoading || (user && isUsersLoading);
 
   if (isLoading) {
     return (
