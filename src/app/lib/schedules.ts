@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 /**
- * ARENA SCHEDULE & ROSTER DATABASE v18.0
+ * ARENA SCHEDULE & ROSTER DATABASE v19.0
  * Unified source of truth for all 16 professional sports.
- * Featuring literal seasonal schedules for MLB, NFL, NBA, NHL, NASCAR, Boxing, and Golf for the 2026 seasons.
+ * Featuring literal seasonal schedules for MLB, NFL, NBA, NHL, NASCAR, Boxing, Golf, and BMX for the 2026 seasons.
  */
 
 export interface SportEvent {
@@ -369,7 +369,50 @@ export const sportsData: Sport[] = [
   { id: 'volleyball', name: 'Volleyball', icon: 'Trophy', color: "text-indigo-400", events: [{ id: 'v-26-01', name: "Nations League Finals (Texas)", date: "Jul 05, 2026" }], options: ["USA", "Poland", "Brazil", "Turkey", "Italy", "Japan", "Serbia", "China", "France", "Slovenia"] },
   { id: 'surfing', name: 'Surfing', icon: 'Waves', color: "text-blue-400", events: [{ id: 'surf-26-01', name: "Pipe Masters (Hawaii)", date: "Jan 29, 2026" }], options: ["John John Florence", "Gabriel Medina", "Filipe Toledo", "Italo Ferreira", "Jack Robinson", "Carissa Moore", "Caroline Marks", "Tyler Wright", "Stephanie Gilmore", "Molly Picklum"] },
   { id: 'skateboarding', name: 'Skateboarding', icon: 'Zap', color: "text-yellow-400", events: [{ id: 'sk-26-01', name: "Street League (SLS) Tokyo", date: "Feb 15, 2026" }], options: ["Nyjah Huston", "Yuto Horigome", "Sky Brown", "Rayssa Leal", "Kelvin Hoefler", "Leticia Bufoni", "Shane O'Neill", "Aurelien Giraud", "Chloe Covell"] },
-  { id: 'bmx', name: 'BMX', icon: 'Bike', color: "text-red-400", events: [{ id: 'bmx-26-01', name: "UCI BMX Freestyle Cup", date: "May 24, 2026" }], options: ["Logan Martin", "Garrett Reynolds", "Hannah Roberts", "Charlotte Worthington", "Rim Nakamura", "Anthony Jeanjean", "Declan Brooks", "Nikita Ducarroz"] },
+  { 
+    id: 'bmx', 
+    name: 'BMX', 
+    icon: 'Bike', 
+    color: "text-red-400", 
+    events: [
+      { id: 'bmx-26-lv', name: "Las Vegas Nationals", date: "Jan 09 - 11, 2026" },
+      { id: 'bmx-26-sun', name: "Sunshine State Nationals", date: "Jan 16 - 18, 2026" },
+      { id: 'bmx-26-br', name: "Blue Ridge Nationals", date: "Jan 30 - Feb 01, 2026" },
+      { id: 'bmx-26-sm', name: "Show Me State Nationals", date: "Feb 13 - 15, 2026" },
+      { id: 'bmx-26-soc', name: "So-Cal Nationals", date: "Feb 27 - Mar 01, 2026" },
+      { id: 'bmx-26-ls', name: "Lone Star Nationals", date: "Mar 06 - 08, 2026" },
+      { id: 'bmx-26-caj', name: "Cajun Nationals", date: "Mar 20 - 22, 2026" },
+      { id: 'bmx-26-car', name: "Carolina Nationals", date: "Mar 27 - 29, 2026" },
+      { id: 'bmx-26-gnw', name: "Great Northwest Nationals", date: "Apr 10 - 12, 2026" },
+      { id: 'bmx-26-lol', name: "Land O' Lakes Nationals", date: "Apr 17 - 19, 2026" },
+      { id: 'bmx-26-dix', name: "Dixieland Nationals", date: "Apr 24 - 26, 2026" },
+      { id: 'bmx-26-leg', name: "Legacy Nationals", date: "May 01 - 03, 2026" },
+      { id: 'bmx-26-gs', name: "Golden State Nationals", date: "May 15 - 17, 2026" },
+      { id: 'bmx-26-mc', name: "Music City Nationals", date: "May 22 - 24, 2026" },
+      { id: 'bmx-26-sum', name: "Summer Nationals", date: "Jun 05 - 07, 2026" },
+      { id: 'bmx-26-pal', name: "Palmetto Nationals", date: "Jun 12 - 14, 2026" },
+      { id: 'bmx-26-mid', name: "Midwest Nationals", date: "Jun 19 - 21, 2026" },
+      { id: 'bmx-26-ss', name: "Stars N' Stripes Nationals", date: "Jul 03 - 05, 2026" },
+      { id: 'bmx-26-rr', name: "Red River Nationals", date: "Jul 17 - 19, 2026" },
+      { id: 'bmx-26-ne', name: "New England Nationals", date: "Jul 24 - 26, 2026" },
+      { id: 'bmx-26-corn', name: "Cornhusker Nationals", date: "Jul 31 - Aug 02, 2026" },
+      { id: 'bmx-26-gsl', name: "Great Salt Lake Nationals", date: "Aug 07 - 09, 2026" },
+      { id: 'bmx-26-hoos', name: "Hoosier Nationals", date: "Aug 14 - 16, 2026" },
+      { id: 'bmx-26-der', name: "Derby City Nationals", date: "Sep 04 - 06, 2026" },
+      { id: 'bmx-26-nc-gold', name: "NC Gold Cup Finals", date: "Sep 11 - 13, 2026" },
+      { id: 'bmx-26-nw-gold', name: "NW Gold Cup Finals", date: "Sep 11 - 13, 2026" },
+      { id: 'bmx-26-ne-gold', name: "NE Gold Cup Finals", date: "Sep 18 - 20, 2026" },
+      { id: 'bmx-26-sw-gold', name: "SW Gold Cup Finals", date: "Sep 18 - 20, 2026" },
+      { id: 'bmx-26-sc-gold', name: "SC Gold Cup Finals", date: "Sep 25 - 27, 2026" },
+      { id: 'bmx-26-se-gold', name: "SE Gold Cup Finals", date: "Sep 25 - 27, 2026" },
+      { id: 'bmx-26-ec', name: "East Coast Nationals", date: "Oct 09 - 11, 2026" },
+      { id: 'bmx-26-fall', name: "Fall Nationals", date: "Oct 16 - 18, 2026" },
+      { id: 'bmx-26-gat', name: "Gator Nationals", date: "Oct 23 - 25, 2026" },
+      { id: 'bmx-26-tex', name: "Texas Nationals", date: "Oct 30 - Nov 01, 2026" },
+      { id: 'bmx-26-roc', name: "Race of Champions/Grands", date: "Nov 25 - 29, 2026" },
+    ], 
+    options: ["Logan Martin", "Garrett Reynolds", "Hannah Roberts", "Charlotte Worthington", "Rim Nakamura", "Anthony Jeanjean", "Declan Brooks", "Nikita Ducarroz"] 
+  },
   { id: 'snowboarding', name: 'Snowboarding', icon: 'Mountain', color: "text-cyan-400", events: [{ id: 'snow-26-01', name: "X-Games Aspen", date: "Jan 23, 2026" }], options: ["Chloe Kim", "Mark McMorris", "Ayumu Hirano", "Anna Gasser", "Red Gerard", "Su Yiming", "Zoi Sadowski-Synnott", "Valentino Guseli"] },
   { id: 'tennis', name: 'Tennis', icon: 'Target', color: "text-lime-400", events: [{ id: 'ten-26-01', name: "US Open 2026 (NYC)", date: "Aug 31, 2026" }], options: ["Novak Djokovic", "Carlos Alcaraz", "Jannik Sinner", "Daniil Medvedev", "Alexander Zverev", "Iga Swiatek", "Aryna Sabalenka", "Coco Gauff", "Elena Rybakina", "Jessica Pegula"] },
 ];
