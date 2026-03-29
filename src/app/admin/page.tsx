@@ -8,25 +8,32 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ShieldAlert, CheckCircle2, Play, Trophy, User, Hash, Lock, ShieldX, Loader2 } from "lucide-react";
-import { useFirestore, useCollection, useMemoFirebase, updateDocumentNonBlocking, useUser, useDoc } from "@/firebase";
+import { ShieldAlert, CheckCircle2, Play, Trophy, User, Hash, Lock, ShieldX, Loader2, X, Check, Trash2, Search, Target } from "lucide-react";
+import { useFirestore, useCollection, useMemoFirebase, updateDocumentNonBlocking, deleteDocumentNonBlocking, useUser, useDoc } from "@/firebase";
 import { collection, doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
+
+// Shared rosters for Admin response
+const sportPicks: { [key: string]: string[] } = {
+  nba: ["Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", "Cleveland Cavaliers", "Dallas Mavericks", "Denver Nuggets", "Detroit Pistons", "Golden State Warriors", "Houston Rockets", "Indiana Pacers", "LA Clippers", "LA Lakers", "Memphis Grizzlies", "Miami Heat", "Milwaukee Bucks", "Minnesota Timberwolves", "New Orleans Pelicans", "New York Knicks", "Oklahoma City Thunder", "Orlando Magic", "Philadelphia 76ers", "Phoenix Suns", "Portland Trail Blazers", "Sacramento Kings", "San Antonio Spurs", "Toronto Raptors", "Utah Jazz", "Washington Wizards"],
+  nfl: ["Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills", "Carolina Panthers", "Chicago Bears", "Cincinnati Bengals", "Cleveland Browns", "Dallas Cowboys", "Denver Broncos", "Detroit Lions", "Green Bay Packers", "Houston Texans", "Indianapolis Colts", "Jacksonville Jaguars", "Kansas City Chiefs", "Las Vegas Raiders", "Los Angeles Chargers", "Los Angeles Rams", "Miami Dolphins", "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants", "New York Jets", "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Buccaneers", "Tennessee Titans", "Washington Commanders"],
+  hockey: ["Anaheim Ducks", "Arizona Coyotes", "Boston Bruins", "Buffalo Sabres", "Calgary Flames", "Carolina Hurricanes", "Chicago Blackhawks", "Colorado Avalanche", "Columbus Blue Jackets", "Dallas Stars", "Detroit Red Wings", "Edmonton Oilers", "Florida Panthers", "Los Angeles Kings", "Minnesota Wild", "Montreal Canadiens", "Nashville Predators", "New Jersey Devils", "New York Islanders", "New York Rangers", "Ottawa Senators", "Philadelphia Flyers", "Pittsburgh Penguins", "San Jose Sharks", "Seattle Kraken", "St. Louis Blues", "Tampa Bay Lightning", "Toronto Maple Leafs", "Vancouver Canucks", "Vegas Golden Knights", "Washington Capitals", "Winnipeg Jets"],
+  mlb: ["Arizona Diamondbacks", "Atlanta Braves", "Baltimore Orioles", "Boston Red Sox", "Chicago Cubs", "Chicago White Sox", "Cincinnati Reds", "Cleveland Guardians", "Colorado Rockies", "Detroit Tigers", "Houston Astros", "Kansas City Royals", "Los Angeles Angels", "Los Angeles Dodgers", "Miami Marlins", "Milwaukee Brewers", "Minnesota Twins", "New York Mets", "New York Yankees", "Oakland Athletics", "Philadelphia Phillies", "Pittsburgh Pirates", "San Diego Padres", "San Francisco Giants", "Seattle Mariners", "St. Louis Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"]
+};
 
 export default function AdminDashboard() {
   const db = useFirestore();
   const { toast } = useToast();
   const { user, isUserLoading } = useUser();
   
-  // Fetch the current user's profile to check for admin role
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
   const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
   const gamesQuery = useMemoFirebase(() => {
-    // Only allow querying if the user is a verified admin
     if (!user || profile?.role !== 'admin') return null;
     return collection(db, "games");
   }, [db, user, profile?.role]);
@@ -34,15 +41,39 @@ export default function AdminDashboard() {
   const { data: games, isLoading: isCollectionLoading } = useCollection(gamesQuery);
 
   const [scoringGame, setScoringGame] = useState<any | null>(null);
+  const [respondingGame, setRespondingGame] = useState<any | null>(null);
   const [winnerId, setWinnerId] = useState("");
   const [scores, setScores] = useState<{ [key: string]: string }>({});
+  const [selectedPick, setSelectedPick] = useState("");
+  const [searchPickQuery, setSearchPickQuery] = useState("");
 
   const isLoading = isUserLoading || isProfileLoading || (user && profile?.role === 'admin' && isCollectionLoading);
 
   const handleUpdateStatus = (gameId: string, status: string) => {
     const gameRef = doc(db, "games", gameId);
     updateDocumentNonBlocking(gameRef, { status });
-    toast({ title: "Status Updated", description: `Game set to ${status}.` });
+    toast({ title: "Status Updated", description: `Arena set to ${status}.` });
+  };
+
+  const handleDenyChallenge = (gameId: string) => {
+    const gameRef = doc(db, "games", gameId);
+    deleteDocumentNonBlocking(gameRef);
+    toast({ variant: "destructive", title: "Challenge Denied", description: "The matchup has been scrapped." });
+  };
+
+  const handleAcceptChallenge = () => {
+    if (!respondingGame || !selectedPick) return;
+    const gameRef = doc(db, "games", respondingGame.id);
+    
+    updateDocumentNonBlocking(gameRef, {
+      status: "Live",
+      opponentPick: selectedPick,
+      updatedAt: new Date().toISOString(),
+    });
+
+    toast({ title: "Challenge Accepted", description: `Arena Master has entered with ${selectedPick}.` });
+    setRespondingGame(null);
+    setSelectedPick("");
   };
 
   const handleFinalizeGame = () => {
@@ -60,9 +91,13 @@ export default function AdminDashboard() {
       finalScores: finalScores,
     });
 
-    toast({ title: "Game Finalized", description: "Results have been archived." });
+    toast({ title: "Game Finalized", description: "Results archived." });
     setScoringGame(null);
   };
+
+  const filteredPicks = respondingGame 
+    ? (sportPicks[respondingGame.sportId] || []).filter(p => p.toLowerCase().includes(searchPickQuery.toLowerCase()))
+    : [];
 
   if (isLoading) {
     return (
@@ -77,7 +112,6 @@ export default function AdminDashboard() {
     );
   }
 
-  // If not logged in or doesn't have admin role
   if (!user || profile?.role !== 'admin') {
     return (
       <div className="min-h-screen pt-20 flex flex-col items-center justify-center p-4 bg-background">
@@ -87,7 +121,7 @@ export default function AdminDashboard() {
             <ShieldX className="h-10 w-10 text-destructive" />
           </div>
           <div className="space-y-2">
-            <h2 className="font-headline text-2xl font-bold uppercase tracking-tight">Access Denied</h2>
+            <h2 className="font-headline text-2xl font-bold uppercase tracking-tight text-white">Access Denied</h2>
             <p className="text-muted-foreground text-sm">
               Your account does not have administrative clearance for the Arena Control.
             </p>
@@ -96,15 +130,7 @@ export default function AdminDashboard() {
             <Link href="/" className="block w-full">
               <Button variant="outline" className="w-full font-bold uppercase tracking-wider">Return to Lobby</Button>
             </Link>
-            {!user && (
-              <Link href="/login" className="block w-full">
-                <Button className="w-full font-bold uppercase tracking-wider bg-primary">Sign In</Button>
-              </Link>
-            )}
           </div>
-          <p className="text-[10px] text-muted-foreground italic uppercase font-bold tracking-widest pt-4 opacity-50">
-            Security Rule v9.0 Enforced
-          </p>
         </Card>
       </div>
     );
@@ -120,15 +146,15 @@ export default function AdminDashboard() {
             <ShieldAlert className="h-6 w-6 text-destructive" />
           </div>
           <div>
-            <h1 className="font-headline text-3xl font-bold uppercase tracking-tight">Arena <span className="text-destructive">Control</span></h1>
-            <p className="text-muted-foreground text-sm uppercase font-bold tracking-widest">Administrative Override • Logged in as {profile.username}</p>
+            <h1 className="font-headline text-3xl font-bold uppercase tracking-tight text-white">Arena <span className="text-destructive">Control</span></h1>
+            <p className="text-muted-foreground text-sm uppercase font-bold tracking-widest">Administrative Override • {profile.username}</p>
           </div>
         </header>
 
         <Tabs defaultValue="active" className="w-full">
           <TabsList className="w-full h-14 bg-card border grid grid-cols-2 p-1 mb-8">
-            <TabsTrigger value="active" className="font-bold uppercase tracking-widest">Pending & Live</TabsTrigger>
-            <TabsTrigger value="completed" className="font-bold uppercase tracking-widest">History</TabsTrigger>
+            <TabsTrigger value="active" className="font-bold uppercase tracking-widest">Active Matchups</TabsTrigger>
+            <TabsTrigger value="completed" className="font-bold uppercase tracking-widest">Archive</TabsTrigger>
           </TabsList>
 
           <TabsContent value="active" className="space-y-4">
@@ -137,22 +163,38 @@ export default function AdminDashboard() {
                 <Card key={game.id} className="bg-card/50 border-white/5 overflow-hidden">
                   <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                      <div className="space-y-2">
+                      <div className="space-y-2 flex-1">
                         <div className="flex items-center gap-2">
                           <Badge variant={game.status === "Live" ? "destructive" : "secondary"} className="uppercase font-bold">
                             {game.status}
                           </Badge>
-                          <span className="text-xs text-muted-foreground font-mono">ID: {game.id}</span>
+                          <span className="text-[10px] text-muted-foreground font-mono">ID: {game.id}</span>
                         </div>
-                        <h3 className="font-headline text-xl font-bold uppercase">{game.name}</h3>
-                        <p className="text-xs text-muted-foreground">{game.sportId.toUpperCase()} • {game.currencyType.toUpperCase()} {game.prizePool} PRIZE</p>
+                        <h3 className="font-headline text-xl font-bold uppercase text-white">{game.name}</h3>
+                        <div className="flex items-center gap-4 text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+                          <span>{game.sportId.toUpperCase()}</span>
+                          <span>•</span>
+                          <span className="text-accent">{game.entryFee} {game.currencyType.toUpperCase()} ENTRY</span>
+                          <span>•</span>
+                          <span className="text-white">PICK: {game.creatorPick || "NONE"}</span>
+                        </div>
                       </div>
 
                       <div className="flex flex-wrap gap-2">
-                        {game.status === "Open" && (
-                          <Button size="sm" onClick={() => handleUpdateStatus(game.id, "Live")} className="bg-primary hover:bg-primary/90">
-                            <Play className="mr-2 h-4 w-4" /> Start Live
+                        {game.status === "Open" && game.opponentId === 'house-admin' && (
+                          <Button size="sm" onClick={() => setRespondingGame(game)} className="bg-accent text-accent-foreground hover:bg-accent/90">
+                            <Check className="mr-2 h-4 w-4" /> Respond
                           </Button>
+                        )}
+                        {game.status === "Open" && (
+                          <>
+                            <Button size="sm" variant="outline" onClick={() => handleUpdateStatus(game.id, "Live")}>
+                              <Play className="mr-2 h-4 w-4" /> Force Live
+                            </Button>
+                            <Button size="sm" variant="ghost" onClick={() => handleDenyChallenge(game.id)} className="text-muted-foreground hover:text-destructive">
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </>
                         )}
                         {game.status === "Live" && (
                           <Button size="sm" variant="destructive" onClick={() => setScoringGame(game)}>
@@ -177,8 +219,8 @@ export default function AdminDashboard() {
                 <Card key={game.id} className="bg-card/20 border-white/5 opacity-80">
                   <CardContent className="p-6 flex items-center justify-between">
                     <div>
-                      <h4 className="font-bold">{game.name}</h4>
-                      <p className="text-xs text-muted-foreground">Winner: {game.winnerId || "None"}</p>
+                      <h4 className="font-bold text-white uppercase">{game.name}</h4>
+                      <p className="text-xs text-muted-foreground uppercase">Winner: {game.winnerId || "Unassigned"}</p>
                     </div>
                     <Trophy className="h-5 w-5 text-accent" />
                   </CardContent>
@@ -186,64 +228,94 @@ export default function AdminDashboard() {
               ))
             ) : (
               <div className="text-center py-20 bg-card/20 rounded-3xl border border-dashed">
-                <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest opacity-50">No completed history</p>
+                <p className="text-muted-foreground font-headline font-bold uppercase tracking-widest opacity-50">Archive empty</p>
               </div>
             )}
           </TabsContent>
         </Tabs>
       </main>
 
-      {/* Result Modal */}
-      {scoringGame && (
+      {/* Response Modal (House Accept) */}
+      {respondingGame && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
           <Card className="w-full max-w-lg bg-card border-accent/20">
             <CardHeader>
-              <CardTitle className="font-headline uppercase tracking-tight">Finalize: {scoringGame.name}</CardTitle>
-              <CardDescription>Enter final scores and crown the winner.</CardDescription>
+              <CardTitle className="font-headline uppercase tracking-tight text-white">House Response: {respondingGame.name}</CardTitle>
+              <CardDescription>Select the Arena Master's counter-pick to enter the showdown.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="p-4 rounded-xl bg-secondary/30 border border-white/5">
+                <p className="text-[10px] font-bold text-muted-foreground uppercase mb-1">Opponent Locked In</p>
+                <p className="font-headline text-lg text-white uppercase font-bold">{respondingGame.creatorPick}</p>
+              </div>
+
+              <div className="space-y-4">
+                <div className="relative">
+                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    placeholder="Search roster..." 
+                    className="pl-10" 
+                    value={searchPickQuery}
+                    onChange={(e) => setSearchPickQuery(e.target.value)}
+                  />
+                </div>
+                <ScrollArea className="h-[200px] border rounded-xl p-2 bg-black/20">
+                  <div className="grid gap-2">
+                    {filteredPicks.map(p => (
+                      <button 
+                        key={p} 
+                        onClick={() => setSelectedPick(p)}
+                        className={cn(
+                          "w-full text-left px-4 py-3 rounded-lg text-sm font-bold uppercase transition-all",
+                          selectedPick === p ? "bg-accent text-accent-foreground" : "bg-white/5 hover:bg-white/10 text-white"
+                        )}
+                      >
+                        {p}
+                      </button>
+                    ))}
+                  </div>
+                </ScrollArea>
+              </div>
+            </CardContent>
+            <CardFooter className="flex gap-3">
+              <Button variant="ghost" onClick={() => setRespondingGame(null)} className="flex-1 font-bold uppercase">Cancel</Button>
+              <Button 
+                onClick={handleAcceptChallenge} 
+                disabled={!selectedPick}
+                className="flex-1 bg-accent text-accent-foreground font-bold uppercase"
+              >
+                Accept Arena
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      )}
+
+      {/* Finalize Modal */}
+      {scoringGame && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <Card className="w-full max-w-lg bg-card border-destructive/20">
+            <CardHeader>
+              <CardTitle className="font-headline uppercase tracking-tight text-white">Finalize Results</CardTitle>
+              <CardDescription>Enter final data and declare the victor.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label className="text-xs font-bold uppercase text-muted-foreground">Winning User ID</Label>
+                <Label className="text-xs font-bold uppercase text-muted-foreground">Winning UID</Label>
                 <div className="relative">
                   <Trophy className="absolute left-3 top-3 h-4 w-4 text-accent" />
                   <Input 
-                    placeholder="Enter UID of winner" 
+                    placeholder="Enter winner UID" 
                     className="pl-10" 
                     value={winnerId}
                     onChange={(e) => setWinnerId(e.target.value)}
                   />
                 </div>
               </div>
-
-              <div className="space-y-4">
-                <Label className="text-xs font-bold uppercase text-muted-foreground">Participant Scores</Label>
-                <div className="grid gap-3">
-                  <div className="flex items-center gap-3">
-                    <User className="h-4 w-4 text-muted-foreground" />
-                    <Input 
-                      placeholder="User UID" 
-                      className="flex-1"
-                      onChange={(e) => {
-                        const uid = e.target.value;
-                        setScores(prev => ({ ...prev, [uid]: prev[uid] || "" }));
-                      }}
-                    />
-                    <Hash className="h-4 w-4 text-muted-foreground" />
-                    <Input 
-                      placeholder="Score" 
-                      className="w-24"
-                      onChange={(e) => {
-                        // For a simple demo, we'd need to know the UIDs. 
-                        // In a real app, we'd iterate over the game's participants list.
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
             </CardContent>
             <CardFooter className="flex gap-3">
               <Button variant="ghost" onClick={() => setScoringGame(null)} className="flex-1 font-bold uppercase">Cancel</Button>
-              <Button onClick={handleFinalizeGame} className="flex-1 bg-accent text-accent-foreground font-bold uppercase">Complete Arena</Button>
+              <Button onClick={handleFinalizeGame} className="flex-1 bg-destructive text-white font-bold uppercase">Archive Matchup</Button>
             </CardFooter>
           </Card>
         </div>
