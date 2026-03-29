@@ -121,6 +121,12 @@ const sports = [
       { id: 'nfl-2026-thanksgiving-2', name: "Thanksgiving: Cowboys Hosted Match", date: "Nov 26, 2026" },
       { id: 'nfl-2026-thanksgiving-3', name: "Thanksgiving: Night Showdown", date: "Nov 26, 2026" },
       { id: 'nfl-2026-xmas-fri', name: "Christmas Day: Friday Football Slate", date: "Dec 25, 2026" },
+      { id: 'nfl-2027-wildcard-1', name: "2027 Wild Card Weekend", date: "Jan 09-11, 2027" },
+      { id: 'nfl-2027-divisional', name: "2027 Divisional Playoffs", date: "Jan 16-17, 2027" },
+      { id: 'nfl-2027-conference', name: "2027 Conference Championships", date: "Jan 24, 2027" },
+      { id: 'nfl-2027-probowl', name: "The Pro Bowl Games 2027", date: "Feb 07, 2027" },
+      { id: 'nfl-sb-lxi', name: "Super Bowl LXI (Inglewood, CA)", date: "Feb 14, 2027" },
+      { id: 'nfl-2027-draft', name: "2027 NFL Draft Day 1", date: "Apr 22, 2027" },
     ], 
     options: ["Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills", "Carolina Panthers", "Chicago Bears", "Cincinnati Bengals", "Cleveland Browns", "Dallas Cowboys", "Denver Broncos", "Detroit Lions", "Green Bay Packers", "Houston Texans", "Indianapolis Colts", "Jacksonville Jaguars", "Kansas City Chiefs", "Las Vegas Raiders", "Los Angeles Chargers", "Los Angeles Rams", "Miami Dolphins", "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants", "New York Jets", "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Buccaneers", "Tennessee Titans", "Washington Commanders"] 
   },
@@ -185,7 +191,6 @@ function CreateGameForm() {
   const filteredFriends = availableFriends.filter(friend => (friend.username || friend.name || "").toLowerCase().includes(searchFriendQuery.toLowerCase()));
 
   const entryAmount = parseFloat(fee) || 0;
-  // Standardizing 100:1 ratio - GC matching provides SC prize
   const prizeInCoins = entryAmount * 2;
   const prizeInUSD = (prizeInCoins / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
