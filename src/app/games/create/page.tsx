@@ -73,7 +73,7 @@ const sports = [
   { id: 'skateboarding', name: 'Skate Arena', icon: <Zap className="w-5 h-5" />, color: "text-yellow-400", events: [{ id: 'sk-1', name: "X-Games Summer (CA)", date: "Jul 20, 2026" }], options: ["Nyjah Huston", "Yuto Horigome", "Sky Brown", "Rayssa Leal", "Kelvin Hoefler", "Leticia Bufoni", "Shane O'Neill", "Aurelien Giraud", "Chloe Covell"] },
   { id: 'bmx', name: 'BMX Arena', icon: <Bike className="w-5 h-5" />, color: "text-red-400", events: [{ id: 'bmx-1', name: "UCI World Cup Final", date: "May 24, 2026" }], options: ["Logan Martin", "Garrett Reynolds", "Hannah Roberts", "Charlotte Worthington", "Rim Nakamura", "Anthony Jeanjean", "Declan Brooks", "Nikita Ducarroz"] },
   { id: 'snowboarding', name: 'Snow Arena', icon: <Mountain className="w-5 h-5" />, color: "text-cyan-400", events: [{ id: 'snow-1', name: "X-Games Aspen", date: "Jan 23, 2026" }], options: ["Chloe Kim", "Mark McMorris", "Shaun White (Ret.)", "Ayumu Hirano", "Anna Gasser", "Red Gerard", "Su Yiming", "Zoi Sadowski-Synnott", "Valentino Guseli"] },
-  { id: 'nascar', name: 'NASCAR Arena', icon: <Flag className="w-5 h-5" />, color: "text-red-500", events: [{ id: 'nas-1', name: "Daytona 500", date: "Feb 15, 2026" }], options: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney", "William Byron", "Christopher Bell", "Joey Logano", "Martin Truex Jr.", "Tyler Reddick", "Ross Chastain", "Kyle Busch", "Bubba Wallace", "Brad Keselowski", "Ty Gibbs", "Chris Buescher", "Michael McDowell", "Alex Bowman", "Chase Briscoe"] },
+  { id: 'nascar', name: 'NASCAR Arena', icon: <Flag className="w-5 h-5" />, color: "text-red-500", events: [{ id: 'nas-1', name: "Daytona 500", date: "Feb 15, 2026" }], options: ["Kyle Larson", "Chase Elliott", "Devny Hamlin", "Ryan Blaney", "William Byron", "Christopher Bell", "Joey Logano", "Martin Truex Jr.", "Tyler Reddick", "Ross Chastain", "Kyle Busch", "Bubba Wallace", "Brad Keselowski", "Ty Gibbs", "Chris Buescher", "Michael McDowell", "Alex Bowman", "Chase Briscoe"] },
   { id: 'golf', name: 'Golf Arena', icon: <Target className="h-5 w-5" />, color: "text-emerald-400", events: [{ id: 'g-4', name: "The Masters 2026", date: "Apr 09, 2026" }], options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Xander Schauffele", "Ludvig Åberg", "Brooks Koepka", "Bryson DeChambeau", "Tiger Woods", "Jordan Spieth", "Justin Thomas", "Max Homa", "Wyndham Clark", "Patrick Cantlay", "Collin Morikawa", "Cameron Smith", "Hideki Matsuyama", "Tommy Fleetwood"] },
 ];
 
@@ -121,9 +121,14 @@ function CreateGameForm() {
   const filteredPicks = currentSport?.options.filter(option => option.toLowerCase().includes(searchPickQuery.toLowerCase())) || [];
   const filteredFriends = availableFriends.filter(friend => (friend.username || friend.name || "").toLowerCase().includes(searchFriendQuery.toLowerCase()));
 
-  // 100:1 Ratio Prize Logic ($1 = 100 Coins)
-  // Both GC and SC follow the same dollar value in the arena per instruction.
-  const calculatedPrize = (parseFloat(fee) * 2).toFixed(2);
+  // 100:1 Arena Ratio Logic ($1 = 100 Coins)
+  const formatAsUSD = (amount: number) => {
+    return (amount / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  };
+
+  const entryAmount = parseFloat(fee) || 0;
+  const prizeInCoins = entryAmount * 2;
+  const prizeInUSD = formatAsUSD(prizeInCoins);
 
   const handleCreate = () => {
     if (!user) {
@@ -154,7 +159,7 @@ function CreateGameForm() {
       sportId: selectedSport,
       currencyType: currency,
       entryFee: cost,
-      prizePool: parseFloat(calculatedPrize),
+      prizePool: prizeInCoins,
       prizeCurrency: "sweeps", 
       status: "Open",
       inviteCode: inviteCode,
@@ -272,9 +277,9 @@ function CreateGameForm() {
                 <Zap className="h-5 w-5 text-accent" />
               </div>
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Arena Ratio: 100 Coins = $1.00</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Arena Exchange: 100 Coins = $1.00</p>
                 <p className="text-xs text-white/80 leading-relaxed">
-                  Enter with Gold Coins or Sweeps Coins to win Redeemable Sweeps Coins (SC) at the 100:1 arena ratio.
+                  Enter with Gold Coins or Sweeps Coins to win Redeemable Sweeps Coins (SC) at the 100:1 elite ratio.
                 </p>
               </div>
             </div>
@@ -285,14 +290,14 @@ function CreateGameForm() {
                   <RadioGroupItem value="gold" id="gold" />
                   <Label htmlFor="gold" className="uppercase text-xs font-bold">Gold Coins</Label>
                 </div>
-                <p className="text-[10px] text-muted-foreground">Social Stakes</p>
+                <p className="text-[10px] text-muted-foreground">Social Stakes • $1 = 100 GC</p>
               </div>
               <div className={`p-4 rounded-xl border-2 transition-all cursor-pointer ${currency === 'sweeps' ? 'border-accent bg-accent/5' : 'border-white/5'}`}>
                 <div className="flex items-center gap-2 mb-2">
                   <RadioGroupItem value="sweeps" id="sweeps" />
                   <Label htmlFor="sweeps" className="uppercase text-xs font-bold text-accent">Sweeps Coins</Label>
                 </div>
-                <p className="text-[10px] text-muted-foreground">Prize Stakes</p>
+                <p className="text-[10px] text-muted-foreground">Prize Stakes • $1 = 100 SC</p>
               </div>
             </RadioGroup>
             
@@ -304,15 +309,15 @@ function CreateGameForm() {
                   <SelectContent>
                     {currency === 'gold' ? (
                       <>
-                        <SelectItem value="1000">1,000 GC</SelectItem>
-                        <SelectItem value="5000">5,000 GC</SelectItem>
-                        <SelectItem value="10000">10,000 GC</SelectItem>
+                        <SelectItem value="1000">1,000 GC ($10.00)</SelectItem>
+                        <SelectItem value="5000">5,000 GC ($50.00)</SelectItem>
+                        <SelectItem value="10000">10,000 GC ($100.00)</SelectItem>
                       </>
                     ) : (
                       <>
-                        <SelectItem value="10">10 SC</SelectItem>
-                        <SelectItem value="50">50 SC</SelectItem>
-                        <SelectItem value="100">100 SC</SelectItem>
+                        <SelectItem value="1000">1,000 SC ($10.00)</SelectItem>
+                        <SelectItem value="5000">5,000 SC ($50.00)</SelectItem>
+                        <SelectItem value="10000">10,000 SC ($100.00)</SelectItem>
                       </>
                     )}
                   </SelectContent>
@@ -321,9 +326,12 @@ function CreateGameForm() {
               
               <div className="p-4 rounded-xl bg-secondary/20 border border-white/5 text-right">
                 <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Total Reward Pool</p>
-                <div className="flex items-center justify-end gap-2 text-accent font-headline font-bold text-xl">
-                  <Trophy className="h-4 w-4" />
-                  {calculatedPrize} SC
+                <div className="flex flex-col items-end">
+                  <div className="flex items-center gap-2 text-accent font-headline font-bold text-2xl">
+                    <Trophy className="h-5 w-5" />
+                    {prizeInCoins.toLocaleString()} SC
+                  </div>
+                  <span className="text-[10px] font-black text-white/60 uppercase tracking-tighter">Value: {prizeInUSD}</span>
                 </div>
               </div>
             </div>

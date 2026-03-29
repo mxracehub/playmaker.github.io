@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -59,6 +60,10 @@ export function Navbar() {
     return val.toLocaleString();
   };
 
+  const formatToUSD = (val: number) => {
+    return (val / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b bg-card/80 backdrop-blur-md shadow-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
@@ -84,14 +89,20 @@ export function Navbar() {
             {!isUserLoading && user ? (
               <>
                 <div className="hidden items-center gap-3 lg:flex">
-                  <div className="flex items-center gap-1.5 rounded-full bg-secondary/30 px-3 py-1 border border-white/5">
-                    <Coins className="h-3.5 w-3.5 text-yellow-500" />
-                    <span className="text-xs font-bold text-white tracking-tight">{formatBalance(goldBalance)}</span>
+                  <div className="flex flex-col items-end leading-none">
+                    <div className="flex items-center gap-1.5 rounded-full bg-secondary/30 px-3 py-1 border border-white/5 mb-1">
+                      <Coins className="h-3 w-3 text-yellow-500" />
+                      <span className="text-[10px] font-black text-white uppercase tracking-tighter">{formatBalance(goldBalance)} GC</span>
+                    </div>
+                    <span className="text-[8px] font-bold text-muted-foreground uppercase mr-2">{formatToUSD(goldBalance)}</span>
                   </div>
                   
-                  <div className="flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 border border-accent/20">
-                    <Landmark className="h-3.5 w-3.5 text-accent" />
-                    <span className="text-xs font-bold text-accent tracking-tight">{sweepBalance.toFixed(2)}</span>
+                  <div className="flex flex-col items-end leading-none">
+                    <div className="flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 border border-accent/20 mb-1">
+                      <Landmark className="h-3 w-3 text-accent" />
+                      <span className="text-[10px] font-black text-accent uppercase tracking-tighter">{sweepBalance.toFixed(2)} SC</span>
+                    </div>
+                    <span className="text-[8px] font-bold text-accent/60 uppercase mr-2">{formatToUSD(sweepBalance)}</span>
                   </div>
                 </div>
                 
