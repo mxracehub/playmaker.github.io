@@ -8,7 +8,27 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ShieldAlert, CheckCircle2, Play, Trophy, User, Hash, Lock, ShieldX, Loader2, X, Check, Trash2, Search, Target, Zap, UserCheck, Swords, Upload, Database, RefreshCw, Filter } from "lucide-react";
+import { 
+  ShieldAlert, 
+  CheckCircle2, 
+  Play, 
+  Trophy, 
+  User, 
+  ShieldX, 
+  Loader2, 
+  X, 
+  Check, 
+  Trash2, 
+  Search, 
+  Target, 
+  Zap, 
+  UserCheck, 
+  Upload, 
+  Database, 
+  RefreshCw, 
+  Filter,
+  ArrowRight
+} from "lucide-react";
 import { useFirestore, useCollection, useMemoFirebase, updateDocumentNonBlocking, deleteDocumentNonBlocking, useUser, useDoc } from "@/firebase";
 import { collection, doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -111,7 +131,8 @@ export default function AdminDashboard() {
       return;
     }
 
-    if (!housePickOverride && scoringGame.opponentId === 'house-admin') {
+    const isHouseGame = scoringGame.opponentId === 'house-admin';
+    if (!housePickOverride && isHouseGame && !scoringGame.opponentPick) {
       toast({ variant: "destructive", title: "Selection Required", description: "House must have a locked-in pick to finalize results." });
       return;
     }
@@ -127,7 +148,7 @@ export default function AdminDashboard() {
       status: "Completed",
       winnerId: winnerId,
       finalScores: finalScores,
-      opponentPick: housePickOverride || scoringGame.opponentPick || "NONE",
+      opponentPick: housePickOverride || scoringGame.opponentPick || "HOUSE_MASTER",
       updatedAt: new Date().toISOString(),
     });
 
@@ -144,7 +165,6 @@ export default function AdminDashboard() {
       title: "Syncing Arena Feeds",
       description: "Fetching official results from professional sports providers...",
     });
-    // SIMULATION
     setTimeout(() => {
       toast({
         title: "Sync Complete",
@@ -527,7 +547,7 @@ export default function AdminDashboard() {
                           <UserCheck className="h-3 w-3" /> Opponent (Arena Master)
                         </div>
                         <h3 className="font-headline text-xl font-bold text-white uppercase italic truncate px-2">
-                          {housePickOverride || "PENDING SELECTION"}
+                          {housePickOverride || scoringGame.opponentPick || "PENDING SELECTION"}
                         </h3>
                       </div>
                       
@@ -613,7 +633,7 @@ export default function AdminDashboard() {
                 </Button>
                 <Button 
                   onClick={handleFinalizeGame} 
-                  disabled={!winnerId || (scoringGame.opponentId === 'house-admin' && !housePickOverride)}
+                  disabled={!winnerId || (scoringGame.opponentId === 'house-admin' && !housePickOverride && !scoringGame.opponentPick)}
                   className="flex-[2] h-14 bg-destructive text-white font-black uppercase tracking-[0.2em] shadow-2xl shadow-destructive/20 hover:bg-destructive/90 transition-all active:scale-95 disabled:opacity-30"
                 >
                   <CheckCircle2 className="mr-3 h-5 w-5" /> Confirm & Archive Showdown
