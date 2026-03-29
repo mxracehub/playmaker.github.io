@@ -28,7 +28,8 @@ import {
   Zap,
   ArrowRight,
   Loader2,
-  Search
+  Search,
+  Timer
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore, useUser, addDocumentNonBlocking, useDoc, useMemoFirebase, useCollection } from "@/firebase";
@@ -103,7 +104,6 @@ const sports = [
     events: [
       { id: 'nba-1', name: "Knicks @ Celtics", date: "Jan 12, 2026" },
       { id: 'nba-2', name: "Lakers @ Warriors", date: "Jan 15, 2026" },
-      { id: 'nba-3', name: "Bucks @ 76ers", date: "Jan 18, 2026" },
       { id: 'nba-ny', name: "Nets @ Knicks (NY)", date: "Jan 20, 2026" },
       { id: 'nba-as', name: "All-Star Game 2026", date: "Feb 15, 2026" },
       { id: 'nba-f1', name: "NBA Finals Game 1", date: "Jun 04, 2026" },
@@ -123,10 +123,8 @@ const sports = [
     icon: <Trophy className="w-5 h-5" />, 
     color: "text-green-500", 
     events: [
-      { id: 'nfl-p1', name: "NFL Wild Card Round", date: "Jan 10, 2026" },
-      { id: 'nfl-p2', name: "Divisional Round", date: "Jan 17, 2026" },
-      { id: 'nfl-p3', name: "Championship Sunday", date: "Jan 25, 2026" },
       { id: 'nfl-sb', name: "Super Bowl LX (New Orleans)", date: "Feb 08, 2026" },
+      { id: 'nfl-p1', name: "NFL Wild Card Round", date: "Jan 10, 2026" },
       { id: 'nfl-w1', name: "Season Opener 2026", date: "Sep 10, 2026" },
     ], 
     options: [
@@ -146,8 +144,6 @@ const sports = [
     color: "text-cyan-400", 
     events: [
       { id: 'h-1', name: "NHL Winter Classic", date: "Jan 01, 2026" },
-      { id: 'h-2', name: "Rangers @ Islanders", date: "Jan 15, 2026" },
-      { id: 'h-p', name: "Stanley Cup Playoffs G1", date: "Apr 18, 2026" },
       { id: 'h-f', name: "Stanley Cup Finals G1", date: "Jun 08, 2026" },
     ], 
     options: [
@@ -166,15 +162,43 @@ const sports = [
     icon: <SoccerIcon className="w-5 h-5" />, 
     color: "text-white", 
     events: [
-      { id: 's-1', name: "El Clásico: Madrid vs Barca", date: "Mar 01, 2026" },
-      { id: 's-3', name: "Champions League Final", date: "May 30, 2026" },
       { id: 's-4', name: "World Cup 2026: Opening Match", date: "Jun 11, 2026" },
       { id: 's-8', name: "World Cup 2026: Grand Final", date: "Jul 19, 2026" },
+      { id: 's-1', name: "Champions League Final", date: "May 30, 2026" },
     ], 
     options: [
       "USA", "Mexico", "Canada", "Argentina", "Brazil", "England", "France", "Germany", "Spain", "Italy", 
       "Portugal", "Netherlands", "Real Madrid", "Barcelona", "Manchester City", "Liverpool", "Arsenal", 
       "PSG", "Bayern Munich", "Inter Milan", "Juventus", "AC Milan"
+    ] 
+  },
+  { 
+    id: 'ufc', 
+    name: 'UFC Arena', 
+    icon: <Swords className="w-5 h-5" />, 
+    color: "text-red-600", 
+    events: [
+      { id: 'ufc-300', name: "UFC 300: Global Championship", date: "Apr 11, 2026" },
+      { id: 'ufc-308', name: "Year End Carnage", date: "Dec 12, 2026" },
+    ], 
+    options: [
+      "Jon Jones", "Alex Pereira", "Islam Makhachev", "Leon Edwards", "Sean O'Malley", "Conor McGregor", 
+      "Ilia Topuria", "Dustin Poirier", "Max Holloway", "Israel Adesanya", "Tom Aspinall", "Charles Oliveira", 
+      "Justin Gaethje", "Alexandre Pantoja", "Dricus Du Plessis", "Sean Strickland", "Khamzat Chimaev"
+    ] 
+  },
+  { 
+    id: 'boxing', 
+    name: 'Boxing Arena', 
+    icon: <BoxingIcon className="w-5 h-5" />, 
+    color: "text-yellow-600", 
+    events: [
+      { id: 'box-1', name: "Heavyweight Title Unification", date: "Mar 14, 2026" },
+      { id: 'box-2', name: "Las Vegas Showdown", date: "Sep 19, 2026" },
+    ], 
+    options: [
+      "Tyson Fury", "Oleksandr Usyk", "Anthony Joshua", "Canelo Alvarez", "Terence Crawford", "Naoya Inoue", 
+      "Gervonta Davis", "Shakur Stevenson", "Artur Beterbiev", "Dmitry Bivol", "Devin Haney", "Ryan Garcia"
     ] 
   },
   { 
@@ -184,7 +208,6 @@ const sports = [
     color: "text-blue-500", 
     events: [
       { id: 'm-1', name: "MLB Opening Day 2026", date: "Mar 26, 2026" },
-      { id: 'm-4', name: "MLB All-Star Game", date: "Jul 14, 2026" },
       { id: 'm-14', name: "World Series Game 1", date: "Oct 23, 2026" },
     ], 
     options: [
@@ -193,7 +216,105 @@ const sports = [
       "Houston Astros", "Kansas City Royals", "Los Angeles Angels", "Los Angeles Dodgers", "Miami Marlins", 
       "Milwaukee Brewers", "Minnesota Twins", "New York Mets", "New York Yankees", "Oakland Athletics", 
       "Philadelphia Phillies", "Pittsburgh Pirates", "San Diego Padres", "San Francisco Giants", "Seattle Mariners", 
-      "St. Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"
+      "St. Louis Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"
+    ] 
+  },
+  { 
+    id: 'tennis', 
+    name: 'Tennis Arena', 
+    icon: <TennisIcon className="w-5 h-5" />, 
+    color: "text-lime-400", 
+    events: [
+      { id: 'ten-1', name: "Australian Open Final", date: "Jan 25, 2026" },
+      { id: 'ten-2', name: "Wimbledon Championship", date: "Jul 12, 2026" },
+      { id: 'ten-3', name: "US Open Final", date: "Sep 13, 2026" },
+    ], 
+    options: [
+      "Novak Djokovic", "Carlos Alcaraz", "Jannik Sinner", "Daniil Medvedev", "Alexander Zverev", 
+      "Iga Swiatek", "Aryna Sabalenka", "Coco Gauff", "Elena Rybakina", "Jessica Pegula"
+    ] 
+  },
+  { 
+    id: 'pickleball', 
+    name: 'Pickleball Arena', 
+    icon: <PickleballIcon className="w-5 h-5" />, 
+    color: "text-yellow-500", 
+    events: [
+      { id: 'pb-1', name: "PPA Masters", date: "Jan 15, 2026" },
+      { id: 'pb-2', name: "USAP National Championships", date: "Nov 08, 2026" },
+    ], 
+    options: [
+      "Ben Johns", "Anna Leigh Waters", "Tyson McGuffin", "Lea Jansen", "Riley Newman", 
+      "Catherine Parenteau", "JW Johnson", "Dylan Frazier", "Anna Bright"
+    ] 
+  },
+  { 
+    id: 'volleyball', 
+    name: 'Volleyball Arena', 
+    icon: <VolleyballIcon className="w-5 h-5" />, 
+    color: "text-indigo-400", 
+    events: [
+      { id: 'v-1', name: "Nations League Finals", date: "Jul 05, 2026" },
+      { id: 'v-2', name: "World Championship G1", date: "Sep 20, 2026" },
+    ], 
+    options: [
+      "USA", "Poland", "Brazil", "Turkey", "Italy", "Japan", "Serbia", "China", "France", "Slovenia"
+    ] 
+  },
+  { 
+    id: 'surfing', 
+    name: 'Surfing Arena', 
+    icon: <Waves className="w-5 h-5" />, 
+    color: "text-blue-400", 
+    events: [
+      { id: 'surf-1', name: "Pipe Masters (Oahu)", date: "Jan 29, 2026" },
+      { id: 'surf-2', name: "Teahupo'o Pro (Tahiti)", date: "Aug 15, 2026" },
+    ], 
+    options: [
+      "John John Florence", "Gabriel Medina", "Filipe Toledo", "Italo Ferreira", "Jack Robinson", 
+      "Carissa Moore", "Caroline Marks", "Tyler Wright", "Stephanie Gilmore", "Molly Picklum"
+    ] 
+  },
+  { 
+    id: 'skateboarding', 
+    name: 'Skate Arena', 
+    icon: <Zap className="w-5 h-5" />, 
+    color: "text-yellow-400", 
+    events: [
+      { id: 'sk-1', name: "X-Games Summer (CA)", date: "Jul 20, 2026" },
+      { id: 'sk-2', name: "SLS Super Crown", date: "Nov 15, 2026" },
+    ], 
+    options: [
+      "Nyjah Huston", "Yuto Horigome", "Sky Brown", "Rayssa Leal", "Kelvin Hoefler", 
+      "Leticia Bufoni", "Shane O'Neill", "Aurelien Giraud", "Chloe Covell"
+    ] 
+  },
+  { 
+    id: 'bmx', 
+    name: 'BMX Arena', 
+    icon: <Bike className="w-5 h-5" />, 
+    color: "text-red-400", 
+    events: [
+      { id: 'bmx-1', name: "UCI World Cup Final", date: "May 24, 2026" },
+      { id: 'bmx-2', name: "X-Games Dirt Final", date: "Jul 22, 2026" },
+    ], 
+    options: [
+      "Logan Martin", "Garrett Reynolds", "Hannah Roberts", "Charlotte Worthington", 
+      "Rim Nakamura", "Anthony Jeanjean", "Declan Brooks", "Nikita Ducarroz"
+    ] 
+  },
+  { 
+    id: 'snowboarding', 
+    name: 'Snow Arena', 
+    icon: <Mountain className="w-5 h-5" />, 
+    color: "text-cyan-400", 
+    events: [
+      { id: 'snow-1', name: "X-Games Aspen", date: "Jan 23, 2026" },
+      { id: 'snow-2', name: "Dew Tour Finals", date: "Feb 20, 2026" },
+    ], 
+    options: [
+      "Chloe Kim", "Mark McMorris", "Shaun White (Ret.)", "Ayumu Hirano", "Anna Gasser", 
+      "Red Gerard", "Su Yiming", "Zoi Sadowski-Synnott", "Valentino Guseli"
     ] 
   },
   { 
@@ -203,8 +324,7 @@ const sports = [
     color: "text-red-500", 
     events: [
       { id: 'nas-1', name: "Daytona 500", date: "Feb 15, 2026" },
-      { id: 'nas-6', name: "Talladega Superspeedway", date: "Apr 19, 2026" },
-      { id: 'nas-10', name: "Coca-Cola 600", date: "May 24, 2026" },
+      { id: 'nas-2', name: "Talladega Showdown", date: "Apr 19, 2026" },
       { id: 'nas-20', name: "Phoenix Championship", date: "Nov 08, 2026" },
     ], 
     options: [
@@ -220,30 +340,13 @@ const sports = [
     color: "text-emerald-400", 
     events: [
       { id: 'g-4', name: "The Masters 2026", date: "Apr 09, 2026" },
-      { id: 'g-5', name: "PGA Championship", date: "May 14, 2026" },
       { id: 'g-7', name: "U.S. Open 2026", date: "Jun 18, 2026" },
-      { id: 'g-10', name: "Ryder Cup 2026 (Ireland)", date: "Sep 25, 2026" },
+      { id: 'g-10', name: "Ryder Cup 2026", date: "Sep 25, 2026" },
     ], 
     options: [
       "Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Xander Schauffele", "Ludvig Åberg", 
       "Brooks Koepka", "Bryson DeChambeau", "Tiger Woods", "Jordan Spieth", "Justin Thomas", "Max Homa", 
       "Wyndham Clark", "Patrick Cantlay", "Collin Morikawa", "Cameron Smith", "Hideki Matsuyama", "Tommy Fleetwood"
-    ] 
-  },
-  { 
-    id: 'ufc', 
-    name: 'UFC Arena', 
-    icon: <Swords className="w-5 h-5" />, 
-    color: "text-red-600", 
-    events: [
-      { id: 'ufc-300', name: "UFC 300: Global Championship", date: "Apr 11, 2026" },
-      { id: 'ufc-302', name: "International Fight Week", date: "Jun 27, 2026" },
-      { id: 'ufc-308', name: "Year End Carnage", date: "Dec 12, 2026" },
-    ], 
-    options: [
-      "Jon Jones", "Alex Pereira", "Islam Makhachev", "Leon Edwards", "Sean O'Malley", "Conor McGregor", 
-      "Ilia Topuria", "Dustin Poirier", "Max Holloway", "Israel Adesanya", "Tom Aspinall", "Charles Oliveira", 
-      "Justin Gaethje", "Alexandre Pantoja", "Dricus Du Plessis", "Sean Strickland", "Khamzat Chimaev"
     ] 
   },
 ];
@@ -255,11 +358,9 @@ function CreateGameForm() {
   const { user } = useUser();
   const db = useFirestore();
   
-  // Fetch current user's profile for real coin balances
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
   const { data: profile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
-  // Fetch all user profiles to find actual friends for selection
   const allUsersQuery = useMemoFirebase(() => collection(db, "userProfiles"), [db]);
   const { data: allUsers, isLoading: isUsersLoading } = useCollection(allUsersQuery);
 
@@ -272,7 +373,6 @@ function CreateGameForm() {
   const [currency, setCurrency] = useState("gold");
   const [fee, setFee] = useState("1000");
 
-  // Derive available opponents from Firestore profile
   const availableFriends = useMemo(() => {
     if (!allUsers || !profile) return [HOUSE_ADMIN];
     const userFriends = allUsers.filter(u => (profile.friendIds || []).includes(u.id));
@@ -282,15 +382,16 @@ function CreateGameForm() {
   useEffect(() => {
     if (isProfileLoading || isUsersLoading) return;
     
+    // Only set initial values once if not already set manually
     const friendId = searchParams.get('friendId');
-    if (friendId && (availableFriends.some(f => f.id === friendId))) {
+    if (friendId && !selectedFriend && (availableFriends.some(f => f.id === friendId))) {
       setSelectedFriend(friendId);
     }
     const sportId = searchParams.get('sport');
-    if (sportId && sports.some(s => s.id === sportId)) {
+    if (sportId && !selectedSport && sports.some(s => s.id === sportId)) {
       setSelectedSport(sportId);
     }
-  }, [searchParams, availableFriends.length, isProfileLoading, isUsersLoading]);
+  }, [searchParams, availableFriends.length, isProfileLoading, isUsersLoading, selectedFriend, selectedSport]);
 
   const currentSport = sports.find(s => s.id === selectedSport);
   const filteredPicks = currentSport?.options.filter(option => option.toLowerCase().includes(searchPickQuery.toLowerCase())) || [];
