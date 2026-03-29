@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -92,91 +91,91 @@ const sports = [
   },
   { 
     id: 'nfl', 
-    name: 'NFL Gridiron', 
+    name: 'NFL Arena', 
     img: "https://picsum.photos/seed/football/400/250",
     icon: <Trophy className="w-5 h-5 text-green-500" />
   },
   { 
     id: 'hockey', 
-    name: 'NHL Frozen', 
+    name: 'NHL Arena', 
     img: "https://picsum.photos/seed/hockey/400/250",
     icon: <Snowflake className="w-5 h-5 text-cyan-400" />
   },
   { 
     id: 'soccer', 
-    name: 'Pitch Battle', 
+    name: 'Soccer Arena', 
     img: "https://picsum.photos/seed/soccer/400/250",
     icon: <SoccerIcon className="w-5 h-5 text-white" />
   },
   { 
     id: 'ufc', 
-    name: 'The Octagon', 
+    name: 'UFC Arena', 
     img: "https://picsum.photos/seed/ufc/400/250",
     icon: <Swords className="w-5 h-5 text-red-600" />
   },
   { 
     id: 'boxing', 
-    name: 'Main Event', 
+    name: 'Boxing Arena', 
     img: "https://picsum.photos/seed/boxing/400/250",
     icon: <BoxingIcon className="w-5 h-5 text-yellow-600" />
   },
   { 
     id: 'mlb', 
-    name: 'Diamond Duel', 
+    name: 'MLB Arena', 
     img: "https://picsum.photos/seed/baseball/400/250",
     icon: <BaseballIcon className="w-5 h-5 text-blue-500" />
   },
   { 
     id: 'tennis', 
-    name: 'Grand Slam', 
+    name: 'Tennis Arena', 
     img: "https://picsum.photos/seed/tennis/400/250",
-    icon: <TennisIcon className="w-5 h-5 text-lime-400" />
+    icon: <Target className="w-5 h-5 text-lime-400" />
   },
   { 
     id: 'pickleball', 
-    name: 'Kitchen Combat', 
+    name: 'Pickleball Arena', 
     img: "https://picsum.photos/seed/pickle/400/250",
     icon: <PickleballIcon className="w-5 h-5 text-yellow-500" />
   },
   { 
     id: 'volleyball', 
-    name: 'The Net Zone', 
+    name: 'Volleyball Arena', 
     img: "https://picsum.photos/seed/volley/400/250",
     icon: <VolleyballIcon className="w-5 h-5 text-indigo-400" />
   },
   { 
     id: 'surfing', 
-    name: 'Pipe Masters', 
+    name: 'Surfing Arena', 
     img: "https://picsum.photos/seed/surfing/400/250",
     icon: <Waves className="w-5 h-5 text-blue-400" />
   },
   { 
     id: 'skateboarding', 
-    name: 'Skate Park', 
+    name: 'Skate Arena', 
     img: "https://picsum.photos/seed/skate/400/250",
     icon: <Zap className="w-5 h-5 text-yellow-400" />
   },
   { 
     id: 'bmx', 
-    name: 'BMX Dirt', 
+    name: 'BMX Arena', 
     img: "https://picsum.photos/seed/bmx/400/250",
     icon: <Bike className="w-5 h-5 text-red-400" />
   },
   { 
     id: 'snowboarding', 
-    name: 'Halfpipe', 
+    name: 'Snow Arena', 
     img: "https://picsum.photos/seed/snow/400/250",
     icon: <Mountain className="w-5 h-5 text-cyan-400" />
   },
   { 
     id: 'nascar', 
-    name: 'Victory Lane', 
+    name: 'NASCAR Arena', 
     img: "https://picsum.photos/seed/nascar/400/250",
     icon: <Flag className="w-5 h-5 text-red-500" />
   },
   { 
     id: 'golf', 
-    name: 'Masters Green', 
+    name: 'Golf Arena', 
     img: "https://picsum.photos/seed/golf/400/250",
     icon: <Target className="h-5 w-5 text-emerald-400" />
   },
