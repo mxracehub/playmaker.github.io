@@ -159,17 +159,159 @@ const sports = [
     ], 
     options: ["Arizona Diamondbacks", "Atlanta Braves", "Baltimore Orioles", "Boston Red Sox", "Chicago Cubs", "Chicago White Sox", "Cincinnati Reds", "Cleveland Guardians", "Colorado Rockies", "Detroit Tigers", "Houston Astros", "Kansas City Royals", "Los Angeles Angels", "Los Angeles Dodgers", "Miami Marlins", "Milwaukee Brewers", "Minnesota Twins", "New York Mets", "New York Yankees", "Oakland Athletics", "Philadelphia Phillies", "Pittsburgh Pirates", "San Diego Padres", "San Francisco Giants", "Seattle Mariners", "St. Louis Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"] 
   },
-  { id: 'ufc', name: 'UFC', icon: <Swords className="w-5 h-5" />, color: "text-red-600", events: [{ id: 'ufc-300', name: "UFC 300: Global Championship", date: "Apr 11, 2026" }], options: ["Jon Jones", "Alex Pereira", "Islam Makhachev", "Lebron Edwards", "Sean O'Malley", "Conor McGregor", "Ilia Topuria", "Dustin Poirier", "Max Holloway", "Israel Adesanya", "Tom Aspinall", "Charles Oliveira", "Justin Gaethje", "Alexandre Pantoja", "Dricus Du Plessis", "Sean Strickland", "Khamzat Chimaev"] },
-  { id: 'boxing', name: 'Boxing', icon: <BoxingIcon className="w-5 h-5" />, color: "text-yellow-600", events: [{ id: 'box-1', name: "Heavyweight Title Unification", date: "Mar 14, 2026" }], options: ["Tyson Fury", "Oleksandr Usyk", "Anthony Joshua", "Canelo Alvarez", "Terence Crawford", "Naoya Inoue", "Gervonta Davis", "Shakur Stevenson", "Artur Beterbiev", "Dmitry Bivol", "Devin Haney", "Ryan Garcia"] },
-  { id: 'tennis', name: 'Tennis', icon: <Target className="w-5 h-5" />, color: "text-lime-400", events: [{ id: 'ten-1', name: "Australian Open Final", date: "Jan 25, 2026" }], options: ["Novak Djokovic", "Carlos Alcaraz", "Jannik Sinner", "Daniil Medvedev", "Alexander Zverev", "Iga Swiatek", "Aryna Sabalenka", "Coco Gauff", "Elena Rybakina", "Jessica Pegula"] },
-  { id: 'pickleball', name: 'Pickleball', icon: <Trophy className="w-5 h-5" />, color: "text-yellow-500", events: [{ id: 'pb-1', name: "PPA Masters", date: "Jan 15, 2026" }], options: ["Ben Johns", "Anna Leigh Waters", "Tyson McGuffin", "Lea Jansen", "Riley Newman", "Catherine Parenteau", "JW Johnson", "Dylan Frazier", "Anna Bright"] },
-  { id: 'volleyball', name: 'Volleyball', icon: <Trophy className="w-5 h-5" />, color: "text-indigo-400", events: [{ id: 'v-1', name: "Nations League Finals", date: "Jul 05, 2026" }], options: ["USA", "Poland", "Brazil", "Turkey", "Italy", "Japan", "Serbia", "China", "France", "Slovenia"] },
-  { id: 'surfing', name: 'Surfing', icon: <Waves className="w-5 h-5" />, color: "text-blue-400", events: [{ id: 'surf-1', name: "Pipe Masters (Oahu)", date: "Jan 29, 2026" }], options: ["John John Florence", "Gabriel Medina", "Filipe Toledo", "Italo Ferreira", "Jack Robinson", "Carissa Moore", "Caroline Marks", "Tyler Wright", "Stephanie Gilmore", "Molly Picklum"] },
-  { id: 'skateboarding', name: 'Skateboarding', icon: <Zap className="w-5 h-5" />, color: "text-yellow-400", events: [{ id: 'sk-1', name: "X-Games Summer (CA)", date: "Jul 20, 2026" }], options: ["Nyjah Huston", "Yuto Horigome", "Sky Brown", "Rayssa Leal", "Kelvin Hoefler", "Leticia Bufoni", "Shane O'Neill", "Aurelien Giraud", "Chloe Covell"] },
-  { id: 'bmx', name: 'BMX', icon: <Bike className="w-5 h-5" />, color: "text-red-400", events: [{ id: 'bmx-1', name: "UCI World Cup Final", date: "May 24, 2026" }], options: ["Logan Martin", "Garrett Reynolds", "Hannah Roberts", "Charlotte Worthington", "Rim Nakamura", "Anthony Jeanjean", "Declan Brooks", "Nikita Ducarroz"] },
-  { id: 'snowboarding', name: 'Snowboarding', icon: <Mountain className="w-5 h-5" />, color: "text-cyan-400", events: [{ id: 'snow-1', name: "X-Games Aspen", date: "Jan 23, 2026" }], options: ["Chloe Kim", "Mark McMorris", "Shaun White (Ret.)", "Ayumu Hirano", "Anna Gasser", "Red Gerard", "Su Yiming", "Zoi Sadowski-Synnott", "Valentino Guseli"] },
-  { id: 'nascar', name: 'NASCAR', icon: <Flag className="w-5 h-5" />, color: "text-red-500", events: [{ id: 'nas-1', name: "Daytona 500", date: "Feb 15, 2026" }], options: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney", "William Byron", "Christopher Bell", "Joey Logano", "Martin Truex Jr.", "Tyler Reddick", "Ross Chastain", "Kyle Busch", "Bubba Wallace", "Brad Keselowski", "Ty Gibbs", "Chris Buescher", "Michael McDowell", "Alex Bowman", "Chase Briscoe"] },
-  { id: 'golf', name: 'Golf', icon: <Target className="h-5 w-5" />, color: "text-emerald-400", events: [{ id: 'g-4', name: "The Masters 2026", date: "Apr 09, 2026" }], options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Xander Schauffele", "Ludvig Åberg", "Brooks Koepka", "Bryson DeChambeau", "Tiger Woods", "Jordan Spieth", "Justin Thomas", "Max Homa", "Wyndham Clark", "Patrick Cantlay", "Collin Morikawa", "Cameron Smith", "Hideki Matsuyama", "Tommy Fleetwood"] },
+  { 
+    id: 'ufc', 
+    name: 'UFC', 
+    icon: <Swords className="w-5 h-5" />, 
+    color: "text-red-600", 
+    events: [
+      { id: 'ufc-310', name: "UFC 310: Championship Night (Las Vegas)", date: "Jan 17, 2026" },
+      { id: 'ufc-311', name: "UFC 311: Mega-Fight (NYC, Madison Square Garden)", date: "Feb 21, 2026" },
+      { id: 'ufc-312', name: "UFC 312: Clash of Titans (Miami)", date: "Mar 14, 2026" },
+      { id: 'ufc-313', name: "UFC 313: International Fight Week", date: "Jul 04, 2026" },
+      { id: 'ufc-314', name: "UFC 314: Fall Showdown (Denver, CO)", date: "Oct 10, 2026" },
+    ], 
+    options: ["Jon Jones", "Alex Pereira", "Islam Makhachev", "Leon Edwards", "Sean O'Malley", "Conor McGregor", "Ilia Topuria", "Dustin Poirier", "Max Holloway", "Israel Adesanya", "Tom Aspinall", "Charles Oliveira", "Justin Gaethje", "Alexandre Pantoja", "Dricus Du Plessis", "Sean Strickland", "Khamzat Chimaev"] 
+  },
+  { 
+    id: 'boxing', 
+    name: 'Boxing', 
+    icon: <BoxingIcon className="w-5 h-5" />, 
+    color: "text-yellow-600", 
+    events: [
+      { id: 'box-2026-01', name: "Heavyweight Title Unification (Vegas)", date: "Mar 14, 2026" },
+      { id: 'box-2026-02', name: "Lightweight Championship Duel", date: "May 02, 2026" },
+      { id: 'box-2026-03', name: "Summer Slugfest (Arlington, TX)", date: "Aug 15, 2026" },
+      { id: 'box-2026-04', name: "The Main Event (NYC)", date: "Dec 12, 2026" },
+    ], 
+    options: ["Tyson Fury", "Oleksandr Usyk", "Anthony Joshua", "Canelo Alvarez", "Terence Crawford", "Naoya Inoue", "Gervonta Davis", "Shakur Stevenson", "Artur Beterbiev", "Dmitry Bivol", "Devin Haney", "Ryan Garcia"] 
+  },
+  { 
+    id: 'tennis', 
+    name: 'Tennis', 
+    icon: <Target className="w-5 h-5" />, 
+    color: "text-lime-400", 
+    events: [
+      { id: 'ten-2026-01', name: "Australian Open Final (Melbourne)", date: "Jan 25, 2026" },
+      { id: 'ten-2026-02', name: "Indian Wells Masters (California)", date: "Mar 15, 2026" },
+      { id: 'ten-2026-03', name: "Miami Open Final (Florida)", date: "Mar 29, 2026" },
+      { id: 'ten-2026-04', name: "French Open Final (Paris)", date: "Jun 07, 2026" },
+      { id: 'ten-2026-05', name: "Wimbledon Final (London)", date: "Jul 12, 2026" },
+      { id: 'ten-2026-06', name: "US Open Final (Queens, NY)", date: "Sep 13, 2026" },
+    ], 
+    options: ["Novak Djokovic", "Carlos Alcaraz", "Jannik Sinner", "Daniil Medvedev", "Alexander Zverev", "Iga Swiatek", "Aryna Sabalenka", "Coco Gauff", "Elena Rybakina", "Jessica Pegula"] 
+  },
+  { 
+    id: 'pickleball', 
+    name: 'Pickleball', 
+    icon: <Trophy className="w-5 h-5" />, 
+    color: "text-yellow-500", 
+    events: [
+      { id: 'pb-2026-01', name: "PPA Masters (Rancho Mirage, CA)", date: "Jan 15, 2026" },
+      { id: 'pb-2026-02', name: "Arizona Grand Slam (Mesa, AZ)", date: "Feb 22, 2026" },
+      { id: 'pb-2026-03', name: "Florida Open (Naples, FL)", date: "Apr 19, 2026" },
+      { id: 'pb-2026-04', name: "Colorado Rockies Open (Denver, CO)", date: "Jul 12, 2026" },
+      { id: 'pb-2026-05', name: "National Championships (Dallas, TX)", date: "Nov 08, 2026" },
+    ], 
+    options: ["Ben Johns", "Anna Leigh Waters", "Tyson McGuffin", "Lea Jansen", "Riley Newman", "Catherine Parenteau", "JW Johnson", "Dylan Frazier", "Anna Bright"] 
+  },
+  { 
+    id: 'volleyball', 
+    name: 'Volleyball', 
+    icon: <Trophy className="w-5 h-5" />, 
+    color: "text-indigo-400", 
+    events: [
+      { id: 'v-2026-01', name: "Nations League Finals (Texas)", date: "Jul 05, 2026" },
+      { id: 'v-2026-02', name: "Beach Volleyball AVP Tour (Huntington Beach)", date: "Aug 23, 2026" },
+      { id: 'v-2026-03', name: "Domestic Pro League Finals", date: "Oct 18, 2026" },
+    ], 
+    options: ["USA", "Poland", "Brazil", "Turkey", "Italy", "Japan", "Serbia", "China", "France", "Slovenia"] 
+  },
+  { 
+    id: 'surfing', 
+    name: 'Surfing', 
+    icon: <Waves className="w-5 h-5" />, 
+    color: "text-blue-400", 
+    events: [
+      { id: 'surf-2026-01', name: "Pipe Masters (Oahu, Hawaii)", date: "Jan 29, 2026" },
+      { id: 'surf-2026-02', name: "Rip Curl Pro (Bells Beach)", date: "Apr 10, 2026" },
+      { id: 'surf-2026-03', name: "US Open of Surfing (Huntington Beach, CA)", date: "Aug 02, 2026" },
+      { id: 'surf-2026-04', name: "WSL Finals (Lower Trestles, CA)", date: "Sep 15, 2026" },
+    ], 
+    options: ["John John Florence", "Gabriel Medina", "Filipe Toledo", "Italo Ferreira", "Jack Robinson", "Carissa Moore", "Caroline Marks", "Tyler Wright", "Stephanie Gilmore", "Molly Picklum"] 
+  },
+  { 
+    id: 'skateboarding', 
+    name: 'Skateboarding', 
+    icon: <Zap className="w-5 h-5" />, 
+    color: "text-yellow-400", 
+    events: [
+      { id: 'sk-2026-01', name: "Street League (SLS) Tokyo", date: "Feb 15, 2026" },
+      { id: 'sk-2026-02', name: "X-Games Summer (Ventura, CA)", date: "Jul 20, 2026" },
+      { id: 'sk-2026-03', name: "Dew Tour Des Moines (Iowa)", date: "Aug 22, 2026" },
+      { id: 'sk-2026-04', name: "World Skateboarding Tour Final", date: "Oct 11, 2026" },
+    ], 
+    options: ["Nyjah Huston", "Yuto Horigome", "Sky Brown", "Rayssa Leal", "Kelvin Hoefler", "Leticia Bufoni", "Shane O'Neill", "Aurelien Giraud", "Chloe Covell"] 
+  },
+  { 
+    id: 'bmx', 
+    name: 'BMX', 
+    icon: <Bike className="w-5 h-5" />, 
+    color: "text-red-400", 
+    events: [
+      { id: 'bmx-2026-01', name: "UCI BMX Freestyle World Cup", date: "May 24, 2026" },
+      { id: 'bmx-2026-02', name: "X-Games BMX Park Finals", date: "Jul 21, 2026" },
+      { id: 'bmx-2026-03', name: "Simple Session (Europe)", date: "Sep 05, 2026" },
+    ], 
+    options: ["Logan Martin", "Garrett Reynolds", "Hannah Roberts", "Charlotte Worthington", "Rim Nakamura", "Anthony Jeanjean", "Declan Brooks", "Nikita Ducarroz"] 
+  },
+  { 
+    id: 'snowboarding', 
+    name: 'Snowboarding', 
+    icon: <Mountain className="w-5 h-5" />, 
+    color: "text-cyan-400", 
+    events: [
+      { id: 'snow-2026-01', name: "X-Games Aspen (Colorado)", date: "Jan 23, 2026" },
+      { id: 'snow-2026-02', name: "Laax Open (Switzerland)", date: "Feb 01, 2026" },
+      { id: 'snow-2026-03', name: "Dew Tour Copper Mountain (Colorado)", date: "Mar 08, 2026" },
+      { id: 'snow-2026-04', name: "US Grand Prix (Mammoth Mountain, CA)", date: "Dec 15, 2026" },
+    ], 
+    options: ["Chloe Kim", "Mark McMorris", "Shaun White (Ret.)", "Ayumu Hirano", "Anna Gasser", "Red Gerard", "Su Yiming", "Zoi Sadowski-Synnott", "Valentino Guseli"] 
+  },
+  { 
+    id: 'nascar', 
+    name: 'NASCAR', 
+    icon: <Flag className="w-5 h-5" />, 
+    color: "text-red-500", 
+    events: [
+      { id: 'nas-2026-01', name: "Daytona 500 (Daytona Beach, FL)", date: "Feb 15, 2026" },
+      { id: 'nas-2026-02', name: "Las Vegas Spring Race", date: "Mar 01, 2026" },
+      { id: 'nas-2026-03', name: "Talladega GEICO 500 (Alabama)", date: "Apr 19, 2026" },
+      { id: 'nas-2026-04', name: "Coca-Cola 600 (Charlotte, NC)", date: "May 24, 2026" },
+      { id: 'nas-2026-05', name: "Chicago Street Race", date: "Jul 05, 2026" },
+      { id: 'nas-2026-06', name: "Brickyard 400 (Indianapolis, IN)", date: "Jul 26, 2026" },
+      { id: 'nas-2026-07', name: "Southern 500 (Darlington, SC)", date: "Sep 06, 2026" },
+      { id: 'nas-2026-08', name: "Cup Series Championship (Phoenix, AZ)", date: "Nov 08, 2026" },
+    ], 
+    options: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney", "William Byron", "Christopher Bell", "Joey Logano", "Martin Truex Jr.", "Tyler Reddick", "Ross Chastain", "Kyle Busch", "Bubba Wallace", "Brad Keselowski", "Ty Gibbs", "Chris Buescher", "Michael McDowell", "Alex Bowman", "Chase Briscoe"] 
+  },
+  { 
+    id: 'golf', 
+    name: 'Golf', 
+    icon: <Target className="h-5 w-5" />, 
+    color: "text-emerald-400", 
+    events: [
+      { id: 'g-2026-01', name: "The WM Phoenix Open (AZ)", date: "Feb 08, 2026" },
+      { id: 'g-2026-02', name: "The Players Championship (FL)", date: "Mar 15, 2026" },
+      { id: 'g-2026-03', name: "The Masters 2026 (Augusta, GA)", date: "Apr 09, 2026" },
+      { id: 'g-2026-04', name: "PGA Championship (Aronomink, PA)", date: "May 17, 2026" },
+      { id: 'g-2026-05', name: "The Memorial Tournament (OH)", date: "Jun 07, 2026" },
+      { id: 'g-2026-06', name: "U.S. Open (Shinnecock Hills, NY)", date: "Jun 21, 2026" },
+      { id: 'g-2026-07', name: "The Open Championship (Royal Birkdale)", date: "Jul 19, 2026" },
+      { id: 'g-2026-08', name: "The 2026 Ryder Cup (Bethpage Black, NY)", date: "Sep 25, 2026" },
+    ], 
+    options: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Xander Schauffele", "Ludvig Åberg", "Brooks Koepka", "Bryson DeChambeau", "Tiger Woods", "Jordan Spieth", "Justin Thomas", "Max Homa", "Wyndham Clark", "Patrick Cantlay", "Collin Morikawa", "Cameron Smith", "Hideki Matsuyama", "Tommy Fleetwood"] 
+  },
 ];
 
 function CreateGameForm() {
