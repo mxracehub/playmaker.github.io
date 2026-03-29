@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { Trophy, Clock, Users, ArrowRight, Plus, Zap, Check, X, Bell, Target, Search, Gamepad2, Info } from "lucide-react";
+import { Trophy, Clock, ArrowRight, Plus, Zap, Check, X, Bell, Target, Search, Gamepad2, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -24,12 +24,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useFirestore, useCollection, useUser, useMemoFirebase, updateDocumentNonBlocking, useDoc } from "@/firebase";
 import { collection, doc } from "firebase/firestore";
-
-// Sport options for acceptance strategy
-const sportPicks: { [key: string]: string[] } = {
-  nba: ["Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", "Cleveland Cavaliers", "Dallas Mavericks", "Denver Nuggets", "Detroit Pistons", "Golden State Warriors", "Houston Rockets", "Indiana Pacers", "LA Clippers", "LA Lakers", "Memphis Grizzlies", "Miami Heat", "Milwaukee Bucks", "Minnesota Timberwolves", "New Orleans Pelicans", "New York Knicks", "Oklahoma City Thunder", "Orlando Magic", "Philadelphia 76ers", "Phoenix Suns", "Portland Trail Blazers", "Sacramento Kings", "San Antonio Spurs", "Toronto Raptors", "Utah Jazz", "Washington Wizards"],
-  nfl: ["Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills", "Carolina Panthers", "Chicago Bears", "Cincinnati Bengals", "Cleveland Browns", "Dallas Cowboys", "Denver Broncos", "Detroit Lions", "Green Bay Packers", "Houston Texans", "Indianapolis Colts", "Jacksonville Jaguars", "Kansas City Chiefs", "Las Vegas Raiders", "Los Angeles Chargers", "Los Angeles Rams", "Miami Dolphins", "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants", "New York Jets", "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Buccaneers", "Tennessee Titans", "Washington Commanders"],
-};
+import { sportsData } from "@/app/lib/schedules";
 
 export default function GamesPage() {
   const { toast } = useToast();
@@ -71,7 +66,6 @@ export default function GamesPage() {
       return;
     }
 
-    // Check Balance for Mandatory Match
     const fee = acceptingInvite.entryFee;
     const currency = acceptingInvite.currencyType;
     const balance = currency === 'gold' ? (profile?.goldCoinsBalance ?? 0) : (profile?.sweepstakesCoinsBalance ?? 0);
@@ -95,11 +89,12 @@ export default function GamesPage() {
     toast({ title: "Challenge Accepted", description: `You've matched the stakes with ${selectedPick}!` });
     setAcceptingInvite(null);
     setSelectedPick("");
+    setSearchQuery("");
   };
 
-  const options = sportPicks[acceptingInvite?.sportId?.toLowerCase()] || sportPicks.nba;
+  const options = sportsData.find(s => s.id === acceptingInvite?.sportId)?.options || [];
   const filteredOptions = options.filter(opt => 
-    opt.toLowerCase().includes(searchQuery.toLowerCase())
+    opt.toLowerCase().includes(searchQuery.toLowerCase().trim())
   );
 
   if (isLoading) {
@@ -265,7 +260,10 @@ export default function GamesPage() {
                               <X className="mr-2 h-4 w-4" /> Decline
                             </Button>
                             <Button 
-                              onClick={() => setAcceptingInvite(invite)}
+                              onClick={() => {
+                                setAcceptingInvite(invite);
+                                setSearchQuery("");
+                              }}
                               className="flex-1 lg:flex-none h-12 px-8 font-bold uppercase tracking-wider bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20"
                             >
                               <Check className="mr-2 h-5 w-5" /> Match Stakes
@@ -326,7 +324,7 @@ export default function GamesPage() {
         </Tabs>
       </main>
 
-      <Dialog open={!!acceptingInvite} onOpenChange={(open) => !open && setAcceptingInvite(null)}>
+      <Dialog open={!!acceptingInvite} onOpenChange={(open) => { if (!open) { setAcceptingInvite(null); setSearchQuery(""); } }}>
         <DialogContent className="bg-card border-white/10 max-w-md">
           <DialogHeader>
             <DialogTitle className="font-headline text-2xl uppercase tracking-tight">Match the Stakes</DialogTitle>
@@ -370,12 +368,17 @@ export default function GamesPage() {
                     {selectedPick === option && <Check className="h-5 w-5 text-accent" />}
                   </button>
                 ))}
+                {filteredOptions.length === 0 && (
+                  <div className="py-10 text-center opacity-40">
+                    <p className="text-xs font-bold uppercase italic">No roster matches</p>
+                  </div>
+                )}
               </div>
             </ScrollArea>
           </div>
 
           <DialogFooter className="flex flex-col sm:flex-row gap-3">
-            <Button variant="ghost" onClick={() => setAcceptingInvite(null)} className="font-bold uppercase tracking-widest">Retreat</Button>
+            <Button variant="ghost" onClick={() => { setAcceptingInvite(null); setSearchQuery(""); }} className="font-bold uppercase tracking-widest">Retreat</Button>
             <Button 
               onClick={handleFinalAccept} 
               disabled={!selectedPick}

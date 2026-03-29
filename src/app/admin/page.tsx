@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -15,11 +16,9 @@ import {
   User, 
   ShieldX, 
   Loader2, 
-  X, 
   Check, 
   Trash2, 
   Search, 
-  Target, 
   Zap, 
   UserCheck, 
   Upload, 
@@ -35,26 +34,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-
-// Unified 2026 rosters for Admin response and results
-const sportPicks: { [key: string]: string[] } = {
-  nba: ["Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", "Cleveland Cavaliers", "Dallas Mavericks", "Denver Nuggets", "Detroit Pistons", "Golden State Warriors", "Houston Rockets", "Indiana Pacers", "LA Clippers", "LA Lakers", "Memphis Grizzlies", "Miami Heat", "Milwaukee Bucks", "Minnesota Timberwolves", "New Orleans Pelicans", "New York Knicks", "Oklahoma City Thunder", "Orlando Magic", "Philadelphia 76ers", "Phoenix Suns", "Portland Trail Blazers", "Sacramento Kings", "San Antonio Spurs", "Toronto Raptors", "Utah Jazz", "Washington Wizards"],
-  nfl: ["Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills", "Carolina Panthers", "Chicago Bears", "Cincinnati Bengals", "Cleveland Browns", "Dallas Cowboys", "Denver Broncos", "Detroit Lions", "Green Bay Packers", "Houston Texans", "Indianapolis Colts", "Jacksonville Jaguars", "Kansas City Chiefs", "Las Vegas Raiders", "Los Angeles Chargers", "Los Angeles Rams", "Miami Dolphins", "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants", "New York Jets", "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Buccaneers", "Tennessee Titans", "Washington Commanders"],
-  hockey: ["Anaheim Ducks", "Arizona Coyotes", "Boston Bruins", "Buffalo Sabres", "Calgary Flames", "Carolina Hurricanes", "Chicago Blackhawks", "Colorado Avalanche", "Columbus Blue Jackets", "Dallas Stars", "Detroit Red Wings", "Edmonton Oilers", "Florida Panthers", "Los Angeles Kings", "Minnesota Wild", "Montreal Canadiens", "Nashville Predators", "New Jersey Devils", "New York Islanders", "New York Rangers", "Ottawa Senators", "Philadelphia Flyers", "Pittsburgh Penguins", "San Jose Sharks", "Seattle Kraken", "St. Louis Blues", "Tampa Bay Lightning", "Toronto Maple Leafs", "Vancouver Canucks", "Vegas Golden Knights", "Washington Capitals", "Winnipeg Jets"],
-  mlb: ["Arizona Diamondbacks", "Atlanta Braves", "Baltimore Orioles", "Boston Red Sox", "Chicago Cubs", "Chicago White Sox", "Cincinnati Reds", "Cleveland Guardians", "Colorado Rockies", "Detroit Tigers", "Houston Astros", "Kansas City Royals", "Los Angeles Angels", "Los Angeles Dodgers", "Miami Marlins", "Milwaukee Brewers", "Minnesota Twins", "New York Mets", "New York Yankees", "Oakland Athletics", "Philadelphia Phillies", "Pittsburgh Pirates", "San Diego Padres", "San Francisco Giants", "Seattle Mariners", "St. Louis Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"],
-  ufc: ["Jon Jones", "Alex Pereira", "Islam Makhachev", "Leon Edwards", "Sean O'Malley", "Conor McGregor", "Ilia Topuria", "Dustin Poirier", "Max Holloway", "Israel Adesanya", "Tom Aspinall", "Charles Oliveira", "Justin Gaethje", "Alexandre Pantoja", "Dricus Du Plessis", "Sean Strickland", "Khamzat Chimaev"],
-  boxing: ["Tyson Fury", "Oleksandr Usyk", "Anthony Joshua", "Canelo Alvarez", "Terence Crawford", "Naoya Inoue", "Gervonta Davis", "Shakur Stevenson", "Artur Beterbiev", "Dmitry Bivol", "Devin Haney", "Ryan Garcia"],
-  soccer: ["USA", "Mexico", "Canada", "Argentina", "Brazil", "England", "France", "Germany", "Spain", "Italy", "Portugal", "Netherlands", "Real Madrid", "Barcelona", "Manchester City", "Liverpool", "Arsenal", "PSG", "Bayern Munich", "Inter Milan", "Juventus", "AC Milan"],
-  tennis: ["Novak Djokovic", "Carlos Alcaraz", "Jannik Sinner", "Daniil Medvedev", "Alexander Zverev", "Iga Swiatek", "Aryna Sabalenka", "Coco Gauff", "Elena Rybakina", "Jessica Pegula"],
-  pickleball: ["Ben Johns", "Anna Leigh Waters", "Tyson McGuffin", "Lea Jansen", "Riley Newman", "Catherine Parenteau", "JW Johnson", "Dylan Frazier", "Anna Bright"],
-  volleyball: ["USA", "Poland", "Brazil", "Turkey", "Italy", "Japan", "Serbia", "China", "France", "Slovenia"],
-  golf: ["Scottie Scheffler", "Rory McIlroy", "Jon Rahm", "Viktor Hovland", "Xander Schauffele", "Ludvig Åberg", "Brooks Koepka", "Bryson DeChambeau", "Tiger Woods", "Jordan Spieth", "Justin Thomas", "Max Homa", "Wyndham Clark", "Patrick Cantlay", "Collin Morikawa", "Cameron Smith", "Hideki Matsuyama", "Tommy Fleetwood"],
-  nascar: ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Ryan Blaney", "William Byron", "Christopher Bell", "Joey Logano", "Martin Truex Jr.", "Tyler Reddick", "Ross Chastain", "Kyle Busch", "Bubba Wallace", "Brad Keselowski", "Ty Gibbs", "Chris Buescher", "Michael McDowell", "Alex Bowman", "Chase Briscoe"],
-  surfing: ["John John Florence", "Gabriel Medina", "Filipe Toledo", "Italo Ferreira", "Jack Robinson", "Carissa Moore", "Caroline Marks", "Tyler Wright", "Stephanie Gilmore", "Molly Picklum"],
-  skateboarding: ["Nyjah Huston", "Yuto Horigome", "Sky Brown", "Rayssa Leal", "Kelvin Hoefler", "Leticia Bufoni", "Shane O'Neill", "Aurelien Giraud", "Chloe Covell"],
-  bmx: ["Logan Martin", "Garrett Reynolds", "Hannah Roberts", "Charlotte Worthington", "Rim Nakamura", "Anthony Jeanjean", "Declan Brooks", "Nikita Ducarroz"],
-  snowboarding: ["Chloe Kim", "Mark McMorris", "Shaun White (Ret.)", "Ayumu Hirano", "Anna Gasser", "Red Gerard", "Su Yiming", "Zoi Sadowski-Synnott", "Valentino Guseli"]
-};
+import { sportsData } from "@/app/lib/schedules";
 
 export default function AdminDashboard() {
   const db = useFirestore();
@@ -130,12 +110,6 @@ export default function AdminDashboard() {
       return;
     }
 
-    const isHouseGame = scoringGame.opponentId === 'house-admin';
-    if (!housePickOverride && isHouseGame && !scoringGame.opponentPick) {
-      toast({ variant: "destructive", title: "Selection Required", description: "House must have a locked-in pick to finalize results." });
-      return;
-    }
-
     const gameRef = doc(db, "games", scoringGame.id);
     
     const finalScores = {
@@ -160,21 +134,15 @@ export default function AdminDashboard() {
   };
 
   const handleSyncOfficialData = () => {
-    toast({
-      title: "Syncing Arena Feeds",
-      description: "Fetching official results from professional sports providers...",
-    });
+    toast({ title: "Syncing Arena Feeds", description: "Fetching official results from professional sports providers..." });
     setTimeout(() => {
-      toast({
-        title: "Sync Complete",
-        description: "Official win counts updated for the 2026 season.",
-      });
+      toast({ title: "Sync Complete", description: "Official win counts updated for the 2026 season." });
     }, 2000);
   };
 
-  const filteredPicks = respondingGame 
-    ? (sportPicks[respondingGame.sportId] || []).filter(p => p.toLowerCase().includes(searchPickQuery.toLowerCase()))
-    : (scoringGame ? (sportPicks[scoringGame.sportId] || []) : []).filter(p => p.toLowerCase().includes(searchPickQuery.toLowerCase()));
+  const sportId = (respondingGame?.sportId || scoringGame?.sportId || "").toLowerCase();
+  const currentOptions = sportsData.find(s => s.id === sportId)?.options || [];
+  const filteredPicks = currentOptions.filter(p => p.toLowerCase().includes(searchPickQuery.toLowerCase().trim()));
 
   const filteredScoringGames = games?.filter(g => 
     (g.status === "Live" || g.status === "Open") && 
@@ -204,9 +172,7 @@ export default function AdminDashboard() {
           </div>
           <div className="space-y-2">
             <h2 className="font-headline text-2xl font-bold uppercase tracking-tight text-white">Access Denied</h2>
-            <p className="text-muted-foreground text-sm">
-              Your account does not have administrative clearance for the Arena Control.
-            </p>
+            <p className="text-muted-foreground text-sm">Your account does not have administrative clearance for the Arena Control.</p>
           </div>
           <div className="pt-4 space-y-3">
             <Link href="/" className="block w-full">
@@ -289,9 +255,6 @@ export default function AdminDashboard() {
                             </Button>
                           </>
                         )}
-                        <span className="text-[10px] font-bold text-muted-foreground uppercase self-center bg-white/5 px-3 py-1 rounded-full border border-white/5">
-                          Outcome managed via Scoring Center
-                        </span>
                       </div>
                     </div>
                   </CardContent>
@@ -311,7 +274,7 @@ export default function AdminDashboard() {
                 <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Sport Selection</span>
               </div>
               <div className="flex flex-wrap gap-2">
-                {["all", ...Object.keys(sportPicks)].map(s => (
+                {["all", ...sportsData.map(s => s.id)].map(s => (
                   <button 
                     key={s} 
                     onClick={() => setResultsFilter(s)}
@@ -325,9 +288,6 @@ export default function AdminDashboard() {
                     {s}
                   </button>
                 ))}
-              </div>
-              <div className="pt-2 text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
-                {filteredScoringGames.length} Showdowns in {resultsFilter.toUpperCase()} Queue
               </div>
             </div>
 
@@ -353,10 +313,6 @@ export default function AdminDashboard() {
                       </div>
                       
                       <div className="flex items-center gap-4 shrink-0">
-                        <div className="text-right hidden md:block mr-4">
-                          <p className="text-[9px] font-black uppercase text-accent mb-1">Status</p>
-                          <p className="text-xs font-bold text-white uppercase">{game.status}</p>
-                        </div>
                         <Button 
                           onClick={() => handleOpenScoring(game)}
                           className="bg-accent text-accent-foreground font-bold uppercase tracking-widest h-12 px-8"
@@ -478,14 +434,10 @@ export default function AdminDashboard() {
                     <CardTitle className="font-headline text-2xl uppercase tracking-tighter text-white">Record Showdown Results</CardTitle>
                   </div>
                 </div>
-                <CardDescription className="text-muted-foreground/80 font-medium">
-                  Finalizing <span className="text-white font-bold uppercase">{scoringGame.name}</span>. Precision data entry is mandatory.
-                </CardDescription>
               </CardHeader>
               
               <CardContent className="p-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
-                  {/* Challenger Score */}
                   <div 
                     className={cn(
                       "relative group flex flex-col items-center p-6 rounded-2xl border-2 transition-all duration-300 text-center cursor-pointer",
@@ -501,32 +453,18 @@ export default function AdminDashboard() {
                       </div>
                       <h3 className="font-headline text-xl font-bold text-white uppercase truncate px-2">{scoringGame.creatorPick}</h3>
                     </div>
-                    
                     <div className="w-full space-y-4" onClick={(e) => e.stopPropagation()}>
                       <Label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">FINAL WIN COUNT</Label>
                       <Input 
                         type="number" 
                         value={creatorScore} 
                         onChange={(e) => setCreatorScore(e.target.value)}
-                        className="h-20 text-4xl font-headline font-black text-center bg-black/40 border-white/10 focus:border-primary transition-colors rounded-xl"
-                        placeholder="0"
+                        className="h-20 text-4xl font-headline font-black text-center bg-black/40 border-white/10"
                       />
-                    </div>
-
-                    <div className={cn(
-                      "mt-6 flex items-center gap-2 px-4 py-2 rounded-full border text-[10px] font-black uppercase tracking-widest transition-all",
-                      winnerId === scoringGame.creatorId 
-                        ? "bg-primary text-white border-transparent shadow-lg shadow-primary/20" 
-                        : "bg-white/5 text-muted-foreground border-white/10 group-hover:text-white"
-                    )}>
-                      {winnerId === scoringGame.creatorId ? <Trophy className="h-3 w-3 fill-current" /> : null}
-                      {winnerId === scoringGame.creatorId ? "WINNER DECLARED" : "SET AS WINNER"}
                     </div>
                   </div>
 
-                  {/* Opponent (House) Selection / Score */}
                   <div className="lg:col-span-2 space-y-8">
-                    {/* Opponent Header */}
                     <div 
                       className={cn(
                         "relative group flex flex-col items-center p-6 rounded-2xl border-2 transition-all duration-300 text-center cursor-pointer w-full",
@@ -538,7 +476,7 @@ export default function AdminDashboard() {
                     >
                       <div className="mb-6 space-y-1">
                         <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-accent">
-                          <UserCheck className="h-3 w-3" /> Opponent (Arena Master)
+                          <UserCheck className="h-3 w-3" /> Opponent
                         </div>
                         <h3 className="font-headline text-xl font-bold text-white uppercase italic truncate px-2">
                           {housePickOverride || scoringGame.opponentPick || "PENDING ENTRY"}
@@ -552,13 +490,12 @@ export default function AdminDashboard() {
                             type="number" 
                             value={opponentScore} 
                             onChange={(e) => setOpponentScore(e.target.value)}
-                            className="h-20 text-4xl font-headline font-black text-center bg-black/40 border-white/10 focus:border-accent transition-colors rounded-xl"
-                            placeholder="0"
+                            className="h-20 text-4xl font-headline font-black text-center bg-black/40 border-white/10"
                           />
                         </div>
 
                         <div className="space-y-4">
-                          <Label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">SELECT HOUSE PICK</Label>
+                          <Label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">SELECT PICK</Label>
                           <div className="relative">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                             <Input 
@@ -586,51 +523,19 @@ export default function AdminDashboard() {
                           </ScrollArea>
                         </div>
                       </div>
-
-                      <div className={cn(
-                        "mt-6 flex items-center gap-2 px-4 py-2 rounded-full border text-[10px] font-black uppercase tracking-widest transition-all",
-                        winnerId === scoringGame.opponentId 
-                          ? "bg-accent text-accent-foreground border-transparent shadow-lg shadow-accent/20" 
-                          : "bg-white/5 text-muted-foreground border-white/10 group-hover:text-white"
-                      )}>
-                        {winnerId === scoringGame.opponentId ? <Trophy className="h-3 w-3 fill-current" /> : null}
-                        {winnerId === scoringGame.opponentId ? "WINNER DECLARED" : "SET AS WINNER"}
-                      </div>
                     </div>
                   </div>
-                </div>
-
-                {/* Status Footer */}
-                <div className="mt-12 p-6 rounded-2xl bg-[#1A232E] border border-white/5 text-center space-y-3">
-                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">Official Record Update</p>
-                  {winnerId ? (
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="flex items-center justify-center gap-3">
-                        <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                        <span className="font-mono text-sm text-accent font-bold tracking-widest uppercase truncate max-w-md">{winnerId}</span>
-                      </div>
-                      {housePickOverride && <Badge variant="outline" className="text-[8px] border-accent/20 text-accent uppercase">Finalizing with House Entry: {housePickOverride}</Badge>}
-                    </div>
-                  ) : (
-                    <p className="text-sm font-bold text-destructive/60 italic">PENDING VICTOR SELECTION...</p>
-                  )}
                 </div>
               </CardContent>
 
               <CardFooter className="flex gap-4 bg-secondary/5 p-8 border-t border-white/5">
-                <Button 
-                  variant="ghost" 
-                  onClick={() => setScoringGame(null)} 
-                  className="flex-1 h-14 font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-white transition-colors"
-                >
-                  Abort Action
-                </Button>
+                <Button variant="ghost" onClick={() => setScoringGame(null)} className="flex-1 h-14 font-black uppercase tracking-[0.2em] text-muted-foreground">Abort</Button>
                 <Button 
                   onClick={handleFinalizeGame} 
-                  disabled={!winnerId || (scoringGame.opponentId === 'house-admin' && !housePickOverride && !scoringGame.opponentPick)}
-                  className="flex-[2] h-14 bg-destructive text-white font-black uppercase tracking-[0.2em] shadow-2xl shadow-destructive/20 hover:bg-destructive/90 transition-all active:scale-95 disabled:opacity-30"
+                  disabled={!winnerId}
+                  className="flex-[2] h-14 bg-destructive text-white font-black uppercase tracking-[0.2em]"
                 >
-                  <CheckCircle2 className="mr-3 h-5 w-5" /> Confirm & Archive Results
+                  <CheckCircle2 className="mr-3 h-5 w-5" /> Confirm results
                 </Button>
               </CardFooter>
             </Card>
