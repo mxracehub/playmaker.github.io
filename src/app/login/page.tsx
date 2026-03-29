@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Trophy, ArrowRight, Mail, Lock, ShieldCheck, Loader2, LogOut } from "lucide-react";
+import { Trophy, ArrowRight, Mail, Lock, ShieldCheck, Loader2, LogOut, Smartphone } from "lucide-react";
 import { useAuth, useUser, initiateEmailSignIn, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
@@ -152,9 +152,13 @@ export default function LoginPage() {
             </CardHeader>
             <form onSubmit={handleVerify2FA}>
               <CardContent className="space-y-6 flex flex-col items-center">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-accent text-center">
-                  Download Google Authenticator App
-                </p>
+                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-accent/5 border border-accent/20 w-full">
+                  <Smartphone className="h-5 w-5 text-accent" />
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent text-center">
+                    Download Google Authenticator App
+                  </p>
+                </div>
+                
                 <div className="p-2 bg-white rounded-lg shadow-inner">
                   {qrCodeUrl && (
                     <Image 

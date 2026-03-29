@@ -1,16 +1,18 @@
-
 'use client';
 
 import { firebaseConfig } from '@/firebase/config';
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import { initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-check';
+import { initializeAppCheck, ReCaptchaEnterpriseProvider, AppCheck } from 'firebase/app-check';
+
+let appCheckInstance: AppCheck | null = null;
 
 // IMPORTANT: DO NOT MODIFY THIS FUNCTION
 export function initializeFirebase() {
+  let firebaseApp: FirebaseApp;
+
   if (!getApps().length) {
-    let firebaseApp: FirebaseApp;
     try {
       firebaseApp = initializeApp();
     } catch (e) {
@@ -19,30 +21,34 @@ export function initializeFirebase() {
       }
       firebaseApp = initializeApp(firebaseConfig);
     }
+  } else {
+    firebaseApp = getApp();
+  }
 
-    // App Check Initialization with reCAPTCHA Enterprise
-    if (typeof window !== 'undefined') {
-      /**
-       * ARENA SECURITY SHIELD
-       * In development mode, we enable the debug token bypass.
-       * Look for the "AppCheck debug token" in your browser console to register it 
-       * in the Firebase Console if enforcement is required.
-       */
-      if (process.env.NODE_ENV !== 'production' || window.location.hostname === 'localhost') {
-        // @ts-ignore
-        window.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
-      }
+  // App Check Initialization with reCAPTCHA Enterprise
+  if (typeof window !== 'undefined' && !appCheckInstance) {
+    /**
+     * ARENA SECURITY SHIELD
+     * We prioritize the debug token if provided. 
+     * In development or on localhost, we enable debug mode.
+     */
+    if (process.env.NODE_ENV !== 'production' || window.location.hostname === 'localhost') {
+      // @ts-ignore
+      window.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+    }
 
-      initializeAppCheck(firebaseApp, {
+    try {
+      appCheckInstance = initializeAppCheck(firebaseApp, {
         provider: new ReCaptchaEnterpriseProvider('6LfU-ZssAAAAAFcYu-2NemXNroyLyheF3YzMCh9v'),
         isTokenAutoRefreshEnabled: true
       });
+      console.log("[ARENA SHIELD] App Check initialized successfully.");
+    } catch (err) {
+      console.warn("[ARENA SHIELD] App Check initialization skipped or failed:", err);
     }
-
-    return getSdks(firebaseApp);
   }
 
-  return getSdks(getApp());
+  return getSdks(firebaseApp);
 }
 
 export function getSdks(firebaseApp: FirebaseApp) {
