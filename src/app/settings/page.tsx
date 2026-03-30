@@ -10,11 +10,11 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Bell, Shield, Wallet, Save, CheckCircle2, Camera, Link as LinkIcon, Upload, Smartphone, ExternalLink } from "lucide-react";
+import { User, Bell, Shield, Wallet, Save, CheckCircle2, Camera, Link as LinkIcon, Upload, Smartphone, ExternalLink, Copy, Check } from "lucide-react";
 import { useUser, useFirestore, setDocumentNonBlocking, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
-import { validateTOTP, getOTPAuthUri } from "@/lib/2fa";
+import { validateTOTP, getOTPAuthUri, getSecretForUser } from "@/lib/2fa";
 import { cn } from "@/lib/utils";
 import {
   Dialog,
@@ -47,9 +47,9 @@ export default function SettingsPage() {
   const [profilePictureUrl, setProfilePictureUrl] = useState("");
   const [is2FADialogOpen, setIs2FADialogOpen] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  // Unified collection: userProfiles
   const userProfileRef = useMemoFirebase(() => (user ? doc(db, "userProfiles", user.uid) : null), [db, user]);
   const { data: profile } = useDoc(userProfileRef);
 
@@ -70,7 +70,7 @@ export default function SettingsPage() {
       username: displayName,
       bio: bio,
       profilePictureUrl: profilePictureUrl,
-      role: profile?.role || 'player', // Preserve role if exists
+      role: profile?.role || 'player', 
       updatedAt: new Date().toISOString(),
       createdAt: profile?.createdAt || new Date().toISOString(),
     }, { merge: true });
@@ -146,8 +146,18 @@ export default function SettingsPage() {
     });
   };
 
+  const handleCopySecret = () => {
+    if (!user) return;
+    const secret = getSecretForUser(user.uid);
+    navigator.clipboard.writeText(secret);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+    toast({ title: "Key Copied", description: "Secret copied to clipboard for manual setup." });
+  };
+
   const otpUri = user ? getOTPAuthUri(user.uid, user.email || '') : "";
   const qrCodeUrl = otpUri ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(otpUri)}` : "";
+  const secretKey = user ? getSecretForUser(user.uid) : "";
 
   return (
     <div className="min-h-screen pb-24 md:pt-20">
@@ -356,42 +366,64 @@ export default function SettingsPage() {
                       )}
                     </DialogTrigger>
                     {!profile?.twoFactorEnabled && (
-                      <DialogContent className="bg-card border-white/10">
+                      <DialogContent className="bg-card border-white/10 max-w-md">
                         <DialogHeader>
                           <DialogTitle className="font-headline text-xl uppercase">Enable Two-Factor Auth</DialogTitle>
                           <DialogDescription>
-                            Scan your account-specific QR key or use the mobile link below.
+                            Scan the QR or link your app. Manual entry recommended for Google Authenticator on mobile.
                           </DialogDescription>
                         </DialogHeader>
-                        <div className="flex flex-col items-center justify-center py-6 gap-6">
-                          <div className="flex flex-col gap-4 w-full">
-                            <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-accent/5 border border-accent/20 w-full">
-                              <Smartphone className="h-5 w-5 text-accent" />
-                              <p className="text-[10px] font-bold uppercase tracking-widest text-accent text-center">
-                                On Mobile?
-                              </p>
+                        <div className="flex flex-col py-4 gap-6">
+                          <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-3 p-4 rounded-xl bg-accent/5 border border-accent/20">
+                              <div className="flex items-center justify-center gap-2">
+                                <Smartphone className="h-4 w-4 text-accent" />
+                                <p className="text-[10px] font-black uppercase tracking-widest text-accent text-center">Auto-Link Mobile</p>
+                              </div>
                               <a href={otpUri} className="w-full">
                                 <Button type="button" variant="outline" size="sm" className="w-full h-10 font-bold uppercase text-[10px] tracking-widest border-accent/30 hover:bg-accent/10">
-                                  <ExternalLink className="mr-2 h-3.5 w-3.5" /> Setup in App
+                                  <ExternalLink className="mr-2 h-3.5 w-3.5" /> Auto-Link App
                                 </Button>
                               </a>
+                              <p className="text-[8px] text-muted-foreground text-center uppercase font-bold leading-relaxed px-4">
+                                If native passwords intercept, use manual key below.
+                              </p>
                             </div>
 
-                            <div className="flex justify-center p-2 bg-white rounded-lg self-center">
-                              {qrCodeUrl && (
-                                <Image 
-                                  src={qrCodeUrl} 
-                                  alt="2FA QR Code" 
-                                  width={200} 
-                                  height={200} 
-                                  className="rounded-sm"
-                                />
-                              )}
+                            <div className="flex flex-col md:flex-row items-center gap-6">
+                              <div className="flex justify-center p-2 bg-white rounded-lg shrink-0">
+                                {qrCodeUrl && (
+                                  <Image 
+                                    src={qrCodeUrl} 
+                                    alt="2FA QR Code" 
+                                    width={140} 
+                                    height={140} 
+                                    className="rounded-sm"
+                                  />
+                                )}
+                              </div>
+                              <div className="flex-1 space-y-3 w-full">
+                                <Label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Google Auth Manual Key</Label>
+                                <div className="flex gap-2">
+                                  <div className="flex-1 bg-secondary/50 rounded-lg h-10 flex items-center px-3 font-mono text-xs text-white border border-white/5 truncate">
+                                    {secretKey}
+                                  </div>
+                                  <Button 
+                                    type="button" 
+                                    variant="secondary" 
+                                    size="icon" 
+                                    className="h-10 w-10 shrink-0"
+                                    onClick={handleCopySecret}
+                                  >
+                                    {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                                  </Button>
+                                </div>
+                              </div>
                             </div>
                           </div>
 
-                          <div className="w-full space-y-2">
-                            <Label className="text-xs font-bold uppercase tracking-widest">Verification Code</Label>
+                          <div className="w-full space-y-2 pt-4 border-t border-white/5">
+                            <Label className="text-xs font-bold uppercase tracking-widest text-center block">Enter 6-Digit Code</Label>
                             <Input 
                               value={verificationCode}
                               inputMode="numeric"
@@ -404,7 +436,7 @@ export default function SettingsPage() {
                           </div>
                         </div>
                         <DialogFooter>
-                          <Button onClick={handleEnable2FA} className="w-full font-bold uppercase tracking-widest">Access Granted</Button>
+                          <Button onClick={handleEnable2FA} className="w-full font-bold uppercase tracking-widest h-12 shadow-lg shadow-primary/20">Access Granted</Button>
                         </DialogFooter>
                       </DialogContent>
                     )}

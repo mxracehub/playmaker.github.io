@@ -8,12 +8,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Trophy, ArrowRight, Mail, Lock, ShieldCheck, Loader2, LogOut, Smartphone, ExternalLink } from "lucide-react";
+import { Trophy, ArrowRight, Mail, Lock, ShieldCheck, Loader2, LogOut, Smartphone, ExternalLink, Copy, Check } from "lucide-react";
 import { useAuth, useUser, initiateEmailSignIn, useFirestore, useDoc, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { useToast } from "@/hooks/use-toast";
-import { validateTOTP, getOTPAuthUri } from "@/lib/2fa";
+import { validateTOTP, getOTPAuthUri, getSecretForUser } from "@/lib/2fa";
 import { verifyRecaptchaAction } from "@/app/actions/recaptcha";
 
 declare global {
@@ -29,6 +29,7 @@ export default function LoginPage() {
   const [show2FA, setShow2FA] = useState(false);
   const [passed2FA, setPassed2FA] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const auth = useAuth();
   const db = useFirestore();
@@ -44,9 +45,8 @@ export default function LoginPage() {
   useEffect(() => {
     if (hasRedirected.current) return;
 
-    // Wait for auth and profile to load
     if (user && !isUserLoading && !isProfileLoading && profile) {
-      const is2FAEnabled = profile.twoFactorEnabled !== false; // Default to true if not specified
+      const is2FAEnabled = profile.twoFactorEnabled !== false; 
 
       if (!is2FAEnabled || passed2FA) {
         hasRedirected.current = true;
@@ -116,8 +116,18 @@ export default function LoginPage() {
     setVerificationCode("");
   };
 
+  const handleCopySecret = () => {
+    if (!user) return;
+    const secret = getSecretForUser(user.uid);
+    navigator.clipboard.writeText(secret);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+    toast({ title: "Key Copied", description: "Secret copied to clipboard for manual setup." });
+  };
+
   const otpUri = user ? getOTPAuthUri(user.uid, user.email || '') : "";
   const qrCodeUrl = otpUri ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(otpUri)}` : "";
+  const secretKey = user ? getSecretForUser(user.uid) : "";
 
   const showLoading = user && (isProfileLoading || isUserLoading || isVerifying) && !show2FA && !passed2FA;
 
@@ -150,34 +160,56 @@ export default function LoginPage() {
               </CardDescription>
             </CardHeader>
             <form onSubmit={handleVerify2FA}>
-              <CardContent className="space-y-6 flex flex-col items-center">
-                <div className="flex flex-col gap-3 w-full">
-                  <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-accent/5 border border-accent/20 w-full">
-                    <Smartphone className="h-5 w-5 text-accent" />
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent text-center">
-                      On Mobile?
-                    </p>
+              <CardContent className="space-y-6">
+                <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-3 p-4 rounded-xl bg-accent/5 border border-accent/20">
+                    <div className="flex items-center justify-center gap-2 mb-1">
+                      <Smartphone className="h-4 w-4 text-accent" />
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Mobile Arena Link</p>
+                    </div>
                     <a href={otpUri} className="w-full">
                       <Button type="button" variant="outline" size="sm" className="w-full h-10 font-bold uppercase text-[10px] tracking-widest border-accent/30 hover:bg-accent/10">
-                        <ExternalLink className="mr-2 h-3.5 w-3.5" /> Setup in App
+                        <ExternalLink className="mr-2 h-3.5 w-3.5" /> Auto-Link App
                       </Button>
                     </a>
+                    <p className="text-[8px] text-muted-foreground text-center uppercase font-bold px-2 leading-relaxed">
+                      OS system might default to native passwords. Use manual entry below for Google Authenticator.
+                    </p>
                   </div>
                   
-                  <div className="flex justify-center p-2 bg-white rounded-lg shadow-inner">
-                    {qrCodeUrl && (
-                      <Image 
-                        src={qrCodeUrl} 
-                        alt="2FA QR Code" 
-                        width={160} 
-                        height={160} 
-                        className="rounded-sm"
-                      />
-                    )}
+                  <div className="flex flex-col md:flex-row items-center gap-4">
+                    <div className="flex justify-center p-2 bg-white rounded-lg shadow-inner shrink-0">
+                      {qrCodeUrl && (
+                        <Image 
+                          src={qrCodeUrl} 
+                          alt="2FA QR Code" 
+                          width={120} 
+                          height={120} 
+                          className="rounded-sm"
+                        />
+                      )}
+                    </div>
+                    <div className="flex-1 space-y-2 w-full">
+                      <Label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Manual Setup Key</Label>
+                      <div className="flex gap-2">
+                        <div className="flex-1 bg-secondary/50 rounded-lg h-10 flex items-center px-3 font-mono text-xs text-white border border-white/5 truncate">
+                          {secretKey}
+                        </div>
+                        <Button 
+                          type="button" 
+                          variant="secondary" 
+                          size="icon" 
+                          className="h-10 w-10 shrink-0"
+                          onClick={handleCopySecret}
+                        >
+                          {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div className="space-y-2 w-full text-center">
+                <div className="space-y-2 w-full text-center pt-4 border-t border-white/5">
                   <Label htmlFor="code" className="text-xs font-bold uppercase tracking-widest text-muted-foreground block">Verification Code</Label>
                   <Input 
                     id="code"
