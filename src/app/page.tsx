@@ -25,7 +25,7 @@ import {
   Flag,
   SearchX
 } from "lucide-react";
-import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
+import { useFirestore, useCollection, useMemoFirebase, useUser } from "@/firebase";
 import { collection } from "firebase/firestore";
 import { cn } from "@/lib/utils";
 
@@ -102,10 +102,17 @@ export default function Home() {
   const [selectedSport, setSelectedSport] = useState("all");
   const [selectedAthletes, setSelectedAthletes] = useState<string[]>([]);
 
+  const { user, isUserLoading } = useUser();
   const db = useFirestore();
-  const gamesQuery = useMemoFirebase(() => collection(db, "games"), [db]);
-  const { data: games, isLoading: isGamesLoading } = useCollection(gamesQuery);
+  const gamesQuery = useMemoFirebase(() => {
+    // Guard the query to prevent unauthorized list requests before authentication is confirmed
+    if (isUserLoading || !user) return null;
+    return collection(db, "games");
+  }, [db, user, isUserLoading]);
+  
+  const { data: games, isLoading: isCollectionLoading } = useCollection(gamesQuery);
 
+  const isGamesLoading = isUserLoading || isCollectionLoading;
   const activeGamesCount = games?.filter(g => g.status === "Open" || g.status === "Live").length || 0;
   const winnersTodayCount = games?.filter(g => g.status === "Completed" && g.winnerId).length || 0;
 
